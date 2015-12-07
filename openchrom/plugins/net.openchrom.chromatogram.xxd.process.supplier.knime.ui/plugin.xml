@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.chemclipse.chromatogram.msd.process.ui.preferences.processPreferencePage"
+            class="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.preferences.PreferencePage"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.preferences.preferencePage"
+            name="KNIME Integration">
+      </page>
+   </extension>
+</plugin>

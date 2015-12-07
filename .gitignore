@@ -1,0 +1,16 @@
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime.fragment.test/Openchrom.log.*
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime.fragment.test/Openchrom.log
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime.fragment.test/bin/*
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime.ui.fragment.test/bin/*
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime.ui/bin/*
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime/bin/*
+openchrom/sites/net.openchrom.chromatogram.xxd.process.supplier.knime.updateSite/artifacts.jar
+openchrom/sites/net.openchrom.chromatogram.xxd.process.supplier.knime.updateSite/content.jar
+openchrom/sites/net.openchrom.chromatogram.xxd.process.supplier.knime.updateSite/features/
+openchrom/sites/net.openchrom.chromatogram.xxd.process.supplier.knime.updateSite/plugins/
+openchrom/features/net.openchrom.chromatogram.xxd.process.supplier.knime.feature/target/
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime.ui/target/
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime/target/
+openchrom/sites/net.openchrom.chromatogram.xxd.process.supplier.knime.updateSite/target/
+openchrom/plugins/net.openchrom.chromatogram.xxd.process.supplier.knime.fragment.test/*.log
+
