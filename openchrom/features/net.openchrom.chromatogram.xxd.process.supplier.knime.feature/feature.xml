@@ -61,14 +61,18 @@ USA
    <includes
          id="org.knime.features.sdk"
          version="0.0.0"/>
-         
+
    <includes
          id="org.knime.features.ensembles"
          version="0.0.0"/>
-         
+
    <includes
          id="org.knime.features.ext.svg"
-         version="0.0.0"/>                  
+         version="0.0.0"/>
+
+   <includes
+         id="org.knime.product.desktop"
+         version="0.0.0"/>
 
    <plugin
          id="net.openchrom.chromatogram.xxd.process.supplier.knime"
@@ -696,6 +700,20 @@ USA
 
    <plugin
          id="com.fasterxml.jackson.core.jackson-core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.core.jackson-databind"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.fasterxml.jackson.dataformat.jackson-dataformat-xml"
          download-size="0"
          install-size="0"
          version="0.0.0"
