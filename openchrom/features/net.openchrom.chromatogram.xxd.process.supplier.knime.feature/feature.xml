@@ -294,6 +294,10 @@ USA
          id="org.knime.features.xml"
          version="0.0.0"/>
 
+   <includes
+         id="org.knime.features.mongodb"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.chromatogram.xxd.process.supplier.knime"
          download-size="0"
@@ -1045,6 +1049,34 @@ USA
 
    <plugin
          id="org.eclipse.birt.report.model.adapter.oda"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.jongo"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.orbit.mongodb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.mongodb.mongo-java-driver"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.undercouch.bson4jackson"
          download-size="0"
          install-size="0"
          version="0.0.0"
