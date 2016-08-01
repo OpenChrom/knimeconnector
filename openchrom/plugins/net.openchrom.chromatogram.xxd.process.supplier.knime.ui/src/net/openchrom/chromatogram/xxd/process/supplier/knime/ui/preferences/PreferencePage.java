@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015, 2016 Lablicate UG (haftungsbeschränkt).
  * 
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -23,7 +23,6 @@ import net.openchrom.chromatogram.xxd.process.supplier.knime.ui.Activator;
 public class PreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public PreferencePage() {
-
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("KNIME Integration");
