@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.chromatogram.xxd.process.supplier.knime.feature"
       label="Feature"
-      version="1.1.0.qualifier"
+      version="1.2.0.qualifier"
       provider-name="OpenChrom">
 
    <description url="https://openchrom.net">
