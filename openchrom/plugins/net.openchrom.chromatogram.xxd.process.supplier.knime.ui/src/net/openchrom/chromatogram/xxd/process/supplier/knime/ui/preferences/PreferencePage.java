@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015, 2016 Lablicate UG (haftungsbeschränkt).
+ * Copyright (c) 2015, 2016 Lablicate GmbH.
  * 
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
