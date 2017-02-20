@@ -20,11 +20,17 @@
             name="OpenChrom"
             path="/"/>
       <category
-            description="Data input and output"
+            description="Data input and output of various file formats."
             icon="icons/io.png"
             level-id="io"
             name="I/O"
-            path="/openchrom"/>         
+            path="/openchrom"/>
+      <category
+            description="Direct access to measurement data via open editor."
+            icon="icons/da.png"
+            level-id="da"
+            name="Direct Access"
+            path="/openchrom"/>                     
       <category
             description="Data visualization"
             icon="icons/visualization.png"
@@ -54,7 +60,32 @@
             icon="icons/nmr.png"
             level-id="nmr"
             name="NMR"
-            path="/openchrom/io"/>                                                
+            path="/openchrom/io"/>  
+      <category
+            description="Mass Selective Detector (MSD)."
+            icon="icons/msd.png"
+            level-id="msd"
+            name="MSD"
+            path="/openchrom/da"/>
+      <category
+            description="Current Selective Detector (CSD)."
+            icon="icons/csd.png"
+            level-id="csd"
+            name="CSD"
+            path="/openchrom/da"/>
+      <category
+            description="Wavelength Selective Detector (WSD)."
+            icon="icons/wsd.png"
+            level-id="wsd"
+            name="WSD"
+            path="/openchrom/da"/>
+      <category
+            description="Nuclear Magnetic Resonance (NMR)."
+            icon="icons/nmr.png"
+            level-id="nmr"
+            name="NMR"
+            path="/openchrom/da"/>                
+                                                      
    </extension>
    <extension
          point="org.knime.workbench.repository.nodes">
@@ -89,7 +120,39 @@
       <node
             category-path="/openchrom/io/nmr"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.nmr.MeasurementWriterNMRNodeFactory"
-            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.nmr.ChromatogramWriterNMRNodeFactory"/>                                    
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.nmr.ChromatogramWriterNMRNodeFactory"/>
+      <node
+            category-path="/openchrom/da/msd"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.msd.ChromatogramGetterMSDNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.msd.ChromatogramGetterMSDNodeFactory"/>
+      <node
+            category-path="/openchrom/da/msd"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.msd.ChromatogramSetterMSDNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.msd.ChromatogramSetterMSDNodeFactory"/>         
+      <node
+            category-path="/openchrom/da/csd"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.csd.ChromatogramGetterCSDNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.csd.ChromatogramGetterCSDNodeFactory"/>
+      <node
+            category-path="/openchrom/da/csd"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.csd.ChromatogramSetterCSDNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.csd.ChromatogramSetterCSDNodeFactory"/>           
+      <node
+            category-path="/openchrom/da/wsd"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.wsd.ChromatogramGetterWSDNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.wsd.ChromatogramGetterWSDNodeFactory"/>
+      <node
+            category-path="/openchrom/da/wsd"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.wsd.ChromatogramSetterWSDNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.wsd.ChromatogramSetterWSDNodeFactory"/>          
+      <node
+            category-path="/openchrom/da/nmr"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.nmr.MeasurementGetterNMRNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.nmr.ChromatogramGetterNMRNodeFactory"/>
+      <node
+            category-path="/openchrom/da/nmr"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.nmr.MeasurementSetterNMRNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.nmr.ChromatogramSetterNMRNodeFactory"/>                                                  
       <node
             category-path="/openchrom/visualization"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.chromatogram.ChromatogramNodeFactory"
