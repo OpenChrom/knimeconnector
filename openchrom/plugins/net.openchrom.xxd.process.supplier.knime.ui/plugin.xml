@@ -92,7 +92,11 @@
             id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.nmr.ChromatogramWriterNMRNodeFactory"/>                                    
       <node
             category-path="/openchrom/visualization"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.chromatogram.ChromatogramVizNodeFactory"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.chromatogram.ChromatogramNodeFactory"
             id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.viz.chromatogram.ChromatogramVizNodeFactory"/>
+      <node
+            category-path="/openchrom/visualization"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.massspectrum.MassSpectrumNodeFactory"
+            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.viz.massspectrum.MassSpectrumVizNodeFactory"/>            
    </extension>   
 </plugin>
