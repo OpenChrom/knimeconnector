@@ -6,7 +6,7 @@
     <groupId>net.openchrom</groupId>
     <artifactId>parent</artifactId>
     <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.chromatogram.xxd.process.supplier.knime.cbi/pom.xml</relativePath>
+    <relativePath>../cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml</relativePath>
   </parent>
 
   <artifactId>net.openchrom.sites.parent</artifactId>
