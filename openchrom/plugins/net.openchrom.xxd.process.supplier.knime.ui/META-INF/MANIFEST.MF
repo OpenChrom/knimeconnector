@@ -23,3 +23,6 @@ Require-Bundle: org.eclipse.ui,
  org.knime.base;bundle-version="3.3.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Import-Package: org.eclipse.chemclipse.msd.converter.chromatogram,
+ org.eclipse.chemclipse.msd.converter.processing.chromatogram,
+ org.eclipse.chemclipse.ux.extension.msd.ui.editors

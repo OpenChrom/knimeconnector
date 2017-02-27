@@ -146,7 +146,7 @@ public class ChromatogramSetterMSDNodeModel extends NodeModel {
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
 		// TODO save user settings to the config object.
-		m_count.saveSettingsTo(settings);
+		// m_count.saveSettingsTo(settings);
 	}
 
 	/**
@@ -158,7 +158,7 @@ public class ChromatogramSetterMSDNodeModel extends NodeModel {
 		// TODO load (valid) settings from the config object.
 		// It can be safely assumed that the settings are valided by the
 		// method below.
-		m_count.loadSettingsFrom(settings);
+		// m_count.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class ChromatogramSetterMSDNodeModel extends NodeModel {
 		// e.g. if the count is in a certain range (which is ensured by the
 		// SettingsModel).
 		// Do not actually set any values of any member variables.
-		m_count.validateSettings(settings);
+		// m_count.validateSettings(settings);
 	}
 
 	/**

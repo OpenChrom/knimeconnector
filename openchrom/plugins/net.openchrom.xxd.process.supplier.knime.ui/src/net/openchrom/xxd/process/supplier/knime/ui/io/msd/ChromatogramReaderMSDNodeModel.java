@@ -63,14 +63,15 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	// example value: the models count variable filled from the dialog
 	// and used in the models execution method. The default components of the
 	// dialog work with "SettingsModels".
-	private final SettingsModelIntegerBounded m_count = new SettingsModelIntegerBounded(ChromatogramReaderMSDNodeModel.CFGKEY_COUNT, ChromatogramReaderMSDNodeModel.DEFAULT_COUNT, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	// private final SettingsModelIntegerBounded m_count = new SettingsModelIntegerBounded(ChromatogramReaderMSDNodeModel.CFGKEY_COUNT, ChromatogramReaderMSDNodeModel.DEFAULT_COUNT, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	private final ChromatogramReaderMSDNodeSettings settings = new ChromatogramReaderMSDNodeSettings();
 
 	/**
 	 * Constructor for the node model.
 	 */
 	protected ChromatogramReaderMSDNodeModel() {
 		// TODO one incoming port and one outgoing port is assumed
-		super(1, 1);
+		super(0, 1);
 	}
 
 	/**
@@ -94,20 +95,22 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		// will buffer to disc if necessary.
 		BufferedDataContainer container = exec.createDataContainer(outputSpec);
 		// let's add m_count rows to it
-		for(int i = 0; i < m_count.getIntValue(); i++) {
-			RowKey key = new RowKey("Row " + i);
-			// the cells of the current row, the types of the cells must match
-			// the column spec (see above)
-			DataCell[] cells = new DataCell[3];
-			cells[0] = new StringCell("String_" + i);
-			cells[1] = new DoubleCell(0.5 * i);
-			cells[2] = new IntCell(i);
-			DataRow row = new DefaultRow(key, cells);
-			container.addRowToTable(row);
-			// check if the execution monitor was canceled
-			exec.checkCanceled();
-			exec.setProgress(i / (double)m_count.getIntValue(), "Adding row " + i);
-		}
+		/*
+		 * for(int i = 0; i < m_count.getIntValue(); i++) {
+		 * RowKey key = new RowKey("Row " + i);
+		 * // the cells of the current row, the types of the cells must match
+		 * // the column spec (see above)
+		 * DataCell[] cells = new DataCell[3];
+		 * cells[0] = new StringCell("String_" + i);
+		 * cells[1] = new DoubleCell(0.5 * i);
+		 * cells[2] = new IntCell(i);
+		 * DataRow row = new DefaultRow(key, cells);
+		 * container.addRowToTable(row);
+		 * // check if the execution monitor was canceled
+		 * exec.checkCanceled();
+		 * exec.setProgress(i / (double)m_count.getIntValue(), "Adding row " + i);
+		 * }
+		 */
 		// once we are done, we close the container and return its table
 		container.close();
 		BufferedDataTable out = container.getTable();
@@ -145,8 +148,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		// TODO save user settings to the config object.
-		m_count.saveSettingsTo(settings);
+		this.settings.saveSettings(settings);
 	}
 
 	/**
@@ -155,10 +157,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		// TODO load (valid) settings from the config object.
-		// It can be safely assumed that the settings are valided by the
-		// method below.
-		m_count.loadSettingsFrom(settings);
+		this.settings.loadSettings(settings);
 	}
 
 	/**
@@ -171,7 +170,32 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		// e.g. if the count is in a certain range (which is ensured by the
 		// SettingsModel).
 		// Do not actually set any values of any member variables.
-		m_count.validateSettings(settings);
+		ChromatogramReaderMSDNodeSettings tmpSettings = new ChromatogramReaderMSDNodeSettings();
+		tmpSettings.loadSettings(settings);
+		if(tmpSettings.files() == null) {
+			throw new InvalidSettingsException("No files or directory selected.");
+		}
+		File[] files = tmpSettings.files();
+		for(File file : files) {
+			if(!file.exists()) {
+				throw new InvalidSettingsException("File or directory does not exist: " + file.getAbsolutePath());
+			} else if(file.isFile()) {
+				if(file.getName().substring(file.getName().indexOf(".") + 1).equalsIgnoreCase(Constants.FILE_FORMATS.CDF.toString())) {
+					checkAndPreparePlatform();
+				}
+			} else if(file.isDirectory()) {
+				for(String s : file.list(ChromatogramReaderMSDNodeDialog.FILTER)) {
+					if(s.substring(s.indexOf(".") + 1).equalsIgnoreCase(Constants.FILE_FORMATS.CDF.toString())) {
+						checkAndPreparePlatform();
+					}
+				}
+			}
+		}
+	}
+
+	private void checkAndPreparePlatform() throws InvalidSettingsException {
+
+		// put code here to check and prepare before loading data
 	}
 
 	/**

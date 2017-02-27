@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 loge.
+ * Copyright (c) 2017 Lablicat GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * loge - initial API and implementation
+ * Lorenz Gerber - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
