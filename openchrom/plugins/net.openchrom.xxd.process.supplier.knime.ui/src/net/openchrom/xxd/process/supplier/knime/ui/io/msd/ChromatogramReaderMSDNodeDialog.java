@@ -70,7 +70,7 @@ public class ChromatogramReaderMSDNodeDialog extends NodeDialogPane {
 		public boolean accept(final File file, final String name) {
 
 			String s = name.toUpperCase();
-			if(s.endsWith(Constants.FILE_FORMATS.MZML.name()) || s.endsWith(Constants.FILE_FORMATS.RAW.name()) || s.endsWith(Constants.FILE_FORMATS.CDF.name())) {
+			if(s.endsWith(Constants.FILE_FORMATS.CDF.name())) {
 				return true;
 			}
 			return false;
@@ -132,7 +132,7 @@ public class ChromatogramReaderMSDNodeDialog extends NodeDialogPane {
 				String fileName = file.getName();
 				int i = fileName.lastIndexOf('.');
 				if(i > 0 && i < fileName.length() - 1)
-					if(fileName.substring(i + 1).toUpperCase().equals(Constants.FILE_FORMATS.RAW.name()) || fileName.substring(i + 1).toUpperCase().equals(Constants.FILE_FORMATS.MZML.name()) || fileName.substring(i + 1).toUpperCase().equals(Constants.FILE_FORMATS.CDF.name()))
+					if(fileName.substring(i + 1).toUpperCase().equals(Constants.FILE_FORMATS.CDF.name()))
 						return true;
 				return false;
 			}
@@ -140,7 +140,7 @@ public class ChromatogramReaderMSDNodeDialog extends NodeDialogPane {
 			public String getDescription() {
 
 				String wildcard = "*.";
-				return wildcard + Constants.FILE_FORMATS.RAW.name().toLowerCase() + ", " + wildcard + Constants.FILE_FORMATS.MZML.name().toLowerCase() + ", " + wildcard + Constants.FILE_FORMATS.CDF.name().toLowerCase();
+				return wildcard + Constants.FILE_FORMATS.CDF.name().toLowerCase();
 			}
 		});
 		addTab("Settings", dialogPanel);

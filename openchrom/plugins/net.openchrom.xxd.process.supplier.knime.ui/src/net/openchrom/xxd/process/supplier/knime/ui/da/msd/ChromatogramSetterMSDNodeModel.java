@@ -70,7 +70,7 @@ public class ChromatogramSetterMSDNodeModel extends NodeModel {
 	 */
 	protected ChromatogramSetterMSDNodeModel() {
 		// TODO one incoming port and one outgoing port is assumed
-		super(1, 1);
+		super(0, 1);
 	}
 
 	/**
