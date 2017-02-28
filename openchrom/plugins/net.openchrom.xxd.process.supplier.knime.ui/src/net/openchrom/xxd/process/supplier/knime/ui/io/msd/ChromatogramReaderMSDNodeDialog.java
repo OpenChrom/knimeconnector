@@ -18,16 +18,26 @@
 package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 
 public class ChromatogramReaderMSDNodeDialog extends DefaultNodeSettingsPane {
 
 	protected ChromatogramReaderMSDNodeDialog() {
 		super();
-		// SettingsModelString settingsModelString = new SettingsModelString(ChromatogramReaderMSDNodeModel.CHROMATOGRAM_FILE_INPUT, "");
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_FILE_INPUT, "", ".*");
+		//
+		// String[] validExtensions;
+		// ChromatogramConverterSupport chromatogramConverterSupport = ChromatogramConverterMSD.getChromatogramConverterSupport();
+		// try {
+		// validExtensions = chromatogramConverterSupport.getImportableFilterExtensions();
+		// } catch(NoConverterAvailableException e) {
+		// validExtensions = new String[]{"*.*"};
+		// }
+		//
+		String[] validExtensions = new String[]{"*.*"};
+		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_FILE_INPUT, "", validExtensions);
 		addDialogComponent(dialogComponentFileChooser);
-		// DialogComponentString dialogComponentString = new DialogComponentString(settingsModelString, "Chromatogram File Input:");
-		// addDialogComponent(dialogComponentString);
+		DialogComponentBoolean dialogComponentBoolean = new DialogComponentBoolean(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_IMPORT_TIC, "Import TIC:");
+		addDialogComponent(dialogComponentBoolean);
 	}
 }
