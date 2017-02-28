@@ -20,6 +20,8 @@ package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.chemclipse.model.signals.ITotalScanSignal;
+import org.eclipse.chemclipse.model.signals.ITotalScanSignals;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -28,6 +30,8 @@ import org.eclipse.chemclipse.msd.model.xic.ExtractedIonSignalExtractor;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignalExtractor;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
+import org.eclipse.chemclipse.msd.model.xic.ITotalIonSignalExtractor;
+import org.eclipse.chemclipse.msd.model.xic.TotalIonSignalExtractor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -61,8 +65,9 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_INPUT = new SettingsModelString(CHROMATOGRAM_FILE_INPUT, "");
 	protected static final SettingsModelBoolean SETTING_CHROMATOGRAM_IMPORT_TIC = new SettingsModelBoolean(CHROMATOGRAM_IMPORT_TIC, false);
 	//
-	private static final String RT = "RT (milliseconds)";
-	private static final String RI = "RI";
+	private static final String RETENTION_TIME = "RT (milliseconds)";
+	private static final String RETENTION_INDEX = "RI";
+	private static final String TIC = "TIC";
 
 	protected ChromatogramReaderMSDNodeModel() {
 		super(0, 1);
@@ -81,7 +86,11 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		IChromatogramMSD chromatogramMSD = loadChromatogram(SETTING_CHROMATOGRAM_FILE_INPUT.getStringValue());
 		BufferedDataTable bufferedDataTable = null;
 		if(chromatogramMSD != null) {
-			bufferedDataTable = getBufferedDataTableXIC(chromatogramMSD, exec);
+			if(SETTING_CHROMATOGRAM_IMPORT_TIC.getBooleanValue()) {
+				bufferedDataTable = getBufferedDataTableTIC(chromatogramMSD, exec);
+			} else {
+				bufferedDataTable = getBufferedDataTableXIC(chromatogramMSD, exec);
+			}
 		}
 		/*
 		 * Ready, return the table.
@@ -160,6 +169,51 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		return processingInfo.getChromatogram();
 	}
 
+	private BufferedDataTable getBufferedDataTableTIC(IChromatogramMSD chromatogramMSD, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+
+		/*
+		 * Specification
+		 */
+		ITotalIonSignalExtractor totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogramMSD);
+		ITotalScanSignals totalScanSignals = totalIonSignalExtractor.getTotalScanSignals();
+		int numberOfColumns = 3; // RT, RI, TIC
+		//
+		int columnSpec = 0;
+		DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(RETENTION_TIME, IntCell.TYPE).createSpec();
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(RETENTION_INDEX, DoubleCell.TYPE).createSpec();
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TIC, DoubleCell.TYPE).createSpec();
+		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
+		/*
+		 * Data
+		 */
+		int startScan = totalScanSignals.getStartScan();
+		int stopScan = totalScanSignals.getStopScan();
+		int scanCount = stopScan - startScan + 1;
+		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
+		//
+		for(int scan = startScan; scan <= stopScan; scan++) {
+			/*
+			 * Set the cell data.
+			 */
+			ITotalScanSignal totalScanSignal = totalScanSignals.getTotalScanSignal(scan);
+			RowKey rowKey = new RowKey(Integer.toString(scan));
+			int columnCell = 0;
+			DataCell[] cells = new DataCell[numberOfColumns];
+			cells[columnCell++] = new IntCell(totalScanSignal.getRetentionTime());
+			cells[columnCell++] = new DoubleCell(totalScanSignal.getRetentionIndex());
+			cells[columnCell++] = new DoubleCell(totalScanSignal.getTotalSignal());
+			DataRow dataRow = new DefaultRow(rowKey, cells);
+			bufferedDataContainer.addRowToTable(dataRow);
+			//
+			exec.checkCanceled();
+			exec.setProgress(scan / scanCount, "Adding Scan: " + scan);
+		}
+		//
+		bufferedDataContainer.close();
+		return bufferedDataContainer.getTable();
+	}
+
 	private BufferedDataTable getBufferedDataTableXIC(IChromatogramMSD chromatogramMSD, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
 		/*
@@ -173,8 +227,8 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		//
 		int columnSpec = 0;
 		DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
-		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(RT, IntCell.TYPE).createSpec();
-		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(RI, DoubleCell.TYPE).createSpec();
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(RETENTION_TIME, IntCell.TYPE).createSpec();
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(RETENTION_INDEX, DoubleCell.TYPE).createSpec();
 		for(int ion = startIon; ion <= stopIon; ion++) {
 			dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(Integer.toString(ion), DoubleCell.TYPE).createSpec();
 		}

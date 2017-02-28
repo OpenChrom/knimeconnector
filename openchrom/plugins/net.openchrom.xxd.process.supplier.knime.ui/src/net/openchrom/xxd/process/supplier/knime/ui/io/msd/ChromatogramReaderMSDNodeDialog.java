@@ -17,6 +17,13 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.chemclipse.converter.chromatogram.ChromatogramConverterSupport;
+import org.eclipse.chemclipse.converter.core.ISupplier;
+import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
@@ -26,18 +33,25 @@ public class ChromatogramReaderMSDNodeDialog extends DefaultNodeSettingsPane {
 	protected ChromatogramReaderMSDNodeDialog() {
 		super();
 		//
-		// String[] validExtensions;
-		// ChromatogramConverterSupport chromatogramConverterSupport = ChromatogramConverterMSD.getChromatogramConverterSupport();
-		// try {
-		// validExtensions = chromatogramConverterSupport.getImportableFilterExtensions();
-		// } catch(NoConverterAvailableException e) {
-		// validExtensions = new String[]{"*.*"};
-		// }
+		ChromatogramConverterSupport chromatogramConverterSupport = ChromatogramConverterMSD.getChromatogramConverterSupport();
+		Set<String> extensions = new HashSet<String>();
+		for(ISupplier supplier : chromatogramConverterSupport.getSupplier()) {
+			if(supplier.isImportable()) {
+				extensions.add(supplier.getFileExtension());
+			}
+		}
 		//
-		String[] validExtensions = new String[]{"*.*"};
+		String[] validExtensions;
+		if(extensions.size() > 0) {
+			validExtensions = extensions.toArray(new String[extensions.size()]);
+			Arrays.sort(validExtensions);
+		} else {
+			validExtensions = new String[]{"*.*"};
+		}
+		//
 		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_FILE_INPUT, "", validExtensions);
 		addDialogComponent(dialogComponentFileChooser);
-		DialogComponentBoolean dialogComponentBoolean = new DialogComponentBoolean(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_IMPORT_TIC, "Import TIC:");
+		DialogComponentBoolean dialogComponentBoolean = new DialogComponentBoolean(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_IMPORT_TIC, "Import TIC");
 		addDialogComponent(dialogComponentBoolean);
 	}
 }
