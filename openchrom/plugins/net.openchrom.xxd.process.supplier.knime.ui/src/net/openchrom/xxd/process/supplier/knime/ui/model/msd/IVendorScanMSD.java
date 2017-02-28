@@ -15,18 +15,13 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
+package net.openchrom.xxd.process.supplier.knime.ui.model.msd;
 
-import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
 
-public class ChromatogramWriterMSDNodeDialog extends DefaultNodeSettingsPane {
+public interface IVendorScanMSD extends IVendorMassSpectrum {
 
-	protected ChromatogramWriterMSDNodeDialog() {
-		super();
-		//
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramWriterMSDNodeModel.SETTING_CHROMATOGRAM_FILE_OUTPUT, "", ChromatogramWriterMSDNodeModel.EXPORT_FILE_EXTENSION);
-		dialogComponentFileChooser.setDialogTypeSaveWithExtension(ChromatogramWriterMSDNodeModel.EXPORT_FILE_EXTENSION);
-		addDialogComponent(dialogComponentFileChooser);
-	}
+	int MAX_IONS = 65535;
+	int MIN_RETENTION_TIME = 0;
+	int MAX_RETENTION_TIME = Integer.MAX_VALUE;
 }

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <knimeNode icon="./reader.png" type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
     <name>Chromatogram Reader (MSD)</name>
-    
     <shortDescription>
         This node is reads chromatographic raw data.
     </shortDescription>
-    
     <fullDescription>
         <intro>This node allows to read data from different vendors like Agilent, Shimadzu, ... into a data table via OpenChrom.</intro>
-        <option name="short name of first option (like in the dialog)">description of first option</option>
+        <option name="File Import">This is the path of the file that shall be imported as a table.</option>
+        <option name="Import TIC">If this option is selected, the TIC (Total Ion Chromatogram) is imported instead of all m/z values.</option>
     </fullDescription>
-    
     <ports>
         <outPort index="0" name="Chromatogram (MSD) Table">Get the chromatographic, mass spectrometric data as a table.</outPort>
     </ports>
     <views>
-        <view index="0" name="name of first view">Description of first view...</view>
+        <view index="0" name="Chromatogram (MSD) Overview">An overview of the chromatogram is displayed here.</view>
     </views>    
 </knimeNode>

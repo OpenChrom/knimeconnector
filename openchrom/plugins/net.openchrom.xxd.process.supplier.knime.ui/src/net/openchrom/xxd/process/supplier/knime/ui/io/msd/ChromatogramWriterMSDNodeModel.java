@@ -19,18 +19,14 @@ package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.knime.core.data.DataCell;
-import org.knime.core.data.DataColumnSpec;
-import org.knime.core.data.DataColumnSpecCreator;
+import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.data.DataRow;
 import org.knime.core.data.DataTableSpec;
-import org.knime.core.data.RowKey;
-import org.knime.core.data.def.DefaultRow;
-import org.knime.core.data.def.DoubleCell;
-import org.knime.core.data.def.IntCell;
-import org.knime.core.data.def.StringCell;
-import org.knime.core.node.BufferedDataContainer;
+import org.knime.core.data.container.CloseableRowIterator;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -40,37 +36,36 @@ import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
-import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
+
+import net.openchrom.xxd.process.supplier.knime.ui.model.msd.IVendorChromatogramMSD;
+import net.openchrom.xxd.process.supplier.knime.ui.model.msd.IVendorScanMSD;
+import net.openchrom.xxd.process.supplier.knime.ui.model.msd.VendorChromatogramMSD;
+import net.openchrom.xxd.process.supplier.knime.ui.model.msd.VendorIon;
+import net.openchrom.xxd.process.supplier.knime.ui.model.msd.VendorScanMSD;
 
 /**
  * This is the model implementation of ChromatogramWriterMSD.
  * This node writes chromatographic data.
- *
- * @author OpenChrom
  */
 public class ChromatogramWriterMSDNodeModel extends NodeModel {
 
-	// the logger instance
 	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramWriterMSDNodeModel.class);
-	/**
-	 * the settings key which is used to retrieve and
-	 * store the settings (from the dialog or from a settings file)
-	 * (package visibility to be usable from the dialog).
+	//
+	private static final String CHROMATOGRAM_FILE_OUTPUT = "ChromatgramFileOutput";
+	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_OUTPUT = new SettingsModelString(CHROMATOGRAM_FILE_OUTPUT, "");
+	/*
+	 * Export the data in *.ocb format.
 	 */
-	static final String CFGKEY_COUNT = "Count";
-	/** initial default count value. */
-	static final int DEFAULT_COUNT = 100;
-	// example value: the models count variable filled from the dialog
-	// and used in the models execution method. The default components of the
-	// dialog work with "SettingsModels".
-	private final SettingsModelIntegerBounded m_count = new SettingsModelIntegerBounded(ChromatogramWriterMSDNodeModel.CFGKEY_COUNT, ChromatogramWriterMSDNodeModel.DEFAULT_COUNT, Integer.MIN_VALUE, Integer.MAX_VALUE);
+	protected static final String EXPORT_FILE_EXTENSION = ".ocb";
+	private static final String EXPORT_CONVERTER_ID = "org.eclipse.chemclipse.xxd.converter.supplier.chemclipse";
+	private static final double DEFAULT_MZ = 18.0d;
 
 	/**
 	 * Constructor for the node model.
 	 */
 	protected ChromatogramWriterMSDNodeModel() {
-		// TODO one incoming port and one outgoing port is assumed
-		super(1, 1);
+		super(1, 0);
 	}
 
 	/**
@@ -79,39 +74,73 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception {
 
-		// TODO do something here
-		logger.info("Node Model Stub... this is not yet implemented !");
-		// the data table spec of the single output table,
-		// the table will have three columns:
-		DataColumnSpec[] allColSpecs = new DataColumnSpec[3];
-		allColSpecs[0] = new DataColumnSpecCreator("Column 0", StringCell.TYPE).createSpec();
-		allColSpecs[1] = new DataColumnSpecCreator("Column 1", DoubleCell.TYPE).createSpec();
-		allColSpecs[2] = new DataColumnSpecCreator("Column 2", IntCell.TYPE).createSpec();
-		DataTableSpec outputSpec = new DataTableSpec(allColSpecs);
-		// the execution context will provide us with storage capacity, in this
-		// case a data container to which we will add rows sequentially
-		// Note, this container can also handle arbitrary big data tables, it
-		// will buffer to disc if necessary.
-		BufferedDataContainer container = exec.createDataContainer(outputSpec);
-		// let's add m_count rows to it
-		for(int i = 0; i < m_count.getIntValue(); i++) {
-			RowKey key = new RowKey("Row " + i);
-			// the cells of the current row, the types of the cells must match
-			// the column spec (see above)
-			DataCell[] cells = new DataCell[3];
-			cells[0] = new StringCell("String_" + i);
-			cells[1] = new DoubleCell(0.5 * i);
-			cells[2] = new IntCell(i);
-			DataRow row = new DefaultRow(key, cells);
-			container.addRowToTable(row);
-			// check if the execution monitor was canceled
-			exec.checkCanceled();
-			exec.setProgress(i / (double)m_count.getIntValue(), "Adding row " + i);
+		logger.info("Read the chromatographic raw data.");
+		/*
+		 * Write the chromatogram.
+		 */
+		if(inData.length > 0) {
+			/*
+			 * Export *.ocb file.
+			 */
+			File file = new File(SETTING_CHROMATOGRAM_FILE_OUTPUT.getStringValue());
+			IVendorChromatogramMSD chromatogramMSD = new VendorChromatogramMSD();
+			//
+			BufferedDataTable bufferedDataTable = inData[0];
+			DataTableSpec dataTableSpec = bufferedDataTable.getSpec();
+			Map<Integer, Double> mzTable = new HashMap<Integer, Double>();
+			//
+			CloseableRowIterator iterator = bufferedDataTable.iterator();
+			int scan = 1;
+			int scanCount = getNumberOfRows(bufferedDataTable);
+			//
+			while(iterator.hasNext()) {
+				DataRow dataRow = iterator.next();
+				//
+				IVendorScanMSD vendorScanMSD = new VendorScanMSD();
+				vendorScanMSD.setRetentionTime(Integer.parseInt(dataRow.getCell(0).toString()));
+				vendorScanMSD.setRetentionIndex(Float.parseFloat(dataRow.getCell(1).toString()));
+				//
+				int numberOfCells = dataRow.getNumCells();
+				if(numberOfCells == 3) {
+					/*
+					 * TIC
+					 */
+					vendorScanMSD.addIon(new VendorIon(DEFAULT_MZ, Float.parseFloat(dataRow.getCell(2).toString())));
+				} else {
+					/*
+					 * XIC
+					 */
+					for(int i = 2; i < numberOfCells; i++) {
+						float abundance = Float.parseFloat(dataRow.getCell(i).toString());
+						if(abundance > 0) {
+							double mz;
+							if(mzTable.containsKey(i)) {
+								mz = mzTable.get(i);
+							} else {
+								mz = Double.parseDouble(dataTableSpec.getColumnSpec(i).getName().toString());
+								mzTable.put(i, mz);
+							}
+							/*
+							 * Add the ion.
+							 */
+							if(mz > 0) {
+								vendorScanMSD.addIon(new VendorIon(mz, abundance));
+							}
+						}
+					}
+				}
+				chromatogramMSD.addScan(vendorScanMSD);
+				//
+				exec.checkCanceled();
+				exec.setProgress(scan / scanCount, "Exporting Scan: " + scan);
+				scan++;
+			}
+			/*
+			 * Write the chromatogram.
+			 */
+			ChromatogramConverterMSD.convert(file, chromatogramMSD, EXPORT_CONVERTER_ID, new NullProgressMonitor());
 		}
-		// once we are done, we close the container and return its table
-		container.close();
-		BufferedDataTable out = container.getTable();
-		return new BufferedDataTable[]{out};
+		return null;
 	}
 
 	/**
@@ -120,9 +149,6 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void reset() {
 
-		// TODO Code executed on reset.
-		// Models build during execute are cleared here.
-		// Also data handled in load/saveInternals will be erased here.
 	}
 
 	/**
@@ -131,11 +157,6 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
 
-		// TODO: check if user settings are available, fit to the incoming
-		// table structure, and the incoming types are feasible for the node
-		// to execute. If the node can execute in its current state return
-		// the spec of its output data table(s) (if you can, otherwise an array
-		// with null elements), or throw an exception with a useful user message
 		return new DataTableSpec[]{null};
 	}
 
@@ -145,8 +166,7 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		// TODO save user settings to the config object.
-		m_count.saveSettingsTo(settings);
+		SETTING_CHROMATOGRAM_FILE_OUTPUT.saveSettingsTo(settings);
 	}
 
 	/**
@@ -155,10 +175,7 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		// TODO load (valid) settings from the config object.
-		// It can be safely assumed that the settings are valided by the
-		// method below.
-		m_count.loadSettingsFrom(settings);
+		SETTING_CHROMATOGRAM_FILE_OUTPUT.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -167,11 +184,7 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		// TODO check if the settings could be applied to our model
-		// e.g. if the count is in a certain range (which is ensured by the
-		// SettingsModel).
-		// Do not actually set any values of any member variables.
-		m_count.validateSettings(settings);
+		SETTING_CHROMATOGRAM_FILE_OUTPUT.validateSettings(settings);
 	}
 
 	/**
@@ -180,12 +193,6 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-		// TODO load internal data.
-		// Everything handed to output ports is loaded automatically (data
-		// returned by the execute method, models loaded in loadModelContent,
-		// and user settings set through loadSettingsFrom - is all taken care
-		// of). Load here only the other internals that need to be restored
-		// (e.g. data used by the views).
 	}
 
 	/**
@@ -194,11 +201,16 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void saveInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-		// TODO save internal models.
-		// Everything written to output ports is saved automatically (data
-		// returned by the execute method, models saved in the saveModelContent,
-		// and user settings saved through saveSettingsTo - is all taken care
-		// of). Save here only the other internals that need to be preserved
-		// (e.g. data used by the views).
+	}
+
+	private int getNumberOfRows(BufferedDataTable bufferedDataTable) {
+
+		int counter = 0;
+		CloseableRowIterator iterator = bufferedDataTable.iterator();
+		while(iterator.hasNext()) {
+			iterator.next();
+			counter++;
+		}
+		return counter;
 	}
 }

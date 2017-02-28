@@ -22,8 +22,6 @@ import org.knime.core.node.NodeView;
 /**
  * <code>NodeView</code> for the "ChromatogramReaderMSD" Node.
  * This node is reads chromatographic raw data.
- *
- * @author OpenChrom
  */
 public class ChromatogramReaderMSDNodeView extends NodeView<ChromatogramReaderMSDNodeModel> {
 

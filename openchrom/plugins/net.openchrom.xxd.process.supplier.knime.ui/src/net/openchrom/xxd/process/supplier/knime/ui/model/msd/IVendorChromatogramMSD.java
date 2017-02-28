@@ -15,18 +15,9 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
+package net.openchrom.xxd.process.supplier.knime.ui.model.msd;
 
-import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 
-public class ChromatogramWriterMSDNodeDialog extends DefaultNodeSettingsPane {
-
-	protected ChromatogramWriterMSDNodeDialog() {
-		super();
-		//
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramWriterMSDNodeModel.SETTING_CHROMATOGRAM_FILE_OUTPUT, "", ChromatogramWriterMSDNodeModel.EXPORT_FILE_EXTENSION);
-		dialogComponentFileChooser.setDialogTypeSaveWithExtension(ChromatogramWriterMSDNodeModel.EXPORT_FILE_EXTENSION);
-		addDialogComponent(dialogComponentFileChooser);
-	}
+public interface IVendorChromatogramMSD extends IChromatogramMSD {
 }

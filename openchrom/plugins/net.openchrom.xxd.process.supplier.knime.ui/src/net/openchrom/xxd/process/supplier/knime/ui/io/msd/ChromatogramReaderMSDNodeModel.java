@@ -61,7 +61,6 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	//
 	private static final String CHROMATOGRAM_FILE_INPUT = "ChromatgramFileInput";
 	private static final String CHROMATOGRAM_IMPORT_TIC = "ChromatgramImportTIC";
-	//
 	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_INPUT = new SettingsModelString(CHROMATOGRAM_FILE_INPUT, "");
 	protected static final SettingsModelBoolean SETTING_CHROMATOGRAM_IMPORT_TIC = new SettingsModelBoolean(CHROMATOGRAM_IMPORT_TIC, false);
 	//
@@ -162,13 +161,6 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
 	}
 
-	private IChromatogramMSD loadChromatogram(String pathChromatogram) {
-
-		File file = new File(pathChromatogram);
-		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
-		return processingInfo.getChromatogram();
-	}
-
 	private BufferedDataTable getBufferedDataTableTIC(IChromatogramMSD chromatogramMSD, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
 		/*
@@ -263,5 +255,12 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		//
 		bufferedDataContainer.close();
 		return bufferedDataContainer.getTable();
+	}
+
+	private IChromatogramMSD loadChromatogram(String pathChromatogram) {
+
+		File file = new File(pathChromatogram);
+		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
+		return processingInfo.getChromatogram();
 	}
 }

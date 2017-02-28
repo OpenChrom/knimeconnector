@@ -46,7 +46,7 @@ public class ChromatogramReaderMSDNodeDialog extends DefaultNodeSettingsPane {
 			validExtensions = extensions.toArray(new String[extensions.size()]);
 			Arrays.sort(validExtensions);
 		} else {
-			validExtensions = new String[]{"*.*"};
+			validExtensions = new String[]{".*"};
 		}
 		//
 		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_FILE_INPUT, "", validExtensions);
