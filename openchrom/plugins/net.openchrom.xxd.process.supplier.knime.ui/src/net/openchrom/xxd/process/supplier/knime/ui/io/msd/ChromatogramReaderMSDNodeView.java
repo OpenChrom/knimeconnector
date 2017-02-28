@@ -35,7 +35,9 @@ public class ChromatogramReaderMSDNodeView extends NodeView<ChromatogramReaderMS
 	 */
 	protected ChromatogramReaderMSDNodeView(final ChromatogramReaderMSDNodeModel nodeModel) {
 		super(nodeModel);
-		// TODO instantiate the components of the view here.
+		/*
+		 * TODO add chromatogram TIC view
+		 */
 	}
 
 	/**
@@ -44,12 +46,8 @@ public class ChromatogramReaderMSDNodeView extends NodeView<ChromatogramReaderMS
 	@Override
 	protected void modelChanged() {
 
-		// TODO retrieve the new model from your nodemodel and
-		// update the view.
 		ChromatogramReaderMSDNodeModel nodeModel = (ChromatogramReaderMSDNodeModel)getNodeModel();
 		assert nodeModel != null;
-		// be aware of a possibly not executed nodeModel! The data you retrieve
-		// from your nodemodel could be null, emtpy, or invalid in any kind.
 	}
 
 	/**
@@ -58,7 +56,6 @@ public class ChromatogramReaderMSDNodeView extends NodeView<ChromatogramReaderMS
 	@Override
 	protected void onClose() {
 
-		// TODO things to do when closing the view
 	}
 
 	/**
@@ -67,6 +64,5 @@ public class ChromatogramReaderMSDNodeView extends NodeView<ChromatogramReaderMS
 	@Override
 	protected void onOpen() {
 
-		// TODO things to do when opening the view
 	}
 }

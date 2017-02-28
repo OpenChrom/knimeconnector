@@ -7,9 +7,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * Lorenz Gerber - initial API and implementation
+ * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
+package net.openchrom.xxd.process.supplier.knime.ui.internal.runnables;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -20,16 +20,16 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 
-public class ChromatogramReaderMSDRunnable implements IRunnableWithProgress {
+public class ImportChromatogramMSDRunnable implements IRunnableWithProgress {
 
 	private String pathChromatogram;
 	private IChromatogramMSD chromatogramMSD;
 
-	public ChromatogramReaderMSDRunnable(String pathChromatogram) {
+	public ImportChromatogramMSDRunnable(String pathChromatogram) {
 		this.pathChromatogram = pathChromatogram;
 	}
 
-	public IChromatogramMSD getChromatogram() {
+	public IChromatogramMSD getChromatogramMSD() {
 
 		return chromatogramMSD;
 	}
@@ -37,8 +37,8 @@ public class ChromatogramReaderMSDRunnable implements IRunnableWithProgress {
 	@Override
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
-		File chromatogramImportFile = new File(pathChromatogram);
-		IChromatogramMSDImportConverterProcessingInfo processingInfoImport = ChromatogramConverterMSD.convert(chromatogramImportFile, monitor);
-		// chromatogramMSD = processingInfoImport.getChromatogram();
+		File file = new File(pathChromatogram);
+		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, monitor);
+		chromatogramMSD = processingInfo.getChromatogram();
 	}
 }
