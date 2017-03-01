@@ -17,6 +17,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
+import javax.swing.JFileChooser;
+
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 
@@ -25,8 +27,7 @@ public class ChromatogramWriterMSDNodeDialog extends DefaultNodeSettingsPane {
 	protected ChromatogramWriterMSDNodeDialog() {
 		super();
 		//
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramWriterMSDNodeModel.SETTING_CHROMATOGRAM_FILE_OUTPUT, "", ChromatogramWriterMSDNodeModel.EXPORT_FILE_EXTENSION);
-		dialogComponentFileChooser.setDialogTypeSaveWithExtension(ChromatogramWriterMSDNodeModel.EXPORT_FILE_EXTENSION);
+		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramWriterMSDNodeModel.SETTING_CHROMATOGRAM_FILE_OUTPUT, "", JFileChooser.SAVE_DIALOG, ChromatogramWriterMSDNodeModel.EXPORT_FILE_EXTENSION);
 		addDialogComponent(dialogComponentFileChooser);
 	}
 }

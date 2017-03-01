@@ -157,7 +157,7 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
 
-		return new DataTableSpec[]{null};
+		return null;
 	}
 
 	/**
