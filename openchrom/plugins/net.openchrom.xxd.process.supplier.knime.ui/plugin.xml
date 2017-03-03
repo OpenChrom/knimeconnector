@@ -4,7 +4,6 @@
       <page category="org.eclipse.chemclipse.chromatogram.msd.process.ui.preferences.processPreferencePage" class="net.openchrom.xxd.process.supplier.knime.ui.preferences.PreferencePage" id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.preferences.preferencePage" name="KNIME Integration">
       </page>
    </extension>
-
    <extension point="org.knime.workbench.repository.categories">
       <category description="OpenChrom I/O and visualization nodes." icon="icons/openchrom.png" level-id="openchrom" name="OpenChrom" path="/"/>
       <category description="Data input and output of various file formats." icon="icons/io.png" level-id="io" name="I/O" path="/openchrom"/>
