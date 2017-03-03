@@ -34,8 +34,9 @@ public class XYSeriesViewNodeView extends AbstractNodeView<XYSeriesViewNodeModel
 
 	@Override
 	protected void callOpenView(String title) {
-
 		// active the graph view containing (using the swt-graph library)
+		double[] xSeries = getNodeModel().getXSeries(0);
+		double[] ySeries = getNodeModel().getYSeries(0);
 	}
 
 	@Override
