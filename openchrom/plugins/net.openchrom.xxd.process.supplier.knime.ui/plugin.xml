@@ -16,7 +16,14 @@
       <category description="Mass Selective Detector (MSD)." icon="icons/msd.png" level-id="msd" name="MSD" path="/openchrom/da"/>
       <category description="Current Selective Detector (CSD)." icon="icons/csd.png" level-id="csd" name="CSD" path="/openchrom/da"/>
       <category description="Wavelength Selective Detector (WSD)." icon="icons/wsd.png" level-id="wsd" name="WSD" path="/openchrom/da"/>
-      <category description="Nuclear Magnetic Resonance (NMR)." icon="icons/nmr.png" level-id="nmr" name="NMR" path="/openchrom/da"/>                
+      <category description="Nuclear Magnetic Resonance (NMR)." icon="icons/nmr.png" level-id="nmr" name="NMR" path="/openchrom/da"/>
+      <category
+            icon="icons/missing.gif"
+            level-id="sandbox"
+            locked="true"
+            name="Sandbox"
+            path="/openchrom">
+      </category>                
                                                       
    </extension>
    <extension point="org.knime.workbench.repository.nodes">
@@ -37,6 +44,26 @@
       <node category-path="/openchrom/da/nmr" factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.nmr.MeasurementGetterNMRNodeFactory" id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.nmr.ChromatogramGetterNMRNodeFactory"/>
       <node category-path="/openchrom/da/nmr" factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.nmr.MeasurementSetterNMRNodeFactory" id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.nmr.ChromatogramSetterNMRNodeFactory"/>                                                  
       <node category-path="/openchrom/visualization" factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.chromatogram.ChromatogramNodeFactory" id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.viz.chromatogram.ChromatogramVizNodeFactory"/>
-      <node category-path="/openchrom/visualization" factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.massspectrum.MassSpectrumNodeFactory" id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.viz.massspectrum.MassSpectrumVizNodeFactory"/>            
+      <node category-path="/openchrom/visualization" factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.massspectrum.MassSpectrumNodeFactory" id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.viz.massspectrum.MassSpectrumVizNodeFactory"/>
+      <node
+            category-path="/openchrom/sandbox"
+            deprecated="false"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.sandbox.viz.XYSeriesViewNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/sandbox"
+            deprecated="false"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.NodeFactory:3">
+      </node>
+      <node
+            category-path="/openchrom/sandbox"
+            deprecated="false"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.sandbox.process.fft.FFTNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/sandbox"
+            deprecated="false"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.sandbox.io.fid.FIDReaderNodeFactory">
+      </node>            
 </extension>   
 </plugin>
