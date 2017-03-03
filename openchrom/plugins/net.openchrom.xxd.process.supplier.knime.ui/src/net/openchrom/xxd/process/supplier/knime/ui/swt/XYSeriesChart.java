@@ -53,8 +53,8 @@ public class XYSeriesChart extends LineChart implements IXYSeriesListener {
 		chartSettings.setOrientation(SWT.HORIZONTAL);
 		chartSettings.setHorizontalSliderVisible(true);
 		chartSettings.setVerticalSliderVisible(true);
-		chartSettings.setUseZeroX(true);
-		chartSettings.setUseZeroY(true);
+		chartSettings.setUseZeroX(false);
+		chartSettings.setUseZeroY(false);
 		applySettings(chartSettings);
 		//
 		IPrimaryAxisSettings primaryAxisSettingsX = chartSettings.getPrimaryAxisSettingsX();
