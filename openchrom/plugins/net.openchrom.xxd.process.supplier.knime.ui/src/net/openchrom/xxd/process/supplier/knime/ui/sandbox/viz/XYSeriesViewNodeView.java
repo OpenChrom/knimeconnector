@@ -19,6 +19,8 @@ package net.openchrom.xxd.process.supplier.knime.ui.sandbox.viz;
 
 import org.knime.core.node.AbstractNodeView;
 
+import net.openchrom.xxd.process.supplier.knime.notifier.XYSeriesNotifier;
+
 /**
  * TODO possibly embed the swt-view into a swing/awt frame (couldn't make that
  * work so far - see e.g.
@@ -38,6 +40,8 @@ public class XYSeriesViewNodeView extends AbstractNodeView<XYSeriesViewNodeModel
 		// active the graph view containing (using the swt-graph library)
 		double[] xSeries = getNodeModel().getXSeries(0);
 		double[] ySeries = getNodeModel().getYSeries(0);
+		//
+		XYSeriesNotifier.fireUpdateChange(ySeries, "FFT");
 	}
 
 	@Override

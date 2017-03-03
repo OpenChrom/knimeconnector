@@ -1,10 +1,16 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * This library is free
+ * software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation;
+ * either version 3 of the License, or (at your option) any later version.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details. You should have received a copy of the GNU General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  * 
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
@@ -30,7 +36,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 
-public class XYSeriesChart extends LineChart {
+import net.openchrom.xxd.process.supplier.knime.notifier.IXYSeriesListener;
+
+public class XYSeriesChart extends LineChart implements IXYSeriesListener {
 
 	private static Color COLOR_BLACK = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
 	private static DecimalFormat decimalFormatScientific = new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH));
@@ -60,12 +68,13 @@ public class XYSeriesChart extends LineChart {
 		primaryAxisSettingsY.setColor(COLOR_BLACK);
 		//
 		applySettings(chartSettings);
-		/*
-		 * Create series.
-		 */
+	}
+
+	@Override
+	public void update(double[] ySeries, String id) {
+
 		List<ILineSeriesData> lineSeriesDataList = new ArrayList<ILineSeriesData>();
-		double[] ySeries = new double[]{20, 30, 40, 35, 20, 20, 20, 10, 5};
-		ISeriesData seriesData = new SeriesData(ySeries, "FFT");
+		ISeriesData seriesData = new SeriesData(ySeries, id);
 		//
 		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
 		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();

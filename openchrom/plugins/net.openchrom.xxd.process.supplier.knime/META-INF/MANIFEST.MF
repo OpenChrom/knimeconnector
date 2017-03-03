@@ -12,12 +12,16 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.processing;bundle-version="0.8.0",
  org.eclipse.chemclipse.converter;bundle-version="0.8.0",
  org.eclipse.chemclipse.model;bundle-version="0.8.0",
- org.eclipse.chemclipse.support;bundle-version="0.8.0"
+ org.eclipse.chemclipse.support;bundle-version="0.8.0",
+ org.eclipse.e4.core.services;bundle-version="2.0.100",
+ org.eclipse.e4.core.contexts;bundle-version="1.5.0",
+ org.eclipse.e4.core.di;bundle-version="1.6.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: libraries/stax2-api-3.0.1.jar,
  .
-Export-Package: org.codehaus.stax2,
+Export-Package: net.openchrom.xxd.process.supplier.knime.notifier,
+ org.codehaus.stax2,
  org.codehaus.stax2.evt,
  org.codehaus.stax2.io,
  org.codehaus.stax2.osgi,
@@ -28,3 +32,4 @@ Export-Package: org.codehaus.stax2,
  org.codehaus.stax2.typed,
  org.codehaus.stax2.util,
  org.codehaus.stax2.validation
+Import-Package: javax.annotation;version="1.2.0"
