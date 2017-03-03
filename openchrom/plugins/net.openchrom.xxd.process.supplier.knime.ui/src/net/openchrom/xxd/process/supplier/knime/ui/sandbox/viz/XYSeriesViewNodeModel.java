@@ -57,25 +57,25 @@ public class XYSeriesViewNodeModel extends NodeModel implements BufferedDataTabl
 
 	@Override
 	protected DataTableSpec[] configure(DataTableSpec[] inSpecs) throws InvalidSettingsException {
+
 		// TODO
 		return null;
 	}
 
 	@Override
 	protected BufferedDataTable[] execute(BufferedDataTable[] inData, ExecutionContext exec) throws Exception {
+
 		m_inTable = inData[0];
 		return null;
 	}
 
 	@Override
-	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
+	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
 	}
 
 	@Override
-	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
+	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
 	}
 
@@ -95,6 +95,7 @@ public class XYSeriesViewNodeModel extends NodeModel implements BufferedDataTabl
 
 	@Override
 	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
+
 		m_xVectorColumn.loadSettingsFrom(settings);
 		m_yVectorColumn.loadSettingsFrom(settings);
 	}
@@ -109,6 +110,7 @@ public class XYSeriesViewNodeModel extends NodeModel implements BufferedDataTabl
 	 * @return <code>null</code> if no data is available
 	 */
 	public double[] getXSeries(int idx) {
+
 		return getSeries(m_xVectorColumn.getStringValue(), idx);
 	}
 
@@ -117,39 +119,43 @@ public class XYSeriesViewNodeModel extends NodeModel implements BufferedDataTabl
 	 * @return <code>null</code> if no data is available
 	 */
 	public double[] getYSeries(int idx) {
+
 		return getSeries(m_yVectorColumn.getStringValue(), idx);
 	}
 
 	private double[] getSeries(String columnName, int idx) {
+
 		// TODO cache series
-		if (m_inTable == null || columnName.length() == 0) {
+		if(m_inTable == null || columnName.length() == 0) {
 			return null;
 		}
 		CloseableRowIterator iterator = m_inTable.iterator();
 		DataRow row = null;
-		for (int i = 0; i <= idx; i++) {
+		for(int i = 0; i <= idx; i++) {
 			row = iterator.next();
 		}
-		DoubleVectorValue vecVal = (DoubleVectorValue) row
-				.getCell(m_inTable.getDataTableSpec().findColumnIndex(columnName));
+		DoubleVectorValue vecVal = (DoubleVectorValue)row.getCell(m_inTable.getDataTableSpec().findColumnIndex(columnName));
 		double[] vec = new double[vecVal.getLength()];
-		for (int i = 0; i < vec.length; i++) {
+		for(int i = 0; i < vec.length; i++) {
 			vec[i] = vecVal.getValue(i);
 		}
 		return vec;
 	}
 
 	public long getNumSeries() {
+
 		return m_inTable.size();
 	}
 
 	@Override
 	public BufferedDataTable[] getInternalTables() {
-		return new BufferedDataTable[] { m_inTable };
+
+		return new BufferedDataTable[]{m_inTable};
 	}
 
 	@Override
 	public void setInternalTables(BufferedDataTable[] tables) {
+
 		m_inTable = tables[0];
 	}
 }

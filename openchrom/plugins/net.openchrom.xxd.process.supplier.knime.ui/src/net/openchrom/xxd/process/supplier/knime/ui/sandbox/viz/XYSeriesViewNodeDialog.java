@@ -24,10 +24,8 @@ import org.knime.core.node.defaultnodesettings.DialogComponentColumnNameSelectio
 public class XYSeriesViewNodeDialog extends DefaultNodeSettingsPane {
 
 	public XYSeriesViewNodeDialog() {
-		DialogComponentColumnNameSelection xVectorDC = new DialogComponentColumnNameSelection(
-				XYSeriesViewNodeModel.createXVectorColumnModel(), "X Vector", 0, false, true, DoubleVectorValue.class);
-		DialogComponentColumnNameSelection yVectorDC = new DialogComponentColumnNameSelection(
-				XYSeriesViewNodeModel.createYVectorColumnModel(), "Y Vector", 0, DoubleVectorValue.class);
+		DialogComponentColumnNameSelection xVectorDC = new DialogComponentColumnNameSelection(XYSeriesViewNodeModel.createXVectorColumnModel(), "X Vector", 0, false, true, DoubleVectorValue.class);
+		DialogComponentColumnNameSelection yVectorDC = new DialogComponentColumnNameSelection(XYSeriesViewNodeModel.createYVectorColumnModel(), "Y Vector", 0, DoubleVectorValue.class);
 		addDialogComponent(xVectorDC);
 		addDialogComponent(yVectorDC);
 	}

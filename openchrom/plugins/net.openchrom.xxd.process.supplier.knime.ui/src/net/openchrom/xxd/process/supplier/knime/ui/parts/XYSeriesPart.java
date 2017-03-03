@@ -17,20 +17,20 @@ import javax.inject.Inject;
 
 import org.eclipse.e4.ui.di.Focus;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+
+import net.openchrom.xxd.process.supplier.knime.ui.swt.XYSeriesChart;
 
 public class XYSeriesPart {
 
 	@Inject
 	private Composite composite;
-	private Button button;
+	private XYSeriesChart xySeriesChart;
 
 	@PostConstruct
 	public void postConstruct() {
 
-		button = new Button(composite, SWT.PUSH);
-		button.setText("Hello Martin");
+		xySeriesChart = new XYSeriesChart(composite, SWT.BORDER);
 	}
 
 	@PreDestroy
@@ -41,6 +41,6 @@ public class XYSeriesPart {
 	@Focus
 	public void setFocus() {
 
-		button.setFocus();
+		xySeriesChart.setFocus();
 	}
 }
