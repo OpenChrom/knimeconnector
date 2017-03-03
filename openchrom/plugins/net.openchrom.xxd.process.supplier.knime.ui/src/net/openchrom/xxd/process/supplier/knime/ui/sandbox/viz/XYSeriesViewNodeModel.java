@@ -126,7 +126,7 @@ public class XYSeriesViewNodeModel extends NodeModel implements BufferedDataTabl
 	private double[] getSeries(String columnName, int idx) {
 
 		// TODO cache series
-		if(m_inTable == null || columnName.length() == 0) {
+		if(m_inTable == null || columnName == null || columnName.length() == 0) {
 			return null;
 		}
 		CloseableRowIterator iterator = m_inTable.iterator();
