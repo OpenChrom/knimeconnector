@@ -294,10 +294,6 @@ USA
          id="org.knime.features.mongodb"
          version="0.0.0"/>
 
-   <includes
-         id="org.knime.features.ext.xulrunner"
-         version="0.0.0"/>
-
    <plugin
          id="net.openchrom.xxd.process.supplier.knime"
          download-size="0"
