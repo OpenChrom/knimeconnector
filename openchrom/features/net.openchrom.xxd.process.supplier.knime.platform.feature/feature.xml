@@ -67,10 +67,6 @@ USA
          version="0.0.0"/>
 
    <includes
-         id="org.knime.product.desktop"
-         version="0.0.0"/>
-
-   <includes
          id="com.knime.features.reporting.designer"
          version="0.0.0"/>
 
