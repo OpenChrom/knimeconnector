@@ -141,6 +141,10 @@ USA
    <includes
          id="org.knime.features.ext.jython"
          version="0.0.0"/>
+         
+   <includes
+         id="org.knime.features.python"
+         version="0.0.0"/>         
 
    <includes
          id="org.knime.features.ext.libsvm"
@@ -244,10 +248,6 @@ USA
 
    <includes
          id="org.knime.features.optimization"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.python"
          version="0.0.0"/>
 
    <includes
