@@ -54,7 +54,8 @@
     <module>../../features/net.openchrom.xxd.process.supplier.knime.platform.feature</module>   
     <module>../../features/net.openchrom.xxd.process.supplier.knime.feature</module> 
     <!--<module>../../plugins/net.openchrom.xxd.process.supplier.knime.fragment.test</module>-->
-	<module>../../sites/net.openchrom.xxd.process.supplier.knime.platform.updateSite</module>
+    <!-- Problems to resolve bundles??? Why, it worked before without problems. -->
+	<!--<module>../../sites/net.openchrom.xxd.process.supplier.knime.platform.updateSite</module>-->
     <module>../../sites/net.openchrom.xxd.process.supplier.knime.updateSite</module>
   </modules>
 </project>
