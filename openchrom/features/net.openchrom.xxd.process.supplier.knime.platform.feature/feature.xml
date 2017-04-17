@@ -107,10 +107,6 @@ USA
          version="0.0.0"/>
 
    <includes
-         id="org.knime.features.dbdrivers"
-         version="0.0.0"/>
-
-   <includes
          id="org.knime.features.distmatrix"
          version="0.0.0"/>
 
@@ -1141,11 +1137,5 @@ USA
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.knime.bigdata.vertica"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
 </feature>
