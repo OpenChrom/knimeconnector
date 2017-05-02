@@ -53,7 +53,7 @@ USA
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.chemclipse.ui.service.swt"
+         id="org.eclipse.eavp.service.swtchart"
          download-size="0"
          install-size="0"
          version="0.0.0"
