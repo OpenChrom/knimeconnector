@@ -47,6 +47,13 @@
             path="/openchrom">
       </category>
       <category
+            level-id="filter"
+            name="Filter"
+            icon="icons/io.png"
+            description="Filter"
+            path="/openchrom">
+      </category>      
+      <category
             level-id="msd"
             name="MSD"
             icon="icons/msd.png"
@@ -226,5 +233,5 @@
       <node category-path="/openchrom/sandbox" deprecated="false" factory-class="net.openchrom.xxd.process.supplier.knime.ui.sandbox.process.fft.FFTNodeFactory"/>
       <node category-path="/openchrom/sandbox" deprecated="false" factory-class="net.openchrom.xxd.process.supplier.knime.ui.sandbox.io.fid.FIDReaderNodeFactory">
       </node>            
-</extension>   
+  </extension>   
 </plugin>

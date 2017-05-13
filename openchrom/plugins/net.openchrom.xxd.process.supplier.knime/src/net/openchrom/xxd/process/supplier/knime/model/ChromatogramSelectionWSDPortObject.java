@@ -15,13 +15,13 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
+package net.openchrom.xxd.process.supplier.knime.model;
 
 import java.io.IOException;
 
 import javax.swing.JComponent;
 
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.port.AbstractPortObject;
@@ -29,18 +29,23 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortObjectZipInputStream;
 import org.knime.core.node.port.PortObjectZipOutputStream;
 
-public class ChromatogramPortObject extends AbstractPortObject {
+public class ChromatogramSelectionWSDPortObject extends AbstractPortObject {
 
-	private IChromatogramMSD chromatogramMSD;
+	private IChromatogramSelectionWSD chromatogramSelectionWSD;
 
-	public ChromatogramPortObject(IChromatogramMSD chromatogramMSD) {
-		this.chromatogramMSD = chromatogramMSD;
+	public ChromatogramSelectionWSDPortObject(IChromatogramSelectionWSD chromatogramSelectionWSD) {
+		this.chromatogramSelectionWSD = chromatogramSelectionWSD;
+	}
+
+	public IChromatogramSelectionWSD getChromatogramSelectionWSD() {
+
+		return chromatogramSelectionWSD;
 	}
 
 	@Override
 	public String getSummary() {
 
-		return "Chromaotgram MSD";
+		return "Chromaotgram Selection (WSD)";
 	}
 
 	@Override

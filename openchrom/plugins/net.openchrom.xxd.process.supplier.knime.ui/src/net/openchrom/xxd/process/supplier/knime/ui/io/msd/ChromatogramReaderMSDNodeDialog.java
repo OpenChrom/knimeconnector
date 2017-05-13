@@ -25,7 +25,6 @@ import org.eclipse.chemclipse.converter.chromatogram.ChromatogramConverterSuppor
 import org.eclipse.chemclipse.converter.core.ISupplier;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 
 public class ChromatogramReaderMSDNodeDialog extends DefaultNodeSettingsPane {
@@ -51,7 +50,5 @@ public class ChromatogramReaderMSDNodeDialog extends DefaultNodeSettingsPane {
 		//
 		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_FILE_INPUT, "", validExtensions);
 		addDialogComponent(dialogComponentFileChooser);
-		DialogComponentBoolean dialogComponentBoolean = new DialogComponentBoolean(ChromatogramReaderMSDNodeModel.SETTING_CHROMATOGRAM_IMPORT_TIC, "Import TIC");
-		addDialogComponent(dialogComponentBoolean);
 	}
 }
