@@ -15,21 +15,21 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.core;
+package net.openchrom.xxd.process.supplier.knime.ui.manipulator;
 
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
-public class ChromatogramFilterNodeFactory extends NodeFactory<ChromatogramFilterNodeModel> {
+public class ChromatogramSelectionModifierNodeFactory extends NodeFactory<ChromatogramSelectionModifierNodeModel> {
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ChromatogramFilterNodeModel createNodeModel() {
+	public ChromatogramSelectionModifierNodeModel createNodeModel() {
 
-		return new ChromatogramFilterNodeModel();
+		return new ChromatogramSelectionModifierNodeModel();
 	}
 
 	/**
@@ -45,9 +45,9 @@ public class ChromatogramFilterNodeFactory extends NodeFactory<ChromatogramFilte
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NodeView<ChromatogramFilterNodeModel> createNodeView(final int viewIndex, final ChromatogramFilterNodeModel nodeModel) {
+	public NodeView<ChromatogramSelectionModifierNodeModel> createNodeView(final int viewIndex, final ChromatogramSelectionModifierNodeModel nodeModel) {
 
-		return new ChromatogramFilterNodeView(nodeModel);
+		return new ChromatogramSelectionModifierNodeView(nodeModel);
 	}
 
 	/**
@@ -65,6 +65,6 @@ public class ChromatogramFilterNodeFactory extends NodeFactory<ChromatogramFilte
 	@Override
 	public NodeDialogPane createNodeDialogPane() {
 
-		return new ChromatogramFilterNodeDialog();
+		return new ChromatogramSelectionModifierNodeDialog();
 	}
 }

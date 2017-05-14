@@ -60,11 +60,10 @@ USA
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.fragment.knime"
+         id="org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.knime"
          download-size="0"
          install-size="0"
          version="0.0.0"
-         fragment="true"
          unpack="false"/>
 
 </feature>

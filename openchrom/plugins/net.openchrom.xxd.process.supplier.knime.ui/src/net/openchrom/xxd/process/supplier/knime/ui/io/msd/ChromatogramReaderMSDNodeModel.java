@@ -20,8 +20,6 @@ package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.model.selection.ChromatogramSelection;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -43,7 +41,6 @@ import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObject;
 
 public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
@@ -53,7 +50,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_INPUT = new SettingsModelString(CHROMATOGRAM_FILE_INPUT, "");
 
 	protected ChromatogramReaderMSDNodeModel() {
-		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class), PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
+		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
 	}
 
 	@Override
@@ -62,11 +59,9 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		logger.info("Read the chromatographic raw data.");
 		//
 		IChromatogramMSD chromatogramMSD = loadChromatogram(SETTING_CHROMATOGRAM_FILE_INPUT.getStringValue());
-		IChromatogramSelection chromatogramSelection = new ChromatogramSelection(chromatogramMSD);
 		IChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
-		PortObject portObjectSelection = new ChromatogramSelectionPortObject(chromatogramSelection);
 		PortObject portObjectSelectionMSD = new ChromatogramSelectionMSDPortObject(chromatogramSelectionMSD);
-		return new PortObject[]{portObjectSelection, portObjectSelectionMSD};
+		return new PortObject[]{portObjectSelectionMSD};
 	}
 
 	/**

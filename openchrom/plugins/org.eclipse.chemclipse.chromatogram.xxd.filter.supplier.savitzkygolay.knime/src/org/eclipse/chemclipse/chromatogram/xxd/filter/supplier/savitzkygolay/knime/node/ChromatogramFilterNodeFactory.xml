@@ -6,7 +6,9 @@
     </shortDescription>
     <fullDescription>
         <intro>This node allows to process chromatograms via a SG filter..</intro>
-        <option name="Import TIC">If this option is selected, the TIC (Total Ion Chromatogram) is imported instead of all m/z values.</option>
+        <option name="Derivative">Derivative</option>
+        <option name="Order">Order</option>
+        <option name="Width">Width</option>
     </fullDescription>
     <ports>
         <outPort index="0" name="Chromatogram Selection">Chromatogram Selection</outPort>

@@ -15,24 +15,45 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.xxd.process.supplier.knime.ui.manipulator;
 
-import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.knime.core.node.NodeView;
 
-public class ChromatogramSelectionWSDPortObject extends ChromatogramSelectionPortObject {
+public class ChromatogramSelectionModifierNodeView extends NodeView<ChromatogramSelectionModifierNodeModel> {
 
-	public ChromatogramSelectionWSDPortObject(IChromatogramSelectionWSD chromatogramSelectionWSD) {
-		super(chromatogramSelectionWSD);
+	/**
+	 * Creates a new view.
+	 * 
+	 * @param nodeModel
+	 *            The model (class: {@link ChromatogramSelectionModifierNodeModel})
+	 */
+	protected ChromatogramSelectionModifierNodeView(final ChromatogramSelectionModifierNodeModel nodeModel) {
+		super(nodeModel);
 	}
 
-	public IChromatogramSelectionWSD getChromatogramSelectionWSD() {
-
-		return (IChromatogramSelectionWSD)getChromatogramSelectionWSD();
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String getSummary() {
+	protected void modelChanged() {
 
-		return "Chromaotgram Selection (WSD)";
+		ChromatogramSelectionModifierNodeModel nodeModel = (ChromatogramSelectionModifierNodeModel)getNodeModel();
+		assert nodeModel != null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onClose() {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onOpen() {
+
 	}
 }

@@ -15,24 +15,56 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.knime.node;
 
-import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.knime.core.node.NodeDialogPane;
+import org.knime.core.node.NodeFactory;
+import org.knime.core.node.NodeView;
 
-public class ChromatogramSelectionWSDPortObject extends ChromatogramSelectionPortObject {
+public class ChromatogramFilterNodeFactory extends NodeFactory<ChromatogramFilterNodeModel> {
 
-	public ChromatogramSelectionWSDPortObject(IChromatogramSelectionWSD chromatogramSelectionWSD) {
-		super(chromatogramSelectionWSD);
-	}
-
-	public IChromatogramSelectionWSD getChromatogramSelectionWSD() {
-
-		return (IChromatogramSelectionWSD)getChromatogramSelectionWSD();
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public String getSummary() {
+	public ChromatogramFilterNodeModel createNodeModel() {
 
-		return "Chromaotgram Selection (WSD)";
+		return new ChromatogramFilterNodeModel();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getNrNodeViews() {
+
+		return 1;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public NodeView<ChromatogramFilterNodeModel> createNodeView(final int viewIndex, final ChromatogramFilterNodeModel nodeModel) {
+
+		return new ChromatogramFilterNodeView(nodeModel);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasDialog() {
+
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public NodeDialogPane createNodeDialogPane() {
+
+		return new ChromatogramFilterNodeDialog();
 	}
 }

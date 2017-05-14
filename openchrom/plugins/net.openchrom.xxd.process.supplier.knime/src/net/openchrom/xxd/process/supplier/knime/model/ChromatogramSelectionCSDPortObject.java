@@ -17,63 +17,22 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
-import java.io.IOException;
-
-import javax.swing.JComponent;
-
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
-import org.knime.core.node.CanceledExecutionException;
-import org.knime.core.node.ExecutionMonitor;
-import org.knime.core.node.port.AbstractPortObject;
-import org.knime.core.node.port.PortObjectSpec;
-import org.knime.core.node.port.PortObjectZipInputStream;
-import org.knime.core.node.port.PortObjectZipOutputStream;
 
-public class ChromatogramSelectionCSDPortObject extends AbstractPortObject {
-
-	private IChromatogramSelectionCSD chromatogramSelectionCSD;
+public class ChromatogramSelectionCSDPortObject extends ChromatogramSelectionPortObject {
 
 	public ChromatogramSelectionCSDPortObject(IChromatogramSelectionCSD chromatogramSelectionCSD) {
-		this.chromatogramSelectionCSD = chromatogramSelectionCSD;
+		super(chromatogramSelectionCSD);
 	}
 
 	public IChromatogramSelectionCSD getChromatogramSelectionCSD() {
 
-		return chromatogramSelectionCSD;
+		return (IChromatogramSelectionCSD)getChromatogramSelection();
 	}
 
 	@Override
 	public String getSummary() {
 
 		return "Chromaotgram Selection (CSD)";
-	}
-
-	@Override
-	public PortObjectSpec getSpec() {
-
-		return new PortObjectSpec() {
-
-			@Override
-			public JComponent[] getViews() {
-
-				return null;
-			}
-		};
-	}
-
-	@Override
-	public JComponent[] getViews() {
-
-		return null;
-	}
-
-	@Override
-	protected void save(PortObjectZipOutputStream out, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
-	}
-
-	@Override
-	protected void load(PortObjectZipInputStream in, PortObjectSpec spec, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
 	}
 }

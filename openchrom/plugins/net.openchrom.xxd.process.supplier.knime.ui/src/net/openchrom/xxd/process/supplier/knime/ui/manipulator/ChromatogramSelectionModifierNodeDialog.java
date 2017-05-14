@@ -15,24 +15,20 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.xxd.process.supplier.knime.ui.manipulator;
 
-import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
 
-public class ChromatogramSelectionWSDPortObject extends ChromatogramSelectionPortObject {
+public class ChromatogramSelectionModifierNodeDialog extends DefaultNodeSettingsPane {
 
-	public ChromatogramSelectionWSDPortObject(IChromatogramSelectionWSD chromatogramSelectionWSD) {
-		super(chromatogramSelectionWSD);
-	}
-
-	public IChromatogramSelectionWSD getChromatogramSelectionWSD() {
-
-		return (IChromatogramSelectionWSD)getChromatogramSelectionWSD();
-	}
-
-	@Override
-	public String getSummary() {
-
-		return "Chromaotgram Selection (WSD)";
+	protected ChromatogramSelectionModifierNodeDialog() {
+		super();
+		//
+		DialogComponentNumber dialogComponentStartRT = new DialogComponentNumber(ChromatogramSelectionModifierNodeModel.SETTING_START_RETENTION_TIME, "Start Retention Time (Minutes)", 0.0d);
+		addDialogComponent(dialogComponentStartRT);
+		//
+		DialogComponentNumber dialogComponentStopRT = new DialogComponentNumber(ChromatogramSelectionModifierNodeModel.SETTING_STOP_RETENTION_TIME, "Stop Retention Time (Minutes)", 0.0d);
+		addDialogComponent(dialogComponentStopRT);
 	}
 }

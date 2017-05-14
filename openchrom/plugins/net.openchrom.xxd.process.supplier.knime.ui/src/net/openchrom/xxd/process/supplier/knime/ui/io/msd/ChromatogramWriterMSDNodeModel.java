@@ -19,15 +19,10 @@ package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.knime.core.data.DataRow;
-import org.knime.core.data.DataTableSpec;
-import org.knime.core.data.container.CloseableRowIterator;
-import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -37,12 +32,13 @@ import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
+import org.knime.core.node.port.PortObject;
+import org.knime.core.node.port.PortObjectSpec;
+import org.knime.core.node.port.PortType;
+import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.xxd.process.supplier.knime.ui.model.msd.IVendorChromatogramMSD;
-import net.openchrom.xxd.process.supplier.knime.ui.model.msd.IVendorScanMSD;
-import net.openchrom.xxd.process.supplier.knime.ui.model.msd.VendorChromatogramMSD;
-import net.openchrom.xxd.process.supplier.knime.ui.model.msd.VendorIon;
-import net.openchrom.xxd.process.supplier.knime.ui.model.msd.VendorScanMSD;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 
 /**
  * This is the model implementation of ChromatogramWriterMSD.
@@ -59,88 +55,27 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	 */
 	protected static final String EXPORT_FILE_EXTENSION = ".ocb";
 	private static final String EXPORT_CONVERTER_ID = "org.eclipse.chemclipse.xxd.converter.supplier.chemclipse";
-	private static final double DEFAULT_MZ = 18.0d;
 
 	/**
 	 * Constructor for the node model.
 	 */
 	protected ChromatogramWriterMSDNodeModel() {
-		super(1, 0);
+		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{});
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception {
+	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
 		logger.info("Read the chromatographic raw data.");
-		/*
-		 * Write the chromatogram.
-		 */
-		if(inData.length > 0) {
-			/*
-			 * Export *.ocb file.
-			 */
+		//
+		ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
+		if(chromatogramSelectionMSDPortObject != null) {
 			File file = new File(SETTING_CHROMATOGRAM_FILE_OUTPUT.getStringValue());
-			IVendorChromatogramMSD chromatogramMSD = new VendorChromatogramMSD();
-			//
-			BufferedDataTable bufferedDataTable = inData[0];
-			DataTableSpec dataTableSpec = bufferedDataTable.getSpec();
-			Map<Integer, Double> mzTable = new HashMap<Integer, Double>();
-			//
-			CloseableRowIterator iterator = bufferedDataTable.iterator();
-			int scan = 1;
-			int scanCount = getNumberOfRows(bufferedDataTable);
-			//
-			while(iterator.hasNext()) {
-				DataRow dataRow = iterator.next();
-				//
-				IVendorScanMSD vendorScanMSD = new VendorScanMSD();
-				vendorScanMSD.setRetentionTime(Integer.parseInt(dataRow.getCell(0).toString()));
-				vendorScanMSD.setRetentionIndex(Float.parseFloat(dataRow.getCell(1).toString()));
-				//
-				int numberOfCells = dataRow.getNumCells();
-				if(numberOfCells == 3) {
-					/*
-					 * TIC
-					 */
-					vendorScanMSD.addIon(new VendorIon(DEFAULT_MZ, Float.parseFloat(dataRow.getCell(2).toString())));
-				} else {
-					/*
-					 * XIC
-					 */
-					for(int i = 2; i < numberOfCells; i++) {
-						float abundance = Float.parseFloat(dataRow.getCell(i).toString());
-						if(abundance > 0) {
-							double mz;
-							if(mzTable.containsKey(i)) {
-								mz = mzTable.get(i);
-							} else {
-								mz = Double.parseDouble(dataTableSpec.getColumnSpec(i).getName().toString());
-								mzTable.put(i, mz);
-							}
-							/*
-							 * Add the ion.
-							 */
-							if(mz > 0) {
-								vendorScanMSD.addIon(new VendorIon(mz, abundance));
-							}
-						}
-					}
-				}
-				chromatogramMSD.addScan(vendorScanMSD);
-				//
-				exec.checkCanceled();
-				exec.setProgress(scan / scanCount, "Exporting Scan: " + scan);
-				scan++;
-			}
-			/*
-			 * Write the chromatogram.
-			 */
+			IChromatogramMSD chromatogramMSD = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD().getChromatogramMSD();
 			ChromatogramConverterMSD.convert(file, chromatogramMSD, EXPORT_CONVERTER_ID, new NullProgressMonitor());
 		}
-		return null;
+		//
+		return new PortObject[]{};
 	}
 
 	/**
@@ -151,11 +86,8 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
+	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
 
 		return null;
 	}
@@ -201,16 +133,5 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void saveInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-	}
-
-	private int getNumberOfRows(BufferedDataTable bufferedDataTable) {
-
-		int counter = 0;
-		CloseableRowIterator iterator = bufferedDataTable.iterator();
-		while(iterator.hasNext()) {
-			iterator.next();
-			counter++;
-		}
-		return counter;
 	}
 }

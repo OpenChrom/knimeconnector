@@ -54,10 +54,6 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
-import org.knime.core.node.port.PortObject;
-import org.knime.core.node.port.PortObjectSpec;
-import org.knime.core.node.port.PortType;
-import org.knime.core.node.port.PortTypeRegistry;
 
 public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
@@ -73,28 +69,35 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	private static final String TIC = "TIC";
 
 	protected ChromatogramReaderMSDNodeModel() {
-		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramPortObject.class)});
+		super(0, 1);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+	protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception {
 
 		logger.info("Read the chromatographic raw data.");
 		/*
 		 * Get the chromatogram.
 		 */
 		IChromatogramMSD chromatogramMSD = loadChromatogram(SETTING_CHROMATOGRAM_FILE_INPUT.getStringValue());
-		PortObject portObject = null;
+		BufferedDataTable bufferedDataTable = null;
 		if(chromatogramMSD != null) {
-			portObject = new ChromatogramPortObject(chromatogramMSD);
+			if(SETTING_CHROMATOGRAM_IMPORT_TIC.getBooleanValue()) {
+				bufferedDataTable = getBufferedDataTableTIC(chromatogramMSD, exec);
+			} else {
+				bufferedDataTable = getBufferedDataTableXIC(chromatogramMSD, exec);
+			}
 		}
 		/*
 		 * Ready, return the table.
 		 */
-		if(portObject != null) {
-			return new PortObject[]{portObject};
+		if(bufferedDataTable != null) {
+			return new BufferedDataTable[]{bufferedDataTable};
 		} else {
-			return new PortObject[]{};
+			return new BufferedDataTable[]{};
 		}
 	}
 
@@ -106,10 +109,13 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
+	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
 
-		return null;
+		return new DataTableSpec[]{null};
 	}
 
 	/**

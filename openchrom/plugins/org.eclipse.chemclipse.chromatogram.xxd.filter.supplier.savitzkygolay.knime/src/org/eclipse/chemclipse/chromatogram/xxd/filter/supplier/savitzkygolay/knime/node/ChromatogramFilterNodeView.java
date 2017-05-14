@@ -15,7 +15,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.core;
+package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.knime.node;
 
 import org.knime.core.node.NodeView;
 

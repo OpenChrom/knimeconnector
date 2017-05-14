@@ -42,6 +42,11 @@ public class ChromatogramSelectionPortObject extends AbstractPortObject {
 		return chromatogramSelection;
 	}
 
+	protected void setChromatogramSelection(IChromatogramSelection chromatogramSelection) {
+
+		this.chromatogramSelection = chromatogramSelection;
+	}
+
 	@Override
 	public String getSummary() {
 

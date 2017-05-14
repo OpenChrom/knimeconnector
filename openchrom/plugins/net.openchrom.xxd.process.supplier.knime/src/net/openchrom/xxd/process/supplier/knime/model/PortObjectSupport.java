@@ -17,22 +17,27 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
-import org.eclipse.chemclipse.wsd.model.core.selection.IChromatogramSelectionWSD;
+import org.knime.core.node.port.PortObject;
 
-public class ChromatogramSelectionWSDPortObject extends ChromatogramSelectionPortObject {
+public class PortObjectSupport {
 
-	public ChromatogramSelectionWSDPortObject(IChromatogramSelectionWSD chromatogramSelectionWSD) {
-		super(chromatogramSelectionWSD);
+	public static ChromatogramSelectionPortObject getChromatogramSelectionPortObject(PortObject[] inObjects) {
+
+		for(Object object : inObjects) {
+			if(object instanceof ChromatogramSelectionPortObject) {
+				return (ChromatogramSelectionPortObject)object;
+			}
+		}
+		return null;
 	}
 
-	public IChromatogramSelectionWSD getChromatogramSelectionWSD() {
+	public static ChromatogramSelectionMSDPortObject getChromatogramSelectionMSDPortObject(PortObject[] inObjects) {
 
-		return (IChromatogramSelectionWSD)getChromatogramSelectionWSD();
-	}
-
-	@Override
-	public String getSummary() {
-
-		return "Chromaotgram Selection (WSD)";
+		for(Object object : inObjects) {
+			if(object instanceof ChromatogramSelectionMSDPortObject) {
+				return (ChromatogramSelectionMSDPortObject)object;
+			}
+		}
+		return null;
 	}
 }

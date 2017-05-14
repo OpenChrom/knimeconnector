@@ -15,11 +15,12 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.core;
+package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.knime.node;
 
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.core.ChromatogramFilter;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.preferences.PreferenceSupplier;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.settings.ISupplierFilterSettings;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.settings.SupplierFilterSettings;
@@ -42,6 +43,7 @@ import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 
 public class ChromatogramFilterNodeModel extends NodeModel {
 
@@ -49,12 +51,15 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	//
 	private static final String DERIVATIVE = "Derivative";
 	protected static final SettingsModelInteger SETTING_DERIVATIVE = new SettingsModelInteger(DERIVATIVE, PreferenceSupplier.DEF_DERIVATIVE);
+	// protected static final SettingsModelIntegerBounded SETTING_DERIVATIVE = new SettingsModelIntegerBounded(DERIVATIVE, PreferenceSupplier.MIN_DERIVATIVE, PreferenceSupplier.MAX_DERIVATIVE, PreferenceSupplier.DEF_DERIVATIVE);
 	//
 	private static final String ORDER = "Order";
 	protected static final SettingsModelInteger SETTING_ORDER = new SettingsModelInteger(ORDER, PreferenceSupplier.DEF_ORDER);
+	// protected static final SettingsModelIntegerBounded SETTING_ORDER = new SettingsModelIntegerBounded(ORDER, PreferenceSupplier.MIN_ORDER, PreferenceSupplier.MAX_ORDER, PreferenceSupplier.DEF_ORDER);
 	//
 	private static final String WIDTH = "Width";
 	protected static final SettingsModelInteger SETTING_WIDTH = new SettingsModelInteger(WIDTH, PreferenceSupplier.DEF_WIDTH);
+	// protected static final SettingsModelIntegerBounded SETTING_WIDTH = new SettingsModelIntegerBounded(WIDTH, PreferenceSupplier.MIN_WIDTH, PreferenceSupplier.MAX_WIDTH, PreferenceSupplier.DEF_WIDTH);
 
 	protected ChromatogramFilterNodeModel() {
 		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class)});
@@ -63,7 +68,7 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ChromatogramSelectionPortObject chromatogramSelectionPortObject = getChromatogramSelectionPortObject(inObjects);
+		ChromatogramSelectionPortObject chromatogramSelectionPortObject = PortObjectSupport.getChromatogramSelectionPortObject(inObjects);
 		if(chromatogramSelectionPortObject != null) {
 			/*
 			 * Apply the filter.
@@ -87,16 +92,6 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 			 */
 			return new PortObject[]{};
 		}
-	}
-
-	private ChromatogramSelectionPortObject getChromatogramSelectionPortObject(PortObject[] inObjects) {
-
-		for(Object object : inObjects) {
-			if(object instanceof ChromatogramSelectionPortObject) {
-				return (ChromatogramSelectionPortObject)object;
-			}
-		}
-		return null;
 	}
 
 	/**
