@@ -20,13 +20,13 @@ public class ChromatogramFilterNodeDialog extends DefaultNodeSettingsPane {
 	protected ChromatogramFilterNodeDialog() {
 		super();
 		//
-		DialogComponentNumber dialogComponentDerivative = new DialogComponentNumber(ChromatogramFilterNodeModel.SETTING_DERIVATIVE, "Derivative", PreferenceSupplier.STEP_DERIVATIVE);
+		DialogComponentNumber dialogComponentDerivative = new DialogComponentNumber(ChromatogramFilterNodeModel.createModelDerivative(), "Derivative", PreferenceSupplier.STEP_DERIVATIVE);
 		addDialogComponent(dialogComponentDerivative);
 		//
-		DialogComponentNumber dialogComponentOrder = new DialogComponentNumber(ChromatogramFilterNodeModel.SETTING_ORDER, "Order", PreferenceSupplier.STEP_ORDER);
+		DialogComponentNumber dialogComponentOrder = new DialogComponentNumber(ChromatogramFilterNodeModel.createModelOrder(), "Order", PreferenceSupplier.STEP_ORDER);
 		addDialogComponent(dialogComponentOrder);
 		//
-		DialogComponentNumber dialogComponentWidth = new DialogComponentNumber(ChromatogramFilterNodeModel.SETTING_WIDTH, "Width", PreferenceSupplier.STEP_WIDTH);
+		DialogComponentNumber dialogComponentWidth = new DialogComponentNumber(ChromatogramFilterNodeModel.createModelWidth(), "Width", PreferenceSupplier.STEP_WIDTH);
 		addDialogComponent(dialogComponentWidth);
 	}
 }
