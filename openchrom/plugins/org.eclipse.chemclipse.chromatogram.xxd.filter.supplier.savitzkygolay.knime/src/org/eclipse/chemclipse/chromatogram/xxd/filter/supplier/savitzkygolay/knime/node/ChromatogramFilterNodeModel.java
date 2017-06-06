@@ -42,7 +42,7 @@ import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 public class ChromatogramFilterNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramFilterNodeModel.class);
-	
+
 	static SettingsModelIntegerBounded createModelDerivative() {
 
 		return new SettingsModelIntegerBounded("Derivate", PreferenceSupplier.DEF_DERIVATIVE, PreferenceSupplier.MIN_DERIVATIVE, PreferenceSupplier.MAX_DERIVATIVE);
@@ -52,12 +52,12 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 
 		return new SettingsModelIntegerBounded("Order", PreferenceSupplier.DEF_ORDER, PreferenceSupplier.MIN_ORDER, PreferenceSupplier.MAX_ORDER);
 	}
-	
+
 	static SettingsModelIntegerBounded createModelWidth() {
 
 		return new SettingsModelIntegerBounded("Width", PreferenceSupplier.DEF_WIDTH, PreferenceSupplier.MIN_WIDTH, PreferenceSupplier.MAX_WIDTH);
 	}
-	
+
 	private final SettingsModelIntegerBounded smDerivative = createModelDerivative();
 	private final SettingsModelIntegerBounded smOrder = createModelOrder();
 	private final SettingsModelIntegerBounded smWidth = createModelWidth();
