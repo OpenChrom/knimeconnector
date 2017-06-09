@@ -81,6 +81,6 @@ public class XYSeriesChart extends LineChart implements IXYSeriesListener {
 		lineSerieSettings.setEnableArea(false);
 		lineSeriesDataList.add(lineSeriesData);
 		//
-		addSeriesData(lineSeriesDataList);
+		addSeriesData(lineSeriesDataList, false);
 	}
 }
