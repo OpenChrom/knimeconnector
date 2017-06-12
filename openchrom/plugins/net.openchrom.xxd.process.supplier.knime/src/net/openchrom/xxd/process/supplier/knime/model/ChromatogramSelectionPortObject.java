@@ -18,6 +18,8 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.swing.JComponent;
 
@@ -75,10 +77,18 @@ public class ChromatogramSelectionPortObject extends AbstractPortObject {
 	@Override
 	protected void save(PortObjectZipOutputStream out, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
+		ObjectOutputStream outputStream = new ObjectOutputStream(out);
+		outputStream.writeObject(chromatogramSelection);
 	}
 
 	@Override
 	protected void load(PortObjectZipInputStream in, PortObjectSpec spec, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
+		ObjectInputStream inputStream = new ObjectInputStream(in);
+		try {
+			chromatogramSelection = (IChromatogramSelection)inputStream.readObject();
+		} catch(ClassNotFoundException e) {
+			System.out.println(e);
+		}
 	}
 }
