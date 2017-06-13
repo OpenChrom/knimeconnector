@@ -16,9 +16,9 @@ import org.knime.core.node.ModelContentRO;
 import org.knime.core.node.ModelContentWO;
 import org.knime.core.node.port.AbstractSimplePortObjectSpec;
 
-public class ChromatogramSelectionPortObjectSpec extends AbstractSimplePortObjectSpec {
+public class ChromatogramSelectionMSDPortObjectSpec extends AbstractSimplePortObjectSpec {
 
-	public static final class Serializer extends AbstractSimplePortObjectSpecSerializer<ChromatogramSelectionPortObjectSpec> {
+	public static final class Serializer extends AbstractSimplePortObjectSpecSerializer<ChromatogramSelectionMSDPortObjectSpec> {
 	}
 
 	@Override

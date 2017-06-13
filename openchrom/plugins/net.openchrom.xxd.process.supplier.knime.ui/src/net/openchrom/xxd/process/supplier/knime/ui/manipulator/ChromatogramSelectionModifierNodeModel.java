@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.model.core.AbstractChromatogram;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -36,7 +36,8 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 
 public class ChromatogramSelectionModifierNodeModel extends NodeModel {
 
@@ -46,44 +47,34 @@ public class ChromatogramSelectionModifierNodeModel extends NodeModel {
 	protected static final SettingsModelDouble SETTING_START_RETENTION_TIME = new SettingsModelDouble(START_RETENTION_TIME, 0.0d);
 	//
 	private static final String STOP_RETENTION_TIME = "Stop Retention Time (Minutes)";
-	protected static final SettingsModelDouble SETTING_STOP_RETENTION_TIME = new SettingsModelDouble(STOP_RETENTION_TIME, Double.MAX_VALUE);
+	protected static final SettingsModelDouble SETTING_STOP_RETENTION_TIME = new SettingsModelDouble(STOP_RETENTION_TIME, 10.0d);
 
 	protected ChromatogramSelectionModifierNodeModel() {
-		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class)});
+		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
 	}
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ChromatogramSelectionPortObject chromatogramSelectionPortObject = getChromatogramSelectionPortObject(inObjects);
-		if(chromatogramSelectionPortObject != null) {
+		ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
+		if(chromatogramSelectionMSDPortObject != null) {
 			/*
 			 * Apply the filter.
 			 */
 			logger.info("Apply the retention time range");
-			IChromatogramSelection chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelection();
+			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD();
 			int startRetentionTime = (int)(SETTING_START_RETENTION_TIME.getDoubleValue() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 			int stopRetentionTime = (int)(SETTING_STOP_RETENTION_TIME.getDoubleValue() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
 			chromatogramSelection.setStartRetentionTime(startRetentionTime);
 			chromatogramSelection.setStopRetentionTime(stopRetentionTime);
 			//
-			return new PortObject[]{chromatogramSelectionPortObject};
+			return new PortObject[]{chromatogramSelectionMSDPortObject};
 		} else {
 			/*
 			 * If things have gone wrong.
 			 */
 			return new PortObject[]{};
 		}
-	}
-
-	private ChromatogramSelectionPortObject getChromatogramSelectionPortObject(PortObject[] inObjects) {
-
-		for(Object object : inObjects) {
-			if(object instanceof ChromatogramSelectionPortObject) {
-				return (ChromatogramSelectionPortObject)object;
-			}
-		}
-		return null;
 	}
 
 	/**

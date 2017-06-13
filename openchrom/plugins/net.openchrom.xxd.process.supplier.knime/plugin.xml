@@ -5,19 +5,11 @@
          point="org.knime.core.PortType">
       <portType
             hidden="false"
-            name="Chromatogram Selection"
-            objectClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObject"
-            objectSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObject$Serializer"
-            specClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObjectSpec"
-            specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObjectSpec$Serializer">
-      </portType>
-      <portType
-            hidden="false"
             name="Chromatogram Selection (MSD)"
             objectClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject"
             objectSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject$Serializer"
-            specClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObjectSpec"
-            specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObjectSpec$Serializer">
+            specClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec"
+            specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec$Serializer">
       </portType>
    </extension>
 

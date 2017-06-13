@@ -18,7 +18,7 @@ import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.cor
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.preferences.PreferenceSupplier;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.settings.ISupplierFilterSettings;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.settings.SupplierFilterSettings;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -36,7 +36,7 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 
 public class ChromatogramFilterNodeModel extends NodeModel {
@@ -63,19 +63,19 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	private final SettingsModelIntegerBounded smWidth = createModelWidth();
 
 	protected ChromatogramFilterNodeModel() {
-		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class)});
+		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
 	}
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ChromatogramSelectionPortObject chromatogramSelectionPortObject = PortObjectSupport.getChromatogramSelectionPortObject(inObjects);
-		if(chromatogramSelectionPortObject != null) {
+		ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
+		if(chromatogramSelectionMSDPortObject != null) {
 			/*
 			 * Apply the filter.
 			 */
 			logger.info("Apply the filter");
-			IChromatogramSelection chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelection();
+			IChromatogramSelectionMSD chromatogramSelectionMSD = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD();
 			//
 			ISupplierFilterSettings supplierFilterSettings = new SupplierFilterSettings();
 			supplierFilterSettings.setDerivative(smDerivative.getIntValue());
@@ -83,10 +83,10 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 			supplierFilterSettings.setWidth(smWidth.getIntValue());
 			//
 			ChromatogramFilter chromatogramFilter = new ChromatogramFilter();
-			IProcessingInfo processingInfo = chromatogramFilter.applyFilter(chromatogramSelection, supplierFilterSettings, new NullProgressMonitor());
+			IProcessingInfo processingInfo = chromatogramFilter.applyFilter(chromatogramSelectionMSD, supplierFilterSettings, new NullProgressMonitor());
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 			//
-			return new PortObject[]{chromatogramSelectionPortObject};
+			return new PortObject[]{chromatogramSelectionMSDPortObject};
 		} else {
 			/*
 			 * If things have gone wrong.

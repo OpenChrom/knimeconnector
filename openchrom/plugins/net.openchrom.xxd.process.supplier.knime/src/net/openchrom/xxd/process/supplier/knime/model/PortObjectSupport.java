@@ -21,16 +21,6 @@ import org.knime.core.node.port.PortObject;
 
 public class PortObjectSupport {
 
-	public static ChromatogramSelectionPortObject getChromatogramSelectionPortObject(PortObject[] inObjects) {
-
-		for(Object object : inObjects) {
-			if(object instanceof ChromatogramSelectionPortObject) {
-				return (ChromatogramSelectionPortObject)object;
-			}
-		}
-		return null;
-	}
-
 	public static ChromatogramSelectionMSDPortObject getChromatogramSelectionMSDPortObject(PortObject[] inObjects) {
 
 		for(Object object : inObjects) {

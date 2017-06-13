@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Knime
-Bundle-SymbolicName: net.openchrom.xxd.process.supplier.knime
+Bundle-SymbolicName: net.openchrom.xxd.process.supplier.knime;singleton:=true
 Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: net.openchrom.xxd.process.supplier.knime.Activator
 Bundle-Vendor: OpenChrom
