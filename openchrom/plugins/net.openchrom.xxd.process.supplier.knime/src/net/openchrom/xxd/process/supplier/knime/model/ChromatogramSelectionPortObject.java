@@ -20,6 +20,7 @@ package net.openchrom.xxd.process.supplier.knime.model;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
@@ -30,13 +31,23 @@ import org.knime.core.node.port.AbstractPortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortObjectZipInputStream;
 import org.knime.core.node.port.PortObjectZipOutputStream;
+import org.knime.core.node.port.PortType;
+import org.knime.core.node.port.PortTypeRegistry;
 
 public class ChromatogramSelectionPortObject extends AbstractPortObject {
 
+	public static final class Serializer extends AbstractPortObjectSerializer<ChromatogramSelectionPortObject> {
+	}
+
+	/** Convenience accessor for the port type. */
+	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class);
+	//
 	private IChromatogramSelection chromatogramSelection;
+	private ChromatogramSelectionPortObjectSpec spec;
 
 	public ChromatogramSelectionPortObject(IChromatogramSelection chromatogramSelection) {
 		this.chromatogramSelection = chromatogramSelection;
+		this.spec = new ChromatogramSelectionPortObjectSpec();
 	}
 
 	public IChromatogramSelection getChromatogramSelection() {
@@ -52,20 +63,13 @@ public class ChromatogramSelectionPortObject extends AbstractPortObject {
 	@Override
 	public String getSummary() {
 
-		return "Chromaotgram Selection";
+		return "Chromatogram Selection";
 	}
 
 	@Override
 	public PortObjectSpec getSpec() {
 
-		return new PortObjectSpec() {
-
-			@Override
-			public JComponent[] getViews() {
-
-				return null;
-			}
-		};
+		return this.spec;
 	}
 
 	@Override
@@ -76,14 +80,17 @@ public class ChromatogramSelectionPortObject extends AbstractPortObject {
 
 	@Override
 	protected void save(PortObjectZipOutputStream out, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
+		out.putNextEntry(new ZipEntry("chromatogram-selection"));
 		ObjectOutputStream outputStream = new ObjectOutputStream(out);
 		outputStream.writeObject(chromatogramSelection);
 	}
 
 	@Override
 	protected void load(PortObjectZipInputStream in, PortObjectSpec spec, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
+		ZipEntry nextEntry = in.getNextEntry();
+		if(!nextEntry.getName().equals("chromatogram-selection")) {
+			throw new IOException("expected chromatogram-selection, got " + nextEntry.getName());
+		}
 		ObjectInputStream inputStream = new ObjectInputStream(in);
 		try {
 			chromatogramSelection = (IChromatogramSelection)inputStream.readObject();

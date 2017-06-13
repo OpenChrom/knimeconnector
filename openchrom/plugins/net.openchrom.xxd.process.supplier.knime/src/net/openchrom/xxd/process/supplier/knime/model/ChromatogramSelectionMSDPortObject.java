@@ -21,6 +21,9 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 
 public class ChromatogramSelectionMSDPortObject extends ChromatogramSelectionPortObject {
 
+	public static final class Serializer extends AbstractPortObjectSerializer<ChromatogramSelectionMSDPortObject> {
+	}
+
 	public ChromatogramSelectionMSDPortObject(IChromatogramSelectionMSD chromatogramSelectionMSD) {
 		super(chromatogramSelectionMSD);
 	}
@@ -33,6 +36,6 @@ public class ChromatogramSelectionMSDPortObject extends ChromatogramSelectionPor
 	@Override
 	public String getSummary() {
 
-		return "Chromaotgram Selection (MSD)";
+		return "Chromatogram Selection (MSD)";
 	}
 }
