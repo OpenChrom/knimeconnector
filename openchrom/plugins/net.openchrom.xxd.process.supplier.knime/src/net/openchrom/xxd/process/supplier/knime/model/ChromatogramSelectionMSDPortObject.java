@@ -17,22 +17,20 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
-import org.eclipse.chemclipse.model.core.IScan;
+import org.eclipse.chemclipse.msd.converter.supplier.chemclipse.io.ChromatogramReaderMSD;
+import org.eclipse.chemclipse.msd.converter.supplier.chemclipse.io.ChromatogramWriterMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.IScanMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.implementation.ChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.implementation.ScanMSD;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.port.AbstractPortObject;
@@ -45,7 +43,7 @@ import org.knime.core.node.port.PortTypeRegistry;
 public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class);
-	private static final String ID_SERIALIZED_ENTRY = "CS-MSD";
+	private static final String CHROMATOGRAM_SELECTION = "CHROMATOGRAM_SELECTION";
 	//
 	private IChromatogramSelectionMSD chromatogramSelectionMSD;
 	private ChromatogramSelectionMSDPortObjectSpec portObjectSpec;
@@ -88,35 +86,39 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	@Override
 	protected void save(PortObjectZipOutputStream out, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-		out.putNextEntry(new ZipEntry(ID_SERIALIZED_ENTRY));
-		List<IScan> scans = getChromatogramSelectionMSD().getChromatogram().getScans();
-		List<IScanMSD> scansMSD = new ArrayList<IScanMSD>();
-		for(IScan scan : scans) {
-			if(scan instanceof IScanMSD) {
-				IScanMSD scanMSD = new ScanMSD((IScanMSD)scan);
-				scansMSD.add(scanMSD);
-			}
-		}
-		ObjectOutputStream outputStream = new ObjectOutputStream(out);
-		outputStream.writeObject(scansMSD);
+		ChromatogramWriterMSD chromatogramWriterMSD = new ChromatogramWriterMSD();
+		chromatogramWriterMSD.writeChromatogram(out, getChromatogramSelectionMSD().getChromatogramMSD(), new NullProgressMonitor());
+		//
+		ZipEntry zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION);
+		out.putNextEntry(zipEntry);
+		DataOutputStream dataOutputStream = new DataOutputStream(out);
+		dataOutputStream.writeInt(chromatogramSelectionMSD.getStartRetentionTime());
+		dataOutputStream.writeInt(chromatogramSelectionMSD.getStopRetentionTime());
+		dataOutputStream.writeFloat(chromatogramSelectionMSD.getStartAbundance());
+		dataOutputStream.writeFloat(chromatogramSelectionMSD.getStopAbundance());
+		dataOutputStream.flush();
+		out.closeEntry();
 	}
 
 	@Override
 	protected void load(PortObjectZipInputStream in, PortObjectSpec spec, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-		ZipEntry nextEntry = in.getNextEntry();
-		if(!nextEntry.getName().equals(ID_SERIALIZED_ENTRY)) {
-			throw new IOException("Expected " + ID_SERIALIZED_ENTRY + ", but got " + nextEntry.getName());
-		}
-		ObjectInputStream inputStream = new ObjectInputStream(in);
-		try {
-			@SuppressWarnings("unchecked")
-			List<IScan> scans = (List<IScan>)inputStream.readObject();
-			IChromatogramMSD chromatogramMSD = new ChromatogramMSD();
-			chromatogramMSD.addScans(scans);
-			chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
-		} catch(ClassNotFoundException e) {
-			System.out.println(e);
+		ChromatogramReaderMSD chromatogramReaderMSD = new ChromatogramReaderMSD();
+		IChromatogramMSD chromatogramMSD = chromatogramReaderMSD.read(in, new NullProgressMonitor());
+		chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
+		chromatogramSelectionMSD.setStartRetentionTime(in.read());
+		chromatogramSelectionMSD.setStopRetentionTime(in.read());
+		//
+		ZipEntry zipEntry = in.getNextEntry();
+		if(zipEntry != null && !zipEntry.isDirectory()) {
+			String name = zipEntry.getName();
+			if(name.equals(CHROMATOGRAM_SELECTION)) {
+				DataInputStream dataInputStream = new DataInputStream(in);
+				chromatogramSelectionMSD.setStartRetentionTime(dataInputStream.readInt());
+				chromatogramSelectionMSD.setStopRetentionTime(dataInputStream.readInt());
+				chromatogramSelectionMSD.setStartAbundance(dataInputStream.readFloat());
+				chromatogramSelectionMSD.setStopAbundance(dataInputStream.readFloat());
+			}
 		}
 	}
 }
