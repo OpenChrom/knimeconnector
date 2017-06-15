@@ -15,30 +15,45 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.xxd.process.supplier.knime.ui.translator;
 
-import org.knime.core.node.BufferedDataTable;
-import org.knime.core.node.port.PortObject;
+import org.knime.core.node.NodeView;
 
-public class PortObjectSupport {
+public class CsMsdToTableNodeView extends NodeView<CsMsdToTableNodeModel> {
 
-	public static ChromatogramSelectionMSDPortObject getChromatogramSelectionMSDPortObject(PortObject[] inObjects) {
-
-		for(Object object : inObjects) {
-			if(object instanceof ChromatogramSelectionMSDPortObject) {
-				return (ChromatogramSelectionMSDPortObject)object;
-			}
-		}
-		return null;
+	/**
+	 * Creates a new view.
+	 * 
+	 * @param nodeModel
+	 *            The model (class: {@link CsMsdToTableNodeModel})
+	 */
+	protected CsMsdToTableNodeView(final CsMsdToTableNodeModel nodeModel) {
+		super(nodeModel);
 	}
 
-	public static BufferedDataTable getBufferedDataTable(PortObject[] inObjects) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void modelChanged() {
 
-		for(Object object : inObjects) {
-			if(object instanceof BufferedDataTable) {
-				return (BufferedDataTable)object;
-			}
-		}
-		return null;
+		CsMsdToTableNodeModel nodeModel = (CsMsdToTableNodeModel)getNodeModel();
+		assert nodeModel != null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onClose() {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onOpen() {
+
 	}
 }

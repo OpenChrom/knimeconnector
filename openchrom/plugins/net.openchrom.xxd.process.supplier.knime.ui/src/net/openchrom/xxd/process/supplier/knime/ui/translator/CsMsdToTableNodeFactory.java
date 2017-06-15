@@ -15,30 +15,56 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.xxd.process.supplier.knime.ui.translator;
 
-import org.knime.core.node.BufferedDataTable;
-import org.knime.core.node.port.PortObject;
+import org.knime.core.node.NodeDialogPane;
+import org.knime.core.node.NodeFactory;
+import org.knime.core.node.NodeView;
 
-public class PortObjectSupport {
+public class CsMsdToTableNodeFactory extends NodeFactory<CsMsdToTableNodeModel> {
 
-	public static ChromatogramSelectionMSDPortObject getChromatogramSelectionMSDPortObject(PortObject[] inObjects) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public CsMsdToTableNodeModel createNodeModel() {
 
-		for(Object object : inObjects) {
-			if(object instanceof ChromatogramSelectionMSDPortObject) {
-				return (ChromatogramSelectionMSDPortObject)object;
-			}
-		}
-		return null;
+		return new CsMsdToTableNodeModel();
 	}
 
-	public static BufferedDataTable getBufferedDataTable(PortObject[] inObjects) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int getNrNodeViews() {
 
-		for(Object object : inObjects) {
-			if(object instanceof BufferedDataTable) {
-				return (BufferedDataTable)object;
-			}
-		}
-		return null;
+		return 1;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public NodeView<CsMsdToTableNodeModel> createNodeView(final int viewIndex, final CsMsdToTableNodeModel nodeModel) {
+
+		return new CsMsdToTableNodeView(nodeModel);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasDialog() {
+
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public NodeDialogPane createNodeDialogPane() {
+
+		return new CsMsdToTableNodeDialog();
 	}
 }

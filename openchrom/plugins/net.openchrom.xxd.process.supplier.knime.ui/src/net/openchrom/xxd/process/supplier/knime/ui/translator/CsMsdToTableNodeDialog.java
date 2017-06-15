@@ -15,30 +15,17 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.xxd.process.supplier.knime.ui.translator;
 
-import org.knime.core.node.BufferedDataTable;
-import org.knime.core.node.port.PortObject;
+import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 
-public class PortObjectSupport {
+public class CsMsdToTableNodeDialog extends DefaultNodeSettingsPane {
 
-	public static ChromatogramSelectionMSDPortObject getChromatogramSelectionMSDPortObject(PortObject[] inObjects) {
-
-		for(Object object : inObjects) {
-			if(object instanceof ChromatogramSelectionMSDPortObject) {
-				return (ChromatogramSelectionMSDPortObject)object;
-			}
-		}
-		return null;
-	}
-
-	public static BufferedDataTable getBufferedDataTable(PortObject[] inObjects) {
-
-		for(Object object : inObjects) {
-			if(object instanceof BufferedDataTable) {
-				return (BufferedDataTable)object;
-			}
-		}
-		return null;
+	protected CsMsdToTableNodeDialog() {
+		super();
+		//
+		DialogComponentBoolean dialogComponentUseTic = new DialogComponentBoolean(CsMsdToTableNodeModel.createSettingsModelUseTic(), CsMsdToTableNodeModel.USE_TIC);
+		addDialogComponent(dialogComponentUseTic);
 	}
 }

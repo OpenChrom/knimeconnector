@@ -59,7 +59,14 @@
             icon="src/net/openchrom/xxd/process/supplier/knime/ui/manipulator/manipulator.png"
             description="Manipulator"
             path="/openchrom">
-      </category>            
+      </category>    
+      <category
+            level-id="translator"
+            name="Translator"
+            icon="src/net/openchrom/xxd/process/supplier/knime/ui/translator/translator.png"
+            description="Translator"
+            path="/openchrom">
+      </category>                  
       <category
             level-id="msd"
             name="MSD"
@@ -201,6 +208,14 @@
       <node
             category-path="/openchrom/manipulator"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.manipulator.ChromatogramSelectionModifierNodeFactory">
-      </node>      
+      </node> 
+      <node
+            category-path="/openchrom/translator"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.CsMsdToTableNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/translator"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.TableToCsMsdNodeFactory">
+      </node>                  
    </extension>
 </plugin>

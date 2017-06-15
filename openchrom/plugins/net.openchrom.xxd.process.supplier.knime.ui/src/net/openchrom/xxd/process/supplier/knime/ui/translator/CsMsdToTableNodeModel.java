@@ -15,16 +15,15 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
+package net.openchrom.xxd.process.supplier.knime.ui.translator;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.model.signals.ITotalScanSignal;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignals;
-import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
-import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
 import org.eclipse.chemclipse.msd.model.xic.ExtractedIonSignalExtractor;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
@@ -32,7 +31,6 @@ import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignalExtractor;
 import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
 import org.eclipse.chemclipse.msd.model.xic.ITotalIonSignalExtractor;
 import org.eclipse.chemclipse.msd.model.xic.TotalIonSignalExtractor;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -53,51 +51,59 @@ import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
-import org.knime.core.node.defaultnodesettings.SettingsModelString;
+import org.knime.core.node.port.PortObject;
+import org.knime.core.node.port.PortObjectSpec;
+import org.knime.core.node.port.PortType;
+import org.knime.core.node.port.PortTypeRegistry;
 
-public class ChromatogramReaderMSDNodeModel extends NodeModel {
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 
-	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramReaderMSDNodeModel.class);
+public class CsMsdToTableNodeModel extends NodeModel {
+
+	private static final NodeLogger logger = NodeLogger.getLogger(CsMsdToTableNodeModel.class);
 	//
-	private static final String CHROMATOGRAM_FILE_INPUT = "ChromatgramFileInput";
-	private static final String CHROMATOGRAM_IMPORT_TIC = "ChromatgramImportTIC";
-	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_INPUT = new SettingsModelString(CHROMATOGRAM_FILE_INPUT, "");
-	protected static final SettingsModelBoolean SETTING_CHROMATOGRAM_IMPORT_TIC = new SettingsModelBoolean(CHROMATOGRAM_IMPORT_TIC, false);
+	protected static final String USE_TIC = "Use TIC";
+	protected static final boolean DEF_USE_TIC = false;
 	//
 	private static final String RETENTION_TIME = "RT (milliseconds)";
 	private static final String RETENTION_INDEX = "RI";
 	private static final String TIC = "TIC";
 
-	protected ChromatogramReaderMSDNodeModel() {
-		super(0, 1);
+	protected static SettingsModelBoolean createSettingsModelUseTic() {
+
+		return new SettingsModelBoolean(USE_TIC, DEF_USE_TIC);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception {
+	private final SettingsModelBoolean settingsModelUseTic = createSettingsModelUseTic();
 
-		logger.info("Read the chromatographic raw data.");
-		/*
-		 * Get the chromatogram.
-		 */
-		IChromatogramMSD chromatogramMSD = loadChromatogram(SETTING_CHROMATOGRAM_FILE_INPUT.getStringValue());
-		BufferedDataTable bufferedDataTable = null;
-		if(chromatogramMSD != null) {
-			if(SETTING_CHROMATOGRAM_IMPORT_TIC.getBooleanValue()) {
-				bufferedDataTable = getBufferedDataTableTIC(chromatogramMSD, exec);
+	protected CsMsdToTableNodeModel() {
+		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(BufferedDataTable.class)});
+	}
+
+	@Override
+	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+
+		ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
+		if(chromatogramSelectionMSDPortObject != null) {
+			/*
+			 * Convert the selection to table.
+			 */
+			logger.info("Convert chromatogram selection to table.");
+			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD();
+			BufferedDataTable bufferedDataTable = null;
+			if(settingsModelUseTic.getBooleanValue()) {
+				bufferedDataTable = getBufferedDataTableTIC(chromatogramSelection, exec);
 			} else {
-				bufferedDataTable = getBufferedDataTableXIC(chromatogramMSD, exec);
+				bufferedDataTable = getBufferedDataTableXIC(chromatogramSelection, exec);
 			}
-		}
-		/*
-		 * Ready, return the table.
-		 */
-		if(bufferedDataTable != null) {
-			return new BufferedDataTable[]{bufferedDataTable};
+			//
+			return new PortObject[]{bufferedDataTable};
 		} else {
-			return new BufferedDataTable[]{};
+			/*
+			 * If things have gone wrong.
+			 */
+			return new PortObject[]{};
 		}
 	}
 
@@ -109,13 +115,10 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
+	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
 
-		return new DataTableSpec[]{null};
+		return null;
 	}
 
 	/**
@@ -124,7 +127,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		SETTING_CHROMATOGRAM_FILE_INPUT.saveSettingsTo(settings);
+		settingsModelUseTic.saveSettingsTo(settings);
 	}
 
 	/**
@@ -133,7 +136,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_CHROMATOGRAM_FILE_INPUT.loadSettingsFrom(settings);
+		settingsModelUseTic.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -142,7 +145,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_CHROMATOGRAM_FILE_INPUT.validateSettings(settings);
+		settingsModelUseTic.validateSettings(settings);
 	}
 
 	/**
@@ -161,13 +164,14 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
 	}
 
-	private BufferedDataTable getBufferedDataTableTIC(IChromatogramMSD chromatogramMSD, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+	private BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
 		/*
 		 * Specification
 		 */
+		IChromatogramMSD chromatogramMSD = chromatogramSelection.getChromatogramMSD();
 		ITotalIonSignalExtractor totalIonSignalExtractor = new TotalIonSignalExtractor(chromatogramMSD);
-		ITotalScanSignals totalScanSignals = totalIonSignalExtractor.getTotalScanSignals();
+		ITotalScanSignals totalScanSignals = totalIonSignalExtractor.getTotalScanSignals(chromatogramSelection);
 		int numberOfColumns = 3; // RT, RI, TIC
 		//
 		int columnSpec = 0;
@@ -206,13 +210,14 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		return bufferedDataContainer.getTable();
 	}
 
-	private BufferedDataTable getBufferedDataTableXIC(IChromatogramMSD chromatogramMSD, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+	private BufferedDataTable getBufferedDataTableXIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
 		/*
 		 * Specification
 		 */
+		IChromatogramMSD chromatogramMSD = chromatogramSelection.getChromatogramMSD();
 		IExtractedIonSignalExtractor extractedIonSignalExtractor = new ExtractedIonSignalExtractor(chromatogramMSD);
-		IExtractedIonSignals extractedIonSignals = extractedIonSignalExtractor.getExtractedIonSignals();
+		IExtractedIonSignals extractedIonSignals = extractedIonSignalExtractor.getExtractedIonSignals(chromatogramSelection);
 		int startIon = extractedIonSignals.getStartIon();
 		int stopIon = extractedIonSignals.getStopIon();
 		int numberOfColumns = 2 + (stopIon - startIon + 1); // RT, RI, m/z values
@@ -255,12 +260,5 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		//
 		bufferedDataContainer.close();
 		return bufferedDataContainer.getTable();
-	}
-
-	private IChromatogramMSD loadChromatogram(String pathChromatogram) {
-
-		File file = new File(pathChromatogram);
-		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
-		return processingInfo.getChromatogram();
 	}
 }
