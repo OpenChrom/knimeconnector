@@ -43,11 +43,23 @@ public class ChromatogramSelectionModifierNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramSelectionModifierNodeModel.class);
 	//
-	private static final String START_RETENTION_TIME = "Start Retention Time (Minutes)";
-	protected static final SettingsModelDouble SETTING_START_RETENTION_TIME = new SettingsModelDouble(START_RETENTION_TIME, 0.0d);
-	//
-	private static final String STOP_RETENTION_TIME = "Stop Retention Time (Minutes)";
-	protected static final SettingsModelDouble SETTING_STOP_RETENTION_TIME = new SettingsModelDouble(STOP_RETENTION_TIME, 10.0d);
+	protected static final String START_RETENTION_TIME = "Start Retention Time (Minutes)";
+	protected static final double DEF_START_RETENTION_TIME = 0.0d;
+	protected static final String STOP_RETENTION_TIME = "Stop Retention Time (Minutes)";
+	protected static final double DEF_STOP_RETENTION_TIME = 10.0d;
+
+	protected static SettingsModelDouble createSettingsModelStartRetentionTime() {
+
+		return new SettingsModelDouble(START_RETENTION_TIME, DEF_START_RETENTION_TIME);
+	}
+
+	protected static SettingsModelDouble createSettingsModelStopRetentionTime() {
+
+		return new SettingsModelDouble(STOP_RETENTION_TIME, DEF_STOP_RETENTION_TIME);
+	}
+
+	private final SettingsModelDouble settingsModelStartRetentionTime = createSettingsModelStartRetentionTime();
+	private final SettingsModelDouble settingsModelStopRetentionTime = createSettingsModelStopRetentionTime();
 
 	protected ChromatogramSelectionModifierNodeModel() {
 		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
@@ -61,10 +73,11 @@ public class ChromatogramSelectionModifierNodeModel extends NodeModel {
 			/*
 			 * Apply the filter.
 			 */
-			logger.info("Apply the retention time range");
 			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD();
-			int startRetentionTime = (int)(SETTING_START_RETENTION_TIME.getDoubleValue() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
-			int stopRetentionTime = (int)(SETTING_STOP_RETENTION_TIME.getDoubleValue() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+			int startRetentionTime = (int)(settingsModelStartRetentionTime.getDoubleValue() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+			int stopRetentionTime = (int)(settingsModelStopRetentionTime.getDoubleValue() * AbstractChromatogram.MINUTE_CORRELATION_FACTOR);
+			logger.info("Apply the retention time range");
+			logger.info("Modifier set range: " + (startRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + "\t->\t" + (stopRetentionTime / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
 			chromatogramSelection.setStartRetentionTime(startRetentionTime);
 			chromatogramSelection.setStopRetentionTime(stopRetentionTime);
 			//
@@ -97,8 +110,8 @@ public class ChromatogramSelectionModifierNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		SETTING_START_RETENTION_TIME.saveSettingsTo(settings);
-		SETTING_STOP_RETENTION_TIME.saveSettingsTo(settings);
+		settingsModelStartRetentionTime.saveSettingsTo(settings);
+		settingsModelStopRetentionTime.saveSettingsTo(settings);
 	}
 
 	/**
@@ -107,8 +120,8 @@ public class ChromatogramSelectionModifierNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_START_RETENTION_TIME.loadSettingsFrom(settings);
-		SETTING_STOP_RETENTION_TIME.loadSettingsFrom(settings);
+		settingsModelStartRetentionTime.loadSettingsFrom(settings);
+		settingsModelStopRetentionTime.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -117,8 +130,8 @@ public class ChromatogramSelectionModifierNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_START_RETENTION_TIME.validateSettings(settings);
-		SETTING_STOP_RETENTION_TIME.validateSettings(settings);
+		settingsModelStartRetentionTime.validateSettings(settings);
+		settingsModelStopRetentionTime.validateSettings(settings);
 	}
 
 	/**

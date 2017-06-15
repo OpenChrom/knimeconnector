@@ -25,10 +25,10 @@ public class ChromatogramSelectionModifierNodeDialog extends DefaultNodeSettings
 	protected ChromatogramSelectionModifierNodeDialog() {
 		super();
 		//
-		DialogComponentNumber dialogComponentStartRT = new DialogComponentNumber(ChromatogramSelectionModifierNodeModel.SETTING_START_RETENTION_TIME, "Start Retention Time (Minutes)", 0.0d);
+		DialogComponentNumber dialogComponentStartRT = new DialogComponentNumber(ChromatogramSelectionModifierNodeModel.createSettingsModelStartRetentionTime(), ChromatogramSelectionModifierNodeModel.START_RETENTION_TIME, ChromatogramSelectionModifierNodeModel.DEF_START_RETENTION_TIME);
 		addDialogComponent(dialogComponentStartRT);
 		//
-		DialogComponentNumber dialogComponentStopRT = new DialogComponentNumber(ChromatogramSelectionModifierNodeModel.SETTING_STOP_RETENTION_TIME, "Stop Retention Time (Minutes)", 0.0d);
+		DialogComponentNumber dialogComponentStopRT = new DialogComponentNumber(ChromatogramSelectionModifierNodeModel.createSettingsModelStopRetentionTime(), ChromatogramSelectionModifierNodeModel.STOP_RETENTION_TIME, ChromatogramSelectionModifierNodeModel.DEF_STOP_RETENTION_TIME);
 		addDialogComponent(dialogComponentStopRT);
 	}
 }

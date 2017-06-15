@@ -18,6 +18,7 @@ import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.cor
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.preferences.PreferenceSupplier;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.settings.ISupplierFilterSettings;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.savitzkygolay.settings.SupplierFilterSettings;
+import org.eclipse.chemclipse.model.core.AbstractChromatogram;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
@@ -42,25 +43,29 @@ import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 public class ChromatogramFilterNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramFilterNodeModel.class);
+	//
+	protected static final String DERIVATIVE = "Derivate";
+	protected static final String ORDER = "Order";
+	protected static final String WIDTH = "Width";
 
-	static SettingsModelIntegerBounded createModelDerivative() {
+	protected static SettingsModelIntegerBounded createModelDerivative() {
 
-		return new SettingsModelIntegerBounded("Derivate", PreferenceSupplier.DEF_DERIVATIVE, PreferenceSupplier.MIN_DERIVATIVE, PreferenceSupplier.MAX_DERIVATIVE);
+		return new SettingsModelIntegerBounded(DERIVATIVE, PreferenceSupplier.DEF_DERIVATIVE, PreferenceSupplier.MIN_DERIVATIVE, PreferenceSupplier.MAX_DERIVATIVE);
 	}
 
-	static SettingsModelIntegerBounded createModelOrder() {
+	protected static SettingsModelIntegerBounded createSettingsModelOrder() {
 
-		return new SettingsModelIntegerBounded("Order", PreferenceSupplier.DEF_ORDER, PreferenceSupplier.MIN_ORDER, PreferenceSupplier.MAX_ORDER);
+		return new SettingsModelIntegerBounded(ORDER, PreferenceSupplier.DEF_ORDER, PreferenceSupplier.MIN_ORDER, PreferenceSupplier.MAX_ORDER);
 	}
 
-	static SettingsModelIntegerBounded createModelWidth() {
+	protected static SettingsModelIntegerBounded createSettingsModelWidth() {
 
-		return new SettingsModelIntegerBounded("Width", PreferenceSupplier.DEF_WIDTH, PreferenceSupplier.MIN_WIDTH, PreferenceSupplier.MAX_WIDTH);
+		return new SettingsModelIntegerBounded(WIDTH, PreferenceSupplier.DEF_WIDTH, PreferenceSupplier.MIN_WIDTH, PreferenceSupplier.MAX_WIDTH);
 	}
 
-	private final SettingsModelIntegerBounded smDerivative = createModelDerivative();
-	private final SettingsModelIntegerBounded smOrder = createModelOrder();
-	private final SettingsModelIntegerBounded smWidth = createModelWidth();
+	private final SettingsModelIntegerBounded settingsModelDerivative = createModelDerivative();
+	private final SettingsModelIntegerBounded settingsModelOrder = createSettingsModelOrder();
+	private final SettingsModelIntegerBounded settingsModelWidth = createSettingsModelWidth();
 
 	protected ChromatogramFilterNodeModel() {
 		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
@@ -74,13 +79,17 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 			/*
 			 * Apply the filter.
 			 */
-			logger.info("Apply the filter");
 			IChromatogramSelectionMSD chromatogramSelectionMSD = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD();
+			logger.info("Apply the filter");
+			logger.info("Savitzky-Golay Range: " + (chromatogramSelectionMSD.getStartRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR) + "\t->\t" + (chromatogramSelectionMSD.getStopRetentionTime() / AbstractChromatogram.MINUTE_CORRELATION_FACTOR));
+			logger.info("Savitzky-Golay Derivative: " + settingsModelDerivative.getIntValue());
+			logger.info("Savitzky-Golay Order: " + settingsModelOrder.getIntValue());
+			logger.info("Savitzky-Golay Width: " + settingsModelWidth.getIntValue());
 			//
 			ISupplierFilterSettings supplierFilterSettings = new SupplierFilterSettings();
-			supplierFilterSettings.setDerivative(smDerivative.getIntValue());
-			supplierFilterSettings.setOrder(smOrder.getIntValue());
-			supplierFilterSettings.setWidth(smWidth.getIntValue());
+			supplierFilterSettings.setDerivative(settingsModelDerivative.getIntValue());
+			supplierFilterSettings.setOrder(settingsModelOrder.getIntValue());
+			supplierFilterSettings.setWidth(settingsModelWidth.getIntValue());
 			//
 			ChromatogramFilter chromatogramFilter = new ChromatogramFilter();
 			IProcessingInfo processingInfo = chromatogramFilter.applyFilter(chromatogramSelectionMSD, supplierFilterSettings, new NullProgressMonitor());
@@ -115,9 +124,9 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		smDerivative.saveSettingsTo(settings);
-		smOrder.saveSettingsTo(settings);
-		smWidth.saveSettingsTo(settings);
+		settingsModelDerivative.saveSettingsTo(settings);
+		settingsModelOrder.saveSettingsTo(settings);
+		settingsModelWidth.saveSettingsTo(settings);
 	}
 
 	/**
@@ -126,9 +135,9 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		smDerivative.loadSettingsFrom(settings);
-		smOrder.loadSettingsFrom(settings);
-		smWidth.loadSettingsFrom(settings);
+		settingsModelDerivative.loadSettingsFrom(settings);
+		settingsModelOrder.loadSettingsFrom(settings);
+		settingsModelWidth.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -137,9 +146,9 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		smDerivative.validateSettings(settings);
-		smOrder.validateSettings(settings);
-		smWidth.validateSettings(settings);
+		settingsModelDerivative.validateSettings(settings);
+		settingsModelOrder.validateSettings(settings);
+		settingsModelWidth.validateSettings(settings);
 	}
 
 	/**
