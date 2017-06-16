@@ -56,14 +56,14 @@
       <category
             level-id="manipulator"
             name="Manipulator"
-            icon="src/net/openchrom/xxd/process/supplier/knime/ui/manipulator/manipulator.png"
+            icon="icons/manipulator.png"
             description="Manipulator"
             path="/openchrom">
       </category>    
       <category
             level-id="translator"
             name="Translator"
-            icon="src/net/openchrom/xxd/process/supplier/knime/ui/translator/translator.png"
+            icon="icons/translator.png"
             description="Translator"
             path="/openchrom">
       </category>                  
