@@ -21,7 +21,8 @@ import java.util.Map.Entry;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeSettingsRO;
-import org.knime.core.node.NodeSettingsWO;import org.knime.core.node.NotConfigurableException;
+import org.knime.core.node.NodeSettingsWO;
+import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
@@ -52,26 +53,23 @@ public class GetterSetterSettingsDialogFactory<S> implements SettingsDialogFacto
 			}
 		};
 	}
-	
-	
+
 	@Override
 	public SettingsObject<S> createSettings(Class<? extends S> settingsObjectClass) {
-		
+
 		Map<String, String> props = extractProperties(settingsObjectClass);
-		
 		final S settingsObject;
 		try {
 			settingsObject = settingsObjectClass.newInstance();
 		} catch(InstantiationException | IllegalAccessException e) {
-			//TODO
+			// TODO
 			throw new RuntimeException(e);
 		}
-	
 		return new SettingsObject<S>() {
+
 			@Override
 			public void saveSettingsTo(NodeSettingsWO settings) {
 
-				
 				for(Entry<String, String> entry : props.entrySet()) {
 					if(entry.getValue().equals("int")) {
 						int value = (int)invokeGetMethod(entry.getKey(), settingsObject);
@@ -108,16 +106,14 @@ public class GetterSetterSettingsDialogFactory<S> implements SettingsDialogFacto
 					}
 				}
 			}
-			
+
 			@Override
 			public S getObject() {
-			
+
 				return settingsObject;
 			}
 		};
 	}
-
-	
 
 	@Override
 	public boolean conforms(Class<S> settingsObjectClass) {

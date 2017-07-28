@@ -18,7 +18,7 @@ import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilte
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.SettingsDialogManager;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.SettingsObject;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -35,7 +35,7 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 
 public class ChromatogramFilterNodeModel extends NodeModel {
@@ -46,7 +46,7 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	private Class<? extends IChromatogramFilterSettings> filterSettingsClass;
 
 	ChromatogramFilterNodeModel(String filterId) {
-		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionPortObject.class)});
+		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
 		this.filterId = filterId;
 		try {
 			this.filterSettingsClass = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterId).getFilterSettingsClass();
@@ -59,13 +59,13 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ChromatogramSelectionPortObject chromatogramSelectionPortObject = PortObjectSupport.getChromatogramSelectionPortObject(inObjects);
+		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
 		if(chromatogramSelectionPortObject != null) {
 			/*
 			 * Apply the filter.
 			 */
 			logger.info("Apply the filter");
-			IChromatogramSelection chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelection();
+			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
 			//
 			IProcessingInfo processingInfo = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.applyFilter(chromatogramSelection, filterSettings.getObject(), filterId, new NullProgressMonitor());
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);

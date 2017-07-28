@@ -26,17 +26,15 @@ import org.knime.core.node.NodeSettings;
 import org.knime.core.node.config.ConfigRO;
 
 public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
-	
-	private static final NodeLogger LOGGER = NodeLogger.getLogger(ChromatogramFilterNodeSetFactory.class);
 
+	private static final NodeLogger LOGGER = NodeLogger.getLogger(ChromatogramFilterNodeSetFactory.class);
 	static final String FILTER_ID_KEY = "filterid-key";
-	
 	private List<String> filterIds;
-	
+
 	public ChromatogramFilterNodeSetFactory() {
 		try {
 			filterIds = Collections.unmodifiableList(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds());
-			//TODO filter those node that provide a filter settings class - otherwise no dialog will be available
+			// TODO filter those node that provide a filter settings class - otherwise no dialog will be available
 		} catch(NoChromatogramFilterSupplierAvailableException e) {
 			LOGGER.warn(e);
 		}
@@ -44,29 +42,33 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 
 	@Override
 	public Collection<String> getNodeFactoryIds() {
+
 		return filterIds;
 	}
 
 	@Override
 	public Class<? extends NodeFactory<? extends NodeModel>> getNodeFactory(String id) {
+
 		return ChromatogramFilterNodeFactory.class;
 	}
 
 	@Override
 	public String getCategoryPath(String id) {
+
 		return "/openchrom/filter";
 	}
 
 	@Override
 	public String getAfterID(String id) {
+
 		return "";
 	}
 
 	@Override
 	public ConfigRO getAdditionalSettings(String id) {
+
 		NodeSettings settings = new NodeSettings("chromatogram-filter-factory");
 		settings.addString(FILTER_ID_KEY, id);
 		return settings;
 	}
 }
-	

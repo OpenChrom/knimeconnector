@@ -8,7 +8,7 @@
  * 
  * Contributors:
  * Martin Horn, University of Konstanz - initial API and implementation
-*******************************************************************************/
+ *******************************************************************************/
 package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory;
 
 import org.knime.core.node.InvalidSettingsException;
@@ -24,22 +24,19 @@ import org.knime.core.node.NodeSettingsWO;
  * @param <S>
  */
 public interface SettingsDialogFactory<S> {
-	
+
 	/**
 	 * TODO could also be defined in the extension point ..
 	 * 
 	 * @return
 	 */
 	int getPriority();
-	
+
 	NodeDialogPane createDialog(Class<? extends S> settingsObjectClass);
-	
+
 	SettingsObject<? extends S> createSettings(Class<? extends S> settingsObjectClass);
-	
+
 	boolean conforms(Class<S> settingsObjectClass);
-	
+
 	boolean conforms(S settingsObject);
-	
-	
-	
 }
