@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 hornm.
+ * Copyright (c) 2017 Martin Horn.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * hornm - initial API and implementation
+ * Martin Horn - initial API and implementation
  *******************************************************************************/
 package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory;
 
@@ -15,12 +15,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.property.JacksonPropertyDialogFactory;
+
 /**
- * TODO
+ * TODO not used yet - will be of use of the {@link SettingsDialogFactory} is exposed as extension point.
  * 
- * Collects the extenion points and provides the logics to get the right settings dialog factory.
+ * Collects the extension points and provides the logics to get the right settings dialog factory.
  * 
- * @author hornm
+ * @author Martin Horn, University of Konstanz
  *
  */
 public class SettingsDialogManager {
@@ -28,7 +30,7 @@ public class SettingsDialogManager {
 	/**
 	 * TODO fill list from extension point ..
 	 */
-	private static final List<SettingsDialogFactory> SETTINGS_DIALOG_FACTORIES = Arrays.asList(new GetterSetterSettingsDialogFactory());
+	private static final List<SettingsDialogFactory> SETTINGS_DIALOG_FACTORIES = Arrays.asList(new JacksonPropertyDialogFactory<>());
 
 	/**
 	 * 

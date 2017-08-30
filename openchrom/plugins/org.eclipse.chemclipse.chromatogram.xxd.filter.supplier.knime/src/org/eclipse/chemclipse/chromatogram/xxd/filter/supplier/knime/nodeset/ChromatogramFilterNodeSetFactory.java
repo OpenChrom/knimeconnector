@@ -14,6 +14,7 @@ package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.nodeset;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter;
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilterSupport;
@@ -25,6 +26,12 @@ import org.knime.core.node.NodeSetFactory;
 import org.knime.core.node.NodeSettings;
 import org.knime.core.node.config.ConfigRO;
 
+/**
+ * Node set factory that generates all possible chromatogram filter nodes. A node for a specific filter id can only be generated, if it's filter settings class is registered at the respective extension point.
+ * 
+ * @author Martin Horn, University of Konstanz
+ *
+ */
 public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 
 	private static final NodeLogger LOGGER = NodeLogger.getLogger(ChromatogramFilterNodeSetFactory.class);
@@ -33,8 +40,22 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 
 	public ChromatogramFilterNodeSetFactory() {
 		try {
-			filterIds = Collections.unmodifiableList(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds());
-			// TODO filter those node that provide a filter settings class - otherwise no dialog will be available
+			filterIds = ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds();
+			// filter those nodes that provide a filter settings class - otherwise no dialog would be available
+			filterIds = Collections.unmodifiableList(filterIds.stream().filter(s -> {
+				try {
+					Class filterSettingsClass = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(s).getFilterSettingsClass();
+					if(filterSettingsClass == null) {
+						LOGGER.warn("Filter settings class for filter id '" + s + "' cannot be resolved. Class migt not be provided by the respective extension point.");
+						return false;
+					} else {
+						return true;
+					}
+				} catch(NoChromatogramFilterSupplierAvailableException e) {
+					LOGGER.warn("A problem occurred loading filter with id '" + s + "'.", e);
+					return false;
+				}
+			}).collect(Collectors.toList()));
 		} catch(NoChromatogramFilterSupplierAvailableException e) {
 			LOGGER.warn(e);
 		}

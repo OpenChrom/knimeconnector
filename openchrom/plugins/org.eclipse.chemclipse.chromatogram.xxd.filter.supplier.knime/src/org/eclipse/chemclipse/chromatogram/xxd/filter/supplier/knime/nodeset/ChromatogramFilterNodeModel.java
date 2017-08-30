@@ -14,10 +14,9 @@ package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.nodeset;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
-import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.SettingsDialogManager;
-import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.SettingsObject;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.SettingsObjectWrapper;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialoggeneration.DialogGenerationNodeModel;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
@@ -27,56 +26,67 @@ import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeLogger;
-import org.knime.core.node.NodeModel;
-import org.knime.core.node.NodeSettingsRO;
-import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
-import org.knime.core.node.port.PortTypeRegistry;
 
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObjectSpec;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
 
-public class ChromatogramFilterNodeModel extends NodeModel {
+/**
+ * Concatenates chromatogram filters (see {@link ChromatogramFilterPortObject}) and optionally executes them on a given chromatogram selection (see {@link ChromatogramSelectionMSDPortObject}).
+ * 
+ * @author Martin Horn, University of Konstanz
+ *
+ */
+public class ChromatogramFilterNodeModel extends DialogGenerationNodeModel<IChromatogramFilterSettings> {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramFilterNodeModel.class);
-	private SettingsObject<IChromatogramFilterSettings> filterSettings;
 	private String filterId;
-	private Class<? extends IChromatogramFilterSettings> filterSettingsClass;
 
-	ChromatogramFilterNodeModel(String filterId) {
-		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
+	ChromatogramFilterNodeModel(String filterId, SettingsObjectWrapper<IChromatogramFilterSettings> so) {
+		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE_OPTIONAL, ChromatogramFilterPortObject.TYPE_OPTIONAL}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE, ChromatogramFilterPortObject.TYPE}, so);
 		this.filterId = filterId;
-		try {
-			this.filterSettingsClass = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterId).getFilterSettingsClass();
-			filterSettings = (SettingsObject<IChromatogramFilterSettings>)SettingsDialogManager.getSettingsDialogFactoryFor(filterSettingsClass).get().createSettings(filterSettingsClass);
-		} catch(NoChromatogramFilterSupplierAvailableException e) {
-			logger.warn(e);
-		}
+	}
+
+	@Override
+	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
+
+		return new PortObjectSpec[]{new ChromatogramSelectionMSDPortObjectSpec(), new ChromatogramFilterPortObjectSpec()};
 	}
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
-		if(chromatogramSelectionPortObject != null) {
-			/*
-			 * Apply the filter.
-			 */
-			logger.info("Apply the filter");
-			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
-			//
-			IProcessingInfo processingInfo = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.applyFilter(chromatogramSelection, filterSettings.getObject(), filterId, new NullProgressMonitor());
-			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
-			//
-			return new PortObject[]{chromatogramSelectionPortObject};
+		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject;
+		/*
+		 * Apply the filter if a chromatogram selection is given at port 0.
+		 */
+		if(inObjects[0] != null) {
+			chromatogramSelectionPortObject = (ChromatogramSelectionMSDPortObject)inObjects[0];
+			if(chromatogramSelectionPortObject.getChromatogramSelectionMSD() != ChromatogramSelectionMSDPortObject.EMPTY_CHROMATOGRAM_SELECTION) {
+				logger.info("Apply the filter");
+				IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
+				IProcessingInfo processingInfo = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.applyFilter(chromatogramSelection, getSettingsObject(), filterId, new NullProgressMonitor());
+				ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
+			}
 		} else {
-			/*
-			 * If things have gone wrong.
-			 */
-			return new PortObject[]{};
+			// otherwise pass an empty chromatogram selection port object
+			chromatogramSelectionPortObject = new ChromatogramSelectionMSDPortObject();
 		}
+		/*
+		 * Store applied chromatogram filter and it's settings
+		 */
+		ChromatogramFilterPortObject chromatogramFilterPortObject;
+		if(inObjects[1] != null) {
+			chromatogramFilterPortObject = (ChromatogramFilterPortObject)inObjects[1];
+		} else {
+			chromatogramFilterPortObject = new ChromatogramFilterPortObject();
+		}
+		chromatogramFilterPortObject.addChromatogramFilter(filterId, getSettingsObject());
+		return new PortObject[]{chromatogramSelectionPortObject, chromatogramFilterPortObject};
 	}
 
 	/**
@@ -88,51 +98,12 @@ public class ChromatogramFilterNodeModel extends NodeModel {
 	}
 
 	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void saveSettingsTo(final NodeSettingsWO settings) {
-
-		filterSettings.saveSettingsTo(settings);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
-
-		filterSettings.loadValidatedSettingsFrom(settings);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
-
-		filterSettings.validateSettings(settings);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected void saveInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
 	}
 }

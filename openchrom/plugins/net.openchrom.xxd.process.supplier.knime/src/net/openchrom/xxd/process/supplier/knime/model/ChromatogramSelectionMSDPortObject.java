@@ -42,8 +42,11 @@ import org.knime.core.node.port.PortTypeRegistry;
 
 public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 
+	public static final ChromatogramSelectionMSD EMPTY_CHROMATOGRAM_SELECTION = new ChromatogramSelectionMSD(new ChromatogramMSD());
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class);
-	private static final String CHROMATOGRAM_SELECTION = "CHROMATOGRAM_SELECTION";
+	public static final PortType TYPE_OPTIONAL = PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class, true);
+	private static final String CHROMATOGRAM_SELECTION_HEADER = "CHROMATOGRAM_SELECTION_HEADER";
+	private static final String CHROMATOGRAM_SELECTION_SETTINGS = "CHROMATOGRAM_SELECTION_SETTINGS";
 	//
 	private IChromatogramSelectionMSD chromatogramSelectionMSD;
 	private ChromatogramSelectionMSDPortObjectSpec portObjectSpec;
@@ -52,7 +55,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	}
 
 	public ChromatogramSelectionMSDPortObject() {
-		this(new ChromatogramSelectionMSD(new ChromatogramMSD()));
+		this(EMPTY_CHROMATOGRAM_SELECTION);
 	}
 
 	public ChromatogramSelectionMSDPortObject(IChromatogramSelectionMSD chromatogramSelectionMSD) {
@@ -85,11 +88,19 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 
 	@Override
 	protected void save(PortObjectZipOutputStream out, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
+		ZipEntry zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION_HEADER);
+		out.putNextEntry(zipEntry);
+		if(getChromatogramSelectionMSD() == EMPTY_CHROMATOGRAM_SELECTION) {
+			out.write(0);
+			out.closeEntry();
+			return;
+		} else {
+			out.write(1);
+		}
 		ChromatogramWriterMSD chromatogramWriterMSD = new ChromatogramWriterMSD();
 		chromatogramWriterMSD.writeChromatogram(out, getChromatogramSelectionMSD().getChromatogramMSD(), new NullProgressMonitor());
 		//
-		ZipEntry zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION);
+		zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION_SETTINGS);
 		out.putNextEntry(zipEntry);
 		DataOutputStream dataOutputStream = new DataOutputStream(out);
 		dataOutputStream.writeInt(chromatogramSelectionMSD.getStartRetentionTime());
@@ -102,17 +113,24 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 
 	@Override
 	protected void load(PortObjectZipInputStream in, PortObjectSpec spec, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
+		ZipEntry zipEntry = in.getNextEntry();
+		assert zipEntry.getName().equals(CHROMATOGRAM_SELECTION_HEADER);		
+		int typeFlag = in.read();
+		if(typeFlag == 0) {
+			// empty chromatogram selection
+			chromatogramSelectionMSD = EMPTY_CHROMATOGRAM_SELECTION;
+			return;
+		}
 		ChromatogramReaderMSD chromatogramReaderMSD = new ChromatogramReaderMSD();
 		IChromatogramMSD chromatogramMSD = chromatogramReaderMSD.read(in, new NullProgressMonitor());
 		chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
 		chromatogramSelectionMSD.setStartRetentionTime(in.read());
 		chromatogramSelectionMSD.setStopRetentionTime(in.read());
 		//
-		ZipEntry zipEntry = in.getNextEntry();
+		zipEntry = in.getNextEntry();
 		if(zipEntry != null && !zipEntry.isDirectory()) {
 			String name = zipEntry.getName();
-			if(name.equals(CHROMATOGRAM_SELECTION)) {
+			if(name.equals(CHROMATOGRAM_SELECTION_SETTINGS)) {
 				DataInputStream dataInputStream = new DataInputStream(in);
 				chromatogramSelectionMSD.setStartRetentionTime(dataInputStream.readInt());
 				chromatogramSelectionMSD.setStopRetentionTime(dataInputStream.readInt());

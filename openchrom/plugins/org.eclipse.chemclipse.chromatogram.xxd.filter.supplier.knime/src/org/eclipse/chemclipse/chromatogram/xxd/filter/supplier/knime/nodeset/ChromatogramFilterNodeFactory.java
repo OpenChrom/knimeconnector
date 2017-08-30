@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 hornm.
+ * Copyright (c) 2017 Martin Horn.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,33 +7,67 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * hornm - initial API and implementation
+ * Martin Horn - initial API and implementation
  *******************************************************************************/
 package org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.nodeset;
 
+import java.util.Map.Entry;
+
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter;
+import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.IChromatogramFilterSupplier;
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
 import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.SettingsDialogFactory;
-import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.SettingsDialogManager;
-import org.knime.core.node.DynamicNodeFactory;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.SettingsObjectWrapper;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialogfactory.property.JacksonPropertyDialogFactory;
+import org.eclipse.chemclipse.chromatogram.xxd.filter.supplier.knime.dialoggeneration.DialogGenerationNodeFactory;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeDescription;
 import org.knime.core.node.NodeDescription27Proxy;
-import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeView;
 import org.knime.core.node.config.ConfigRO;
 import org.knime.core.node.config.ConfigWO;
+import org.knime.node2012.FullDescriptionDocument.FullDescription;
+import org.knime.node2012.InPortDocument.InPort;
 import org.knime.node2012.KnimeNodeDocument;
+import org.knime.node2012.KnimeNodeDocument.KnimeNode;
+import org.knime.node2012.OptionDocument.Option;
+import org.knime.node2012.OutPortDocument.OutPort;
+import org.knime.node2012.PortsDocument.Ports;
+import org.knime.node2012.TabDocument.Tab;
 
-public class ChromatogramFilterNodeFactory extends DynamicNodeFactory<ChromatogramFilterNodeModel> {
+/**
+ * Factory for chromatogram filter nodes. Dialog is generated from the filter settings class (jackson annotated) belonging to a respective filter id (see {@link JacksonPropertyDialogFactory}).
+ * 
+ * @author Martin Horn, University of Konstanz
+ *
+ */
+public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<ChromatogramFilterNodeModel, IChromatogramFilterSettings> {
 
 	private String filterId;
 
 	@Override
-	public ChromatogramFilterNodeModel createNodeModel() {
+	protected SettingsDialogFactory<IChromatogramFilterSettings> createSettingsDialogFactory() {
 
-		return new ChromatogramFilterNodeModel(filterId);
+		JacksonPropertyDialogFactory<IChromatogramFilterSettings> factory = new JacksonPropertyDialogFactory<>();
+		Class<? extends IChromatogramFilterSettings> filterSettingsClass;
+		try {
+			filterSettingsClass = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterId).getFilterSettingsClass();
+			if(filterSettingsClass == null) {
+				throw new IllegalStateException("Filter settings class for filter id '" + filterId + "' cannot be resolved. Class migt not be provided by the respective extension point.");
+			}
+		} catch(NoChromatogramFilterSupplierAvailableException e) {
+			// TODO better exception handling
+			throw new RuntimeException(e);
+		}
+		factory.setSettingsObjectClass(filterSettingsClass);
+		return factory;
+	}
+
+	@Override
+	public ChromatogramFilterNodeModel createNodeModel(SettingsObjectWrapper<IChromatogramFilterSettings> settingsObjectWrapper) {
+
+		return new ChromatogramFilterNodeModel(filterId, settingsObjectWrapper);
 	}
 
 	@Override
@@ -49,39 +83,41 @@ public class ChromatogramFilterNodeFactory extends DynamicNodeFactory<Chromatogr
 	}
 
 	@Override
-	protected boolean hasDialog() {
-
-		try {
-			Class<? extends IChromatogramFilterSettings> filterSettingsClass = ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterId).getFilterSettingsClass();
-			if(filterSettingsClass == null) {
-				return false;
-			} else {
-				return SettingsDialogManager.getSettingsDialogFactoryFor(filterSettingsClass).isPresent();
-			}
-		} catch(NoChromatogramFilterSupplierAvailableException e) {
-			// TODO
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-
-		try {
-			Class<? extends IChromatogramFilterSettings> filterSettingsClass = ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterId).getFilterSettingsClass();
-			return SettingsDialogManager.getSettingsDialogFactoryFor(filterSettingsClass).get().createDialog((Class<Object>)filterSettingsClass);
-		} catch(NoChromatogramFilterSupplierAvailableException e) {
-			// TODO
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
 	protected NodeDescription createNodeDescription() {
 
 		KnimeNodeDocument doc = KnimeNodeDocument.Factory.newInstance();
 		try {
-			doc.addNewKnimeNode().setName(ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterId).getFilterName());
+			IChromatogramFilterSupplier filterSupplier = ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterId);
+			KnimeNode node = doc.addNewKnimeNode();
+			node.setIcon("icons/filter.png");
+			node.setType(KnimeNode.Type.MANIPULATOR);
+			node.setName(filterSupplier.getFilterName());
+			FullDescription description = node.addNewFullDescription();
+			description.addNewIntro().newCursor().setTextValue(filterSupplier.getDescription());
+			Tab optionTab = description.addNewTab();
+			optionTab.setName("Options");
+			for(Entry<String, String> optionDesc : getDialogOptionsDescriptions().entrySet()) {
+				Option newOption = optionTab.addNewOption();
+				newOption.setName(optionDesc.getKey());
+				newOption.newCursor().setTextValue(optionDesc.getValue());
+			}
+			Ports ports = node.addNewPorts();
+			InPort inPort1 = ports.addNewInPort();
+			inPort1.setIndex(0);
+			inPort1.setName("Chromatogram Selection");
+			inPort1.newCursor().setTextValue("TODO description");
+			InPort inPort2 = ports.addNewInPort();
+			inPort2.setIndex(1);
+			inPort2.setName("Chromatogram Filter");
+			inPort2.newCursor().setTextValue("TODO description");
+			OutPort outPort1 = ports.addNewOutPort();
+			outPort1.setIndex(0);
+			outPort1.setName("Chromatogram Selection");
+			outPort1.newCursor().setTextValue("TODO description");
+			OutPort outPort2 = ports.addNewOutPort();
+			outPort2.setIndex(1);
+			outPort2.setName("Chromatogram Filter");
+			outPort2.newCursor().setTextValue("TODO description");
 		} catch(NoChromatogramFilterSupplierAvailableException e) {
 			// TODO
 			throw new RuntimeException(e);
