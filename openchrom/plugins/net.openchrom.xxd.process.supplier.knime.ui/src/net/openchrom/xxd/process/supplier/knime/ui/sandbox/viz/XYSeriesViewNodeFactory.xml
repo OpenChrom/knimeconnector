@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="missing" type="Visualizer" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>XY Series Viewer</name>
+    
+    <shortDescription>
+        Let one view a signal.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>Let one view a signal (double vector).</intro>
+        <option name="X Vector">TODO</option>
+        <option name="Y Vector">TODO</option>
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="Double vectors">Table with double vectors</inPort>
+    </ports>    
+</knimeNode>

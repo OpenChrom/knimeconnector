@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./writer.png" type="Sink" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>Chromatogram Writer (MSD)</name>
+    <shortDescription>
+        This node is writes chromatographic data into the OpenChrom *.ocb format.
+    </shortDescription>
+    <fullDescription>
+        <intro>This node allows to write a valid data table into OpenChrom *.ocb format.</intro>
+        <option name="File Export">This is the path of the file to be exported.</option>
+    </fullDescription>
+    <ports>
+        <inPort index="0" name="Chromatogram (MSD) Table">The chromatogram (MSD) data table.</inPort>
+    </ports>    
+    <views>
+        <view index="0" name="Chromatogram (MSD) Overview">An overview of the chromatogram is displayed here.</view>
+    </views>
+</knimeNode>

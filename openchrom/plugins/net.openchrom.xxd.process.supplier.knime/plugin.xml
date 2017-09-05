@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.knime.core.PortType">
+      <portType
+            hidden="false"
+            name="Chromatogram Selection (MSD)"
+            objectClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject"
+            objectSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject$Serializer"
+            specClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec"
+            specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec$Serializer">
+      </portType>
+   </extension>
+
+</plugin>
