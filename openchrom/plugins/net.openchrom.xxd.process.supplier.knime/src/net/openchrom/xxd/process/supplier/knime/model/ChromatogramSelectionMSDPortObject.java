@@ -88,6 +88,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 
 	@Override
 	protected void save(PortObjectZipOutputStream out, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+
 		ZipEntry zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION_HEADER);
 		out.putNextEntry(zipEntry);
 		if(getChromatogramSelectionMSD() == EMPTY_CHROMATOGRAM_SELECTION) {
@@ -113,8 +114,9 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 
 	@Override
 	protected void load(PortObjectZipInputStream in, PortObjectSpec spec, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+
 		ZipEntry zipEntry = in.getNextEntry();
-		assert zipEntry.getName().equals(CHROMATOGRAM_SELECTION_HEADER);		
+		assert zipEntry.getName().equals(CHROMATOGRAM_SELECTION_HEADER);
 		int typeFlag = in.read();
 		if(typeFlag == 0) {
 			// empty chromatogram selection
