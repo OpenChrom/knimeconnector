@@ -52,14 +52,7 @@
             icon="icons/filter.png"
             description="Filter"
             path="/openchrom">
-      </category>    
-      <category
-            level-id="manipulator"
-            name="Manipulator"
-            icon="icons/manipulator.png"
-            description="Manipulator"
-            path="/openchrom">
-      </category>    
+      </category>  
       <category
             level-id="translator"
             name="Translator"
@@ -205,10 +198,6 @@
             category-path="/openchrom/visualization"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.massspectrum.MassSpectrumNodeFactory">
       </node>
-      <node
-            category-path="/openchrom/manipulator"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.manipulator.ChromatogramSelectionModifierNodeFactory">
-      </node> 
       <node
             category-path="/openchrom/translator"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.CsMsdToTableNodeFactory">
