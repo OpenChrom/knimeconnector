@@ -26,4 +26,6 @@ public interface PropertyProvider {
 	double getDoubleProperty(String id);
 
 	String getStringProperty(String id);
+
+	boolean getBooleanProperty(String id);
 }

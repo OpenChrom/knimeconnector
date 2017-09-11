@@ -45,6 +45,7 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 			Class<?> rawType = p.getField().getRawType();
 			String desc = p.getMetadata().getDescription();
 			String defaultVal = p.getMetadata().getDefaultValue();
+			//
 			if(rawType == int.class || rawType == Integer.class) {
 				coll.addIntProperty(p.getName(), p.getName(), defaultVal == null ? 0 : Integer.valueOf(defaultVal));
 			} else if(rawType == float.class || rawType == Float.class) {
@@ -53,6 +54,8 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 				coll.addDoubleProperty(p.getName(), p.getName(), Double.valueOf(defaultVal));
 			} else if(rawType == String.class) {
 				coll.addStringProperty(p.getName(), p.getName(), defaultVal);
+			} else if(rawType == boolean.class || rawType == Boolean.class) {
+				coll.addBooleanProperty(p.getName(), p.getName(), Boolean.valueOf(defaultVal));
 			}
 			coll.addPropertyDescriptions(p.getName(), desc);
 		}
@@ -67,6 +70,7 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 		List<BeanPropertyDefinition> props = beanDesc.findProperties();
 		for(BeanPropertyDefinition p : props) {
 			Class<?> rawType = p.getField().getRawType();
+			//
 			if(rawType == int.class || rawType == Integer.class) {
 				objectNode.put(p.getName(), prov.getIntProperty(p.getName()));
 			} else if(rawType == float.class || rawType == Float.class) {
@@ -75,6 +79,8 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 				objectNode.put(p.getName(), prov.getDoubleProperty(p.getName()));
 			} else if(rawType == String.class) {
 				objectNode.put(p.getName(), prov.getStringProperty(p.getName()));
+			} else if(rawType == boolean.class || rawType == Boolean.class) {
+				objectNode.put(p.getName(), prov.getBooleanProperty(p.getName()));
 			}
 		}
 		return mapper.convertValue(objectNode, obj);

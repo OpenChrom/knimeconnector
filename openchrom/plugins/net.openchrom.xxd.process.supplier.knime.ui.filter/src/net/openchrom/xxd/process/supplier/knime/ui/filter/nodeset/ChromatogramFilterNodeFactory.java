@@ -90,7 +90,7 @@ public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<C
 		try {
 			IChromatogramFilterSupplier filterSupplier = ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterId);
 			KnimeNode node = doc.addNewKnimeNode();
-			node.setIcon("icons/filter.png");
+			node.setIcon("./filter.png");
 			node.setType(KnimeNode.Type.MANIPULATOR);
 			node.setName(filterSupplier.getFilterName());
 			FullDescription description = node.addNewFullDescription();
@@ -106,19 +106,19 @@ public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<C
 			InPort inPort1 = ports.addNewInPort();
 			inPort1.setIndex(0);
 			inPort1.setName("Chromatogram Selection");
-			inPort1.newCursor().setTextValue("TODO description");
+			inPort1.newCursor().setTextValue("Use this input if you'd like to develop a method (chromatogram is persisted - slow)");
 			InPort inPort2 = ports.addNewInPort();
 			inPort2.setIndex(1);
 			inPort2.setName("Chromatogram Filter");
-			inPort2.newCursor().setTextValue("TODO description");
+			inPort2.newCursor().setTextValue("Use this input if you'd like to batch process data (chromatogram is not persisted - fast)");
 			OutPort outPort1 = ports.addNewOutPort();
 			outPort1.setIndex(0);
 			outPort1.setName("Chromatogram Selection");
-			outPort1.newCursor().setTextValue("TODO description");
+			outPort1.newCursor().setTextValue("Use this output if you'd like to develop a method (chromatogram is persisted - slow)");
 			OutPort outPort2 = ports.addNewOutPort();
 			outPort2.setIndex(1);
 			outPort2.setName("Chromatogram Filter");
-			outPort2.newCursor().setTextValue("TODO description");
+			outPort2.newCursor().setTextValue("Use this output if you'd like to batch process data (chromatogram is not persisted - fast)");
 		} catch(NoChromatogramFilterSupplierAvailableException e) {
 			// TODO
 			throw new RuntimeException(e);

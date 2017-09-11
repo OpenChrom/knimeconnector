@@ -17,9 +17,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.knime.core.node.defaultnodesettings.DialogComponent;
+import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
 import org.knime.core.node.defaultnodesettings.DialogComponentString;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
+import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelDouble;
 import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
@@ -93,6 +95,19 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public String getStringProperty(String id) {
 
 		return ((SettingsModelString)settingsModels.get(id)).getStringValue();
+	}
+
+	@Override
+	public void addBooleanProperty(String id, String name, boolean defaultValue) {
+
+		dialogComponents.add(new DialogComponentBoolean(new SettingsModelBoolean(id, defaultValue), name));
+		settingsModels.put(id, new SettingsModelBoolean(id, defaultValue));
+	}
+
+	@Override
+	public boolean getBooleanProperty(String id) {
+
+		return ((SettingsModelBoolean)settingsModels.get(id)).getBooleanValue();
 	}
 
 	public void addPropertyDescriptions(String name, String description) {

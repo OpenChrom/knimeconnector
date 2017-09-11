@@ -27,5 +27,7 @@ public interface PropertyCollector {
 
 	void addStringProperty(String id, String name, String defaultValue);
 
+	void addBooleanProperty(String id, String name, boolean defaultValue);
+
 	void addPropertyDescriptions(String name, String description);
 }
