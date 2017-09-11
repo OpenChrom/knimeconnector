@@ -1,13 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2017 hornm.
+ * Copyright (c) 2017 hornm. Jan Holy
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * hornm - initial API and implementation
+ * Jan Holy- implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
@@ -46,28 +47,13 @@ public class ChromatogramFilterPortObject extends AbstractSimplePortObject {
 	/** Convenience accessor for the port type. */
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ChromatogramFilterPortObject.class);
 	public static final PortType TYPE_OPTIONAL = PortTypeRegistry.getInstance().getPortType(ChromatogramFilterPortObject.class, true);
-	private final ObjectMapper mapper = new ObjectMapper();
 	private List<String> filterIds = new ArrayList<>();
 	private List<IChromatogramFilterSettings> filterSettings = new ArrayList<>();
-
-	/**
-	 * List of filter ids to be applied in the given order and the corresponding settings given by {@link #getFilterSettings()}.
-	 * 
-	 * @return list of filter ids
-	 */
-	public List<String> getFilterIds() {
-
-		return Collections.unmodifiableList(filterIds);
-	}
-
-	public List<IChromatogramFilterSettings> getFilterSettings() {
-
-		return Collections.unmodifiableList(filterSettings);
-	}
+	private final ObjectMapper mapper = new ObjectMapper();
 
 	/**
 	 * Adds a new filter to the list of filters.
-	 * 
+	 *
 	 * @param filterId
 	 *            the filter id of the filter to be added
 	 * @param settings
@@ -86,10 +72,19 @@ public class ChromatogramFilterPortObject extends AbstractSimplePortObject {
 		filterSettings.add(settings);
 	}
 
-	@Override
-	public String getSummary() {
+	/**
+	 * List of filter ids to be applied in the given order and the corresponding settings given by {@link #getFilterSettings()}.
+	 *
+	 * @return list of filter ids
+	 */
+	public List<String> getFilterIds() {
 
-		return "Chromatogram Filter";
+		return Collections.unmodifiableList(filterIds);
+	}
+
+	public List<IChromatogramFilterSettings> getFilterSettings() {
+
+		return Collections.unmodifiableList(filterSettings);
 	}
 
 	@Override
@@ -99,18 +94,9 @@ public class ChromatogramFilterPortObject extends AbstractSimplePortObject {
 	}
 
 	@Override
-	protected void save(ModelContentWO model, ExecutionMonitor exec) throws CanceledExecutionException {
+	public String getSummary() {
 
-		model.addStringArray("filter_ids", filterIds.toArray(new String[filterIds.size()]));
-		String[] settings = filterSettings.stream().map(s -> {
-			try {
-				return mapper.writeValueAsString(s);
-			} catch(JsonProcessingException e) {
-				// TODO exception handling
-				throw new RuntimeException(e);
-			}
-		}).collect(Collectors.toList()).toArray(new String[filterSettings.size()]);
-		model.addStringArray("filter_settings", settings);
+		return "Chromatogram Filter";
 	}
 
 	@Override
@@ -121,12 +107,36 @@ public class ChromatogramFilterPortObject extends AbstractSimplePortObject {
 		for(int i = 0; i < settings.length; i++) {
 			try {
 				Class<? extends IChromatogramFilterSettings> filterSettingsClass = ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(filterIds.get(i)).getFilterSettingsClass();
-				filterSettings.add(mapper.readValue(settings[i], filterSettingsClass));
-			} catch(IOException
-					| NoChromatogramFilterSupplierAvailableException e) {
+				if(settings[i] != null) {
+					filterSettings.add(mapper.readValue(settings[i], filterSettingsClass));
+				} else {
+					filterSettings.add(filterSettingsClass.newInstance());
+				}
+			} catch(IOException | NoChromatogramFilterSupplierAvailableException
+					| InstantiationException | IllegalAccessException e) {
 				// TODO exception handling
 				throw new RuntimeException(e);
 			}
 		}
+	}
+
+	@Override
+	protected void save(ModelContentWO model, ExecutionMonitor exec) throws CanceledExecutionException {
+
+		model.addStringArray("filter_ids", filterIds.toArray(new String[filterIds.size()]));
+		String[] settings = filterSettings.stream().map(s -> {
+			s.getClass();
+			if(mapper.canSerialize(s.getClass())) {
+				try {
+					return mapper.writeValueAsString(s);
+				} catch(JsonProcessingException e) {
+					// TODO exception handling
+					throw new RuntimeException(e);
+				}
+			} else {
+				return null;
+			}
+		}).collect(Collectors.toList()).toArray(new String[filterSettings.size()]);
+		model.addStringArray("filter_settings", settings);
 	}
 }
