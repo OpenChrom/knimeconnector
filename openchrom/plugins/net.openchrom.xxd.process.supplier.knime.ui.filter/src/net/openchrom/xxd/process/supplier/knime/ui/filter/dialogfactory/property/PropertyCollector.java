@@ -23,5 +23,9 @@ public interface PropertyCollector {
 
 	void addFloatProperty(String id, String name, float defaultValue);
 
+	void addDoubleProperty(String id, String name, double defaultValue);
+
+	void addStringProperty(String id, String name, String defaultValue);
+
 	void addPropertyDescriptions(String name, String description);
 }

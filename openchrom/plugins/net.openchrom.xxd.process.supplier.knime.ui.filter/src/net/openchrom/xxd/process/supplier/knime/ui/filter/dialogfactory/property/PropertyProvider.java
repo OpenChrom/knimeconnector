@@ -22,4 +22,8 @@ public interface PropertyProvider {
 	int getIntProperty(String id);
 
 	float getFloatProperty(String id);
+
+	double getDoubleProperty(String id);
+
+	String getStringProperty(String id);
 }

@@ -18,9 +18,11 @@ import java.util.Map;
 
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
+import org.knime.core.node.defaultnodesettings.DialogComponentString;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
 import org.knime.core.node.defaultnodesettings.SettingsModelDouble;
 import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
  * Helper class for the {@link PropertyDialogFactory} that unifies and implements the {@link PropertyCollector} and {@link PropertyProvider}.
@@ -65,6 +67,32 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public float getFloatProperty(String id) {
 
 		return (float)((SettingsModelDouble)settingsModels.get(id)).getDoubleValue();
+	}
+
+	@Override
+	public void addDoubleProperty(String id, String name, double defaultValue) {
+
+		dialogComponents.add(new DialogComponentNumber(new SettingsModelDouble(id, defaultValue), name, 1));
+		settingsModels.put(id, new SettingsModelDouble(id, defaultValue));
+	}
+
+	@Override
+	public double getDoubleProperty(String id) {
+
+		return ((SettingsModelDouble)settingsModels.get(id)).getDoubleValue();
+	}
+
+	@Override
+	public void addStringProperty(String id, String name, String defaultValue) {
+
+		dialogComponents.add(new DialogComponentString(new SettingsModelString(id, defaultValue), name));
+		settingsModels.put(id, new SettingsModelString(id, defaultValue));
+	}
+
+	@Override
+	public String getStringProperty(String id) {
+
+		return ((SettingsModelString)settingsModels.get(id)).getStringValue();
 	}
 
 	public void addPropertyDescriptions(String name, String description) {
