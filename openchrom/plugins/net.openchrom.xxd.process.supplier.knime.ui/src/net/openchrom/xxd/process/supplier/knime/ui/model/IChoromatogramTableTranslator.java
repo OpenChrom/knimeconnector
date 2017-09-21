@@ -18,4 +18,6 @@ import org.knime.core.node.ExecutionContext;
 public interface IChoromatogramTableTranslator {
 
 	IChromatogram getChromatogram(BufferedDataTable bufferedDataTable, final ExecutionContext exec) throws Exception;
+	
+	
 }

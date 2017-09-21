@@ -22,6 +22,10 @@ public abstract class ChoromatogramTableTranslator implements IChoromatogramTabl
 	protected final String RETENTION_INDEX = "RI";
 	protected final String RETENTION_TIME = "RT (milliseconds)";
 
+	
+	protected ChoromatogramTableTranslator() {
+	}
+	
 	protected boolean checkRetentionTimes(BufferedDataTable bufferedDataTable, int columnNumber) {
 
 		if(!bufferedDataTable.getDataTableSpec().getColumnSpec(columnNumber).getType().equals(IntCell.TYPE)) {

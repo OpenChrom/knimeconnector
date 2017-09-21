@@ -1,11 +1,11 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -32,12 +32,13 @@ import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObje
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObjectSpec;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
+import net.openchrom.xxd.process.supplier.knime.supplier.ProcessingChromatogram;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.dialoggeneration.DialogGenerationNodeModel;
 
 /**
  * Concatenates chromatogram filters (see {@link ChromatogramFilterPortObject}) and optionally executes them on a given chromatogram selection (see {@link ChromatogramSelectionMSDPortObject}).
- * 
+ *
  * @author Martin Horn, University of Konstanz
  *
  */
@@ -69,7 +70,7 @@ public class ChromatogramFilterNodeModel extends DialogGenerationNodeModel<IChro
 			if(chromatogramSelectionPortObject.getChromatogramSelectionMSD() != ChromatogramSelectionMSDPortObject.EMPTY_CHROMATOGRAM_SELECTION) {
 				logger.info("Apply the filter");
 				IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
-				IProcessingInfo processingInfo = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.applyFilter(chromatogramSelection, getSettingsObject(), filterId, new NullProgressMonitor());
+				IProcessingInfo processingInfo = ProcessingChromatogram.apply(chromatogramSelection, getSettingsObject(), filterId, new NullProgressMonitor());
 				ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 			}
 		} else {
@@ -89,16 +90,16 @@ public class ChromatogramFilterNodeModel extends DialogGenerationNodeModel<IChro
 		return new PortObject[]{chromatogramSelectionPortObject, chromatogramFilterPortObject};
 	}
 
+	@Override
+	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected void reset() {
-
-	}
-
-	@Override
-	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
 	}
 

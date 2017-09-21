@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
@@ -34,10 +34,11 @@ import org.knime.core.node.port.PortType;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
+import net.openchrom.xxd.process.supplier.knime.supplier.ProcessingChromatogram;
 
 /**
  * Node model for the "Apply Filters"-node.
- * 
+ *
  * @author Martin Horn, University of Konstanz
  *
  */
@@ -62,7 +63,7 @@ public class ChromatogramApplyFiltersNodeModel extends NodeModel {
 		List<IChromatogramFilterSettings> filterSettings = chromatogramFilterPortObject.getFilterSettings();
 		IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
 		for(int i = 0; i < filterIds.size(); i++) {
-			IProcessingInfo processingInfo = org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter.applyFilter(chromatogramSelection, filterSettings.get(i), filterIds.get(i), new NullProgressMonitor());
+			IProcessingInfo processingInfo = ProcessingChromatogram.apply(chromatogramSelection, filterSettings.get(i), filterIds.get(i), new NullProgressMonitor());
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 		}
 		return new PortObject[]{chromatogramSelectionPortObject};
@@ -70,6 +71,16 @@ public class ChromatogramApplyFiltersNodeModel extends NodeModel {
 
 	@Override
 	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+
+	}
+
+	@Override
+	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
+
+	}
+
+	@Override
+	protected void reset() {
 
 	}
 
@@ -85,16 +96,6 @@ public class ChromatogramApplyFiltersNodeModel extends NodeModel {
 
 	@Override
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
-
-	}
-
-	@Override
-	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
-
-	}
-
-	@Override
-	protected void reset() {
 
 	}
 }

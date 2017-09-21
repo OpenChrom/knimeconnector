@@ -14,6 +14,7 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Jan Holy - implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.translator;
 
@@ -38,7 +39,6 @@ import org.knime.core.node.port.PortTypeRegistry;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
-import net.openchrom.xxd.process.supplier.knime.ui.model.msd.ChoromatogramMSDTableTranslator;
 import net.openchrom.xxd.process.supplier.knime.ui.model.msd.IChoromatogramMSDTableTranslator;
 
 public class CsMsdToTableNodeModel extends NodeModel {
@@ -54,7 +54,7 @@ public class CsMsdToTableNodeModel extends NodeModel {
 	}
 
 	//
-	private final IChoromatogramMSDTableTranslator choromatogramMSDTableTranslator = new ChoromatogramMSDTableTranslator();
+	private final IChoromatogramMSDTableTranslator choromatogramMSDTableTranslator = IChoromatogramMSDTableTranslator.create();
 	private final SettingsModelBoolean settingsModelUseTic = createSettingsModelUseTic();
 
 	protected CsMsdToTableNodeModel() {

@@ -22,10 +22,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.xxd.converter.supplier.chemclipse;bundle-version="0.8.0",
  org.eclipse.chemclipse.chromatogram.filter;bundle-version="0.8.0",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.7.1",
- com.fasterxml.jackson.core.jackson-core;bundle-version="2.7.1"
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.7.1",
+ org.eclipse.chemclipse.chromatogram.msd.filter,
+ org.eclipse.chemclipse.chromatogram.csd.filter
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: net.openchrom.xxd.process.supplier.knime.model,
- net.openchrom.xxd.process.supplier.knime.notifier
+ net.openchrom.xxd.process.supplier.knime.notifier,
+ net.openchrom.xxd.process.supplier.knime.supplier
 Import-Package: javax.annotation;version="1.2.0"

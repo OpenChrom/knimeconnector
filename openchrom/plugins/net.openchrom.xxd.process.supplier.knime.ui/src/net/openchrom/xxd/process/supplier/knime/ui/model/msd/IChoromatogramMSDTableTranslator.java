@@ -21,6 +21,10 @@ import org.knime.core.node.ExecutionContext;
 import net.openchrom.xxd.process.supplier.knime.ui.model.IChoromatogramTableTranslator;
 
 public interface IChoromatogramMSDTableTranslator extends IChoromatogramTableTranslator {
+	
+	static IChoromatogramMSDTableTranslator create(){
+		return new ChoromatogramMSDTableTranslator();
+	}
 
 	BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException;
 
