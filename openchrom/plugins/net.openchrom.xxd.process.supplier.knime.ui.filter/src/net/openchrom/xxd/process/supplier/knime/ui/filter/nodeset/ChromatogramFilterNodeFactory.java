@@ -31,7 +31,7 @@ import org.knime.node2012.OutPortDocument.OutPort;
 import org.knime.node2012.PortsDocument.Ports;
 import org.knime.node2012.TabDocument.Tab;
 
-import net.openchrom.xxd.process.supplier.knime.supplier.ProcessingChromatogram;
+import net.openchrom.xxd.process.supplier.knime.processing.ProcessingChromatogram;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.property.JacksonPropertyDialogFactory;

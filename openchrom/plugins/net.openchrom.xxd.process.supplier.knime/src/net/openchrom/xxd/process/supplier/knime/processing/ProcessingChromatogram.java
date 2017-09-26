@@ -9,7 +9,7 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.supplier;
+package net.openchrom.xxd.process.supplier.knime.processing;
 
 import org.eclipse.chemclipse.chromatogram.csd.filter.core.chromatogram.ChromatogramFilterCSD;
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter;

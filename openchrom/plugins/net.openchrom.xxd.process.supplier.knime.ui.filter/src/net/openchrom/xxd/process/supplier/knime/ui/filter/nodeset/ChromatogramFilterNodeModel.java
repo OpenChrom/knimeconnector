@@ -32,7 +32,7 @@ import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObje
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObjectSpec;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
-import net.openchrom.xxd.process.supplier.knime.supplier.ProcessingChromatogram;
+import net.openchrom.xxd.process.supplier.knime.processing.ProcessingChromatogram;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.dialoggeneration.DialogGenerationNodeModel;
 

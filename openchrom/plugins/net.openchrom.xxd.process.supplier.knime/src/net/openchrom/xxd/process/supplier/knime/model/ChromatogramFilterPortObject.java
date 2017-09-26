@@ -34,7 +34,7 @@ import org.knime.core.node.port.PortTypeRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.openchrom.xxd.process.supplier.knime.supplier.ProcessingChromatogram;
+import net.openchrom.xxd.process.supplier.knime.processing.ProcessingChromatogram;
 
 public class ChromatogramFilterPortObject extends AbstractSimplePortObject {
 

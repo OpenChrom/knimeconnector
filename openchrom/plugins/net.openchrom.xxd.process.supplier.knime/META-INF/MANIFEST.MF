@@ -30,5 +30,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: net.openchrom.xxd.process.supplier.knime.model,
  net.openchrom.xxd.process.supplier.knime.notifier,
- net.openchrom.xxd.process.supplier.knime.supplier
+ net.openchrom.xxd.process.supplier.knime.processing
 Import-Package: javax.annotation;version="1.2.0"

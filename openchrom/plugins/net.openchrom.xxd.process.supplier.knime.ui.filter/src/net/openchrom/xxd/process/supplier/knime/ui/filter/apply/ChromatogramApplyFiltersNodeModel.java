@@ -34,7 +34,7 @@ import org.knime.core.node.port.PortType;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
-import net.openchrom.xxd.process.supplier.knime.supplier.ProcessingChromatogram;
+import net.openchrom.xxd.process.supplier.knime.processing.ProcessingChromatogram;
 
 /**
  * Node model for the "Apply Filters"-node.
