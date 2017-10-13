@@ -9,12 +9,13 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.model.msd;
+package net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignal;
 import org.eclipse.chemclipse.model.signals.ITotalScanSignals;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
@@ -41,88 +42,38 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-import net.openchrom.xxd.process.supplier.knime.ui.model.ChoromatogramTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.ChoromatogramTableTranslator;
 
 public class ChoromatogramMSDTableTranslator extends ChoromatogramTableTranslator implements IChoromatogramMSDTableTranslator {
 
 	private static final double DEFAULT_MZ = 18.0d;
 	private static final String TIC = "TIC";
+	private String translationType;
 
-	protected boolean checkAbudance(BufferedDataTable bufferedDataTable, int startColumnNumber, int numberOfColumn) {
-
-		for(int i = 0; i < numberOfColumn; i++) {
-			if(!bufferedDataTable.getDataTableSpec().getColumnSpec(startColumnNumber + i).getType().equals(DoubleCell.TYPE)) {
-				return false;
-			}
+	public ChoromatogramMSDTableTranslator(String extractionType) {
+		super();
+		if(extractionType.equals(TRANSLATION_TYPE_TIC) || extractionType.equals(TRANSLATION_TYPE_XIC)) {
+			this.translationType = extractionType;
+		} else {
+			extractionType = TRANSLATION_TYPE_TIC;
 		}
-		CloseableRowIterator iterator = bufferedDataTable.iterator();
-		while(iterator.hasNext()) {
-			DataRow row = iterator.next();
-			for(int i = 0; i < numberOfColumn; i++) {
-				DataCell cell = row.getCell(startColumnNumber + i);
-				if(cell.isMissing()) {
-					iterator.close();
-					return false;
-				}
-				double abundance = Double.parseDouble(cell.toString());
-				if(abundance < 0) {
-					iterator.close();
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	private boolean checkAbudanceTIC(BufferedDataTable bufferedDataTable, int startColumnNumber) {
-
-		String columnName = bufferedDataTable.getDataTableSpec().getColumnSpec(startColumnNumber).getName();
-		try {
-			Integer.parseInt(columnName);
-			return false;
-		} catch(Exception e) {
-		}
-		return checkAbudance(bufferedDataTable, startColumnNumber, 1);
-	}
-
-	private boolean checkAbudanceXIC(BufferedDataTable bufferedDataTable, int startColumnNumber, int numberOfColumn) {
-
-		for(int i = 0; i < numberOfColumn; i++) {
-			String columnName = bufferedDataTable.getDataTableSpec().getColumnSpec(startColumnNumber + i).getName();
-			try {
-				Integer.parseInt(columnName);
-				// TODO: have to be sorted or shell I sorted it ?
-			} catch(Exception e) {
-				return false;
-			}
-		}
-		return checkAbudance(bufferedDataTable, startColumnNumber, numberOfColumn);
-	}
-
-	public boolean checkTableTIC(BufferedDataTable bufferedDataTable, final ExecutionContext exec) {
-
-		// test column
-		DataTableSpec dataTableSpec = bufferedDataTable.getDataTableSpec();
-		int numColumns = dataTableSpec.getNumColumns();
-		if(numColumns == 3) {
-			return checkRetentionTimes(bufferedDataTable, 0) && checkRetentionTimesIndexColumn(bufferedDataTable, 1) && checkAbudanceTIC(bufferedDataTable, 2);
-		}
-		return false;
-	}
-
-	public boolean checkTableXIC(BufferedDataTable bufferedDataTable, final ExecutionContext exec) {
-
-		// test column
-		DataTableSpec dataTableSpec = bufferedDataTable.getDataTableSpec();
-		int numColumns = dataTableSpec.getNumColumns();
-		if(numColumns >= 3) {
-			return checkRetentionTimes(bufferedDataTable, 0) && checkRetentionTimesIndexColumn(bufferedDataTable, 1) && checkAbudanceXIC(bufferedDataTable, 2, numColumns - 2);
-		}
-		return false;
 	}
 
 	@Override
-	public BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+	public BufferedDataTable getBufferedDataTable(IChromatogramSelection chromatogramSelection, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+
+		if(chromatogramSelection instanceof IChromatogramSelectionMSD) {
+			IChromatogramSelectionMSD chromatogramSelectionMSD = (IChromatogramSelectionMSD)chromatogramSelection;
+			if(translationType.equals(TRANSLATION_TYPE_TIC)) {
+				return getBufferedDataTableTIC(chromatogramSelectionMSD, exec);
+			} else if(translationType.equals(TRANSLATION_TYPE_XIC)) {
+				return getBufferedDataTableXIC(chromatogramSelectionMSD, exec);
+			}
+		}
+		return null;
+	}
+
+	private BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
 		/*
 		 * Specification
@@ -168,8 +119,7 @@ public class ChoromatogramMSDTableTranslator extends ChoromatogramTableTranslato
 		return bufferedDataContainer.getTable();
 	}
 
-	@Override
-	public BufferedDataTable getBufferedDataTableXIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+	private BufferedDataTable getBufferedDataTableXIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
 		/*
 		 * Specification
@@ -288,5 +238,92 @@ public class ChoromatogramMSDTableTranslator extends ChoromatogramTableTranslato
 		}
 		//
 		return chromatogramMSD;
+	}
+
+	@Override
+	public String getTranslationType() {
+
+		return translationType;
+	}
+
+	protected boolean checkAbudance(BufferedDataTable bufferedDataTable, int startColumnNumber, int numberOfColumn) {
+
+		for(int i = 0; i < numberOfColumn; i++) {
+			if(!bufferedDataTable.getDataTableSpec().getColumnSpec(startColumnNumber + i).getType().equals(DoubleCell.TYPE)) {
+				return false;
+			}
+		}
+		CloseableRowIterator iterator = bufferedDataTable.iterator();
+		while(iterator.hasNext()) {
+			DataRow row = iterator.next();
+			for(int i = 0; i < numberOfColumn; i++) {
+				DataCell cell = row.getCell(startColumnNumber + i);
+				if(cell.isMissing()) {
+					iterator.close();
+					return false;
+				}
+				double abundance = Double.parseDouble(cell.toString());
+				if(abundance < 0) {
+					iterator.close();
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	private boolean checkAbudanceTIC(BufferedDataTable bufferedDataTable, int startColumnNumber) {
+
+		String columnName = bufferedDataTable.getDataTableSpec().getColumnSpec(startColumnNumber).getName();
+		try {
+			Integer.parseInt(columnName);
+			return false;
+		} catch(Exception e) {
+		}
+		return checkAbudance(bufferedDataTable, startColumnNumber, 1);
+	}
+
+	private boolean checkAbudanceXIC(BufferedDataTable bufferedDataTable, int startColumnNumber, int numberOfColumn) {
+
+		for(int i = 0; i < numberOfColumn; i++) {
+			String columnName = bufferedDataTable.getDataTableSpec().getColumnSpec(startColumnNumber + i).getName();
+			try {
+				Integer.parseInt(columnName);
+				// TODO: have to be sorted or shell I sorted it ?
+			} catch(Exception e) {
+				return false;
+			}
+		}
+		return checkAbudance(bufferedDataTable, startColumnNumber, numberOfColumn);
+	}
+
+	public boolean checkTableTIC(BufferedDataTable bufferedDataTable, final ExecutionContext exec) {
+
+		// test column
+		DataTableSpec dataTableSpec = bufferedDataTable.getDataTableSpec();
+		int numColumns = dataTableSpec.getNumColumns();
+		if(numColumns == 3) {
+			return checkRetentionTimes(bufferedDataTable, 0) && checkRetentionTimesIndexColumn(bufferedDataTable, 1) && checkAbudanceTIC(bufferedDataTable, 2);
+		}
+		return false;
+	}
+
+	public boolean checkTableXIC(BufferedDataTable bufferedDataTable, final ExecutionContext exec) {
+
+		// test column
+		DataTableSpec dataTableSpec = bufferedDataTable.getDataTableSpec();
+		int numColumns = dataTableSpec.getNumColumns();
+		if(numColumns >= 3) {
+			return checkRetentionTimes(bufferedDataTable, 0) && checkRetentionTimesIndexColumn(bufferedDataTable, 1) && checkAbudanceXIC(bufferedDataTable, 2, numColumns - 2);
+		}
+		return false;
+	}
+
+	@Override
+	public void setTranslationType(String translationType) {
+
+		if(translationType.equals(TRANSLATION_TYPE_TIC) || translationType.equals(TRANSLATION_TYPE_XIC)) {
+			this.translationType = translationType;
+		}
 	}
 }

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -44,13 +44,19 @@ import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPo
 
 public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
-	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramReaderMSDNodeModel.class);
 	//
 	private static final String CHROMATOGRAM_FILE_INPUT = "ChromatgramFileInput";
+	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramReaderMSDNodeModel.class);
 	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_INPUT = new SettingsModelString(CHROMATOGRAM_FILE_INPUT, "");
 
 	protected ChromatogramReaderMSDNodeModel() {
 		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
+	}
+
+	@Override
+	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
+
+		return null;
 	}
 
 	@Override
@@ -60,31 +66,23 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 		//
 		IChromatogramMSD chromatogramMSD = loadChromatogram(SETTING_CHROMATOGRAM_FILE_INPUT.getStringValue());
 		IChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
-		PortObject portObjectSelectionMSD = new ChromatogramSelectionMSDPortObject(chromatogramSelectionMSD);
+		ChromatogramSelectionMSDPortObject portObjectSelectionMSD = new ChromatogramSelectionMSDPortObject(chromatogramSelectionMSD);
 		return new PortObject[]{portObjectSelectionMSD};
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void reset() {
+	private IChromatogramMSD loadChromatogram(String pathChromatogram) {
 
-	}
-
-	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-
-		return null;
+		File file = new File(pathChromatogram);
+		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
+		return processingInfo.getChromatogram();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void saveSettingsTo(final NodeSettingsWO settings) {
+	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-		SETTING_CHROMATOGRAM_FILE_INPUT.saveSettingsTo(settings);
 	}
 
 	/**
@@ -100,16 +98,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
-
-		SETTING_CHROMATOGRAM_FILE_INPUT.validateSettings(settings);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void reset() {
 
 	}
 
@@ -121,10 +110,21 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
 	}
 
-	private IChromatogramMSD loadChromatogram(String pathChromatogram) {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		File file = new File(pathChromatogram);
-		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
-		return processingInfo.getChromatogram();
+		SETTING_CHROMATOGRAM_FILE_INPUT.saveSettingsTo(settings);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+
+		SETTING_CHROMATOGRAM_FILE_INPUT.validateSettings(settings);
 	}
 }

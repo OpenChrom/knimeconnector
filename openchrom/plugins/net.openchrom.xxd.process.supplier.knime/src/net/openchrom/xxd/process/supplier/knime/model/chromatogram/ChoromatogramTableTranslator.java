@@ -9,7 +9,7 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.model;
+package net.openchrom.xxd.process.supplier.knime.model.chromatogram;
 
 import org.knime.core.data.DataCell;
 import org.knime.core.data.container.CloseableRowIterator;
@@ -22,10 +22,20 @@ public abstract class ChoromatogramTableTranslator implements IChoromatogramTabl
 	protected final String RETENTION_INDEX = "RI";
 	protected final String RETENTION_TIME = "RT (milliseconds)";
 
-	
 	protected ChoromatogramTableTranslator() {
 	}
-	
+
+	protected int getNumberOfRows(BufferedDataTable bufferedDataTable) {
+
+		int counter = 0;
+		CloseableRowIterator iterator = bufferedDataTable.iterator();
+		while(iterator.hasNext()) {
+			iterator.next();
+			counter++;
+		}
+		return counter;
+	}
+
 	protected boolean checkRetentionTimes(BufferedDataTable bufferedDataTable, int columnNumber) {
 
 		if(!bufferedDataTable.getDataTableSpec().getColumnSpec(columnNumber).getType().equals(IntCell.TYPE)) {
@@ -66,16 +76,5 @@ public abstract class ChoromatogramTableTranslator implements IChoromatogramTabl
 			return false;
 		}
 		return true;
-	}
-
-	protected int getNumberOfRows(BufferedDataTable bufferedDataTable) {
-
-		int counter = 0;
-		CloseableRowIterator iterator = bufferedDataTable.iterator();
-		while(iterator.hasNext()) {
-			iterator.next();
-			counter++;
-		}
-		return counter;
 	}
 }

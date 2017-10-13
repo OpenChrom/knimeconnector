@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * hornm - initial API and implementation
  *******************************************************************************/
@@ -21,15 +21,31 @@ public class ChromatogramSelectionMSDPortObjectSpec extends AbstractSimplePortOb
 	public static final class Serializer extends AbstractSimplePortObjectSpecSerializer<ChromatogramSelectionMSDPortObjectSpec> {
 	}
 
-	@Override
-	protected void save(ModelContentWO model) {
+	public static final String MODE_IMMEDIATE_PROCESSING = "MODE_IMMEDIATE_PROCESSING";
+	public static final String MODE_POSTPONED_PROCESSING = "MODE_POSTPONED_PROCESSING";
+	private final String PROCESSING_MODE = "PROCESSING_MODE";
+	private String processingMode;
 
-		// nothing to do so far
+	public String getProcessingMode() {
+
+		return processingMode;
 	}
 
 	@Override
 	protected void load(ModelContentRO model) throws InvalidSettingsException {
 
-		// nothing to do so far
+		processingMode = model.getString(PROCESSING_MODE, MODE_IMMEDIATE_PROCESSING);
+	}
+
+	@Override
+	protected void save(ModelContentWO model) {
+
+		model.addString(PROCESSING_MODE, processingMode);
+	}
+
+	public void setProcessingMode(String processingMode) {
+
+		assert processingMode != null && (processingMode.equals(MODE_IMMEDIATE_PROCESSING) || processingMode.equals(MODE_POSTPONED_PROCESSING)) : "Invalid processing mode";
+		this.processingMode = processingMode;
 	}
 }

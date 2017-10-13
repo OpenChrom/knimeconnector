@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Universität Konstanz.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Martin Horn - initial API and implementation
  *******************************************************************************/
@@ -47,9 +47,9 @@ public class XYSeriesViewNodeModel extends NodeModel implements BufferedDataTabl
 		return new SettingsModelString("y_vector_column", "");
 	}
 
+	private BufferedDataTable m_inTable;
 	private SettingsModelString m_xVectorColumn = createXVectorColumnModel();
 	private SettingsModelString m_yVectorColumn = createYVectorColumnModel();
-	private BufferedDataTable m_inTable;
 
 	protected XYSeriesViewNodeModel() {
 		super(1, 0);
@@ -70,57 +70,14 @@ public class XYSeriesViewNodeModel extends NodeModel implements BufferedDataTabl
 	}
 
 	@Override
-	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	public BufferedDataTable[] getInternalTables() {
 
+		return new BufferedDataTable[]{m_inTable};
 	}
 
-	@Override
-	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	public long getNumSeries() {
 
-	}
-
-	@Override
-	protected void saveSettingsTo(NodeSettingsWO settings) {
-
-		m_xVectorColumn.saveSettingsTo(settings);
-		m_yVectorColumn.saveSettingsTo(settings);
-	}
-
-	@Override
-	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
-
-		m_xVectorColumn.validateSettings(settings);
-		m_yVectorColumn.validateSettings(settings);
-	}
-
-	@Override
-	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
-
-		m_xVectorColumn.loadSettingsFrom(settings);
-		m_yVectorColumn.loadSettingsFrom(settings);
-	}
-
-	@Override
-	protected void reset() {
-
-	}
-
-	/**
-	 * @param idx
-	 * @return <code>null</code> if no data is available
-	 */
-	public double[] getXSeries(int idx) {
-
-		return getSeries(m_xVectorColumn.getStringValue(), idx);
-	}
-
-	/**
-	 * @param idx
-	 * @return <code>null</code> if no data is available
-	 */
-	public double[] getYSeries(int idx) {
-
-		return getSeries(m_yVectorColumn.getStringValue(), idx);
+		return m_inTable.size();
 	}
 
 	private double[] getSeries(String columnName, int idx) {
@@ -142,20 +99,63 @@ public class XYSeriesViewNodeModel extends NodeModel implements BufferedDataTabl
 		return vec;
 	}
 
-	public long getNumSeries() {
+	/**
+	 * @param idx
+	 * @return <code>null</code> if no data is available
+	 */
+	public double[] getXSeries(int idx) {
 
-		return m_inTable.size();
+		return getSeries(m_xVectorColumn.getStringValue(), idx);
+	}
+
+	/**
+	 * @param idx
+	 * @return <code>null</code> if no data is available
+	 */
+	public double[] getYSeries(int idx) {
+
+		return getSeries(m_yVectorColumn.getStringValue(), idx);
 	}
 
 	@Override
-	public BufferedDataTable[] getInternalTables() {
+	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-		return new BufferedDataTable[]{m_inTable};
+	}
+
+	@Override
+	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
+
+		m_xVectorColumn.loadSettingsFrom(settings);
+		m_yVectorColumn.loadSettingsFrom(settings);
+	}
+
+	@Override
+	protected void reset() {
+
+	}
+
+	@Override
+	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+
+	}
+
+	@Override
+	protected void saveSettingsTo(NodeSettingsWO settings) {
+
+		m_xVectorColumn.saveSettingsTo(settings);
+		m_yVectorColumn.saveSettingsTo(settings);
 	}
 
 	@Override
 	public void setInternalTables(BufferedDataTable[] tables) {
 
 		m_inTable = tables[0];
+	}
+
+	@Override
+	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
+
+		m_xVectorColumn.validateSettings(settings);
+		m_yVectorColumn.validateSettings(settings);
 	}
 }

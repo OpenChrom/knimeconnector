@@ -39,7 +39,7 @@ import org.knime.core.node.port.PortTypeRegistry;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
-import net.openchrom.xxd.process.supplier.knime.ui.model.msd.IChoromatogramMSDTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd.IChoromatogramMSDTableTranslator;
 
 public class CsMsdToTableNodeModel extends NodeModel {
 
@@ -54,7 +54,7 @@ public class CsMsdToTableNodeModel extends NodeModel {
 	}
 
 	//
-	private final IChoromatogramMSDTableTranslator choromatogramMSDTableTranslator = IChoromatogramMSDTableTranslator.create();
+	private final IChoromatogramMSDTableTranslator choromatogramMSDTableTranslator = IChoromatogramMSDTableTranslator.create(IChoromatogramMSDTableTranslator.TRANSLATION_TYPE_TIC);
 	private final SettingsModelBoolean settingsModelUseTic = createSettingsModelUseTic();
 
 	protected CsMsdToTableNodeModel() {
@@ -79,9 +79,11 @@ public class CsMsdToTableNodeModel extends NodeModel {
 			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD();
 			BufferedDataTable bufferedDataTable = null;
 			if(settingsModelUseTic.getBooleanValue()) {
-				bufferedDataTable = choromatogramMSDTableTranslator.getBufferedDataTableTIC(chromatogramSelection, exec);
+				choromatogramMSDTableTranslator.setTranslationType(IChoromatogramMSDTableTranslator.TRANSLATION_TYPE_TIC);
+				bufferedDataTable = choromatogramMSDTableTranslator.getBufferedDataTable(chromatogramSelection, exec);
 			} else {
-				bufferedDataTable = choromatogramMSDTableTranslator.getBufferedDataTableXIC(chromatogramSelection, exec);
+				choromatogramMSDTableTranslator.setTranslationType(IChoromatogramMSDTableTranslator.TRANSLATION_TYPE_XIC);
+				bufferedDataTable = choromatogramMSDTableTranslator.getBufferedDataTable(chromatogramSelection, exec);
 			}
 			//
 			return new PortObject[]{bufferedDataTable};

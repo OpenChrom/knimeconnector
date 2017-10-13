@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -46,21 +46,27 @@ import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
  */
 public class ChromatogramWriterMSDNodeModel extends NodeModel {
 
-	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramWriterMSDNodeModel.class);
-	//
-	private static final String CHROMATOGRAM_FILE_OUTPUT = "ChromatgramFileOutput";
-	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_OUTPUT = new SettingsModelString(CHROMATOGRAM_FILE_OUTPUT, "");
+	private static final String EXPORT_CONVERTER_ID = "org.eclipse.chemclipse.xxd.converter.supplier.chemclipse";
 	/*
 	 * Export the data in *.ocb format.
 	 */
 	protected static final String EXPORT_FILE_EXTENSION = ".ocb";
-	private static final String EXPORT_CONVERTER_ID = "org.eclipse.chemclipse.xxd.converter.supplier.chemclipse";
+	//
+	private static final String CHROMATOGRAM_FILE_OUTPUT = "ChromatgramFileOutput";
+	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramWriterMSDNodeModel.class);
+	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_OUTPUT = new SettingsModelString(CHROMATOGRAM_FILE_OUTPUT, "");
 
 	/**
 	 * Constructor for the node model.
 	 */
 	protected ChromatogramWriterMSDNodeModel() {
 		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{});
+	}
+
+	@Override
+	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
+
+		return null;
 	}
 
 	@Override
@@ -82,23 +88,8 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void reset() {
+	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-	}
-
-	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void saveSettingsTo(final NodeSettingsWO settings) {
-
-		SETTING_CHROMATOGRAM_FILE_OUTPUT.saveSettingsTo(settings);
 	}
 
 	/**
@@ -114,16 +105,7 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
-
-		SETTING_CHROMATOGRAM_FILE_OUTPUT.validateSettings(settings);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void reset() {
 
 	}
 
@@ -133,5 +115,23 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void saveInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void saveSettingsTo(final NodeSettingsWO settings) {
+
+		SETTING_CHROMATOGRAM_FILE_OUTPUT.saveSettingsTo(settings);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+
+		SETTING_CHROMATOGRAM_FILE_OUTPUT.validateSettings(settings);
 	}
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./filter.png" type="Manipulator" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>Chromatogram Filter (Savitzky-Golay)</name>
+    <shortDescription>
+        This is a connector to the Savitzky-Golay filter.
+    </shortDescription>
+    <fullDescription>
+        <intro>This node allows to process chromatograms via a SG filter..</intro>
+        <option name="Derivative">Derivative</option>
+        <option name="Order">Order</option>
+        <option name="Width">Width</option>
+    </fullDescription>
+    <ports>
+        <outPort index="0" name="Chromatogram Selection">Chromatogram Selection</outPort>
+    </ports>
+    <views>
+        <view index="0" name="Chromatogram Selection">An overview of the chromatogram filter.</view>
+    </views>    
+</knimeNode>

@@ -5,14 +5,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * jan - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.model.csd;
-
-import java.util.HashMap;
-import java.util.Map;
+package net.openchrom.xxd.process.supplier.knime.model.chromatogram.csd;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.core.IScanCSD;
@@ -21,17 +18,8 @@ import org.eclipse.chemclipse.csd.model.implementation.ChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.implementation.ScanCSD;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IScan;
-import org.eclipse.chemclipse.model.signals.ITotalScanSignal;
-import org.eclipse.chemclipse.model.signals.ITotalScanSignals;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
-import org.eclipse.chemclipse.msd.model.xic.ExtractedIonSignalExtractor;
-import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignal;
-import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignalExtractor;
-import org.eclipse.chemclipse.msd.model.xic.IExtractedIonSignals;
-import org.eclipse.chemclipse.msd.model.xic.ITotalIonSignalExtractor;
-import org.eclipse.chemclipse.msd.model.xic.TotalIonSignalExtractor;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -47,20 +35,22 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-import net.openchrom.xxd.process.supplier.knime.ui.model.ChoromatogramTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.ChoromatogramTableTranslator;
 
 public class ChoromatogramCSDTableTranslator extends ChoromatogramTableTranslator implements IChoromatogramCSDTableTranslator {
 
 	protected final String ABUNDANCE = "Abundence";
 
-	
-	
 	ChoromatogramCSDTableTranslator() {
 	}
-	
-	
-	public BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionCSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
+	@Override
+	public BufferedDataTable getBufferedDataTable(IChromatogramSelection chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+
+		if(!(chromatogramSelection instanceof IChromatogramSelectionCSD)) {
+			return null;
+		}
+		IChromatogramSelectionCSD chromatogramSelectionCSD = (IChromatogramSelectionCSD)chromatogramSelection;
 		/*
 		 * Specification
 		 */
@@ -80,7 +70,7 @@ public class ChoromatogramCSDTableTranslator extends ChoromatogramTableTranslato
 		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
 		//
 		int selectedScanNumber = 0;
-		for(IScan scan : chromatogramSelection.getChromatogramCSD().getScans()) {
+		for(IScan scan : chromatogramSelectionCSD.getChromatogramCSD().getScans()) {
 			/*
 			 * Set the cell data.
 			 */
@@ -104,6 +94,12 @@ public class ChoromatogramCSDTableTranslator extends ChoromatogramTableTranslato
 		//
 		bufferedDataContainer.close();
 		return bufferedDataContainer.getTable();
+	}
+
+	@Override
+	public BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionCSD chromatogramSelection, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+
+		return null;
 	}
 
 	@Override

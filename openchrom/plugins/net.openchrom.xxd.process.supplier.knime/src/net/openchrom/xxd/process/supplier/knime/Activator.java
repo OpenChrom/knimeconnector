@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -30,6 +30,7 @@ public class Activator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 
 		Activator.context = bundleContext;
@@ -39,6 +40,7 @@ public class Activator implements BundleActivator {
 	 * (non-Javadoc)
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext bundleContext) throws Exception {
 
 		Activator.context = null;

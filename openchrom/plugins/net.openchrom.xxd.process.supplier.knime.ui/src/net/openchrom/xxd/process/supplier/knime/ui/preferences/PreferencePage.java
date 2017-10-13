@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -33,6 +33,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors() {
 
 	}
@@ -42,6 +43,7 @@ public class PreferencePage extends FieldEditorPreferencePage implements IWorkbe
 	 * @see
 	 * org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
 	 */
+	@Override
 	public void init(IWorkbench workbench) {
 
 	}

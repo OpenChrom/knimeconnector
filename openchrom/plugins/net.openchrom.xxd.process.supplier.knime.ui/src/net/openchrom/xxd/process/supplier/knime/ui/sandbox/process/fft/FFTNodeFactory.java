@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Universität Konstanz.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Martin Horn - initial API and implementation
  *******************************************************************************/
@@ -24,15 +24,15 @@ import org.knime.core.node.NodeView;
 public class FFTNodeFactory extends NodeFactory<FFTNodeModel> {
 
 	@Override
-	public FFTNodeModel createNodeModel() {
+	protected NodeDialogPane createNodeDialogPane() {
 
-		return new FFTNodeModel();
+		return new FFTNodeDialog();
 	}
 
 	@Override
-	protected int getNrNodeViews() {
+	public FFTNodeModel createNodeModel() {
 
-		return 0;
+		return new FFTNodeModel();
 	}
 
 	@Override
@@ -42,14 +42,14 @@ public class FFTNodeFactory extends NodeFactory<FFTNodeModel> {
 	}
 
 	@Override
-	protected boolean hasDialog() {
+	protected int getNrNodeViews() {
 
-		return true;
+		return 0;
 	}
 
 	@Override
-	protected NodeDialogPane createNodeDialogPane() {
+	protected boolean hasDialog() {
 
-		return new FFTNodeDialog();
+		return true;
 	}
 }

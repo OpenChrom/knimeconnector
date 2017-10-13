@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2016, 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -29,6 +29,16 @@ public class Activator extends AbstractActivatorUI {
 	private static Activator plugin;
 
 	/**
+	 * Returns the shared instance
+	 *
+	 * @return the shared instance
+	 */
+	public static Activator getDefault() {
+
+		return plugin;
+	}
+
+	/**
 	 * The constructor
 	 */
 	public Activator() {
@@ -38,6 +48,7 @@ public class Activator extends AbstractActivatorUI {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void start(BundleContext context) throws Exception {
 
 		super.start(context);
@@ -48,19 +59,10 @@ public class Activator extends AbstractActivatorUI {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 
 		plugin = null;
 		super.stop(context);
-	}
-
-	/**
-	 * Returns the shared instance
-	 *
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-
-		return plugin;
 	}
 }

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,11 +11,11 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.model.msd;
+package net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd;
 
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.exceptions.AbundanceLimitExceededException;
@@ -25,12 +25,18 @@ import org.eclipse.chemclipse.msd.model.exceptions.IonLimitExceededException;
 
 public class VendorScanMSD extends AbstractVendorMassSpectrum implements IVendorScanMSD {
 
+	private static final Logger logger = Logger.getLogger(VendorScanMSD.class);
 	/**
 	 * Renew the serialVersionUID any time you have changed some fields or
 	 * methods.
 	 */
 	private static final long serialVersionUID = -6652885245236149738L;
-	private static final Logger logger = Logger.getLogger(VendorScanMSD.class);
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+
+		return makeDeepCopy();
+	}
 
 	@Override
 	public int getMaxPossibleIons() {
@@ -39,15 +45,15 @@ public class VendorScanMSD extends AbstractVendorMassSpectrum implements IVendor
 	}
 
 	@Override
-	public int getMinPossibleRetentionTime() {
-
-		return MIN_RETENTION_TIME;
-	}
-
-	@Override
 	public int getMaxPossibleRetentionTime() {
 
 		return MAX_RETENTION_TIME;
+	}
+
+	@Override
+	public int getMinPossibleRetentionTime() {
+
+		return MIN_RETENTION_TIME;
 	}
 
 	@Override
@@ -74,11 +80,5 @@ public class VendorScanMSD extends AbstractVendorMassSpectrum implements IVendor
 			}
 		}
 		return massSpectrum;
-	}
-
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-
-		return makeDeepCopy();
 	}
 }

@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -29,7 +29,7 @@ public class ChromatogramGetterWSDNodeView extends NodeView<ChromatogramGetterWS
 
 	/**
 	 * Creates a new view.
-	 * 
+	 *
 	 * @param nodeModel
 	 *            The model (class: {@link ChromatogramGetterWSDNodeModel})
 	 */
@@ -46,7 +46,7 @@ public class ChromatogramGetterWSDNodeView extends NodeView<ChromatogramGetterWS
 
 		// TODO retrieve the new model from your nodemodel and
 		// update the view.
-		ChromatogramGetterWSDNodeModel nodeModel = (ChromatogramGetterWSDNodeModel)getNodeModel();
+		ChromatogramGetterWSDNodeModel nodeModel = getNodeModel();
 		assert nodeModel != null;
 		// be aware of a possibly not executed nodeModel! The data you retrieve
 		// from your nodemodel could be null, emtpy, or invalid in any kind.

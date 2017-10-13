@@ -5,11 +5,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.model.csd;
+package net.openchrom.xxd.process.supplier.knime.model.chromatogram.csd;
 
 import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
@@ -18,7 +18,7 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-import net.openchrom.xxd.process.supplier.knime.ui.model.IChoromatogramTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.IChoromatogramTableTranslator;
 
 public interface IChoromatogramCSDTableTranslator extends IChoromatogramTableTranslator {
 

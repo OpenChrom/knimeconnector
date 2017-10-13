@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -48,6 +48,14 @@ public class XYSeriesPart {
 	//
 	private XYSeriesChart xySeriesChart;
 
+	private boolean isPartVisible() {
+
+		if(partService != null && partService.isPartVisible(part)) {
+			return true;
+		}
+		return false;
+	}
+
 	@PostConstruct
 	public void postConstruct() {
 
@@ -67,13 +75,6 @@ public class XYSeriesPart {
 		xySeriesChart.setFocus();
 	}
 
-	private void update(double[] ySeries, String id) {
-
-		if(isPartVisible()) {
-			xySeriesChart.update(ySeries, id);
-		}
-	}
-
 	/**
 	 * Subscribes the selection update events.
 	 */
@@ -82,6 +83,7 @@ public class XYSeriesPart {
 		if(eventBroker != null) {
 			eventHandler = new EventHandler() {
 
+				@Override
 				public void handleEvent(Event event) {
 
 					double[] ySeries = (double[])event.getProperty(IXYSeriesListener.PROPERTY_Y_SERIES);
@@ -100,11 +102,10 @@ public class XYSeriesPart {
 		}
 	}
 
-	private boolean isPartVisible() {
+	private void update(double[] ySeries, String id) {
 
-		if(partService != null && partService.isPartVisible(part)) {
-			return true;
+		if(isPartVisible()) {
+			xySeriesChart.update(ySeries, id);
 		}
-		return false;
 	}
 }

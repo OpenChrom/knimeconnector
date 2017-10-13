@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -27,18 +27,18 @@ public class TableToCsMsdNodeFactory extends NodeFactory<TableToCsMsdNodeModel> 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public TableToCsMsdNodeModel createNodeModel() {
+	public NodeDialogPane createNodeDialogPane() {
 
-		return new TableToCsMsdNodeModel();
+		return new TableToCsMsdNodeDialog();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getNrNodeViews() {
+	public TableToCsMsdNodeModel createNodeModel() {
 
-		return 1;
+		return new TableToCsMsdNodeModel();
 	}
 
 	/**
@@ -54,17 +54,17 @@ public class TableToCsMsdNodeFactory extends NodeFactory<TableToCsMsdNodeModel> 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean hasDialog() {
+	public int getNrNodeViews() {
 
-		return true;
+		return 1;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NodeDialogPane createNodeDialogPane() {
+	public boolean hasDialog() {
 
-		return new TableToCsMsdNodeDialog();
+		return true;
 	}
 }

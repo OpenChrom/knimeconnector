@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -50,8 +50,6 @@ import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
  */
 public class ChromatogramReaderWSDNodeModel extends NodeModel {
 
-	// the logger instance
-	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramReaderWSDNodeModel.class);
 	/**
 	 * the settings key which is used to retrieve and
 	 * store the settings (from the dialog or from a settings file)
@@ -60,6 +58,8 @@ public class ChromatogramReaderWSDNodeModel extends NodeModel {
 	static final String CFGKEY_COUNT = "Count";
 	/** initial default count value. */
 	static final int DEFAULT_COUNT = 100;
+	// the logger instance
+	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramReaderWSDNodeModel.class);
 	// example value: the models count variable filled from the dialog
 	// and used in the models execution method. The default components of the
 	// dialog work with "SettingsModels".
@@ -71,6 +71,20 @@ public class ChromatogramReaderWSDNodeModel extends NodeModel {
 	protected ChromatogramReaderWSDNodeModel() {
 		// TODO one incoming port and one outgoing port is assumed
 		super(1, 1);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
+
+		// TODO: check if user settings are available, fit to the incoming
+		// table structure, and the incoming types are feasible for the node
+		// to execute. If the node can execute in its current state return
+		// the spec of its output data table(s) (if you can, otherwise an array
+		// with null elements), or throw an exception with a useful user message
+		return new DataTableSpec[]{null};
 	}
 
 	/**
@@ -118,35 +132,14 @@ public class ChromatogramReaderWSDNodeModel extends NodeModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void reset() {
+	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-		// TODO Code executed on reset.
-		// Models build during execute are cleared here.
-		// Also data handled in load/saveInternals will be erased here.
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
-
-		// TODO: check if user settings are available, fit to the incoming
-		// table structure, and the incoming types are feasible for the node
-		// to execute. If the node can execute in its current state return
-		// the spec of its output data table(s) (if you can, otherwise an array
-		// with null elements), or throw an exception with a useful user message
-		return new DataTableSpec[]{null};
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void saveSettingsTo(final NodeSettingsWO settings) {
-
-		// TODO save user settings to the config object.
-		m_count.saveSettingsTo(settings);
+		// TODO load internal data.
+		// Everything handed to output ports is loaded automatically (data
+		// returned by the execute method, models loaded in loadModelContent,
+		// and user settings set through loadSettingsFrom - is all taken care
+		// of). Load here only the other internals that need to be restored
+		// (e.g. data used by the views).
 	}
 
 	/**
@@ -165,27 +158,11 @@ public class ChromatogramReaderWSDNodeModel extends NodeModel {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+	protected void reset() {
 
-		// TODO check if the settings could be applied to our model
-		// e.g. if the count is in a certain range (which is ensured by the
-		// SettingsModel).
-		// Do not actually set any values of any member variables.
-		m_count.validateSettings(settings);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
-		// TODO load internal data.
-		// Everything handed to output ports is loaded automatically (data
-		// returned by the execute method, models loaded in loadModelContent,
-		// and user settings set through loadSettingsFrom - is all taken care
-		// of). Load here only the other internals that need to be restored
-		// (e.g. data used by the views).
+		// TODO Code executed on reset.
+		// Models build during execute are cleared here.
+		// Also data handled in load/saveInternals will be erased here.
 	}
 
 	/**
@@ -200,5 +177,28 @@ public class ChromatogramReaderWSDNodeModel extends NodeModel {
 		// and user settings saved through saveSettingsTo - is all taken care
 		// of). Save here only the other internals that need to be preserved
 		// (e.g. data used by the views).
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void saveSettingsTo(final NodeSettingsWO settings) {
+
+		// TODO save user settings to the config object.
+		m_count.saveSettingsTo(settings);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+
+		// TODO check if the settings could be applied to our model
+		// e.g. if the count is in a certain range (which is ensured by the
+		// SettingsModel).
+		// Do not actually set any values of any member variables.
+		m_count.validateSettings(settings);
 	}
 }

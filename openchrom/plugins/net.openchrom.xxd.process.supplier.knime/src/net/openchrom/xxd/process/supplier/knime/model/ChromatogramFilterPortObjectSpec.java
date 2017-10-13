@@ -5,7 +5,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * hornm - initial API and implementation
  *******************************************************************************/
@@ -22,13 +22,13 @@ public class ChromatogramFilterPortObjectSpec extends AbstractSimplePortObjectSp
 	}
 
 	@Override
-	protected void save(ModelContentWO model) {
+	protected void load(ModelContentRO model) throws InvalidSettingsException {
 
 		// nothing to do so far
 	}
 
 	@Override
-	protected void load(ModelContentRO model) throws InvalidSettingsException {
+	protected void save(ModelContentWO model) {
 
 		// nothing to do so far
 	}

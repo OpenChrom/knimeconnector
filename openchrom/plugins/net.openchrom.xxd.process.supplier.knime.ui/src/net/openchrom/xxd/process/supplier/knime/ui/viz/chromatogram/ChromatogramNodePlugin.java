@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -35,6 +35,16 @@ public class ChromatogramNodePlugin extends Plugin {
 	private static ChromatogramNodePlugin plugin;
 
 	/**
+	 * Returns the shared instance.
+	 *
+	 * @return Singleton instance of the Plugin
+	 */
+	public static ChromatogramNodePlugin getDefault() {
+
+		return plugin;
+	}
+
+	/**
 	 * The constructor.
 	 */
 	public ChromatogramNodePlugin() {
@@ -44,7 +54,7 @@ public class ChromatogramNodePlugin extends Plugin {
 
 	/**
 	 * This method is called upon plug-in activation.
-	 * 
+	 *
 	 * @param context
 	 *            The OSGI bundle context
 	 * @throws Exception
@@ -58,7 +68,7 @@ public class ChromatogramNodePlugin extends Plugin {
 
 	/**
 	 * This method is called when the plug-in is stopped.
-	 * 
+	 *
 	 * @param context
 	 *            The OSGI bundle context
 	 * @throws Exception
@@ -69,15 +79,5 @@ public class ChromatogramNodePlugin extends Plugin {
 
 		super.stop(context);
 		plugin = null;
-	}
-
-	/**
-	 * Returns the shared instance.
-	 * 
-	 * @return Singleton instance of the Plugin
-	 */
-	public static ChromatogramNodePlugin getDefault() {
-
-		return plugin;
 	}
 }

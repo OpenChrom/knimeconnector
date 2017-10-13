@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
@@ -41,8 +41,8 @@ import net.openchrom.xxd.process.supplier.knime.notifier.IXYSeriesListener;
 public class XYSeriesChart extends LineChart implements IXYSeriesListener {
 
 	private static Color COLOR_BLACK = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
-	private static DecimalFormat decimalFormatScientific = new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH));
 	private static DecimalFormat decimalFormatInteger = new DecimalFormat(("0"), new DecimalFormatSymbols(Locale.ENGLISH));
+	private static DecimalFormat decimalFormatScientific = new DecimalFormat(("0.0#E0"), new DecimalFormatSymbols(Locale.ENGLISH));
 
 	public XYSeriesChart(Composite parent, int style) {
 		super(parent, style);

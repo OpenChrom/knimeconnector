@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Universität Konstanz.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,7 +11,7 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Martin Horn - initial API and implementation
  *******************************************************************************/
@@ -49,6 +49,22 @@ public class FFTNodeModel extends SimpleStreamableFunctionNodeModel {
 		return new SettingsModelString("vector_column", "");
 	}
 
+	/**
+	 * Returns a number that is greater or equal to the given and is power of 2.
+	 *
+	 * @param initialSize
+	 *            the value which is smaller or equal to the returned value
+	 * @return a number that is a power of two and is not less that initialSize
+	 *
+	 *         Source(!!):
+	 *         http://www.programcreek.com/java-api-examples/index.php?source_dir=svarog-master/svarog/src/main/java/org/signalml/math/fft/FourierTransform.java
+	 */
+	private static int getPowerOfTwoSize(int initialSize) {
+
+		double log_of_initialSize_to_base_2 = Math.log(initialSize) / Math.log(2);
+		return (int)Math.pow(2, Math.ceil(log_of_initialSize_to_base_2));
+	}
+
 	private SettingsModelString m_vectorColumn = createVectorColumnModel();
 
 	@Override
@@ -56,18 +72,6 @@ public class FFTNodeModel extends SimpleStreamableFunctionNodeModel {
 
 		ColumnRearranger colre = new ColumnRearranger(spec);
 		colre.append(new CellFactory() {
-
-			@Override
-			public void setProgress(int curRowNr, int rowCount, RowKey lastKey, ExecutionMonitor exec) {
-
-				exec.setProgress((double)curRowNr / rowCount);
-			}
-
-			@Override
-			public DataColumnSpec[] getColumnSpecs() {
-
-				return new DataColumnSpec[]{new DataColumnSpecCreator("fft", DoubleVectorCellFactory.TYPE).createSpec()};
-			}
 
 			@Override
 			public DataCell[] getCells(DataRow row) {
@@ -86,28 +90,35 @@ public class FFTNodeModel extends SimpleStreamableFunctionNodeModel {
 				}
 				return new DataCell[]{DoubleVectorCellFactory.createCell(mag)};
 			}
+
+			@Override
+			public DataColumnSpec[] getColumnSpecs() {
+
+				return new DataColumnSpec[]{new DataColumnSpecCreator("fft", DoubleVectorCellFactory.TYPE).createSpec()};
+			}
+
+			@Override
+			public void setProgress(int curRowNr, int rowCount, RowKey lastKey, ExecutionMonitor exec) {
+
+				exec.setProgress((double)curRowNr / rowCount);
+			}
 		});
 		return colre;
 	}
 
-	/**
-	 * Returns a number that is greater or equal to the given and is power of 2.
-	 * 
-	 * @param initialSize
-	 *            the value which is smaller or equal to the returned value
-	 * @return a number that is a power of two and is not less that initialSize
-	 * 
-	 *         Source(!!):
-	 *         http://www.programcreek.com/java-api-examples/index.php?source_dir=svarog-master/svarog/src/main/java/org/signalml/math/fft/FourierTransform.java
-	 */
-	private static int getPowerOfTwoSize(int initialSize) {
+	@Override
+	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
-		double log_of_initialSize_to_base_2 = Math.log(initialSize) / Math.log(2);
-		return (int)Math.pow(2, Math.ceil(log_of_initialSize_to_base_2));
 	}
 
 	@Override
-	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
+
+		m_vectorColumn.loadSettingsFrom(settings);
+	}
+
+	@Override
+	protected void reset() {
 
 	}
 
@@ -126,16 +137,5 @@ public class FFTNodeModel extends SimpleStreamableFunctionNodeModel {
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
 		m_vectorColumn.validateSettings(settings);
-	}
-
-	@Override
-	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
-
-		m_vectorColumn.loadSettingsFrom(settings);
-	}
-
-	@Override
-	protected void reset() {
-
 	}
 }

@@ -9,26 +9,27 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.model.msd;
+package net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
-import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
 import org.knime.core.node.BufferedDataTable;
-import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-import net.openchrom.xxd.process.supplier.knime.ui.model.IChoromatogramTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.IChoromatogramTableTranslator;;
 
 public interface IChoromatogramMSDTableTranslator extends IChoromatogramTableTranslator {
-	
-	static IChoromatogramMSDTableTranslator create(){
-		return new ChoromatogramMSDTableTranslator();
+
+	String TRANSLATION_TYPE_TIC = "TYPE_TIC";
+	String TRANSLATION_TYPE_XIC = "TYPE_XIC";
+
+	static IChoromatogramMSDTableTranslator create(String translationType) {
+
+		return new ChoromatogramMSDTableTranslator(translationType);
 	}
 
-	BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException;
-
-	BufferedDataTable getBufferedDataTableXIC(IChromatogramSelectionMSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException;
-
 	IChromatogramMSD getChromatogramMSD(BufferedDataTable bufferedDataTable, final ExecutionContext exec) throws Exception;
+
+	String getTranslationType();
+
+	void setTranslationType(String translationType);
 }

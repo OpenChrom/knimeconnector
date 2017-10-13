@@ -1,6 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2017 Lablicate GmbH.
- * 
+ *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation;
@@ -11,17 +11,13 @@
  * details. You should have received a copy of the GNU General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.model.msd;
+package net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd;
 
-import org.eclipse.chemclipse.msd.model.core.IVendorMassSpectrum;
+import org.eclipse.chemclipse.msd.model.core.IScanIon;
 
-public interface IVendorScanMSD extends IVendorMassSpectrum {
-
-	int MAX_IONS = 65535;
-	int MIN_RETENTION_TIME = 0;
-	int MAX_RETENTION_TIME = Integer.MAX_VALUE;
+public interface IVendorIon extends IScanIon {
 }

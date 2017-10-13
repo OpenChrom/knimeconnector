@@ -34,7 +34,7 @@ import org.knime.core.node.port.PortTypeRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.openchrom.xxd.process.supplier.knime.processing.ProcessingChromatogram;
+import net.openchrom.xxd.process.supplier.knime.support.ChromatogramSelectionProcessing;
 
 public class ChromatogramFilterPortObject extends AbstractSimplePortObject {
 
@@ -66,7 +66,7 @@ public class ChromatogramFilterPortObject extends AbstractSimplePortObject {
 	public void addChromatogramFilter(String filterId, IChromatogramFilterSettings settings) throws NoChromatogramFilterSupplierAvailableException {
 
 		filterIds.add(filterId);
-		Class<? extends IChromatogramFilterSettings> filterSettingsClass = ProcessingChromatogram.getFilterSettingsClass(filterId);
+		Class<? extends IChromatogramFilterSettings> filterSettingsClass = ChromatogramSelectionProcessing.getFilterSupplier(filterId).getFilterSettingsClass();
 		if(!filterSettingsClass.isAssignableFrom(settings.getClass())) {
 			throw new IllegalArgumentException("The given filter '" + filterId + "' requires '" + filterSettingsClass.getName() + "as settings class, but '" + settings.getClass().getName() + "' passed.");
 		}
@@ -107,7 +107,7 @@ public class ChromatogramFilterPortObject extends AbstractSimplePortObject {
 		String[] settings = model.getStringArray("filter_settings");
 		for(int i = 0; i < settings.length; i++) {
 			try {
-				Class<? extends IChromatogramFilterSettings> filterSettingsClass = ProcessingChromatogram.getFilterSettingsClass(filterIds.get(i));
+				Class<? extends IChromatogramFilterSettings> filterSettingsClass = ChromatogramSelectionProcessing.getFilterSupplier(filterIds.get(i)).getFilterSettingsClass();
 				if(settings[i] != null) {
 					filterSettings.add(mapper.readValue(settings[i], filterSettingsClass));
 				} else {
