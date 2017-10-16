@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.IChromatogramFilterSupplier;
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
+import org.eclipse.chemclipse.chromatogram.msd.filter.core.chromatogram.ChromatogramFilterMSD;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeDescription;
 import org.knime.core.node.NodeDescription27Proxy;
@@ -31,11 +32,10 @@ import org.knime.node2012.OutPortDocument.OutPort;
 import org.knime.node2012.PortsDocument.Ports;
 import org.knime.node2012.TabDocument.Tab;
 
-import net.openchrom.xxd.process.supplier.knime.processing.ProcessingChromatogram;
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsObjectWrapper;
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.property.JacksonPropertyDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialoggeneration.DialogGenerationNodeFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonPropertyDialogFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeFactory;
 
 /**
  * Factory for chromatogram filter nodes. Dialog is generated from the filter settings class (jackson annotated) belonging to a respective filter id (see {@link JacksonPropertyDialogFactory}).
@@ -52,7 +52,7 @@ public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<C
 
 		KnimeNodeDocument doc = KnimeNodeDocument.Factory.newInstance();
 		try {
-			IChromatogramFilterSupplier filterSupplier = ProcessingChromatogram.getSupplier(filterId);
+			IChromatogramFilterSupplier filterSupplier = ChromatogramFilterMSD.getChromatogramFilterSupport().getFilterSupplier(filterId);
 			KnimeNode node = doc.addNewKnimeNode();
 			node.setIcon("./filter.png");
 			node.setType(KnimeNode.Type.MANIPULATOR);
@@ -71,18 +71,10 @@ public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<C
 			inPort1.setIndex(0);
 			inPort1.setName("Chromatogram Selection");
 			inPort1.newCursor().setTextValue("Use this input if you'd like to develop a method (chromatogram is persisted - slow)");
-			InPort inPort2 = ports.addNewInPort();
-			inPort2.setIndex(1);
-			inPort2.setName("Chromatogram Filter");
-			inPort2.newCursor().setTextValue("Use this input if you'd like to batch process data (chromatogram is not persisted - fast)");
 			OutPort outPort1 = ports.addNewOutPort();
 			outPort1.setIndex(0);
 			outPort1.setName("Chromatogram Selection");
 			outPort1.newCursor().setTextValue("Use this output if you'd like to develop a method (chromatogram is persisted - slow)");
-			OutPort outPort2 = ports.addNewOutPort();
-			outPort2.setIndex(1);
-			outPort2.setName("Chromatogram Filter");
-			outPort2.newCursor().setTextValue("Use this output if you'd like to batch process data (chromatogram is not persisted - fast)");
 		} catch(NoChromatogramFilterSupplierAvailableException e) {
 			// TODO
 			throw new RuntimeException(e);
@@ -108,7 +100,7 @@ public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<C
 		JacksonPropertyDialogFactory<IChromatogramFilterSettings> factory = new JacksonPropertyDialogFactory<>();
 		Class<? extends IChromatogramFilterSettings> filterSettingsClass;
 		try {
-			filterSettingsClass = ProcessingChromatogram.getFilterSettingsClass(filterId);
+			filterSettingsClass = ChromatogramFilterMSD.getChromatogramFilterSupport().getFilterSupplier(filterId).getFilterSettingsClass();
 			if(filterSettingsClass == null) {
 				throw new IllegalStateException("Filter settings class for filter id '" + filterId + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}

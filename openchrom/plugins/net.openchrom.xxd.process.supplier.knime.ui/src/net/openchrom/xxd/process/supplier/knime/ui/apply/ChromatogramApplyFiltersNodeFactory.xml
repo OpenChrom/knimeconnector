@@ -9,7 +9,6 @@
     </fullDescription>
     <ports>
     <inPort index="0" name="Chromatogram Selection">Chromatogram Selection</inPort>
-    <inPort index="1" name="Chromatogram Filters">Chromatogram filters to be applied.</inPort>
-        <outPort index="0" name="Chromatogram Selection">Manipulated Chromatogram Selection</outPort>
+    <outPort index="0" name="Chromatogram Selection">Manipulated Chromatogram Selection</outPort>
     </ports>
 </knimeNode>

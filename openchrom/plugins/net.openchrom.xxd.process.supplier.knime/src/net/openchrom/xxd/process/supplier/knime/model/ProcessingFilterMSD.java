@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
-import org.eclipse.chemclipse.chromatogram.filter.settings.ChromatogramFilterSettings;
+import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
 import org.eclipse.chemclipse.chromatogram.msd.filter.core.chromatogram.ChromatogramFilterMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class ProcessingFilterMSD extends AbstractChromatogramSelectionProcessing<ChromatogramFilterSettings, IChromatogramSelectionMSD> {
+public class ProcessingFilterMSD extends AbstractChromatogramSelectionProcessing<IChromatogramFilterSettings, IChromatogramSelectionMSD> {
 
 	/**
 	 *
@@ -34,7 +34,7 @@ public class ProcessingFilterMSD extends AbstractChromatogramSelectionProcessing
 		super(id);
 	}
 
-	public ProcessingFilterMSD(String id, ChromatogramFilterSettings settings) throws JsonProcessingException {
+	public ProcessingFilterMSD(String id, IChromatogramFilterSettings settings) throws JsonProcessingException {
 		super(id, settings);
 	}
 
@@ -45,7 +45,7 @@ public class ProcessingFilterMSD extends AbstractChromatogramSelectionProcessing
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, ChromatogramFilterSettings setting) {
+	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IChromatogramFilterSettings setting) {
 
 		return ChromatogramFilterMSD.applyFilter(chromatogramSelection, setting, id, new NullProgressMonitor());
 	}

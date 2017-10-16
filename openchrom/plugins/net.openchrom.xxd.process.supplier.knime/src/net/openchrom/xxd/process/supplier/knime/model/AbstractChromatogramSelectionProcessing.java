@@ -24,23 +24,24 @@ public abstract class AbstractChromatogramSelectionProcessing<Settings, Chromato
 	 *
 	 */
 	private static final long serialVersionUID = 6076099451477368555L;
-	private String id;
-	private Class<?> settingClass;
-	private String settings;
+	String id;
+	Class<?> settingClass;
+	String settings;
 
 	protected AbstractChromatogramSelectionProcessing() {
 	}
 
 	public AbstractChromatogramSelectionProcessing(String id) throws JsonProcessingException {
 		this();
-		if(id == null) {
-			throw new NullPointerException("Parameter ID cannot be null");
-		}
+		
 		this.id = id;
 	}
 
 	public AbstractChromatogramSelectionProcessing(String id, Settings settings) throws JsonProcessingException {
 		this(id);
+		if(id == null) {
+			throw new NullPointerException("Parameter ID cannot be null");
+		}
 		this.id = id;
 		this.settings = mapper.writeValueAsString(settings);
 		this.settingClass = settings.getClass();

@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter;
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.msd.filter.core.chromatogram.ChromatogramFilterMSD;
 import org.knime.core.node.NodeFactory;
@@ -43,20 +42,22 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 	public ChromatogramFilterNodeSetFactory() {
 		try {
 			filterIds = new ArrayList<>();
-			filterIds.addAll(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds().stream().filter(f -> {
-				try {
-					Class filterSettingsClass = ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(f).getFilterSettingsClass();
-					if(filterSettingsClass == null) {
-						LOGGER.warn("Filter settings class for filter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
-						return false;
-					} else {
-						return true;
-					}
-				} catch(NoChromatogramFilterSupplierAvailableException e) {
-					LOGGER.warn("A problem occurred loading filter with id '" + f + "'.", e);
-					return false;
-				}
-			}).collect(Collectors.toList()));
+			/*
+			 * filterIds.addAll(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds().stream().filter(f -> {
+			 * try {
+			 * Class filterSettingsClass = ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(f).getFilterSettingsClass();
+			 * if(filterSettingsClass == null) {
+			 * LOGGER.warn("Filter settings class for filter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
+			 * return false;
+			 * } else {
+			 * return true;
+			 * }
+			 * } catch(NoChromatogramFilterSupplierAvailableException e) {
+			 * LOGGER.warn("A problem occurred loading filter with id '" + f + "'.", e);
+			 * return false;
+			 * }
+			 * }).collect(Collectors.toList()));/
+			 **/
 			filterIds.addAll(ChromatogramFilterMSD.getChromatogramFilterSupport().getAvailableFilterIds().stream().filter(f -> {
 				try {
 					Class filterSettingsMSDClass = ChromatogramFilterMSD.getChromatogramFilterSupport().getFilterSupplier(f).getFilterSettingsClass();
@@ -94,7 +95,7 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 	@Override
 	public String getCategoryPath(String id) {
 
-		return "/openchrom/filter";
+		return "/openchrom/msd/filter";
 	}
 
 	@Override

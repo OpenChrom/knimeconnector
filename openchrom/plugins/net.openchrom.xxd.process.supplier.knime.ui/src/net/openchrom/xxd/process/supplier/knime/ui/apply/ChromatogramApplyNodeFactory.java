@@ -5,11 +5,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.apply;
+package net.openchrom.xxd.process.supplier.knime.ui.apply;
 
 import org.knime.core.node.NodeDescription;
 import org.knime.core.node.NodeDescription27Proxy;
@@ -25,41 +25,11 @@ import org.knime.node2012.PortsDocument.Ports;
 
 /**
  * Node factory for the "Apply Filters"-node.
- * 
+ *
  * @author Martin Horn, University of Konstanz
  *
  */
-public class ChromatogramApplyFiltersNodeFactory extends NodeFactory<ChromatogramApplyFiltersNodeModel> {
-
-	@Override
-	public ChromatogramApplyFiltersNodeModel createNodeModel() {
-
-		return new ChromatogramApplyFiltersNodeModel();
-	}
-
-	@Override
-	protected int getNrNodeViews() {
-
-		return 0;
-	}
-
-	@Override
-	public NodeView<ChromatogramApplyFiltersNodeModel> createNodeView(int viewIndex, ChromatogramApplyFiltersNodeModel nodeModel) {
-
-		return null;
-	}
-
-	@Override
-	protected boolean hasDialog() {
-
-		return false;
-	}
-
-	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-
-		return null;
-	}
+public class ChromatogramApplyNodeFactory extends NodeFactory<ChromatogramApplyNodeModel> {
 
 	@Override
 	protected NodeDescription createNodeDescription() {
@@ -77,15 +47,41 @@ public class ChromatogramApplyFiltersNodeFactory extends NodeFactory<Chromatogra
 		inPort1.setIndex(0);
 		inPort1.setName("Chromatogram Selection");
 		inPort1.newCursor().setTextValue("Use this input if you'd like to develop a method (chromatogram is persisted - slow)");
-		InPort inPort2 = ports.addNewInPort();
-		inPort2.setIndex(1);
-		inPort2.setName("Chromatogram Filter");
-		inPort2.newCursor().setTextValue("Use this input if you'd like to batch process data (chromatogram is not persisted - fast)");
 		OutPort outPort1 = ports.addNewOutPort();
 		outPort1.setIndex(0);
 		outPort1.setName("Chromatogram Selection");
 		outPort1.newCursor().setTextValue("The chromatogram selection port object is exported.");
 		//
 		return new NodeDescription27Proxy(doc);
+	}
+
+	@Override
+	protected NodeDialogPane createNodeDialogPane() {
+
+		return null;
+	}
+
+	@Override
+	public ChromatogramApplyNodeModel createNodeModel() {
+
+		return new ChromatogramApplyNodeModel();
+	}
+
+	@Override
+	public NodeView<ChromatogramApplyNodeModel> createNodeView(int viewIndex, ChromatogramApplyNodeModel nodeModel) {
+
+		return null;
+	}
+
+	@Override
+	protected int getNrNodeViews() {
+
+		return 0;
+	}
+
+	@Override
+	protected boolean hasDialog() {
+
+		return false;
 	}
 }

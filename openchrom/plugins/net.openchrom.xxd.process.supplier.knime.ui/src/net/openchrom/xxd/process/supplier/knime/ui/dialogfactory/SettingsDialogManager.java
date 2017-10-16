@@ -5,23 +5,23 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory;
+package net.openchrom.xxd.process.supplier.knime.ui.dialogfactory;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.property.JacksonPropertyDialogFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonPropertyDialogFactory;
 
 /**
  * TODO not used yet - will be of use of the {@link SettingsDialogFactory} is exposed as extension point.
- * 
+ *
  * Collects the extension points and provides the logics to get the right settings dialog factory.
- * 
+ *
  * @author Martin Horn, University of Konstanz
  *
  */
@@ -34,7 +34,7 @@ public class SettingsDialogManager {
 	private static final List<SettingsDialogFactory> SETTINGS_DIALOG_FACTORIES = Arrays.asList(new JacksonPropertyDialogFactory<>());
 
 	/**
-	 * 
+	 *
 	 * @param settingsObjectClass
 	 * @return an empty optional if no settings dialog factory conforms with the settings object class
 	 */

@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
+import org.eclipse.chemclipse.chromatogram.msd.filter.core.chromatogram.ChromatogramFilterMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
@@ -28,13 +29,11 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramFilterPortObjectSpec;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
-import net.openchrom.xxd.process.supplier.knime.processing.ProcessingChromatogram;
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsObjectWrapper;
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialoggeneration.DialogGenerationNodeModel;
+import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilterMSD;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
 
 /**
  * Concatenates chromatogram filters (see {@link ChromatogramFilterPortObject}) and optionally executes them on a given chromatogram selection (see {@link ChromatogramSelectionMSDPortObject}).
@@ -48,46 +47,37 @@ public class ChromatogramFilterNodeModel extends DialogGenerationNodeModel<IChro
 	private String filterId;
 
 	ChromatogramFilterNodeModel(String filterId, SettingsObjectWrapper<IChromatogramFilterSettings> so) {
-		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE_OPTIONAL, ChromatogramFilterPortObject.TYPE_OPTIONAL}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE, ChromatogramFilterPortObject.TYPE}, so);
+		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, so);
 		this.filterId = filterId;
 	}
 
 	@Override
 	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
 
-		return new PortObjectSpec[]{new ChromatogramSelectionMSDPortObjectSpec(), new ChromatogramFilterPortObjectSpec()};
+		return new PortObjectSpec[]{new ChromatogramSelectionMSDPortObjectSpec()};
 	}
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject;
+		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject = (ChromatogramSelectionMSDPortObject)inObjects[0];
+		ChromatogramSelectionMSDPortObjectSpec chromatogramSelectionMSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
 		/*
 		 * Apply the filter if a chromatogram selection is given at port 0.
 		 */
-		if(inObjects[0] != null) {
-			chromatogramSelectionPortObject = (ChromatogramSelectionMSDPortObject)inObjects[0];
-			if(chromatogramSelectionPortObject.getChromatogramSelectionMSD() != ChromatogramSelectionMSDPortObject.EMPTY_CHROMATOGRAM_SELECTION) {
-				logger.info("Apply the filter");
-				IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
-				IProcessingInfo processingInfo = ProcessingChromatogram.apply(chromatogramSelection, getSettingsObject(), filterId, new NullProgressMonitor());
-				ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
-			}
-		} else {
-			// otherwise pass an empty chromatogram selection port object
-			chromatogramSelectionPortObject = new ChromatogramSelectionMSDPortObject();
+		if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
+			logger.info("Apply the filter");
+			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
+			IProcessingInfo processingInfo = ChromatogramFilterMSD.applyFilter(chromatogramSelection, getSettingsObject(), filterId, new NullProgressMonitor());
+			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
+		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
+			logger.info("Add the filter");
+			chromatogramSelectionPortObject.addProcessings(new ProcessingFilterMSD(filterId, getSettingsObject()));
 		}
 		/*
 		 * Store applied chromatogram filter and it's settings
 		 */
-		ChromatogramFilterPortObject chromatogramFilterPortObject;
-		if(inObjects[1] != null) {
-			chromatogramFilterPortObject = (ChromatogramFilterPortObject)inObjects[1];
-		} else {
-			chromatogramFilterPortObject = new ChromatogramFilterPortObject();
-		}
-		chromatogramFilterPortObject.addChromatogramFilter(filterId, getSettingsObject());
-		return new PortObject[]{chromatogramSelectionPortObject, chromatogramFilterPortObject};
+		return new PortObject[]{chromatogramSelectionPortObject};
 	}
 
 	@Override

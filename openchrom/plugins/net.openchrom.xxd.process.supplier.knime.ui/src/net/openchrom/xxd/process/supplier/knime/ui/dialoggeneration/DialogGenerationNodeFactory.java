@@ -5,23 +5,23 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.dialoggeneration;
+package net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration;
 
 import java.util.Map;
 
 import org.knime.core.node.DynamicNodeFactory;
 import org.knime.core.node.NodeDialogPane;
 
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 
 /**
  * Node factory that creates it's dialog from a provided {@link SettingsDialogFactory}.
- * 
+ *
  * @author Martin Horn, University of Konstanz
  *
  * @param <NM>
@@ -32,18 +32,6 @@ import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.Settings
 public abstract class DialogGenerationNodeFactory<NM extends DialogGenerationNodeModel<SO>, SO> extends DynamicNodeFactory<NM> {
 
 	private SettingsDialogFactory<SO> dialogFactory;
-
-	@Override
-	protected boolean hasDialog() {
-
-		return getSettingsDialogFactory() != null;
-	}
-
-	/**
-	 * 
-	 * @return <code>null</code> if there is no dialog
-	 */
-	protected abstract SettingsDialogFactory<SO> createSettingsDialogFactory();
 
 	@Override
 	protected NodeDialogPane createNodeDialogPane() {
@@ -59,6 +47,24 @@ public abstract class DialogGenerationNodeFactory<NM extends DialogGenerationNod
 
 	public abstract NM createNodeModel(SettingsObjectWrapper<SO> settingsObjectWrapper);
 
+	/**
+	 *
+	 * @return <code>null</code> if there is no dialog
+	 */
+	protected abstract SettingsDialogFactory<SO> createSettingsDialogFactory();
+
+	/**
+	 * TODO
+	 *
+	 * To be added to the node description.
+	 *
+	 * @return
+	 */
+	protected Map<String, String> getDialogOptionsDescriptions() {
+
+		return getSettingsDialogFactory().createDialogOptionDescriptions();
+	}
+
 	private SettingsDialogFactory<SO> getSettingsDialogFactory() {
 
 		if(dialogFactory == null) {
@@ -67,15 +73,9 @@ public abstract class DialogGenerationNodeFactory<NM extends DialogGenerationNod
 		return dialogFactory;
 	}
 
-	/**
-	 * TODO
-	 * 
-	 * To be added to the node description.
-	 * 
-	 * @return
-	 */
-	protected Map<String, String> getDialogOptionsDescriptions() {
+	@Override
+	protected boolean hasDialog() {
 
-		return getSettingsDialogFactory().createDialogOptionDescriptions();
+		return getSettingsDialogFactory() != null;
 	}
 }

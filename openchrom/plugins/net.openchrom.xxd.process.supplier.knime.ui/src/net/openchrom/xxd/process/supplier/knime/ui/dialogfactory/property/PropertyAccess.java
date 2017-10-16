@@ -5,11 +5,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.property;
+package net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,12 +29,13 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
 /**
  * Helper class for the {@link PropertyDialogFactory} that unifies and implements the {@link PropertyCollector} and {@link PropertyProvider}.
  * It creates {@link DialogComponent}s and {@link SettingsModel}s for added properties and returns the {@link SettingsModel}s values.
- * 
+ *
  * @author Martin Horn, University of Konstanz
  *
  */
 public class PropertyAccess implements PropertyCollector, PropertyProvider {
 
+	Map<String, String> descriptions = new HashMap<>();
 	/*
 	 * Components for the dialog.
 	 */
@@ -43,32 +44,12 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	 * Settings models for the node model (never the same as passed with the respective dialog component!).
 	 */
 	Map<String, SettingsModel> settingsModels = new HashMap<>();
-	Map<String, String> descriptions = new HashMap<>();
 
 	@Override
-	public void addIntProperty(String id, String name, int defaultValue) {
+	public void addBooleanProperty(String id, String name, boolean defaultValue) {
 
-		dialogComponents.add(new DialogComponentNumber(new SettingsModelInteger(id, defaultValue), name, 1));
-		settingsModels.put(id, new SettingsModelInteger(id, defaultValue));
-	}
-
-	@Override
-	public int getIntProperty(String id) {
-
-		return ((SettingsModelInteger)settingsModels.get(id)).getIntValue();
-	}
-
-	@Override
-	public void addFloatProperty(String id, String name, float defaultValue) {
-
-		dialogComponents.add(new DialogComponentNumber(new SettingsModelDouble(id, defaultValue), name, 1));
-		settingsModels.put(id, new SettingsModelDouble(id, defaultValue));
-	}
-
-	@Override
-	public float getFloatProperty(String id) {
-
-		return (float)((SettingsModelDouble)settingsModels.get(id)).getDoubleValue();
+		dialogComponents.add(new DialogComponentBoolean(new SettingsModelBoolean(id, defaultValue), name));
+		settingsModels.put(id, new SettingsModelBoolean(id, defaultValue));
 	}
 
 	@Override
@@ -79,9 +60,23 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	}
 
 	@Override
-	public double getDoubleProperty(String id) {
+	public void addFloatProperty(String id, String name, float defaultValue) {
 
-		return ((SettingsModelDouble)settingsModels.get(id)).getDoubleValue();
+		dialogComponents.add(new DialogComponentNumber(new SettingsModelDouble(id, defaultValue), name, 1));
+		settingsModels.put(id, new SettingsModelDouble(id, defaultValue));
+	}
+
+	@Override
+	public void addIntProperty(String id, String name, int defaultValue) {
+
+		dialogComponents.add(new DialogComponentNumber(new SettingsModelInteger(id, defaultValue), name, 1));
+		settingsModels.put(id, new SettingsModelInteger(id, defaultValue));
+	}
+
+	@Override
+	public void addPropertyDescriptions(String name, String description) {
+
+		descriptions.put(name, description);
 	}
 
 	@Override
@@ -92,26 +87,32 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	}
 
 	@Override
-	public String getStringProperty(String id) {
-
-		return ((SettingsModelString)settingsModels.get(id)).getStringValue();
-	}
-
-	@Override
-	public void addBooleanProperty(String id, String name, boolean defaultValue) {
-
-		dialogComponents.add(new DialogComponentBoolean(new SettingsModelBoolean(id, defaultValue), name));
-		settingsModels.put(id, new SettingsModelBoolean(id, defaultValue));
-	}
-
-	@Override
 	public boolean getBooleanProperty(String id) {
 
 		return ((SettingsModelBoolean)settingsModels.get(id)).getBooleanValue();
 	}
 
-	public void addPropertyDescriptions(String name, String description) {
+	@Override
+	public double getDoubleProperty(String id) {
 
-		descriptions.put(name, description);
+		return ((SettingsModelDouble)settingsModels.get(id)).getDoubleValue();
+	}
+
+	@Override
+	public float getFloatProperty(String id) {
+
+		return (float)((SettingsModelDouble)settingsModels.get(id)).getDoubleValue();
+	}
+
+	@Override
+	public int getIntProperty(String id) {
+
+		return ((SettingsModelInteger)settingsModels.get(id)).getIntValue();
+	}
+
+	@Override
+	public String getStringProperty(String id) {
+
+		return ((SettingsModelString)settingsModels.get(id)).getStringValue();
 	}
 }

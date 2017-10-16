@@ -5,11 +5,11 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.dialoggeneration;
+package net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration;
 
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeModel;
@@ -17,12 +17,12 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.filter.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 
 /**
  * Node model for the {@link DialogGenerationNodeFactory}. Essentially loads and saves the {@link SettingsObjectWrapper}.
- * 
+ *
  * @author Martin Horn, University of Konstanz
  *
  * @param <S>
@@ -37,6 +37,17 @@ public abstract class DialogGenerationNodeModel<S> extends NodeModel {
 		this.settingsObjectWrapper = settingsObject;
 	}
 
+	protected S getSettingsObject() {
+
+		return settingsObjectWrapper.getObject();
+	}
+
+	@Override
+	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
+
+		settingsObjectWrapper.loadValidatedSettingsFrom(settings);
+	}
+
 	@Override
 	protected void saveSettingsTo(NodeSettingsWO settings) {
 
@@ -47,16 +58,5 @@ public abstract class DialogGenerationNodeModel<S> extends NodeModel {
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
 		settingsObjectWrapper.validateSettings(settings);
-	}
-
-	@Override
-	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
-
-		settingsObjectWrapper.loadValidatedSettingsFrom(settings);
-	}
-
-	protected S getSettingsObject() {
-
-		return settingsObjectWrapper.getObject();
 	}
 }

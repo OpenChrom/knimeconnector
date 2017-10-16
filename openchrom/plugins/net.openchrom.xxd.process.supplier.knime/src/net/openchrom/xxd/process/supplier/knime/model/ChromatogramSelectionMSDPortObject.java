@@ -23,6 +23,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -56,6 +61,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	public static final ChromatogramSelectionMSD EMPTY_CHROMATOGRAM_SELECTION = new ChromatogramSelectionMSD(new ChromatogramMSD());
 	private static final String CHROMATOGRAM_SELECTION_DATA = "CHROMATOGRAM_SELECTION_DATA";
 	private static final String CHROMATOGRAM_SELECTION_HEADER = "CHROMATOGRAM_SELECTION_HEADER";
+	private static final String CHROMATOGRAM_SELECTION_PROCESSING = "CHROMATOGRAM_SELECTION_PROCESSING";
 	private static final String CHROMATOGRAM_SELECTION_SETTINGS = "CHROMATOGRAM_SELECTION_SETTINGS";
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class);
 	public static final PortType TYPE_OPTIONAL = PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class, true);
@@ -63,6 +69,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	private IChromatogramSelectionMSD chromatogramSelectionMSD;
 	private InputStream chromatogramSelectionZipInputStream;
 	private ChromatogramSelectionMSDPortObjectSpec portObjectSpec;
+	private List<IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>> processing = new ArrayList<>();
 	private float startAbundance;
 	private int startRetentionTime;
 	private float stopAbundance;
@@ -75,6 +82,11 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	public ChromatogramSelectionMSDPortObject(IChromatogramSelectionMSD chromatogramSelectionMSD) {
 		this.chromatogramSelectionMSD = chromatogramSelectionMSD;
 		this.portObjectSpec = new ChromatogramSelectionMSDPortObjectSpec();
+	}
+
+	public void addProcessings(IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> chromatogramSelectionProcessing) {
+
+		processing.add(chromatogramSelectionProcessing);
 	}
 
 	protected IChromatogramSelectionMSD extractChromatogramSelectionMSD() throws IOException {
@@ -100,6 +112,11 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		} else {
 			throw new InvalidDataException();
 		}
+	}
+
+	public List<IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>> getProcessings() {
+
+		return Collections.unmodifiableList(processing);
 	}
 
 	@Override
@@ -149,6 +166,19 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		this.stopRetentionTime = dataInputStream.readInt();
 		this.startAbundance = dataInputStream.readFloat();
 		this.stopAbundance = dataInputStream.readFloat();
+		//
+		zipEntry = in.getNextEntry();
+		assert zipEntry.getName().equals(CHROMATOGRAM_SELECTION_PROCESSING);
+		ObjectInputStream objectInputStream = new ObjectInputStream(in);
+		int size = objectInputStream.readInt();
+		for(int i = 0; i < size; i++) {
+			try {
+				Object object = objectInputStream.readObject();
+				processing.add((IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>)object);
+			} catch(ClassNotFoundException e) {
+				throw new IOException(e);
+			}
+		} /**/
 	}
 
 	@Override
@@ -190,6 +220,15 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 			dataOutputStream.writeFloat(stopAbundance);
 		}
 		dataOutputStream.flush();
-		out.closeEntry();
+		//
+		zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION_PROCESSING);
+		out.putNextEntry(zipEntry);
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+		objectOutputStream.writeInt(processing.size());
+		for(int i = 0; i < processing.size(); i++) {
+			objectOutputStream.writeObject(processing.get(i));
+		}
+		dataOutputStream.flush();
+		out.closeEntry();/**/
 	}
 }
