@@ -33,7 +33,6 @@ public abstract class AbstractChromatogramSelectionProcessing<Settings, Chromato
 
 	public AbstractChromatogramSelectionProcessing(String id) throws JsonProcessingException {
 		this();
-		
 		this.id = id;
 	}
 
