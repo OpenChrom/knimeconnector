@@ -24,7 +24,11 @@ public class ChromatogramSelectionMSDPortObjectSpec extends AbstractSimplePortOb
 	public static final String MODE_IMMEDIATE_PROCESSING = "MODE_IMMEDIATE_PROCESSING";
 	public static final String MODE_POSTPONED_PROCESSING = "MODE_POSTPONED_PROCESSING";
 	private final String PROCESSING_MODE = "PROCESSING_MODE";
-	private String processingMode = MODE_IMMEDIATE_PROCESSING;
+	private String processingMode;
+
+	public ChromatogramSelectionMSDPortObjectSpec() {
+		processingMode = MODE_POSTPONED_PROCESSING;
+	}
 
 	public String getProcessingMode() {
 

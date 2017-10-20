@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.nodeset;
+package net.openchrom.xxd.process.supplier.knime.ui.filter.msd;
 
 import org.knime.core.node.NodeView;
 

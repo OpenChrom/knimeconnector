@@ -20,7 +20,7 @@ import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -44,24 +44,24 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakIdentifierSettings settings, IProgressMonitor monitor) throws Exception {
 
 		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection);
 		List<IPeakMSD> peakList = new ArrayList<IPeakMSD>();
 		for(IChromatogramPeakMSD chromatogramPeak : peaks) {
 			peakList.add(chromatogramPeak);
 		}
-		return PeakIdentifier.identify(peakList, id, new NullProgressMonitor());
+		return PeakIdentifier.identify(peakList, settings, id, monitor);
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakIdentifierSettings settings) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IProgressMonitor monitor) throws Exception {
 
 		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection);
 		List<IPeakMSD> peakList = new ArrayList<IPeakMSD>();
 		for(IChromatogramPeakMSD chromatogramPeak : peaks) {
 			peakList.add(chromatogramPeak);
 		}
-		return PeakIdentifier.identify(peakList, settings, id, new NullProgressMonitor());
+		return PeakIdentifier.identify(peakList, id, monitor);
 	}
 }

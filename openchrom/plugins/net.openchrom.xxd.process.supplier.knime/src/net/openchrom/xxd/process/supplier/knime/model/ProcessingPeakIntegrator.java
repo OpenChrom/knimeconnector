@@ -15,7 +15,7 @@ import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.PeakIntegra
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -39,14 +39,14 @@ public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProce
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, String id) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, String id, IPeakIntegrationSettings settings, IProgressMonitor monitor) throws Exception {
 
-		return PeakIntegrator.integrate(chromatogramSelection, id, new NullProgressMonitor());
+		return PeakIntegrator.integrate(chromatogramSelection, settings, id, monitor);
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, String id, IPeakIntegrationSettings settings) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, String id, IProgressMonitor monitor) throws Exception {
 
-		return PeakIntegrator.integrate(chromatogramSelection, settings, id, new NullProgressMonitor());
+		return PeakIntegrator.integrate(chromatogramSelection, id, monitor);
 	}
 }

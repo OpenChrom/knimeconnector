@@ -9,14 +9,13 @@
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.nodeset;
+package net.openchrom.xxd.process.supplier.knime.ui.filter.msd;
 
 import java.util.Map.Entry;
 
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.IChromatogramFilterSupplier;
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
-import org.eclipse.chemclipse.chromatogram.msd.filter.core.chromatogram.ChromatogramFilterMSD;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeDescription;
 import org.knime.core.node.NodeDescription27Proxy;
@@ -36,6 +35,7 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogF
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonPropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.filter.support.FiltersSupport;
 
 /**
  * Factory for chromatogram filter nodes. Dialog is generated from the filter settings class (jackson annotated) belonging to a respective filter id (see {@link JacksonPropertyDialogFactory}).
@@ -52,7 +52,7 @@ public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<C
 
 		KnimeNodeDocument doc = KnimeNodeDocument.Factory.newInstance();
 		try {
-			IChromatogramFilterSupplier filterSupplier = ChromatogramFilterMSD.getChromatogramFilterSupport().getFilterSupplier(filterId);
+			IChromatogramFilterSupplier filterSupplier = FiltersSupport.getSupplier(filterId);
 			KnimeNode node = doc.addNewKnimeNode();
 			node.setIcon("./filter.png");
 			node.setType(KnimeNode.Type.MANIPULATOR);
@@ -100,7 +100,7 @@ public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<C
 		JacksonPropertyDialogFactory<IChromatogramFilterSettings> factory = new JacksonPropertyDialogFactory<>();
 		Class<? extends IChromatogramFilterSettings> filterSettingsClass;
 		try {
-			filterSettingsClass = ChromatogramFilterMSD.getChromatogramFilterSupport().getFilterSupplier(filterId).getFilterSettingsClass();
+			filterSettingsClass = FiltersSupport.getSupplier(filterId).getFilterSettingsClass();
 			if(filterSettingsClass == null) {
 				throw new IllegalStateException("Filter settings class for filter id '" + filterId + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}

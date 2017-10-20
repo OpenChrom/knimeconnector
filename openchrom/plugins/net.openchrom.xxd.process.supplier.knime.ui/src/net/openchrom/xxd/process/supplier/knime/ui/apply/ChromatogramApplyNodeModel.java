@@ -13,9 +13,8 @@ package net.openchrom.xxd.process.supplier.knime.ui.apply;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -55,11 +54,7 @@ public class ChromatogramApplyNodeModel extends NodeModel {
 		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject = (ChromatogramSelectionMSDPortObject)inObjects[0];
 		ChromatogramSelectionMSDPortObjectSpec chromatogramSelectionMSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
 		if(chromatogramSelectionMSDPortObjectSpec.equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
-			List<IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>> processings = chromatogramSelectionPortObject.getProcessings();
-			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
-			for(int i = 0; i < processings.size(); i++) {
-				processings.get(i).process(chromatogramSelection);
-			}
+			IChromatogramSelectionProcessing.updateChromatogramSelection(chromatogramSelectionPortObject, new NullProgressMonitor(), true);
 			chromatogramSelectionMSDPortObjectSpec.setProcessingMode(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING);
 		}
 		return new PortObject[]{chromatogramSelectionPortObject};

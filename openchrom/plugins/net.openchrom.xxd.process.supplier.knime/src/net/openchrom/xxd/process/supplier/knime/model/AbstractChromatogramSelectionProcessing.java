@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.knime.model;
 
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +34,6 @@ public abstract class AbstractChromatogramSelectionProcessing<Settings, Chromato
 
 	public AbstractChromatogramSelectionProcessing(String id) throws JsonProcessingException {
 		this();
-		
 		this.id = id;
 	}
 
@@ -49,17 +49,17 @@ public abstract class AbstractChromatogramSelectionProcessing<Settings, Chromato
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IProcessingInfo process(ChromatogramSelection chromatogramSelection) throws Exception {
+	public IProcessingInfo process(ChromatogramSelection chromatogramSelection, IProgressMonitor monitor) throws Exception {
 
 		if(settings == null) {
-			return process(chromatogramSelection, id);
+			return process(chromatogramSelection, id, monitor);
 		} else {
 			Settings settingsObject = (Settings)mapper.readValue(settings, settingClass);
-			return process(chromatogramSelection, id, settingsObject);
+			return process(chromatogramSelection, id, settingsObject, monitor);
 		}
 	}
 
-	protected abstract IProcessingInfo process(ChromatogramSelection chromatogramSelection, String id) throws Exception;
+	protected abstract IProcessingInfo process(ChromatogramSelection chromatogramSelection, String id, IProgressMonitor monitor) throws Exception;
 
-	protected abstract IProcessingInfo process(ChromatogramSelection chromatogramSelection, String id, Settings settings) throws Exception;
+	protected abstract IProcessingInfo process(ChromatogramSelection chromatogramSelection, String id, Settings settings, IProgressMonitor monitor) throws Exception;
 }
