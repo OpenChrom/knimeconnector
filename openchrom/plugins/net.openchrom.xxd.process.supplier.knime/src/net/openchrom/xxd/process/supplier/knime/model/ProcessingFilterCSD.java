@@ -15,7 +15,7 @@ import org.eclipse.chemclipse.chromatogram.csd.filter.core.chromatogram.Chromato
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -39,14 +39,14 @@ public class ProcessingFilterCSD extends AbstractChromatogramSelectionProcessing
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionCSD chromatogramSelection, String id) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionCSD chromatogramSelection, String id, IChromatogramFilterSettings setting, IProgressMonitor monitor) throws Exception {
 
-		return ChromatogramFilterCSD.applyFilter(chromatogramSelection, id, new NullProgressMonitor());
+		return ChromatogramFilterCSD.applyFilter(chromatogramSelection, setting, id, monitor);
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionCSD chromatogramSelection, String id, IChromatogramFilterSettings setting) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionCSD chromatogramSelection, String id, IProgressMonitor monitor) throws Exception {
 
-		return ChromatogramFilterCSD.applyFilter(chromatogramSelection, setting, id, new NullProgressMonitor());
+		return ChromatogramFilterCSD.applyFilter(chromatogramSelection, id, monitor);
 	}
 }

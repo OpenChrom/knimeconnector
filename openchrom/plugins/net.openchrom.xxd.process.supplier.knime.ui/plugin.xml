@@ -26,18 +26,25 @@
             path="/">
       </category>
       <category
+            level-id="msd"
+            name="MSD"
+            icon="icons/msd.png"
+            description="Mass Spectrum Detector"
+            path="/openchrom">
+      </category>      
+      <category
             level-id="io"
             name="I/O"
             icon="icons/io.png"
             description="Data input and output of various file formats."
-            path="/openchrom">
+            path="/openchrom/msd">
       </category>
       <category
             level-id="da"
             name="Direct Access"
             icon="icons/da.png"
             description="Direct access to measurement data via open editor."
-            path="/openchrom">
+            path="/openchrom/msd">
       </category>
       <category
             level-id="visualization"
@@ -51,144 +58,39 @@
             name="Filter"
             icon="icons/filter.png"
             description="Filter"
-            path="/openchrom">
+            path="/openchrom/msd">
       </category>  
       <category
             level-id="translator"
             name="Translator"
             icon="icons/translator.png"
             description="Translator"
-            path="/openchrom">
-      </category>                  
+            path="/openchrom/msd">
+      </category>  
       <category
-            level-id="msd"
-            name="MSD"
-            icon="icons/msd.png"
-            description="Mass Selective Detector (MSD)."
-            path="/openchrom/io">
-      </category>
-      <category
-            level-id="csd"
-            name="CSD"
-            icon="icons/csd.png"
-            description="Current Selective Detector (CSD)."
-            path="/openchrom/io">
-      </category>
-      <category
-            level-id="wsd"
-            name="WSD"
-            icon="icons/wsd.png"
-            description="Wavelength Selective Detector (WSD)."
-            path="/openchrom/io">
-      </category>
-      <category
-            level-id="nmr"
-            name="NMR"
-            icon="icons/nmr.png"
-            description="Nuclear Magnetic Resonance (NMR)."
-            path="/openchrom/io">
-      </category>
-      <category
-            level-id="msd"
-            name="MSD"
-            icon="icons/msd.png"
-            description="Mass Selective Detector (MSD)."
-            path="/openchrom/da">
-      </category>
-      <category
-            level-id="csd"
-            name="CSD"
-            icon="icons/csd.png"
-            description="Current Selective Detector (CSD)."
-            path="/openchrom/da">
-      </category>
-      <category
-            level-id="wsd"
-            name="WSD"
-            icon="icons/wsd.png"
-            description="Wavelength Selective Detector (WSD)."
-            path="/openchrom/da">
-      </category>
-      <category
-            level-id="nmr"
-            name="NMR"
-            icon="icons/nmr.png"
-            description="Nuclear Magnetic Resonance (NMR)."
-            path="/openchrom/da">
-      </category>
-      <category
-            icon="icons/sandbox.png"
-            level-id="sandbox"
-            locked="true"
-            name="Sandbox"
-            path="/openchrom">
-      </category>        
+      		level-id="process_control"
+      		name="Process Control"
+      		description="Process Control"
+      		path="/openchrom/msd">
+      </category>      		                     
    </extension>
    <extension
          point="org.knime.workbench.repository.nodes">
       <node
-            category-path="/openchrom/io/msd"
+            category-path="/openchrom/msd/io"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramReaderMSDNodeFactory">
       </node>
       <node
-            category-path="/openchrom/io/msd"
+            category-path="/openchrom/msd/io"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramWriterMSDNodeFactory">
       </node>
       <node
-            category-path="/openchrom/io/csd"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.csd.ChromatogramReaderCSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/io/csd"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.csd.ChromatogramWriterCSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/io/wsd"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.wsd.ChromatogramReaderWSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/io/wsd"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.wsd.ChromatogramWriterWSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/io/nmr"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.nmr.MeasurementReaderNMRNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/io/nmr"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.nmr.MeasurementWriterNMRNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/da/msd"
+            category-path="/openchrom/msd/da"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.msd.ChromatogramGetterMSDNodeFactory">
       </node>
       <node
-            category-path="/openchrom/da/msd"
+            category-path="/openchrom/msd/da"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.msd.ChromatogramSetterMSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/da/csd"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.csd.ChromatogramGetterCSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/da/csd"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.csd.ChromatogramSetterCSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/da/wsd"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.wsd.ChromatogramGetterWSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/da/wsd"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.wsd.ChromatogramSetterWSDNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/da/nmr"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.nmr.MeasurementGetterNMRNodeFactory">
-      </node>
-      <node
-            category-path="/openchrom/da/nmr"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.da.nmr.MeasurementSetterNMRNodeFactory">
       </node>
       <node
             category-path="/openchrom/visualization"
@@ -199,12 +101,16 @@
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.viz.massspectrum.MassSpectrumNodeFactory">
       </node>
       <node
-            category-path="/openchrom/translator"
+            category-path="/openchrom/msd/translator"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.CsMsdToTableNodeFactory">
       </node>
       <node
-            category-path="/openchrom/translator"
+            category-path="/openchrom/msd/translator"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.TableToCsMsdNodeFactory">
-      </node>                  
+      </node>  
+      <node
+      		category-path="/openchrom/msd/process_control"
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.apply.ChromatogramApplyNodeFactory">
+      </node>                
    </extension>
 </plugin>

@@ -9,7 +9,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.nodeset;
+package net.openchrom.xxd.process.supplier.knime.ui.filter.msd;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,13 +18,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
-import org.eclipse.chemclipse.chromatogram.msd.filter.core.chromatogram.ChromatogramFilterMSD;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSetFactory;
 import org.knime.core.node.NodeSettings;
 import org.knime.core.node.config.ConfigRO;
+
+import net.openchrom.xxd.process.supplier.knime.ui.filter.support.FiltersSupport;
 
 /**
  * Node set factory that generates all possible chromatogram filter nodes. A node for a specific filter id can only be generated, if it's filter settings class is registered at the respective extension point.
@@ -42,26 +43,10 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 	public ChromatogramFilterNodeSetFactory() {
 		try {
 			filterIds = new ArrayList<>();
-			/*
-			 * filterIds.addAll(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds().stream().filter(f -> {
-			 * try {
-			 * Class filterSettingsClass = ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(f).getFilterSettingsClass();
-			 * if(filterSettingsClass == null) {
-			 * LOGGER.warn("Filter settings class for filter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
-			 * return false;
-			 * } else {
-			 * return true;
-			 * }
-			 * } catch(NoChromatogramFilterSupplierAvailableException e) {
-			 * LOGGER.warn("A problem occurred loading filter with id '" + f + "'.", e);
-			 * return false;
-			 * }
-			 * }).collect(Collectors.toList()));/
-			 **/
-			filterIds.addAll(ChromatogramFilterMSD.getChromatogramFilterSupport().getAvailableFilterIds().stream().filter(f -> {
+			filterIds.addAll(FiltersSupport.getIDsFilterChromatogramMSD().stream().filter(f -> {
 				try {
-					Class filterSettingsMSDClass = ChromatogramFilterMSD.getChromatogramFilterSupport().getFilterSupplier(f).getFilterSettingsClass();
-					if(filterSettingsMSDClass == null) {
+					Class filterSettingsClass = FiltersSupport.getSupplier(f).getFilterSettingsClass();
+					if(filterSettingsClass == null) {
 						LOGGER.warn("Filter settings class for filter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;
 					} else {
@@ -71,7 +56,7 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 					LOGGER.warn("A problem occurred loading filter with id '" + f + "'.", e);
 					return false;
 				}
-			}).collect(Collectors.toList()));/**/
+			}).collect(Collectors.toList()));
 			filterIds = Collections.unmodifiableList(filterIds);
 		} catch(NoChromatogramFilterSupplierAvailableException e) {
 			LOGGER.warn(e);

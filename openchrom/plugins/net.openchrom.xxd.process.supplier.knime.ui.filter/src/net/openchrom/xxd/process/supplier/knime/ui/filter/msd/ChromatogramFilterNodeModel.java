@@ -9,13 +9,12 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.filter.nodeset;
+package net.openchrom.xxd.process.supplier.knime.ui.filter.msd;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
-import org.eclipse.chemclipse.chromatogram.msd.filter.core.chromatogram.ChromatogramFilterMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
@@ -34,6 +33,7 @@ import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPo
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilterMSD;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
+import net.openchrom.xxd.process.supplier.knime.ui.filter.support.FiltersSupport;
 
 /**
  * Concatenates chromatogram filters (see {@link ChromatogramFilterPortObject}) and optionally executes them on a given chromatogram selection (see {@link ChromatogramSelectionMSDPortObject}).
@@ -68,7 +68,8 @@ public class ChromatogramFilterNodeModel extends DialogGenerationNodeModel<IChro
 		if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
 			logger.info("Apply the filter");
 			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
-			IProcessingInfo processingInfo = ChromatogramFilterMSD.applyFilter(chromatogramSelection, getSettingsObject(), filterId, new NullProgressMonitor());
+			IProcessingInfo processingInfo = FiltersSupport.apply(chromatogramSelection, getSettingsObject(), filterId, new NullProgressMonitor());
+			chromatogramSelectionPortObject.chromatogramSelectionUpdate();
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
 			logger.info("Add the filter");

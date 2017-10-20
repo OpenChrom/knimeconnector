@@ -22,11 +22,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -65,21 +63,22 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	private static final String CHROMATOGRAM_SELECTION_SETTINGS = "CHROMATOGRAM_SELECTION_SETTINGS";
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class);
 	public static final PortType TYPE_OPTIONAL = PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class, true);
+	private byte[] chromatogramByteArray;
 	//
 	private IChromatogramSelectionMSD chromatogramSelectionMSD;
-	private InputStream chromatogramSelectionZipInputStream;
+	private boolean chromatogramUpdate;
 	private ChromatogramSelectionMSDPortObjectSpec portObjectSpec;
-	private List<IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>> processing = new ArrayList<>();
+	List<IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>> processing = new ArrayList<>();
 	private float startAbundance;
 	private int startRetentionTime;
 	private float stopAbundance;
 	private int stopRetentionTime;
 
-	public ChromatogramSelectionMSDPortObject() {
+	public ChromatogramSelectionMSDPortObject() throws IOException {
 		this(EMPTY_CHROMATOGRAM_SELECTION);
 	}
 
-	public ChromatogramSelectionMSDPortObject(IChromatogramSelectionMSD chromatogramSelectionMSD) {
+	public ChromatogramSelectionMSDPortObject(IChromatogramSelectionMSD chromatogramSelectionMSD) throws IOException {
 		this.chromatogramSelectionMSD = chromatogramSelectionMSD;
 		this.portObjectSpec = new ChromatogramSelectionMSDPortObjectSpec();
 	}
@@ -89,11 +88,24 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		processing.add(chromatogramSelectionProcessing);
 	}
 
-	protected IChromatogramSelectionMSD extractChromatogramSelectionMSD() throws IOException {
+	private byte[] convertChromatogram(IChromatogramMSD chromatogramMSD) throws IOException {
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ZipOutputStream zipOutputStream = new ZipOutputStream(bos);
+		ZipEntry entry = new ZipEntry("Chromatogram");
+		zipOutputStream.putNextEntry(entry);
+		ChromatogramWriterMSD chromatogramWriterMSD = new ChromatogramWriterMSD();
+		chromatogramWriterMSD.writeChromatogram(zipOutputStream, chromatogramSelectionMSD.getChromatogramMSD(), new NullProgressMonitor());
+		zipOutputStream.closeEntry();
+		zipOutputStream.close();
+		return bos.toByteArray();
+	}
+
+	IChromatogramSelectionMSD extractChromatogramSelectionMSD() throws IOException {
 
 		if(chromatogramSelectionMSD == null) {
 			ChromatogramReaderMSD chromatogramReaderMSD = new ChromatogramReaderMSD();
-			IChromatogramMSD chromatogramMSD = chromatogramReaderMSD.read(new ZipInputStream(chromatogramSelectionZipInputStream), new NullProgressMonitor());
+			IChromatogramMSD chromatogramMSD = chromatogramReaderMSD.read(new ZipInputStream(new ByteArrayInputStream(chromatogramByteArray)), new NullProgressMonitor());
 			chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
 			chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
 			chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
@@ -114,11 +126,6 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		}
 	}
 
-	public List<IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>> getProcessings() {
-
-		return Collections.unmodifiableList(processing);
-	}
-
 	@Override
 	public ChromatogramSelectionMSDPortObjectSpec getSpec() {
 
@@ -135,6 +142,11 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	public JComponent[] getViews() {
 
 		return null;
+	}
+
+	public void chromatogramSelectionUpdate() {
+
+		chromatogramUpdate = true;
 	}
 
 	@Override
@@ -154,9 +166,9 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		//
 		zipEntry = in.getNextEntry();
 		assert zipEntry.getName().equals(CHROMATOGRAM_SELECTION_DATA);
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		IOUtils.copy(in, outputStream);
-		chromatogramSelectionZipInputStream = new ByteArrayInputStream(outputStream.toByteArray());
+		ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+		IOUtils.copy(in, arrayOutputStream);
+		chromatogramByteArray = arrayOutputStream.toByteArray();
 		chromatogramSelectionMSD = null;
 		//
 		zipEntry = in.getNextEntry();
@@ -174,11 +186,11 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		for(int i = 0; i < size; i++) {
 			try {
 				Object object = objectInputStream.readObject();
-				processing.add((IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>)object);
+				processing.add(((IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>)object));
 			} catch(ClassNotFoundException e) {
 				throw new IOException(e);
 			}
-		} /**/
+		}
 	}
 
 	@Override
@@ -196,18 +208,17 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		//
 		zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION_DATA);
 		out.putNextEntry(zipEntry);
-		ZipOutputStream zipOutputStream = new ZipOutputStream(out);
-		if(chromatogramSelectionMSD != null) {
-			ChromatogramWriterMSD chromatogramWriterMSD = new ChromatogramWriterMSD();
-			chromatogramWriterMSD.writeChromatogram(zipOutputStream, chromatogramSelectionMSD.getChromatogramMSD(), new NullProgressMonitor());
-		} else {
-			IOUtils.copy(chromatogramSelectionZipInputStream, zipOutputStream);
+		DataOutputStream dataOutputStream = new DataOutputStream(out);
+		if(chromatogramUpdate || chromatogramByteArray == null) {
+			chromatogramByteArray = convertChromatogram(chromatogramSelectionMSD.getChromatogramMSD());
+			chromatogramUpdate = false;
 		}
-		zipOutputStream.flush();
+		dataOutputStream.write(chromatogramByteArray);
+		dataOutputStream.flush();
 		//
 		zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION_SETTINGS);
 		out.putNextEntry(zipEntry);
-		DataOutputStream dataOutputStream = new DataOutputStream(out);
+		dataOutputStream = new DataOutputStream(out);
 		if(chromatogramSelectionMSD != null) {
 			dataOutputStream.writeInt(chromatogramSelectionMSD.getStartRetentionTime());
 			dataOutputStream.writeInt(chromatogramSelectionMSD.getStopRetentionTime());
@@ -228,7 +239,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		for(int i = 0; i < processing.size(); i++) {
 			objectOutputStream.writeObject(processing.get(i));
 		}
-		dataOutputStream.flush();
-		out.closeEntry();/**/
+		objectOutputStream.flush();
+		out.closeEntry();
 	}
 }

@@ -15,7 +15,7 @@ import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMS
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -39,14 +39,14 @@ public class ProccesingPeakDetectorMSD extends AbstractChromatogramSelectionProc
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakDetectorMSDSettings settings, IProgressMonitor monitor) throws Exception {
 
-		return PeakDetectorMSD.detect(chromatogramSelection, id, new NullProgressMonitor());
+		return PeakDetectorMSD.detect(chromatogramSelection, settings, id, monitor);
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakDetectorMSDSettings settings) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IProgressMonitor monitor) throws Exception {
 
-		return PeakDetectorMSD.detect(chromatogramSelection, settings, id, new NullProgressMonitor());
+		return PeakDetectorMSD.detect(chromatogramSelection, id, monitor);
 	}
 }
