@@ -30,12 +30,18 @@ public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProce
 		super();
 	}
 
-	public ProcessingPeakIntegrator(String id) throws JsonProcessingException {
+	public ProcessingPeakIntegrator(String id) {
 		super(id);
 	}
 
 	public ProcessingPeakIntegrator(String id, IPeakIntegrationSettings settings) throws JsonProcessingException {
 		super(id, settings);
+	}
+
+	@Override
+	protected Class<? extends IPeakIntegrationSettings> getSettingsClass(String id) throws Exception {
+
+		return PeakIntegrator.getPeakIntegratorSupport().getIntegratorSupplier(id).getPeakIntegrationSettingsClass();
 	}
 
 	@Override

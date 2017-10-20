@@ -53,7 +53,7 @@ public class ChromatogramApplyNodeModel extends NodeModel {
 
 		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject = (ChromatogramSelectionMSDPortObject)inObjects[0];
 		ChromatogramSelectionMSDPortObjectSpec chromatogramSelectionMSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
-		if(chromatogramSelectionMSDPortObjectSpec.equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
+		if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			IChromatogramSelectionProcessing.updateChromatogramSelection(chromatogramSelectionPortObject, new NullProgressMonitor(), true);
 			chromatogramSelectionMSDPortObjectSpec.setProcessingMode(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING);
 		}

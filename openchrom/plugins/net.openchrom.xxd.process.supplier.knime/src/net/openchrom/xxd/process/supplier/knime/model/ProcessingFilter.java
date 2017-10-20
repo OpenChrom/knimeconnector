@@ -12,14 +12,14 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter;
-import org.eclipse.chemclipse.chromatogram.filter.settings.ChromatogramFilterSettings;
+import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<ChromatogramFilterSettings, IChromatogramSelection> {
+public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<IChromatogramFilterSettings, IChromatogramSelection> {
 
 	/**
 	 *
@@ -30,16 +30,22 @@ public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<Ch
 		super();
 	}
 
-	public ProcessingFilter(String id) throws JsonProcessingException {
+	public ProcessingFilter(String id) {
 		super(id);
 	}
 
-	public ProcessingFilter(String id, ChromatogramFilterSettings settings) throws JsonProcessingException {
+	public ProcessingFilter(String id, IChromatogramFilterSettings settings) throws JsonProcessingException {
 		super(id, settings);
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, String id, ChromatogramFilterSettings setting, IProgressMonitor monitor) throws Exception {
+	protected Class<? extends IChromatogramFilterSettings> getSettingsClass(String id) throws Exception {
+
+		return ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(id).getFilterSettingsClass();
+	}
+
+	@Override
+	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, String id, IChromatogramFilterSettings setting, IProgressMonitor monitor) throws Exception {
 
 		return ChromatogramFilter.applyFilter(chromatogramSelection, setting, id, monitor);
 	}

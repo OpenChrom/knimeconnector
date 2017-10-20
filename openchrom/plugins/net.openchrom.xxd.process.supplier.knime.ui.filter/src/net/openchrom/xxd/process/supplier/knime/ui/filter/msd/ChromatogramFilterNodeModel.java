@@ -30,7 +30,6 @@ import org.knime.core.node.port.PortType;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
-import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilterMSD;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.support.FiltersSupport;
@@ -71,9 +70,10 @@ public class ChromatogramFilterNodeModel extends DialogGenerationNodeModel<IChro
 			IProcessingInfo processingInfo = FiltersSupport.apply(chromatogramSelection, getSettingsObject(), filterId, new NullProgressMonitor());
 			chromatogramSelectionPortObject.chromatogramSelectionUpdate();
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
-		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
+		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			logger.info("Add the filter");
-			chromatogramSelectionPortObject.addProcessings(new ProcessingFilterMSD(filterId, getSettingsObject()));
+			IChromatogramFilterSettings settings = getSettingsObject();
+			chromatogramSelectionPortObject.addProcessings(FiltersSupport.getProcessingFilterChromatogramMSD(filterId, settings));
 		}
 		/*
 		 * Store applied chromatogram filter and it's settings

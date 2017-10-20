@@ -30,12 +30,18 @@ public class ProcessingFilterCSD extends AbstractChromatogramSelectionProcessing
 		super();
 	}
 
-	public ProcessingFilterCSD(String id) throws JsonProcessingException {
+	public ProcessingFilterCSD(String id) {
 		super(id);
 	}
 
 	public ProcessingFilterCSD(String id, IChromatogramFilterSettings settings) throws JsonProcessingException {
 		super(id, settings);
+	}
+
+	@Override
+	protected Class<? extends IChromatogramFilterSettings> getSettingsClass(String id) throws Exception {
+
+		return ChromatogramFilterCSD.getChromatogramFilterSupport().getFilterSupplier(id).getFilterSettingsClass();
 	}
 
 	@Override

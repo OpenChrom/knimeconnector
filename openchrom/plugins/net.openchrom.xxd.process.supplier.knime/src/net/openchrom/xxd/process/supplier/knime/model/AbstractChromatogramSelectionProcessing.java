@@ -25,36 +25,38 @@ public abstract class AbstractChromatogramSelectionProcessing<Settings, Chromato
 	 *
 	 */
 	private static final long serialVersionUID = 6076099451477368555L;
-	String id;
-	Class<?> settingClass;
-	String settings;
+	private String id;
+	private String settings;
 
 	protected AbstractChromatogramSelectionProcessing() {
 	}
 
-	public AbstractChromatogramSelectionProcessing(String id) throws JsonProcessingException {
+	public AbstractChromatogramSelectionProcessing(String id) {
 		this();
+		if(id == null) {
+			throw new NullPointerException("Parameter ID cannot be null");
+		}
 		this.id = id;
 	}
 
 	public AbstractChromatogramSelectionProcessing(String id, Settings settings) throws JsonProcessingException {
 		this(id);
-		if(id == null) {
-			throw new NullPointerException("Parameter ID cannot be null");
+		if(settings == null) {
+			throw new NullPointerException("Parameter Settings cannot be null");
 		}
-		this.id = id;
 		this.settings = mapper.writeValueAsString(settings);
-		this.settingClass = settings.getClass();
 	}
 
-	@SuppressWarnings("unchecked")
+	protected abstract Class<? extends Settings> getSettingsClass(String id) throws Exception;
+
 	@Override
 	public IProcessingInfo process(ChromatogramSelection chromatogramSelection, IProgressMonitor monitor) throws Exception {
 
 		if(settings == null) {
 			return process(chromatogramSelection, id, monitor);
 		} else {
-			Settings settingsObject = (Settings)mapper.readValue(settings, settingClass);
+			Class<? extends Settings> settingClass = getSettingsClass(id);
+			Settings settingsObject = mapper.readValue(settings, settingClass);
 			return process(chromatogramSelection, id, settingsObject, monitor);
 		}
 	}

@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.knime.model;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.PeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
+import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,12 +31,18 @@ public class ProccesingPeakDetectorCSD extends AbstractChromatogramSelectionProc
 		super();
 	}
 
-	public ProccesingPeakDetectorCSD(String id) throws JsonProcessingException {
+	public ProccesingPeakDetectorCSD(String id) {
 		super(id);
 	}
 
 	public ProccesingPeakDetectorCSD(String id, IPeakDetectorCSDSettings settings) throws JsonProcessingException {
 		super(id, settings);
+	}
+
+	@Override
+	protected Class<? extends IPeakDetectorCSDSettings> getSettingsClass(String id) throws NoPeakDetectorAvailableException {
+
+		return (Class<? extends IPeakDetectorCSDSettings>)PeakDetectorCSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getPeakDetectorSettingsClass();
 	}
 
 	@Override

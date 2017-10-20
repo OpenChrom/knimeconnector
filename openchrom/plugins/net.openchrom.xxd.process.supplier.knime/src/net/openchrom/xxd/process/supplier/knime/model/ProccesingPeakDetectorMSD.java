@@ -30,12 +30,18 @@ public class ProccesingPeakDetectorMSD extends AbstractChromatogramSelectionProc
 		super();
 	}
 
-	public ProccesingPeakDetectorMSD(String id) throws JsonProcessingException {
+	public ProccesingPeakDetectorMSD(String id) {
 		super(id);
 	}
 
 	public ProccesingPeakDetectorMSD(String id, IPeakDetectorMSDSettings settings) throws JsonProcessingException {
 		super(id, settings);
+	}
+
+	@Override
+	protected Class<? extends IPeakDetectorMSDSettings> getSettingsClass(String id) throws Exception {
+
+		return (Class<? extends IPeakDetectorMSDSettings>)PeakDetectorMSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getPeakDetectorSettingsClass();
 	}
 
 	@Override

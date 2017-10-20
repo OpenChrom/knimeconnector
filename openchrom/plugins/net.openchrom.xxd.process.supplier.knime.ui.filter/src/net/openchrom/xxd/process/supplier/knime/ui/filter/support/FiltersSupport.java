@@ -26,6 +26,13 @@ import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
+import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilter;
+import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilterCSD;
+import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilterMSD;
+
 public class FiltersSupport {
 
 	public static IChromatogramFilterProcessingInfo apply(IChromatogramSelection chromatogramSelection, IChromatogramFilterSettings setting, String id, IProgressMonitor monitor) throws NoChromatogramFilterSupplierAvailableException {
@@ -54,6 +61,46 @@ public class FiltersSupport {
 		ids.addAll(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds());
 		ids.addAll(ChromatogramFilterMSD.getChromatogramFilterSupport().getAvailableFilterIds());
 		return ids;
+	}
+
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingFilterChromatogramCSD(String id) throws NoChromatogramFilterSupplierAvailableException {
+
+		if(isFilter(id)) {
+			return new ProcessingFilter(id);
+		} else if(isFilterMSD(id)) {
+			return new ProcessingFilterCSD(id);
+		}
+		throw new NoChromatogramFilterSupplierAvailableException();
+	}
+
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingFilterChromatogramCSD(String id, IChromatogramFilterSettings settings) throws JsonProcessingException, NoChromatogramFilterSupplierAvailableException {
+
+		if(isFilter(id)) {
+			return new ProcessingFilter(id, settings);
+		} else if(isFilterMSD(id)) {
+			return new ProcessingFilterCSD(id, settings);
+		}
+		throw new NoChromatogramFilterSupplierAvailableException();
+	}
+
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProcessingFilterChromatogramMSD(String id) throws NoChromatogramFilterSupplierAvailableException {
+
+		if(isFilter(id)) {
+			return new ProcessingFilter(id);
+		} else if(isFilterMSD(id)) {
+			return new ProcessingFilterMSD(id);
+		}
+		throw new NoChromatogramFilterSupplierAvailableException();
+	}
+
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProcessingFilterChromatogramMSD(String id, IChromatogramFilterSettings settings) throws JsonProcessingException, NoChromatogramFilterSupplierAvailableException {
+
+		if(isFilter(id)) {
+			return new ProcessingFilter(id, settings);
+		} else if(isFilterMSD(id)) {
+			return new ProcessingFilterMSD(id, settings);
+		}
+		throw new NoChromatogramFilterSupplierAvailableException();
 	}
 
 	public static IChromatogramFilterSupplier getSupplier(String id) throws NoChromatogramFilterSupplierAvailableException {

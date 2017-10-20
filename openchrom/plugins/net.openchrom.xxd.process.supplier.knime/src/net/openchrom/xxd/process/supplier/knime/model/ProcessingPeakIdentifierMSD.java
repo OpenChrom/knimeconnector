@@ -35,12 +35,18 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 		super();
 	}
 
-	public ProcessingPeakIdentifierMSD(String id) throws JsonProcessingException {
+	public ProcessingPeakIdentifierMSD(String id) {
 		super(id);
 	}
 
 	public ProcessingPeakIdentifierMSD(String id, IPeakIdentifierSettings settings) throws JsonProcessingException {
 		super(id, settings);
+	}
+
+	@Override
+	protected Class<? extends IPeakIdentifierSettings> getSettingsClass(String id) throws Exception {
+
+		return null;
 	}
 
 	@Override
