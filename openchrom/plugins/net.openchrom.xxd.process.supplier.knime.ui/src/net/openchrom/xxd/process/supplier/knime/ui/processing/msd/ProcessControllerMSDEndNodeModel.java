@@ -9,7 +9,7 @@
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.apply;
+package net.openchrom.xxd.process.supplier.knime.ui.processing.msd;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,7 @@ import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
+import org.knime.core.node.workflow.LoopEndNode;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
@@ -36,9 +37,9 @@ import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProc
  * @author Martin Horn, University of Konstanz
  *
  */
-public class ChromatogramApplyNodeModel extends NodeModel {
+public class ProcessControllerMSDEndNodeModel extends NodeModel implements LoopEndNode {
 
-	protected ChromatogramApplyNodeModel() {
+	protected ProcessControllerMSDEndNodeModel() {
 		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE});
 	}
 

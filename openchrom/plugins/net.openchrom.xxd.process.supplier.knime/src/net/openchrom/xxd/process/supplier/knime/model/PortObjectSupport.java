@@ -14,11 +14,13 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Jan Holy - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.port.PortObject;
+import org.knime.core.node.port.PortObjectSpec;
 
 public class PortObjectSupport {
 
@@ -37,6 +39,16 @@ public class PortObjectSupport {
 		for(Object object : inObjects) {
 			if(object instanceof ChromatogramSelectionMSDPortObject) {
 				return (ChromatogramSelectionMSDPortObject)object;
+			}
+		}
+		return null;
+	}
+
+	public static ChromatogramSelectionMSDPortObjectSpec getChromatogramSelectionMSDPortObjectSpec(PortObjectSpec[] inObjects) {
+
+		for(PortObjectSpec portObjectSpec : inObjects) {
+			if(portObjectSpec instanceof ChromatogramSelectionMSDPortObjectSpec) {
+				return (ChromatogramSelectionMSDPortObjectSpec)portObjectSpec;
 			}
 		}
 		return null;

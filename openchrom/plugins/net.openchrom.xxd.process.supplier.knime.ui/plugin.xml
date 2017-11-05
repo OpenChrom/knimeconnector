@@ -107,10 +107,14 @@
       <node
             category-path="/openchrom/msd/translator"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.TableToCsMsdNodeFactory">
-      </node>  
+      </node>
       <node
       		category-path="/openchrom/msd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.apply.ChromatogramApplyNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerMSDStartNodeFactory">
+      </node>    
+      <node
+      		category-path="/openchrom/msd/process_control"
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerMSDEndNodeFactory">
       </node>                
    </extension>
 </plugin>

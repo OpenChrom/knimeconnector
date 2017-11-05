@@ -8,8 +8,9 @@
  *
  * Contributors:
  * Martin Horn - initial API and implementation
+ * Jan Holy
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.apply;
+package net.openchrom.xxd.process.supplier.knime.ui.processing.msd;
 
 import org.knime.core.node.NodeDescription;
 import org.knime.core.node.NodeDescription27Proxy;
@@ -29,24 +30,23 @@ import org.knime.node2012.PortsDocument.Ports;
  * @author Martin Horn, University of Konstanz
  *
  */
-public class ChromatogramApplyNodeFactory extends NodeFactory<ChromatogramApplyNodeModel> {
+public class ProcessControllerMSDEndNodeFactory extends NodeFactory<ProcessControllerMSDEndNodeModel> {
 
 	@Override
 	protected NodeDescription createNodeDescription() {
 
 		KnimeNodeDocument doc = KnimeNodeDocument.Factory.newInstance();
 		KnimeNode node = doc.addNewKnimeNode();
-		node.setIcon("./apply.png");
-		node.setType(KnimeNode.Type.MANIPULATOR);
-		node.setName("Chromatogram Filter Apply");
+		node.setType(KnimeNode.Type.LOOP_END);
+		node.setName("End Processing");
 		FullDescription description = node.addNewFullDescription();
-		description.addNewIntro().newCursor().setTextValue("This node applies the selected filters.");
+		description.addNewIntro().newCursor().setTextValue("This node applies the selected processes on chromataogram.");
 		//
 		Ports ports = node.addNewPorts();
 		InPort inPort1 = ports.addNewInPort();
 		inPort1.setIndex(0);
 		inPort1.setName("Chromatogram Selection");
-		inPort1.newCursor().setTextValue("Use this input if you'd like to develop a method (chromatogram is persisted - slow)");
+		inPort1.newCursor().setTextValue("");
 		OutPort outPort1 = ports.addNewOutPort();
 		outPort1.setIndex(0);
 		outPort1.setName("Chromatogram Selection");
@@ -62,13 +62,13 @@ public class ChromatogramApplyNodeFactory extends NodeFactory<ChromatogramApplyN
 	}
 
 	@Override
-	public ChromatogramApplyNodeModel createNodeModel() {
+	public ProcessControllerMSDEndNodeModel createNodeModel() {
 
-		return new ChromatogramApplyNodeModel();
+		return new ProcessControllerMSDEndNodeModel();
 	}
 
 	@Override
-	public NodeView<ChromatogramApplyNodeModel> createNodeView(int viewIndex, ChromatogramApplyNodeModel nodeModel) {
+	public NodeView<ProcessControllerMSDEndNodeModel> createNodeView(int viewIndex, ProcessControllerMSDEndNodeModel nodeModel) {
 
 		return null;
 	}

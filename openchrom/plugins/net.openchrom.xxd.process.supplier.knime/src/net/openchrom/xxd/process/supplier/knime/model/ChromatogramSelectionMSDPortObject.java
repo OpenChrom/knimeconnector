@@ -122,7 +122,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		if(this.portObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
 			return extractChromatogramSelectionMSD();
 		} else {
-			throw new InvalidDataException();
+			throw new InvalidDataException("To avoid this exception add a node \"End Processing\", before the node where the exception occured.");
 		}
 	}
 

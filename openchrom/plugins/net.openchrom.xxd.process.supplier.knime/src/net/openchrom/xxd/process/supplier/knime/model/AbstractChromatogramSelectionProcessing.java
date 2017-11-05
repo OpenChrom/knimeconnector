@@ -17,14 +17,19 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public abstract class AbstractChromatogramSelectionProcessing<Settings, ChromatogramSelection extends IChromatogramSelection> implements IChromatogramSelectionProcessing<ChromatogramSelection> {
 
-	private final static ObjectMapper mapper = new ObjectMapper();
+	private final static ObjectMapper mapper;
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 6076099451477368555L;
+	static {
+		mapper = new ObjectMapper();
+		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+	}
 	private String id;
 	private String settings;
 
