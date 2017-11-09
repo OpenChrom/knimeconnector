@@ -66,4 +66,32 @@ USA
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.identifier"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.peakdetectors"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.peakintegrators"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.reports"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
