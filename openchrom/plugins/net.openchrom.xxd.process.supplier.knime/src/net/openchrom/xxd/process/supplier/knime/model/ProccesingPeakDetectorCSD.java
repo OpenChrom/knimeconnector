@@ -42,7 +42,7 @@ public class ProccesingPeakDetectorCSD extends AbstractChromatogramSelectionProc
 	@Override
 	protected Class<? extends IPeakDetectorCSDSettings> getSettingsClass(String id) throws NoPeakDetectorAvailableException {
 
-		return (Class<? extends IPeakDetectorCSDSettings>)PeakDetectorCSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getPeakDetectorSettingsClass();
+		return PeakDetectorCSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getPeakDetectorSettingsClass();
 	}
 
 	@Override

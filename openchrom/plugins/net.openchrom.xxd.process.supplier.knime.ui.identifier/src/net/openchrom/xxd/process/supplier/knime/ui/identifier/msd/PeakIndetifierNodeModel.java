@@ -9,41 +9,49 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.processing.msd;
+package net.openchrom.xxd.process.supplier.knime.ui.identifier.msd;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
+import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
+import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
+import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
-import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
-import org.knime.core.node.workflow.LoopStartNode;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
+import net.openchrom.xxd.process.supplier.knime.ui.identifier.support.IdentifierSupport;
 
-public class ProcessControllerMSDStartNodeModel extends NodeModel implements LoopStartNode {
+public class PeakIndetifierNodeModel extends NodeModel {
 
-	final static SettingsModelString processType = new SettingsModelString(ChromatogramSelectionMSDPortObjectSpec.PROCESSING_MODE, ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING);
+	private static final NodeLogger logger = NodeLogger.getLogger(PeakIndetifierNodeModel.class);
+	private String id;
 
-	protected ProcessControllerMSDStartNodeModel() {
+	protected PeakIndetifierNodeModel(String id) {
 		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE});
+		this.id = id;
 	}
 
 	@Override
 	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
 
-		ChromatogramSelectionMSDPortObjectSpec chromatogramSelectionMSDPortObjectSpec = new ChromatogramSelectionMSDPortObjectSpec();
-		chromatogramSelectionMSDPortObjectSpec.setProcessingMode(processType.getStringValue());
-		return new PortObjectSpec[]{chromatogramSelectionMSDPortObjectSpec};
+		return new PortObjectSpec[]{new ChromatogramSelectionMSDPortObjectSpec()};
 	}
 
 	@Override
@@ -51,7 +59,27 @@ public class ProcessControllerMSDStartNodeModel extends NodeModel implements Loo
 
 		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject = (ChromatogramSelectionMSDPortObject)inObjects[0];
 		ChromatogramSelectionMSDPortObjectSpec chromatogramSelectionMSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
-		chromatogramSelectionMSDPortObjectSpec.setProcessingMode(processType.getStringValue());
+		/*
+		 * Apply the filter if a chromatogram selection is given at port 0.
+		 */
+		if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
+			logger.info("Identify Peaks");
+			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
+			List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection);
+			List<IPeakMSD> peakList = new ArrayList<IPeakMSD>();
+			for(IChromatogramPeakMSD chromatogramPeak : peaks) {
+				peakList.add(chromatogramPeak);
+			}
+			IProcessingInfo processingInfo = IdentifierSupport.identifyMSD(peakList, id, new NullProgressMonitor());
+			chromatogramSelectionPortObject.chromatogramSelectionUpdate();
+			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
+		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
+			logger.info("Add the peak identifier");
+			chromatogramSelectionPortObject.addProcessings(IdentifierSupport.getProceessingIdentifierMSD(id));
+		}
+		/*
+		 * Store applied chromatogram filter and it's settings
+		 */
 		return new PortObject[]{chromatogramSelectionPortObject};
 	}
 
@@ -63,7 +91,6 @@ public class ProcessControllerMSDStartNodeModel extends NodeModel implements Loo
 	@Override
 	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
 
-		processType.loadSettingsFrom(settings);
 	}
 
 	@Override
@@ -79,12 +106,10 @@ public class ProcessControllerMSDStartNodeModel extends NodeModel implements Loo
 	@Override
 	protected void saveSettingsTo(NodeSettingsWO settings) {
 
-		processType.saveSettingsTo(settings);
 	}
 
 	@Override
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
-		processType.validateSettings(settings);
 	}
 }

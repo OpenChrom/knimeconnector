@@ -40,7 +40,7 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 	@Override
 	protected Class<? extends IPeakIdentifierSettings> getSettingsClass(String id) throws Exception {
 
-		return null;
+		return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(id).getIdentifierSettingsClass();
 	}
 
 	@Override

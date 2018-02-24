@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
+import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
@@ -39,13 +40,12 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 	private static final NodeLogger LOGGER = NodeLogger.getLogger(ChromatogramFilterNodeSetFactory.class);
 	private List<String> filterIds;
 
-	@SuppressWarnings("rawtypes")
 	public ChromatogramFilterNodeSetFactory() {
 		try {
 			filterIds = new ArrayList<>();
 			filterIds.addAll(FiltersSupport.getIDsFilterChromatogramMSD().stream().filter(f -> {
 				try {
-					Class filterSettingsClass = FiltersSupport.getSupplier(f).getFilterSettingsClass();
+					Class<? extends IChromatogramFilterSettings> filterSettingsClass = FiltersSupport.getSupplier(f).getFilterSettingsClass();
 					if(filterSettingsClass == null) {
 						LOGGER.warn("Filter settings class for filter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;
