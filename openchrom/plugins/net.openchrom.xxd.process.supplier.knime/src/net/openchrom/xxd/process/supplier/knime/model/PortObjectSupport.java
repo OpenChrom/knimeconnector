@@ -53,4 +53,24 @@ public class PortObjectSupport {
 		}
 		return null;
 	}
+
+	public static ScanNMRPortObjectSpec getScanNMRPortObjectSpec(PortObjectSpec[] inObjects) {
+
+		for(PortObjectSpec portObjectSpec : inObjects) {
+			if(portObjectSpec instanceof ScanNMRPortObjectSpec) {
+				return (ScanNMRPortObjectSpec)portObjectSpec;
+			}
+		}
+		return null;
+	}
+
+	public static ScanNMRPortObject getScanNMRPortObject(PortObject[] inObjects) {
+
+		for(Object object : inObjects) {
+			if(object instanceof ScanNMRPortObject) {
+				return (ScanNMRPortObject)object;
+			}
+		}
+		return null;
+	}
 }

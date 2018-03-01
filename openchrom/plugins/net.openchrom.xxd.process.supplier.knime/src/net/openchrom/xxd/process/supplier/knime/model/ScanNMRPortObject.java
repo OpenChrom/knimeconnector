@@ -71,4 +71,9 @@ public class ScanNMRPortObject extends AbstractPortObject {
 			throw new IOException(e);
 		}
 	}
+
+	public IScanNMR getScanNMR() {
+
+		return scanNMR;
+	}
 }
