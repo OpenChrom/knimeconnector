@@ -72,7 +72,21 @@
       		name="Process Control"
       		description="Process Control"
       		path="/openchrom/msd">
-      </category>      		                     
+      </category>
+      <category
+            level-id="nmr"
+            name="NMR"
+            icon="icons/msd.png"
+            description="Nuclear Magnetic Resonance Spectroscopy"
+            path="/openchrom">
+      </category>      
+      <category
+            level-id="io"
+            name="I/O"
+            icon="icons/io.png"
+            description="Data input and output of various file formats."
+            path="/openchrom/nmr">
+      </category>         		                     
    </extension>
    <extension
          point="org.knime.workbench.repository.nodes">
@@ -115,6 +129,10 @@
       <node
       		category-path="/openchrom/msd/process_control"
       		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerMSDEndNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/nmr/io"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.nmr.MeasurementReaderNMRNodeFactory">
       </node>                
    </extension>
 </plugin>

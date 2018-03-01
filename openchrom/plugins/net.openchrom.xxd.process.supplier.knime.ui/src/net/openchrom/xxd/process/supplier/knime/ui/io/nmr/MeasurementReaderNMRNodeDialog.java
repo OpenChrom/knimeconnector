@@ -17,9 +17,15 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.io.nmr;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.eclipse.chemclipse.converter.core.ISupplier;
+import org.eclipse.chemclipse.converter.scan.ScanConverterSupport;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
-import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
+import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 
 /**
  * <code>NodeDialog</code> for the "MeasurementReaderNMR" Node.
@@ -34,13 +40,32 @@ import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
  */
 public class MeasurementReaderNMRNodeDialog extends DefaultNodeSettingsPane {
 
-	/**
-	 * New pane for configuring MeasurementReaderNMR node dialog.
-	 * This is just a suggestion to demonstrate possible default dialog
-	 * components.
-	 */
 	protected MeasurementReaderNMRNodeDialog() {
 		super();
-		addDialogComponent(new DialogComponentNumber(new SettingsModelIntegerBounded(MeasurementReaderNMRNodeModel.CFGKEY_COUNT, MeasurementReaderNMRNodeModel.DEFAULT_COUNT, Integer.MIN_VALUE, Integer.MAX_VALUE), "Counter:", /* step */ 1, /* componentwidth */ 5));
+		ScanConverterSupport converterSupport = new ScanConverterSupport();
+		Set<String> extensions = new HashSet<String>();
+		for(ISupplier supplier : converterSupport.getSupplier()) {
+			if(supplier.isImportable()) {
+				extensions.add(supplier.getFileExtension());
+			}
+		}
+		String[] validExtensions;
+		if(extensions.size() > 0) {
+			validExtensions = extensions.toArray(new String[extensions.size() + 1]);
+			Arrays.sort(validExtensions, Comparator.nullsFirst(Comparator.naturalOrder()));
+			StringBuilder sb = new StringBuilder();
+			int i = 1;
+			for(i = 1; i < validExtensions.length - 1; i++) {
+				sb.append(validExtensions[i]);
+				sb.append('|');
+			}
+			sb.append(validExtensions[i]);
+			validExtensions[0] = sb.toString();
+		} else {
+			validExtensions = new String[]{};
+		}
+		//
+		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(MeasurementReaderNMRNodeModel.SETTING_NMR_FILE_INPUT, "", validExtensions);
+		addDialogComponent(dialogComponentFileChooser);
 	}
 }
