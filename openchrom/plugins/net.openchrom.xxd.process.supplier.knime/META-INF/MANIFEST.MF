@@ -29,7 +29,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.chromatogram.peak.detector,
  org.eclipse.chemclipse.chromatogram.csd.peak.detector,
  org.eclipse.chemclipse.chromatogram.xxd.integrator,
- org.eclipse.chemclipse.chromatogram.msd.identifier
+ org.eclipse.chemclipse.chromatogram.msd.identifier,
+ org.eclipse.chemclipse.nmr.model
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
