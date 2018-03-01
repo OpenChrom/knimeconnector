@@ -23,7 +23,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.chemclipse.converter.core.ISupplier;
-import org.eclipse.chemclipse.converter.scan.ScanConverterSupport;
+import org.eclipse.chemclipse.converter.scan.IScanConverterSupport;
+import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 
@@ -42,7 +43,7 @@ public class MeasurementReaderNMRNodeDialog extends DefaultNodeSettingsPane {
 
 	protected MeasurementReaderNMRNodeDialog() {
 		super();
-		ScanConverterSupport converterSupport = new ScanConverterSupport();
+		IScanConverterSupport converterSupport = ScanConverterNMR.getScanConverterSupport();
 		Set<String> extensions = new HashSet<String>();
 		for(ISupplier supplier : converterSupport.getSupplier()) {
 			if(supplier.isImportable()) {
