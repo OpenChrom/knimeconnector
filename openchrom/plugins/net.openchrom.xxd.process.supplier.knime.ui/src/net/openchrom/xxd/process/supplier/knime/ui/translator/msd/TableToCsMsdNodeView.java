@@ -15,56 +15,45 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.translator;
+package net.openchrom.xxd.process.supplier.knime.ui.translator.msd;
 
-import org.knime.core.node.NodeDialogPane;
-import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
-public class CsMsdToTableNodeFactory extends NodeFactory<CsMsdToTableNodeModel> {
+public class TableToCsMsdNodeView extends NodeView<TableToCsMsdNodeModel> {
 
 	/**
-	 * {@inheritDoc}
+	 * Creates a new view.
+	 *
+	 * @param nodeModel
+	 *            The model (class: {@link TableToCsMsdNodeModel})
 	 */
-	@Override
-	public NodeDialogPane createNodeDialogPane() {
-
-		return new CsMsdToTableNodeDialog();
+	protected TableToCsMsdNodeView(final TableToCsMsdNodeModel nodeModel) {
+		super(nodeModel);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public CsMsdToTableNodeModel createNodeModel() {
+	protected void modelChanged() {
 
-		return new CsMsdToTableNodeModel();
+		TableToCsMsdNodeModel nodeModel = getNodeModel();
+		assert nodeModel != null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NodeView<CsMsdToTableNodeModel> createNodeView(final int viewIndex, final CsMsdToTableNodeModel nodeModel) {
+	protected void onClose() {
 
-		return new CsMsdToTableNodeView(nodeModel);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getNrNodeViews() {
+	protected void onOpen() {
 
-		return 1;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean hasDialog() {
-
-		return true;
 	}
 }

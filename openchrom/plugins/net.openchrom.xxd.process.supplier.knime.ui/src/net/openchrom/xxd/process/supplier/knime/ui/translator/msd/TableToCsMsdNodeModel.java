@@ -16,11 +16,13 @@
  * Dr. Philip Wenig - initial API and implementation
  * Jan Holy - implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.translator;
+package net.openchrom.xxd.process.supplier.knime.ui.translator.msd;
 
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
@@ -31,7 +33,6 @@ import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
-import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
@@ -41,24 +42,13 @@ import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPo
 import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 import net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd.IChoromatogramMSDTableTranslator;
 
-public class CsMsdToTableNodeModel extends NodeModel {
+public class TableToCsMsdNodeModel extends NodeModel {
 
-	protected static final boolean DEF_USE_TIC = false;
-	private static final NodeLogger logger = NodeLogger.getLogger(CsMsdToTableNodeModel.class);
-	//
-	protected static final String USE_TIC = "Use TIC";
-
-	protected static SettingsModelBoolean createSettingsModelUseTic() {
-
-		return new SettingsModelBoolean(USE_TIC, DEF_USE_TIC);
-	}
-
-	//
+	private static final NodeLogger logger = NodeLogger.getLogger(TableToCsMsdNodeModel.class);
 	private final IChoromatogramMSDTableTranslator choromatogramMSDTableTranslator = IChoromatogramMSDTableTranslator.create(IChoromatogramMSDTableTranslator.TRANSLATION_TYPE_TIC);
-	private final SettingsModelBoolean settingsModelUseTic = createSettingsModelUseTic();
 
-	protected CsMsdToTableNodeModel() {
-		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(BufferedDataTable.class)});
+	protected TableToCsMsdNodeModel() {
+		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(BufferedDataTable.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
 	}
 
 	@Override
@@ -70,23 +60,20 @@ public class CsMsdToTableNodeModel extends NodeModel {
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
-		if(chromatogramSelectionMSDPortObject != null) {
+		BufferedDataTable bufferedDataTable = PortObjectSupport.getBufferedDataTable(inObjects);
+		if(bufferedDataTable != null) {
 			/*
-			 * Convert the selection to table.
+			 * Convert the table to chromatogram selection.
 			 */
-			logger.info("Convert chromatogram selection to table.");
-			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD();
-			BufferedDataTable bufferedDataTable = null;
-			if(settingsModelUseTic.getBooleanValue()) {
-				choromatogramMSDTableTranslator.setTranslationType(IChoromatogramMSDTableTranslator.TRANSLATION_TYPE_TIC);
-				bufferedDataTable = choromatogramMSDTableTranslator.getBufferedDataTable(chromatogramSelection, exec);
+			logger.info("Convert the buffered data table to chromatogram selection");
+			IChromatogramMSD chromatogramMSD = choromatogramMSDTableTranslator.getChromatogramMSD(bufferedDataTable, exec);
+			if(chromatogramMSD != null) {
+				IChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
+				ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = new ChromatogramSelectionMSDPortObject(chromatogramSelectionMSD);
+				return new PortObject[]{chromatogramSelectionMSDPortObject};
 			} else {
-				choromatogramMSDTableTranslator.setTranslationType(IChoromatogramMSDTableTranslator.TRANSLATION_TYPE_XIC);
-				bufferedDataTable = choromatogramMSDTableTranslator.getBufferedDataTable(chromatogramSelection, exec);
+				return new PortObject[]{};
 			}
-			//
-			return new PortObject[]{bufferedDataTable};
 		} else {
 			/*
 			 * If things have gone wrong.
@@ -109,7 +96,6 @@ public class CsMsdToTableNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		settingsModelUseTic.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -134,7 +120,6 @@ public class CsMsdToTableNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		settingsModelUseTic.saveSettingsTo(settings);
 	}
 
 	/**
@@ -143,6 +128,5 @@ public class CsMsdToTableNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		settingsModelUseTic.validateSettings(settings);
 	}
 }

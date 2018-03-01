@@ -9,9 +9,7 @@
         <option name="Use TIC">Use the TIC.</option>
     </fullDescription>
     <ports>
-        <outPort index="0" name="Chromatogram Selection">Chromatogram Selection</outPort>
-    </ports>
-    <views>
-        <view index="0" name="Chromatogram Selection">Chromatogram Selection</view>
-    </views>    
+    	<inPort index="0" name="Chromatogram Selection">Chromatogram Selection</inPort>
+        <outPort index="0" name="Table">Table</outPort>
+    </ports>   
 </knimeNode>

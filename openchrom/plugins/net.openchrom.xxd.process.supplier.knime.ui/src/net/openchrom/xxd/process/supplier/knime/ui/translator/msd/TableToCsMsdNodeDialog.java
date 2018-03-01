@@ -15,17 +15,13 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.translator;
+package net.openchrom.xxd.process.supplier.knime.ui.translator.msd;
 
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 
-public class CsMsdToTableNodeDialog extends DefaultNodeSettingsPane {
+public class TableToCsMsdNodeDialog extends DefaultNodeSettingsPane {
 
-	protected CsMsdToTableNodeDialog() {
+	protected TableToCsMsdNodeDialog() {
 		super();
-		//
-		DialogComponentBoolean dialogComponentUseTic = new DialogComponentBoolean(CsMsdToTableNodeModel.createSettingsModelUseTic(), CsMsdToTableNodeModel.USE_TIC);
-		addDialogComponent(dialogComponentUseTic);
 	}
 }
