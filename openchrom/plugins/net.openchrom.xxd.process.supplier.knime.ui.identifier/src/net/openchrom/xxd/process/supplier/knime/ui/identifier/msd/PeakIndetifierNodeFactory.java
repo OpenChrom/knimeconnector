@@ -13,11 +13,10 @@ package net.openchrom.xxd.process.supplier.knime.ui.identifier.msd;
 
 import org.eclipse.chemclipse.chromatogram.msd.identifier.core.ISupplier;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.exceptions.NoIdentifierAvailableException;
-import org.knime.core.node.DynamicNodeFactory;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeDescription;
 import org.knime.core.node.NodeDescription27Proxy;
-import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeView;
 import org.knime.core.node.config.ConfigRO;
 import org.knime.core.node.config.ConfigWO;
@@ -28,9 +27,13 @@ import org.knime.node2012.KnimeNodeDocument.KnimeNode;
 import org.knime.node2012.OutPortDocument.OutPort;
 import org.knime.node2012.PortsDocument.Ports;
 
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonPropertyDialogFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.support.IdentifierSupport;
 
-public class PeakIndetifierNodeFactory extends DynamicNodeFactory<PeakIndetifierNodeModel> {
+public class PeakIndetifierNodeFactory extends DialogGenerationNodeFactory<PeakIndetifierNodeModel, IPeakIdentifierSettings> {
 
 	private String indetifierId;
 
@@ -62,33 +65,9 @@ public class PeakIndetifierNodeFactory extends DynamicNodeFactory<PeakIndetifier
 	}
 
 	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-
-		return null;
-	}
-
-	@Override
-	public PeakIndetifierNodeModel createNodeModel() {
-
-		return new PeakIndetifierNodeModel(indetifierId);
-	}
-
-	@Override
-	public NodeView<PeakIndetifierNodeModel> createNodeView(int viewIndex, PeakIndetifierNodeModel nodeModel) {
-
-		return null;
-	}
-
-	@Override
 	protected int getNrNodeViews() {
 
 		return 0;
-	}
-
-	@Override
-	protected boolean hasDialog() {
-
-		return false;
 	}
 
 	@Override
@@ -103,5 +82,34 @@ public class PeakIndetifierNodeFactory extends DynamicNodeFactory<PeakIndetifier
 
 		config.addString(PeakIndetifierNodeSetFactory.IDENTIRIER_ID_KEY, indetifierId);
 		super.saveAdditionalFactorySettings(config);
+	}
+
+	@Override
+	protected SettingsDialogFactory<IPeakIdentifierSettings> createSettingsDialogFactory() {
+
+		JacksonPropertyDialogFactory<IPeakIdentifierSettings> factory = new JacksonPropertyDialogFactory<>();
+		Class<? extends IPeakIdentifierSettings> setingClass;
+		try {
+			setingClass = IdentifierSupport.getSupplierMSD(indetifierId).getIdentifierSettingsClass();
+			if(setingClass == null) {
+				throw new IllegalStateException("Peak integrator settings class for filter id '" + indetifierId + "' cannot be resolved. Class migt not be provided by the respective extension point.");
+			}
+		} catch(NoIdentifierAvailableException e) {
+			throw new RuntimeException(e);
+		}
+		factory.setSettingsObjectClass(setingClass);
+		return factory;
+	}
+
+	@Override
+	public PeakIndetifierNodeModel createNodeModel(SettingsObjectWrapper<IPeakIdentifierSettings> settingsObjectWrapper) {
+
+		return new PeakIndetifierNodeModel(indetifierId, settingsObjectWrapper);
+	}
+
+	@Override
+	public NodeView<PeakIndetifierNodeModel> createNodeView(int viewIndex, PeakIndetifierNodeModel nodeModel) {
+
+		return null;
 	}
 }

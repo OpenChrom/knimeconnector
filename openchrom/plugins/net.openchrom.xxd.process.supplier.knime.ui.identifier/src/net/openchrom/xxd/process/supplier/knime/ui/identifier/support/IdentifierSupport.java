@@ -13,8 +13,8 @@ package net.openchrom.xxd.process.supplier.knime.ui.identifier.support;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.core.ISupplier;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.exceptions.NoIdentifierAvailableException;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.IPeakIdentifierSupplier;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifier;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.processing.IPeakIdentifierProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
@@ -49,7 +49,7 @@ public class IdentifierSupport {
 		}
 	}
 
-	public static ISupplier getSupplierMSD(String identifierId) throws NoIdentifierAvailableException {
+	public static IPeakIdentifierSupplier getSupplierMSD(String identifierId) throws NoIdentifierAvailableException {
 
 		return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(identifierId);
 	}

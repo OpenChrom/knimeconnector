@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
@@ -27,7 +28,6 @@ import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeLogger;
-import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.port.PortObject;
@@ -36,15 +36,17 @@ import org.knime.core.node.port.PortType;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.support.IdentifierSupport;
 
-public class PeakIndetifierNodeModel extends NodeModel {
+public class PeakIndetifierNodeModel extends DialogGenerationNodeModel<IPeakIdentifierSettings> {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(PeakIndetifierNodeModel.class);
 	private String id;
 
-	protected PeakIndetifierNodeModel(String id) {
-		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE});
+	protected PeakIndetifierNodeModel(String id, SettingsObjectWrapper<IPeakIdentifierSettings> settingsObject) {
+		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, settingsObject);
 		this.id = id;
 	}
 
