@@ -72,7 +72,7 @@ public class ScanXIRPortObject extends AbstractPortObject {
 		}
 	}
 
-	public IScanXIR getScanNMR() {
+	public IScanXIR getScanXIR() {
 
 		return scanXIR;
 	}
