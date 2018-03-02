@@ -135,5 +135,6 @@ public class MeasurementReaderXIRNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
+		SETTING_XIR_FILE_INPUT.validateSettings(settings);
 	}
 }

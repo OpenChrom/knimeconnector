@@ -52,14 +52,16 @@ public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory
 	@Override
 	public NodeDialogPane createDialog() {
 
-		return new DefaultNodeSettingsPane() {
+		DefaultNodeSettingsPane defaultNodeSettingsPane = new DefaultNodeSettingsPane();
+		builtDialogPane(defaultNodeSettingsPane);
+		return defaultNodeSettingsPane;
+	}
 
-			{
-				for(DialogComponent dc : getPropertyAccess(settingsObjectClass).dialogComponents) {
-					addDialogComponent(dc);
-				}
-			}
-		};
+	protected void builtDialogPane(DefaultNodeSettingsPane defaultNodeSettingsPane) {
+
+		for(DialogComponent dc : getPropertyAccess(settingsObjectClass).dialogComponents) {
+			defaultNodeSettingsPane.addDialogComponent(dc);
+		}
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: OpenChrom KNIME Reports
-Bundle-SymbolicName: net.openchrom.xxd.process.supplier.knime.ui.reports
+Bundle-SymbolicName: net.openchrom.xxd.process.supplier.knime.ui.reports;singleton:=true
 Bundle-Version: 1.3.0.qualifier
 Bundle-Vendor: OpenChrom
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

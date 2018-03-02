@@ -74,6 +74,13 @@
       		path="/openchrom/msd">
       </category>
       <category
+      		level-id="report"
+      		name="Report"
+      		icon="icons/report.png"
+      		description="Report"
+      		path="/openchrom/repor">
+      </category>
+      <category
             level-id="nmr"
             name="NMR"
             icon="icons/msd.png"

@@ -135,5 +135,6 @@ public class MeasurementReaderNMRNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
+		SETTING_NMR_FILE_INPUT.validateSettings(settings);
 	}
 }
