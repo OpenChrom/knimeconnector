@@ -74,7 +74,7 @@ public class PeakDetectorsNodeSetFactory implements NodeSetFactory {
 	@Override
 	public String getCategoryPath(String id) {
 
-		return "/openchrom/msd/peak detektor";
+		return "/openchrom/msd/detector";
 	}
 
 	@Override

@@ -54,12 +54,33 @@
             path="/openchrom">
       </category>
       <category
+            level-id="detector"
+            name="Peak Detectors"
+            icon="icons/peakdetectors.png"
+            description="Peak Detectors"
+            path="/openchrom/msd">
+      </category>
+      <category
             level-id="filter"
             name="Filter"
             icon="icons/filter.png"
             description="Filter"
             path="/openchrom/msd">
-      </category>  
+      </category>
+      <category
+      		level-id="identifier"
+      		name="Identifier"
+      		icon="icons/identifier.png"
+      		description="Identifier"
+      		path="/openchrom/msd">
+      </category>
+      <category
+      		level-id="integrator"
+      		name="Peak Integrator"
+      		icon="icons/peakIntegrators.png"
+      		description="Peak Integrator"
+      		path="/openchrom/msd">
+      </category>   
       <category
             level-id="translator"
             name="Translator"
@@ -70,6 +91,7 @@
       <category
       		level-id="process_control"
       		name="Process Control"
+      		icon="icons/ProcessControl.gif"
       		description="Process Control"
       		path="/openchrom/msd">
       </category>
@@ -78,7 +100,7 @@
       		name="Report"
       		icon="icons/report.png"
       		description="Report"
-      		path="/openchrom/repor">
+      		path="/openchrom/msd">
       </category>
       <category
             level-id="nmr"

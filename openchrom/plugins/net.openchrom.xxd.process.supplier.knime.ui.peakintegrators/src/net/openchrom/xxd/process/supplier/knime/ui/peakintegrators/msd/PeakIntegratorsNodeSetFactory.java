@@ -74,7 +74,7 @@ public class PeakIntegratorsNodeSetFactory implements NodeSetFactory {
 	@Override
 	public String getCategoryPath(String id) {
 
-		return "/openchrom/msd/peak integrator";
+		return "/openchrom/msd/integrator";
 	}
 
 	@Override

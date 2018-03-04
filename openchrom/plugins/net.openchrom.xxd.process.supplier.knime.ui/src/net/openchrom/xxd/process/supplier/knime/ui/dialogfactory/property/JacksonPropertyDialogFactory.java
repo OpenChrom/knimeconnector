@@ -73,16 +73,20 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 			//
 			if(rawType == int.class || rawType == Integer.class) {
 				coll.addIntProperty(p.getName(), p.getName(), defaultVal == null ? 0 : Integer.valueOf(defaultVal));
+				coll.addPropertyDescriptions(p.getName(), desc);
 			} else if(rawType == float.class || rawType == Float.class) {
 				coll.addFloatProperty(p.getName(), p.getName(), Float.valueOf(defaultVal));
+				coll.addPropertyDescriptions(p.getName(), desc);
 			} else if(rawType == double.class || rawType == Double.class) {
 				coll.addDoubleProperty(p.getName(), p.getName(), Double.valueOf(defaultVal));
+				coll.addPropertyDescriptions(p.getName(), desc);
 			} else if(rawType == String.class) {
 				coll.addStringProperty(p.getName(), p.getName(), defaultVal);
+				coll.addPropertyDescriptions(p.getName(), desc);
 			} else if(rawType == boolean.class || rawType == Boolean.class) {
 				coll.addBooleanProperty(p.getName(), p.getName(), Boolean.valueOf(defaultVal));
+				coll.addPropertyDescriptions(p.getName(), desc);
 			}
-			coll.addPropertyDescriptions(p.getName(), desc);
 		}
 	}
 }
