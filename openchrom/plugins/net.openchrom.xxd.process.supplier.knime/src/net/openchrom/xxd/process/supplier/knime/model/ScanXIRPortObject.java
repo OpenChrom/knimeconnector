@@ -24,8 +24,15 @@ import org.knime.core.node.port.AbstractPortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortObjectZipInputStream;
 import org.knime.core.node.port.PortObjectZipOutputStream;
+import org.knime.core.node.port.PortType;
+import org.knime.core.node.port.PortTypeRegistry;
 
 public class ScanXIRPortObject extends AbstractPortObject {
+
+	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ScanXIRPortObject.class);
+
+	public static final class Serializer extends AbstractPortObjectSerializer<ScanNMRPortObject> {
+	}
 
 	private ScanXIRPortObjectSpec portObjectSpec;
 	private IScanXIR scanXIR;

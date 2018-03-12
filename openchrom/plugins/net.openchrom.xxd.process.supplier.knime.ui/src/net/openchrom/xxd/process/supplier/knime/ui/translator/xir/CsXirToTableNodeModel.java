@@ -39,8 +39,6 @@ import org.knime.core.node.port.PortTypeRegistry;
 
 import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 import net.openchrom.xxd.process.supplier.knime.model.ScanXIRPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.scan.xir.IScanXirTableTranslator;
-import net.openchrom.xxd.process.supplier.knime.model.scan.xir.ScanXirTableTranslator;
 
 public class CsXirToTableNodeModel extends NodeModel {
 
@@ -49,7 +47,6 @@ public class CsXirToTableNodeModel extends NodeModel {
 	//
 	protected static final String USE_RAW_DATA = "Raw Data";
 	//
-	private final IScanXirTableTranslator scanXirTableTranslator = new ScanXirTableTranslator();
 	private final SettingsModelBoolean settingsModelUseTic = new SettingsModelBoolean(USE_RAW_DATA, DEF_USE_RAW_DATA);
 
 	protected CsXirToTableNodeModel() {
@@ -73,13 +70,6 @@ public class CsXirToTableNodeModel extends NodeModel {
 			logger.info("Convert XIR scan to table.");
 			IScanXIR scan = scanNMRPortObject.getScanXIR();
 			BufferedDataTable bufferedDataTable = null;
-			if(settingsModelUseTic.getBooleanValue()) {
-				scanXirTableTranslator.setType(IScanXirTableTranslator.TYPE_RAW_DATA);
-				bufferedDataTable = scanXirTableTranslator.getBufferedDataTableTIC(scan, exec);
-			} else {
-				scanXirTableTranslator.setType(IScanXirTableTranslator.TYPE_SIGANALS);
-				bufferedDataTable = scanXirTableTranslator.getBufferedDataTableTIC(scan, exec);
-			}
 			//
 			return new PortObject[]{bufferedDataTable};
 		} else {

@@ -42,6 +42,10 @@ import net.openchrom.xxd.process.supplier.knime.ui.reports.support.ReportsSuppor
 
 public class ChromatogramReportsNodeFactory extends DialogGenerationNodeFactory<ChromatogramReportsNodeModel, IChromatogramReportSettings> {
 
+	public ChromatogramReportsNodeFactory() {
+		int i = 1;
+	}
+
 	private String id;
 	private String fileExtension;
 

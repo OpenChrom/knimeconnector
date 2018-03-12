@@ -16,12 +16,13 @@
  * Dr. Philip Wenig - initial API and implementation
  * Jan Holy - implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.translator.nmr;
+package net.openchrom.xxd.process.supplier.knime.ui.translator.msd;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -31,28 +32,23 @@ import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
-import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
-import net.openchrom.xxd.process.supplier.knime.model.ScanNMRPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.scan.nmr.ScanNmrTableTranslator;
-import net.openchrom.xxd.process.supplier.knime.model.scan.nmr.ScanNmrTableTranslatorRawData;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd.PeaksMSDTableTranslator;
 
-public class CsNmrToTableNodeModel extends NodeModel {
+public class PeakMsdToTableNodeModel extends NodeModel {
 
-	protected static final boolean DEF_USE_RAW_DATA = false;
-	private static final NodeLogger logger = NodeLogger.getLogger(CsNmrToTableNodeModel.class);
+	protected static final boolean DEF_USE_TIC = false;
+	private static final NodeLogger logger = NodeLogger.getLogger(PeakMsdToTableNodeModel.class);
 	//
-	protected static final String USE_RAW_DATA = "Raw Data";
-	//
-	private final SettingsModelBoolean settingsModelUseTic = new SettingsModelBoolean(USE_RAW_DATA, DEF_USE_RAW_DATA);
 
-	protected CsNmrToTableNodeModel() {
-		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(BufferedDataTable.class)});
+	protected PeakMsdToTableNodeModel() {
+		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(BufferedDataTable.class)});
 	}
 
 	@Override
@@ -64,26 +60,21 @@ public class CsNmrToTableNodeModel extends NodeModel {
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ScanNMRPortObject scanNMRPortObject = PortObjectSupport.getScanNMRPortObject(inObjects);
-		if(scanNMRPortObject != null) {
+		ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
+		if(chromatogramSelectionMSDPortObject != null) {
 			/*
 			 * Convert the selection to table.
 			 */
-			logger.info("Convert NMR scan to table.");
-			IScanNMR scan = scanNMRPortObject.getScanNMR();
-			BufferedDataTable bufferedDataTable = null;
-			if(settingsModelUseTic.getBooleanValue()) {
-				bufferedDataTable = new ScanNmrTableTranslatorRawData().getBufferedDataTable(scan, exec);
-			} else {
-				bufferedDataTable = new ScanNmrTableTranslator().getBufferedDataTable(scan, exec);
-			}
+			logger.info("Convert chromatogram selection to table.");
+			List<IChromatogramPeakMSD> peaks = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD().getChromatogramMSD().getPeaks();
+			BufferedDataTable bufferedDataTable = new PeaksMSDTableTranslator().getBufferedDataTable(peaks, exec);
 			//
 			return new PortObject[]{bufferedDataTable};
 		} else {
 			/*
 			 * If things have gone wrong.
 			 */
-			throw new Exception("no input scan");
+			return new PortObject[]{};
 		}
 	}
 
@@ -101,7 +92,6 @@ public class CsNmrToTableNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		settingsModelUseTic.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -120,21 +110,13 @@ public class CsNmrToTableNodeModel extends NodeModel {
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected void saveSettingsTo(final NodeSettingsWO settings) {
+	protected void saveSettingsTo(NodeSettingsWO settings) {
 
-		settingsModelUseTic.saveSettingsTo(settings);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
-		settingsModelUseTic.validateSettings(settings);
 	}
 }

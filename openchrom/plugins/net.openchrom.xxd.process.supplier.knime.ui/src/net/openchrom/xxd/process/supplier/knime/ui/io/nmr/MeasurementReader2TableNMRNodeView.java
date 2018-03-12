@@ -17,30 +17,56 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.io.nmr;
 
-import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
-import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
+import org.knime.core.node.NodeView;
 
 /**
- * <code>NodeDialog</code> for the "MeasurementWriterNMR" Node.
+ * <code>NodeView</code> for the "MeasurementWriterNMR" Node.
  * This node writes chromatographic data.
- *
- * This node dialog derives from {@link DefaultNodeSettingsPane} which allows
- * creation of a simple dialog with standard components. If you need a more
- * complex dialog please derive directly from
- * {@link org.knime.core.node.NodeDialogPane}.
  *
  * @author OpenChrom
  */
-public class MeasurementWriterNMRNodeDialog extends DefaultNodeSettingsPane {
+public class MeasurementReader2TableNMRNodeView extends NodeView<MeasurementReader2TableNMRNodeModel> {
 
 	/**
-	 * New pane for configuring MeasurementWriterNMR node dialog.
-	 * This is just a suggestion to demonstrate possible default dialog
-	 * components.
+	 * Creates a new view.
+	 *
+	 * @param nodeModel
+	 *            The model (class: {@link MeasurementReader2TableNMRNodeModel})
 	 */
-	protected MeasurementWriterNMRNodeDialog() {
-		super();
-		addDialogComponent(new DialogComponentNumber(new SettingsModelIntegerBounded(MeasurementWriterNMRNodeModel.CFGKEY_COUNT, MeasurementWriterNMRNodeModel.DEFAULT_COUNT, Integer.MIN_VALUE, Integer.MAX_VALUE), "Counter:", /* step */ 1, /* componentwidth */ 5));
+	protected MeasurementReader2TableNMRNodeView(final MeasurementReader2TableNMRNodeModel nodeModel) {
+		super(nodeModel);
+		// TODO instantiate the components of the view here.
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void modelChanged() {
+
+		// TODO retrieve the new model from your nodemodel and
+		// update the view.
+		MeasurementReader2TableNMRNodeModel nodeModel = getNodeModel();
+		assert nodeModel != null;
+		// be aware of a possibly not executed nodeModel! The data you retrieve
+		// from your nodemodel could be null, emtpy, or invalid in any kind.
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onClose() {
+
+		// TODO things to do when closing the view
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onOpen() {
+
+		// TODO things to do when opening the view
 	}
 }

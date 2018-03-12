@@ -21,9 +21,11 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
-import org.eclipse.chemclipse.nmr.model.core.ScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.knime.core.data.DataTableSpec;
+import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -33,72 +35,74 @@ import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
-import org.knime.core.node.port.PortObject;
-import org.knime.core.node.port.PortObjectSpec;
-import org.knime.core.node.port.PortType;
-import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.xxd.process.supplier.knime.model.ScanNMRPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.ScanNMRPortObjectSpec;
+import net.openchrom.xxd.process.supplier.knime.model.scan.nmr.ScanNmrTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.scan.nmr.ScanNmrTableTranslatorRawData;
 
 /**
- * This is the model implementation of MeasurementReaderNMR.
- * This node is reads chromatographic raw data.
+ * This is the model implementation of MeasurementWriterNMR.
+ * This node writes chromatographic data.
  *
  * @author OpenChrom
  */
-public class MeasurementReaderNMRNodeModel extends NodeModel {
+public class MeasurementReader2TableNMRNodeModel extends NodeModel {
+
+	private static final String NMR_FILE_INPUT = "FileInput";
+	protected static final String RAW_DATA = "Raw Data";
+	protected static final String CHEMCAL_SHIFT = "Chemical shift";
+	protected static final SettingsModelString SETTING_NMR_FILE_INPUT = new SettingsModelString(NMR_FILE_INPUT, "");
+	protected static final SettingsModelString SETTING_NMR_TABLE_OUTPUT = new SettingsModelString(CHEMCAL_SHIFT, "");
+	// the logger instance
+	private static final NodeLogger logger = NodeLogger.getLogger(MeasurementReader2TableNMRNodeModel.class);
+	// example value: the models count variable filled from the dialog
+	// and used in the models execution method. The default components of the
+	// dialog work with "SettingsModels".
 
 	/**
-	 * the settings key which is used to retrieve and
-	 * store the settings (from the dialog or from a settings file)
-	 * (package visibility to be usable from the dialog).
-	 */
-	/**
+	 * file
 	 * Constructor for the node model.
 	 */
-	private static final NodeLogger logger = NodeLogger.getLogger(MeasurementReaderNMRNodeModel.class);
-	private static final String NMR_FILE_INPUT = "FileInput";
-	protected static final SettingsModelString SETTING_NMR_FILE_INPUT = new SettingsModelString(NMR_FILE_INPUT, "");
-
-	protected MeasurementReaderNMRNodeModel() {
+	protected MeasurementReader2TableNMRNodeModel() {
 		// TODO one incoming port and one outgoing port is assumed
-		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class)});
-	}
-
-	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-
-		return new PortObjectSpec[]{new ScanNMRPortObjectSpec()};
+		super(0, 1);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
+
+		// TODO: check if user settings are available, fit to the incoming
+		// table structure, and the incoming types are feasible for the node
+		// to execute. If the node can execute in its current state return
+		// the spec of its output data table(s) (if you can, otherwise an array
+		// with null elements), or throw an exception with a useful user message
+		return new DataTableSpec[]{null};
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception {
 
 		logger.info("Read the scans nmr data.");
 		File file = new File(SETTING_NMR_FILE_INPUT.getStringValue());
 		try {
 			IProcessingInfo processingInfo = ScanConverterNMR.convert(file, new NullProgressMonitor());
-			ScanNMR scanNMR = (ScanNMR)processingInfo.getProcessingResult();
-			return new PortObject[]{new ScanNMRPortObject(scanNMR)};
+			IScanNMR scanNMR = (IScanNMR)processingInfo.getProcessingResult();
+			BufferedDataTable bufferedDataTable;
+			if(SETTING_NMR_TABLE_OUTPUT.getStringValue().equals(CHEMCAL_SHIFT)) {
+				bufferedDataTable = new ScanNmrTableTranslator().getBufferedDataTable(scanNMR, exec);
+			} else {
+				bufferedDataTable = new ScanNmrTableTranslatorRawData().getBufferedDataTable(scanNMR, exec);
+			}
+			return new BufferedDataTable[]{bufferedDataTable};
 		} catch(Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
 			throw e;
 		}
-	}
-
-	@Override
-	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
-		// TODO load internal data.
-		// Everything handed to output ports is loaded automatically (data
-		// returned by the execute method, models loaded in loadModelContent,
-		// and user settings set through loadSettingsFrom - is all taken care
-		// of). Load here only the other internals that need to be restored
-		// (e.g. data used by the views).
 	}
 
 	/**
@@ -108,6 +112,7 @@ public class MeasurementReaderNMRNodeModel extends NodeModel {
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
 		SETTING_NMR_FILE_INPUT.loadSettingsFrom(settings);
+		SETTING_NMR_TABLE_OUTPUT.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -125,6 +130,7 @@ public class MeasurementReaderNMRNodeModel extends NodeModel {
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
 		SETTING_NMR_FILE_INPUT.saveSettingsTo(settings);
+		SETTING_NMR_TABLE_OUTPUT.saveSettingsTo(settings);
 	}
 
 	@Override
@@ -136,5 +142,11 @@ public class MeasurementReaderNMRNodeModel extends NodeModel {
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
 		SETTING_NMR_FILE_INPUT.validateSettings(settings);
+		SETTING_NMR_TABLE_OUTPUT.validateSettings(settings);
+	}
+
+	@Override
+	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+
 	}
 }

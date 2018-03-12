@@ -9,27 +9,26 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model.scan.nmr;
+package net.openchrom.xxd.process.supplier.knime.model.scan.xir;
 
 import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.xir.model.core.IScanXIR;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
 import net.openchrom.xxd.process.supplier.knime.model.scan.ScanTableTranslator;
 
-public class ScanNmrTableTranslator implements IScanNmrTableTranslator {
+public class ScanXirTableTranslatorRawData implements IScanXirTableTranslator {
 
-	private final String scanColumnX = "column x";
-	private final String scanColumnY = "column y";
+	private final String rawColumnName = "";
 
-	public ScanNmrTableTranslator() {
+	public ScanXirTableTranslatorRawData() {
 	}
 
 	@Override
-	public BufferedDataTable getBufferedDataTable(IScanNMR scanNMR, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+	public BufferedDataTable getBufferedDataTable(IScanXIR scanXIR, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
-		return ScanTableTranslator.scanToTable(scanNMR, scanColumnX, scanColumnY, exec);
+		return ScanTableTranslator.rawDataToTable(scanXIR.getRawSignals(), rawColumnName, exec);
 	}
 }

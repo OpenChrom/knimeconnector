@@ -181,6 +181,10 @@
             category-path="/openchrom/msd/translator"
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.msd.TableToCsMsdNodeFactory">
       </node>
+            <node
+            category-path="/openchrom/msd/translator"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.msd.PeakMsdToTableNodeFactory">
+      </node>
       <node
       		category-path="/openchrom/msd/process_control"
       		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerMSDStartNodeFactory">
@@ -189,21 +193,13 @@
       		category-path="/openchrom/msd/process_control"
       		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerMSDEndNodeFactory">
       </node>
-      <node
+       <node
             category-path="/openchrom/nmr/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.nmr.MeasurementReaderNMRNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.nmr.MeasurementReader2TableNMRNodeFactory">
       </node>
        <node
-            category-path="/openchrom/nmr/translator"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.nmr.CsNmrToTableNodeFactory">
-      </node>
-      <node
             category-path="/openchrom/xir/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.xir.MeasurementReaderXIRNodeFactory">
-      </node>
-       <node
-            category-path="/openchrom/xir/translator"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.xir.CsXirToTableNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.xir.MeasurementReader2TableXIRNodeFactory">
       </node>
                          
    </extension>

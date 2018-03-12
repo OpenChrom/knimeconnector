@@ -18,16 +18,14 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-import net.openchrom.xxd.process.supplier.knime.model.chromatogram.IChoromatogramTableTranslator;
-
-public interface IChoromatogramCSDTableTranslator extends IChoromatogramTableTranslator {
+public interface IChoromatogramCSDTableTranslator {
 
 	static IChoromatogramCSDTableTranslator create() {
 
 		return new ChoromatogramCSDTableTranslator();
 	}
 
-	BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionCSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException;
+	BufferedDataTable getBufferedDataTable(IChromatogramSelectionCSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException;
 
 	IChromatogramCSD getChromatogramCSD(BufferedDataTable bufferedDataTable, final ExecutionContext exec) throws Exception;
 }

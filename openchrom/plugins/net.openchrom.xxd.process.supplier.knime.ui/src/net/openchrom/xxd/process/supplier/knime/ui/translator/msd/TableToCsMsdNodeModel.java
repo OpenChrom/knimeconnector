@@ -20,6 +20,7 @@ package net.openchrom.xxd.process.supplier.knime.ui.translator.msd;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
@@ -40,15 +41,18 @@ import org.knime.core.node.port.PortTypeRegistry;
 
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd.ChoromatogramMSDTableTranslatorTIC;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd.ChoromatogramMSDTableTranslatorXIC;
 import net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd.IChoromatogramMSDTableTranslator;
 
 public class TableToCsMsdNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(TableToCsMsdNodeModel.class);
-	private final IChoromatogramMSDTableTranslator choromatogramMSDTableTranslator = IChoromatogramMSDTableTranslator.create(IChoromatogramMSDTableTranslator.TRANSLATION_TYPE_TIC);
+	private IChoromatogramMSDTableTranslator[] translators;
 
 	protected TableToCsMsdNodeModel() {
 		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(BufferedDataTable.class)}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
+		translators = new IChoromatogramMSDTableTranslator[]{new ChoromatogramMSDTableTranslatorTIC(), new ChoromatogramMSDTableTranslatorXIC()};
 	}
 
 	@Override
@@ -66,8 +70,9 @@ public class TableToCsMsdNodeModel extends NodeModel {
 			 * Convert the table to chromatogram selection.
 			 */
 			logger.info("Convert the buffered data table to chromatogram selection");
-			IChromatogramMSD chromatogramMSD = choromatogramMSDTableTranslator.getChromatogramMSD(bufferedDataTable, exec);
-			if(chromatogramMSD != null) {
+			IChoromatogramMSDTableTranslator[] validTranslators = Arrays.stream(translators).filter(t -> t.checkTable(bufferedDataTable, exec)).toArray(IChoromatogramMSDTableTranslator[]::new);
+			if(validTranslators.length > 0) {
+				IChromatogramMSD chromatogramMSD = validTranslators[0].getChromatogram(bufferedDataTable, exec);
 				IChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
 				ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = new ChromatogramSelectionMSDPortObject(chromatogramSelectionMSD);
 				return new PortObject[]{chromatogramSelectionMSDPortObject};

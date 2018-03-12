@@ -50,6 +50,6 @@ public class ReportsSupport {
 
 	private static boolean isReport(String id) {
 
-		return ChromatogramReports.getChromatogramReportSupplierSupport().getReportSupplier().stream().map(s -> s.getId()).anyMatch(s -> (id == s));
+		return ChromatogramReports.getChromatogramReportSupplierSupport().getReportSupplier().stream().map(s -> s.getId()).anyMatch(s -> s.equals(id));
 	}
 }

@@ -19,12 +19,5 @@ import org.knime.core.node.ExecutionContext;
 
 public interface IScanNmrTableTranslator {
 
-	String TYPE_RAW_DATA = "rowData";
-	String TYPE_SIGANALS = "signals";
-
-	BufferedDataTable getBufferedDataTableTIC(IScanNMR scanNMR, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException;
-
-	void setType(String type);
-
-	String getType();
+	BufferedDataTable getBufferedDataTable(IScanNMR scanNMR, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException;
 }

@@ -16,6 +16,7 @@ import java.util.List;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -42,18 +43,21 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 		BeanDescription beanDesc = mapper.getSerializationConfig().introspect(javaType);
 		List<BeanPropertyDefinition> props = beanDesc.findProperties();
 		for(BeanPropertyDefinition p : props) {
-			Class<?> rawType = p.getField().getRawType();
-			//
-			if(rawType == int.class || rawType == Integer.class) {
-				objectNode.put(p.getName(), prov.getIntProperty(p.getName()));
-			} else if(rawType == float.class || rawType == Float.class) {
-				objectNode.put(p.getName(), prov.getFloatProperty(p.getName()));
-			} else if(rawType == double.class || rawType == Double.class) {
-				objectNode.put(p.getName(), prov.getDoubleProperty(p.getName()));
-			} else if(rawType == String.class) {
-				objectNode.put(p.getName(), prov.getStringProperty(p.getName()));
-			} else if(rawType == boolean.class || rawType == Boolean.class) {
-				objectNode.put(p.getName(), prov.getBooleanProperty(p.getName()));
+			AnnotatedField annotatedField = p.getField();
+			if(annotatedField != null) {
+				Class<?> rawType = annotatedField.getRawType();
+				//
+				if(rawType == int.class || rawType == Integer.class) {
+					objectNode.put(p.getName(), prov.getIntProperty(p.getName()));
+				} else if(rawType == float.class || rawType == Float.class) {
+					objectNode.put(p.getName(), prov.getFloatProperty(p.getName()));
+				} else if(rawType == double.class || rawType == Double.class) {
+					objectNode.put(p.getName(), prov.getDoubleProperty(p.getName()));
+				} else if(rawType == String.class) {
+					objectNode.put(p.getName(), prov.getStringProperty(p.getName()));
+				} else if(rawType == boolean.class || rawType == Boolean.class) {
+					objectNode.put(p.getName(), prov.getBooleanProperty(p.getName()));
+				}
 			}
 		}
 		return mapper.convertValue(objectNode, obj);
@@ -67,25 +71,28 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 		BeanDescription beanDesc = mapper.getSerializationConfig().introspect(javaType);
 		List<BeanPropertyDefinition> props = beanDesc.findProperties();
 		for(BeanPropertyDefinition p : props) {
-			Class<?> rawType = p.getField().getRawType();
-			String desc = p.getMetadata().getDescription();
-			String defaultVal = p.getMetadata().getDefaultValue();
-			//
-			if(rawType == int.class || rawType == Integer.class) {
-				coll.addIntProperty(p.getName(), p.getName(), defaultVal == null ? 0 : Integer.valueOf(defaultVal));
-				coll.addPropertyDescriptions(p.getName(), desc);
-			} else if(rawType == float.class || rawType == Float.class) {
-				coll.addFloatProperty(p.getName(), p.getName(), Float.valueOf(defaultVal));
-				coll.addPropertyDescriptions(p.getName(), desc);
-			} else if(rawType == double.class || rawType == Double.class) {
-				coll.addDoubleProperty(p.getName(), p.getName(), Double.valueOf(defaultVal));
-				coll.addPropertyDescriptions(p.getName(), desc);
-			} else if(rawType == String.class) {
-				coll.addStringProperty(p.getName(), p.getName(), defaultVal);
-				coll.addPropertyDescriptions(p.getName(), desc);
-			} else if(rawType == boolean.class || rawType == Boolean.class) {
-				coll.addBooleanProperty(p.getName(), p.getName(), Boolean.valueOf(defaultVal));
-				coll.addPropertyDescriptions(p.getName(), desc);
+			AnnotatedField annotatedField = p.getField();
+			if(annotatedField != null) {
+				Class<?> rawType = annotatedField.getRawType();
+				String desc = p.getMetadata().getDescription();
+				String defaultVal = p.getMetadata().getDefaultValue();
+				//
+				if(rawType == int.class || rawType == Integer.class) {
+					coll.addIntProperty(p.getName(), p.getName(), defaultVal == null ? 0 : Integer.valueOf(defaultVal));
+					coll.addPropertyDescriptions(p.getName(), desc);
+				} else if(rawType == float.class || rawType == Float.class) {
+					coll.addFloatProperty(p.getName(), p.getName(), Float.valueOf(defaultVal));
+					coll.addPropertyDescriptions(p.getName(), desc);
+				} else if(rawType == double.class || rawType == Double.class) {
+					coll.addDoubleProperty(p.getName(), p.getName(), Double.valueOf(defaultVal));
+					coll.addPropertyDescriptions(p.getName(), desc);
+				} else if(rawType == String.class) {
+					coll.addStringProperty(p.getName(), p.getName(), defaultVal);
+					coll.addPropertyDescriptions(p.getName(), desc);
+				} else if(rawType == boolean.class || rawType == Boolean.class) {
+					coll.addBooleanProperty(p.getName(), p.getName(), Boolean.valueOf(defaultVal));
+					coll.addPropertyDescriptions(p.getName(), desc);
+				}
 			}
 		}
 	}

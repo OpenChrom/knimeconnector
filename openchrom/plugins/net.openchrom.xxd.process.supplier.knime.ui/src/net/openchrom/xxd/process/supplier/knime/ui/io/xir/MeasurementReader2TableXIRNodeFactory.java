@@ -15,58 +15,62 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.io.nmr;
+package net.openchrom.xxd.process.supplier.knime.ui.io.xir;
 
+import org.knime.core.node.NodeDialogPane;
+import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
 /**
- * <code>NodeView</code> for the "MeasurementWriterNMR" Node.
+ * <code>NodeFactory</code> for the "MeasurementWriterNMR" Node.
  * This node writes chromatographic data.
  *
  * @author OpenChrom
  */
-public class MeasurementWriterNMRNodeView extends NodeView<MeasurementWriterNMRNodeModel> {
+public class MeasurementReader2TableXIRNodeFactory extends NodeFactory<MeasurementReader2TableXIRNodeModel> {
 
 	/**
-	 * Creates a new view.
-	 *
-	 * @param nodeModel
-	 *            The model (class: {@link MeasurementWriterNMRNodeModel})
+	 * {@inheritDoc}
 	 */
-	protected MeasurementWriterNMRNodeView(final MeasurementWriterNMRNodeModel nodeModel) {
-		super(nodeModel);
-		// TODO instantiate the components of the view here.
+	@Override
+	public NodeDialogPane createNodeDialogPane() {
+
+		return new MeasurementReader2TableXIRNodeDialog();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void modelChanged() {
+	public MeasurementReader2TableXIRNodeModel createNodeModel() {
 
-		// TODO retrieve the new model from your nodemodel and
-		// update the view.
-		MeasurementWriterNMRNodeModel nodeModel = getNodeModel();
-		assert nodeModel != null;
-		// be aware of a possibly not executed nodeModel! The data you retrieve
-		// from your nodemodel could be null, emtpy, or invalid in any kind.
+		return new MeasurementReader2TableXIRNodeModel();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void onClose() {
+	public NodeView<MeasurementReader2TableXIRNodeModel> createNodeView(final int viewIndex, final MeasurementReader2TableXIRNodeModel nodeModel) {
 
-		// TODO things to do when closing the view
+		return new MeasurementReader2TableXIRNodeView(nodeModel);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void onOpen() {
+	public int getNrNodeViews() {
 
-		// TODO things to do when opening the view
+		return 1;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasDialog() {
+
+		return true;
 	}
 }

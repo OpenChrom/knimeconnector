@@ -24,6 +24,8 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.xir.converter.core.ScanConverterXIR;
 import org.eclipse.chemclipse.xir.model.core.IScanXIR;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.knime.core.data.DataTableSpec;
+import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -33,72 +35,78 @@ import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
-import org.knime.core.node.port.PortObject;
-import org.knime.core.node.port.PortObjectSpec;
-import org.knime.core.node.port.PortType;
-import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.xxd.process.supplier.knime.model.ScanXIRPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.ScanXIRPortObjectSpec;
+import net.openchrom.xxd.process.supplier.knime.model.scan.xir.ScanXirTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.scan.xir.ScanXirTableTranslatorBackgroundSignals;
+import net.openchrom.xxd.process.supplier.knime.model.scan.xir.ScanXirTableTranslatorRawData;
 
 /**
- * This is the model implementation of MeasurementReaderNMR.
- * This node is reads chromatographic raw data.
+ * This is the model implementation of MeasurementWriterNMR.
+ * This node writes chromatographic data.
  *
  * @author OpenChrom
  */
-public class MeasurementReaderXIRNodeModel extends NodeModel {
+public class MeasurementReader2TableXIRNodeModel extends NodeModel {
+
+	private static final String XIR_FILE_INPUT = "FileInput";
+	protected static final String RAW_DATA = "Raw Data";
+	protected static final String ROTATION_ANGLE = "Rotation Angle";
+	protected static final String BACKGROUNG_SIGNAL = "Background Signal";
+	protected static final SettingsModelString SETTING_XIR_FILE_INPUT = new SettingsModelString(XIR_FILE_INPUT, "");
+	protected static final SettingsModelString SETTING_XIR_TABLE_OUTPUT = new SettingsModelString(ROTATION_ANGLE, "");
+	// the logger instance
+	private static final NodeLogger logger = NodeLogger.getLogger(MeasurementReader2TableXIRNodeModel.class);
+	// example value: the models count variable filled from the dialog
+	// and used in the models execution method. The default components of the
+	// dialog work with "SettingsModels".
 
 	/**
-	 * the settings key which is used to retrieve and
-	 * store the settings (from the dialog or from a settings file)
-	 * (package visibility to be usable from the dialog).
-	 */
-	/**
+	 * file
 	 * Constructor for the node model.
 	 */
-	private static final NodeLogger logger = NodeLogger.getLogger(MeasurementReaderXIRNodeModel.class);
-	private static final String XIR_FILE_INPUT = "FileInput";
-	protected static final SettingsModelString SETTING_XIR_FILE_INPUT = new SettingsModelString(XIR_FILE_INPUT, "");
-
-	protected MeasurementReaderXIRNodeModel() {
+	protected MeasurementReader2TableXIRNodeModel() {
 		// TODO one incoming port and one outgoing port is assumed
-		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ScanXIRPortObject.class)});
-	}
-
-	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-
-		return new PortObjectSpec[]{new ScanXIRPortObjectSpec()};
+		super(0, 1);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+	protected DataTableSpec[] configure(final DataTableSpec[] inSpecs) throws InvalidSettingsException {
 
-		logger.info("Read the scans nmr data.");
+		// TODO: check if user settings are available, fit to the incoming
+		// table structure, and the incoming types are feasible for the node
+		// to execute. If the node can execute in its current state return
+		// the spec of its output data table(s) (if you can, otherwise an array
+		// with null elements), or throw an exception with a useful user message
+		return new DataTableSpec[]{null};
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected BufferedDataTable[] execute(final BufferedDataTable[] inData, final ExecutionContext exec) throws Exception {
+
+		logger.info("Read the scans xir data.");
 		File file = new File(SETTING_XIR_FILE_INPUT.getStringValue());
 		try {
 			IProcessingInfo processingInfo = ScanConverterXIR.convert(file, new NullProgressMonitor());
 			IScanXIR scanXIR = (IScanXIR)processingInfo.getProcessingResult();
-			return new PortObject[]{new ScanXIRPortObject(scanXIR)};
+			BufferedDataTable bufferedDataTable;
+			if(SETTING_XIR_TABLE_OUTPUT.getStringValue().equals(ROTATION_ANGLE)) {
+				bufferedDataTable = new ScanXirTableTranslator().getBufferedDataTable(scanXIR, exec);
+			} else if(SETTING_XIR_TABLE_OUTPUT.getStringValue().equals(RAW_DATA)) {
+				bufferedDataTable = new ScanXirTableTranslatorRawData().getBufferedDataTable(scanXIR, exec);
+			} else {
+				bufferedDataTable = new ScanXirTableTranslatorBackgroundSignals().getBufferedDataTable(scanXIR, exec);
+			}
+			return new BufferedDataTable[]{bufferedDataTable};
 		} catch(Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
 			throw e;
 		}
-	}
-
-	@Override
-	protected void loadInternals(final File internDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
-		// TODO load internal data.
-		// Everything handed to output ports is loaded automatically (data
-		// returned by the execute method, models loaded in loadModelContent,
-		// and user settings set through loadSettingsFrom - is all taken care
-		// of). Load here only the other internals that need to be restored
-		// (e.g. data used by the views).
 	}
 
 	/**
@@ -108,6 +116,7 @@ public class MeasurementReaderXIRNodeModel extends NodeModel {
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
 		SETTING_XIR_FILE_INPUT.loadSettingsFrom(settings);
+		SETTING_XIR_TABLE_OUTPUT.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -125,6 +134,7 @@ public class MeasurementReaderXIRNodeModel extends NodeModel {
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
 		SETTING_XIR_FILE_INPUT.saveSettingsTo(settings);
+		SETTING_XIR_TABLE_OUTPUT.saveSettingsTo(settings);
 	}
 
 	@Override
@@ -136,5 +146,11 @@ public class MeasurementReaderXIRNodeModel extends NodeModel {
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
 		SETTING_XIR_FILE_INPUT.validateSettings(settings);
+		SETTING_XIR_TABLE_OUTPUT.validateSettings(settings);
+	}
+
+	@Override
+	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+
 	}
 }

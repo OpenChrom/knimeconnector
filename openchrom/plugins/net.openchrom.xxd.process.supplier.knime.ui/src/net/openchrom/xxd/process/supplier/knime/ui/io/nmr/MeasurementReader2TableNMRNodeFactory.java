@@ -27,7 +27,7 @@ import org.knime.core.node.NodeView;
  *
  * @author OpenChrom
  */
-public class MeasurementWriterNMRNodeFactory extends NodeFactory<MeasurementWriterNMRNodeModel> {
+public class MeasurementReader2TableNMRNodeFactory extends NodeFactory<MeasurementReader2TableNMRNodeModel> {
 
 	/**
 	 * {@inheritDoc}
@@ -35,25 +35,25 @@ public class MeasurementWriterNMRNodeFactory extends NodeFactory<MeasurementWrit
 	@Override
 	public NodeDialogPane createNodeDialogPane() {
 
-		return new MeasurementWriterNMRNodeDialog();
+		return new MeasurementReader2TableNMRNodeDialog();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public MeasurementWriterNMRNodeModel createNodeModel() {
+	public MeasurementReader2TableNMRNodeModel createNodeModel() {
 
-		return new MeasurementWriterNMRNodeModel();
+		return new MeasurementReader2TableNMRNodeModel();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NodeView<MeasurementWriterNMRNodeModel> createNodeView(final int viewIndex, final MeasurementWriterNMRNodeModel nodeModel) {
+	public NodeView<MeasurementReader2TableNMRNodeModel> createNodeView(final int viewIndex, final MeasurementReader2TableNMRNodeModel nodeModel) {
 
-		return new MeasurementWriterNMRNodeView(nodeModel);
+		return new MeasurementReader2TableNMRNodeView(nodeModel);
 	}
 
 	/**

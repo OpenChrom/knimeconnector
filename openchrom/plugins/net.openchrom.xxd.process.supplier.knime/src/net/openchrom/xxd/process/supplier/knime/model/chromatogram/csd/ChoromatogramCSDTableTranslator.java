@@ -16,9 +16,7 @@ import org.eclipse.chemclipse.csd.model.core.IScanCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.csd.model.implementation.ChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.implementation.ScanCSD;
-import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IScan;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -35,9 +33,9 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-import net.openchrom.xxd.process.supplier.knime.model.chromatogram.ChoromatogramTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.chromatogram.TableValidation;
 
-public class ChoromatogramCSDTableTranslator extends ChoromatogramTableTranslator implements IChoromatogramCSDTableTranslator {
+public class ChoromatogramCSDTableTranslator implements IChoromatogramCSDTableTranslator {
 
 	protected final String ABUNDANCE = "Abundence";
 
@@ -45,12 +43,12 @@ public class ChoromatogramCSDTableTranslator extends ChoromatogramTableTranslato
 	}
 
 	@Override
-	public BufferedDataTable getBufferedDataTable(IChromatogramSelection chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
+	public BufferedDataTable getBufferedDataTable(IChromatogramSelectionCSD chromatogramSelection, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
 		if(!(chromatogramSelection instanceof IChromatogramSelectionCSD)) {
 			return null;
 		}
-		IChromatogramSelectionCSD chromatogramSelectionCSD = (IChromatogramSelectionCSD)chromatogramSelection;
+		IChromatogramSelectionCSD chromatogramSelectionCSD = chromatogramSelection;
 		/*
 		 * Specification
 		 */
@@ -58,8 +56,8 @@ public class ChoromatogramCSDTableTranslator extends ChoromatogramTableTranslato
 		//
 		int columnSpec = 0;
 		DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
-		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(super.RETENTION_TIME, IntCell.TYPE).createSpec();
-		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(super.RETENTION_INDEX, DoubleCell.TYPE).createSpec();
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.RETENTION_TIME, IntCell.TYPE).createSpec();
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.RETENTION_INDEX, DoubleCell.TYPE).createSpec();
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(ABUNDANCE, DoubleCell.TYPE).createSpec();
 		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
 		/*
@@ -97,24 +95,12 @@ public class ChoromatogramCSDTableTranslator extends ChoromatogramTableTranslato
 	}
 
 	@Override
-	public BufferedDataTable getBufferedDataTableTIC(IChromatogramSelectionCSD chromatogramSelection, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
-
-		return null;
-	}
-
-	@Override
-	public IChromatogram getChromatogram(BufferedDataTable bufferedDataTable, ExecutionContext exec) throws Exception {
-
-		return getChromatogramCSD(bufferedDataTable, exec);
-	}
-
-	@Override
 	public IChromatogramCSD getChromatogramCSD(BufferedDataTable bufferedDataTable, final ExecutionContext exec) throws Exception {
 
 		//
 		CloseableRowIterator iterator = bufferedDataTable.iterator();
 		int scan = 1;
-		int scanCount = getNumberOfRows(bufferedDataTable);
+		int scanCount = TableValidation.getNumberOfRows(bufferedDataTable);
 		//
 		boolean check = checkTable(bufferedDataTable, exec);
 		if(!check) {
@@ -142,23 +128,6 @@ public class ChoromatogramCSDTableTranslator extends ChoromatogramTableTranslato
 		if(bufferedDataTable.getDataTableSpec().getNumColumns() != 2) {
 			return false;
 		}
-		return checkRetentionTimes(bufferedDataTable, 0) && chechAbundence(bufferedDataTable, 1);
-	}
-
-	protected boolean chechAbundence(BufferedDataTable bufferedDataTable, int columnNumber) {
-
-		if(bufferedDataTable.getDataTableSpec().getColumnSpec(columnNumber).getType() != DoubleCell.TYPE) {
-			return false;
-		} else {
-			CloseableRowIterator iterator = bufferedDataTable.iterator();
-			if(iterator.hasNext()) {
-				DataCell cell = iterator.next().getCell(columnNumber);
-				if(cell.isMissing()) {
-					iterator.close();
-					return false;
-				}
-			}
-			return true;
-		}
+		return TableValidation.checkRetentionTimes(bufferedDataTable, 0) && TableValidation.chechAbundence(bufferedDataTable, 1);
 	}
 }

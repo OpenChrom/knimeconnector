@@ -12,5 +12,4 @@
             specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec$Serializer">
       </portType>
    </extension>
-
 </plugin>

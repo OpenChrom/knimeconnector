@@ -12,24 +12,17 @@
 package net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd;
 
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
 import org.knime.core.node.BufferedDataTable;
-import org.knime.core.node.ExecutionContext;
+import org.knime.core.node.CanceledExecutionException;
+import org.knime.core.node.ExecutionContext;;
 
-import net.openchrom.xxd.process.supplier.knime.model.chromatogram.IChoromatogramTableTranslator;;
+public interface IChoromatogramMSDTableTranslator {
 
-public interface IChoromatogramMSDTableTranslator extends IChoromatogramTableTranslator {
+	BufferedDataTable getBufferedDataTable(IChromatogramSelectionMSD chromatogram, final ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException;
 
-	String TRANSLATION_TYPE_TIC = "TYPE_TIC";
-	String TRANSLATION_TYPE_XIC = "TYPE_XIC";
+	IChromatogramMSD getChromatogram(BufferedDataTable bufferedDataTable, final ExecutionContext exec) throws Exception;
 
-	static IChoromatogramMSDTableTranslator create(String translationType) {
-
-		return new ChoromatogramMSDTableTranslator(translationType);
-	}
-
-	IChromatogramMSD getChromatogramMSD(BufferedDataTable bufferedDataTable, final ExecutionContext exec) throws Exception;
-
-	String getTranslationType();
-
-	void setTranslationType(String translationType);
+	boolean checkTable(BufferedDataTable bufferedDataTable, final ExecutionContext exec);
 }

@@ -18,6 +18,9 @@ import org.knime.core.node.port.AbstractSimplePortObjectSpec;
 
 public class ScanXIRPortObjectSpec extends AbstractSimplePortObjectSpec {
 
+	public static final class Serializer extends AbstractSimplePortObjectSpecSerializer<ScanXIRPortObjectSpec> {
+	}
+
 	public ScanXIRPortObjectSpec() {
 	}
 

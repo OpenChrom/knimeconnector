@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.chromatogram.msd.identifier.exceptions.NoIdentifierAvailableException;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
@@ -33,10 +35,23 @@ public class PeakIndetifierNodeSetFactory implements NodeSetFactory {
 	private List<String> ids;
 
 	public PeakIndetifierNodeSetFactory() {
-		ids = new ArrayList<>();
+		List<String> ids = new ArrayList<>();
 		try {
-			ids.addAll(IdentifierSupport.getIDsPeakIdentifierMSD());
-			ids = Collections.unmodifiableList(ids);
+			ids.addAll(IdentifierSupport.getIDsPeakIdentifierMSD().stream().filter(f -> {
+				try {
+					Class<? extends IPeakIdentifierSettings> peakSettingsClass = IdentifierSupport.getSupplierMSD(f).getIdentifierSettingsClass();
+					if(peakSettingsClass == null) {
+						LOGGER.warn("Peak settings class for peak id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
+						return false;
+					} else {
+						return true;
+					}
+				} catch(NoIdentifierAvailableException e) {
+					LOGGER.warn("A problem occurred loading identifier with id '" + f + "'.", e);
+					return false;
+				}
+			}).collect(Collectors.toList()));
+			this.ids = Collections.unmodifiableList(ids);
 		} catch(NoIdentifierAvailableException e) {
 			LOGGER.warn(e);
 		}
