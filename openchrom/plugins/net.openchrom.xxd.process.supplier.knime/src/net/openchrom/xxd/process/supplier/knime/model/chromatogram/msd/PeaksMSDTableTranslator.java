@@ -57,7 +57,7 @@ public class PeaksMSDTableTranslator implements IPeaksMSDTableTranslator {
 		DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.PEAK_IS_ACTIVE_FOR_ANALYSIS, StringCell.TYPE).createSpec();
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.RETENTION_TIME, DoubleCell.TYPE).createSpec();
-		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.PEAK_IS_ACTIVE_FOR_ANALYSIS, DoubleCell.TYPE).createSpec();
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.RETENTION_INDEX, DoubleCell.TYPE).createSpec();
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.PEAK_AREA, DoubleCell.TYPE).createSpec();
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.PEAK_START_RETENTION_TIME, DoubleCell.TYPE).createSpec();
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(TableValidation.PEAK_STOP_RETENTION_TIME, DoubleCell.TYPE).createSpec();
