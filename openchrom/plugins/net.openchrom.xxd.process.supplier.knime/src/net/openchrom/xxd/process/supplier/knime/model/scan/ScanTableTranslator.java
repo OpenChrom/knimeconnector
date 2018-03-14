@@ -40,15 +40,17 @@ public class ScanTableTranslator {
 		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
 		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
 		//
-		int totalNumSignals = rawData.length;
-		for(int i = 0; i < dataColumnSpec.length; i++) {
-			RowKey rowKey = new RowKey(Integer.toString(i));
-			DataCell[] cells = new DataCell[numberOfColumns];
-			cells[0] = new DoubleCell(rawData[i]);
-			DataRow dataRow = new DefaultRow(rowKey, cells);
-			bufferedDataContainer.addRowToTable(dataRow);
-			exec.checkCanceled();
-			exec.setProgress(i / totalNumSignals, "Adding Signal: " + i);
+		if(rawData != null) {
+			int totalNumSignals = rawData.length;
+			for(int i = 0; i < totalNumSignals; i++) {
+				RowKey rowKey = new RowKey(Integer.toString(i));
+				DataCell[] cells = new DataCell[numberOfColumns];
+				cells[0] = new DoubleCell(rawData[i]);
+				DataRow dataRow = new DefaultRow(rowKey, cells);
+				bufferedDataContainer.addRowToTable(dataRow);
+				exec.checkCanceled();
+				exec.setProgress(i / totalNumSignals, "Adding Signal: " + i);
+			}
 		}
 		//
 		bufferedDataContainer.close();

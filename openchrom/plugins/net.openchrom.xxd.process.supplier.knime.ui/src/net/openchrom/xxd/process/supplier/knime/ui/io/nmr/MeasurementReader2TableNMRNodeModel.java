@@ -49,7 +49,7 @@ public class MeasurementReader2TableNMRNodeModel extends NodeModel {
 
 	private static final String NMR_FILE_INPUT = "FileInput";
 	protected static final String RAW_DATA = "Raw Data";
-	protected static final String CHEMCAL_SHIFT = "Chemical shift";
+	protected static final String CHEMCAL_SHIFT = "Processed Data";
 	protected static final SettingsModelString SETTING_NMR_FILE_INPUT = new SettingsModelString(NMR_FILE_INPUT, "");
 	protected static final SettingsModelString SETTING_NMR_TABLE_OUTPUT = new SettingsModelString(CHEMCAL_SHIFT, "");
 	// the logger instance

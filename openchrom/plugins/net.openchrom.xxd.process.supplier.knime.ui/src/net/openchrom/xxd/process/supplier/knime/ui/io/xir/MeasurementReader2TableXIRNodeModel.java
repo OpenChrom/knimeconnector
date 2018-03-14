@@ -50,7 +50,7 @@ public class MeasurementReader2TableXIRNodeModel extends NodeModel {
 
 	private static final String XIR_FILE_INPUT = "FileInput";
 	protected static final String RAW_DATA = "Raw Data";
-	protected static final String ROTATION_ANGLE = "Rotation Angle";
+	protected static final String ROTATION_ANGLE = "Processed Data";
 	protected static final String BACKGROUNG_SIGNAL = "Background Signal";
 	protected static final SettingsModelString SETTING_XIR_FILE_INPUT = new SettingsModelString(XIR_FILE_INPUT, "");
 	protected static final SettingsModelString SETTING_XIR_TABLE_OUTPUT = new SettingsModelString(ROTATION_ANGLE, "");
