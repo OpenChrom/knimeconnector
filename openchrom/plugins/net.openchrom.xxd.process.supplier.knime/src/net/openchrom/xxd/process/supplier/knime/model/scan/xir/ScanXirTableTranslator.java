@@ -21,8 +21,8 @@ import net.openchrom.xxd.process.supplier.knime.model.scan.ScanTableTranslator;
 
 public class ScanXirTableTranslator implements IScanXirTableTranslator {
 
-	private final String scanColumnX = "";
-	private final String scanColumnY = "";
+	private final String scanColumnX = "Wavelength";
+	private final String scanColumnY = "Intensity";
 
 	public ScanXirTableTranslator() {
 	}

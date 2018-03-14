@@ -21,8 +21,8 @@ import net.openchrom.xxd.process.supplier.knime.model.scan.ScanTableTranslator;
 
 public class ScanNmrTableTranslator implements IScanNmrTableTranslator {
 
-	private final String scanColumnX = "column x";
-	private final String scanColumnY = "column y";
+	private final String scanColumnX = "Chemical Shift";
+	private final String scanColumnY = "Intensity";
 
 	public ScanNmrTableTranslator() {
 	}

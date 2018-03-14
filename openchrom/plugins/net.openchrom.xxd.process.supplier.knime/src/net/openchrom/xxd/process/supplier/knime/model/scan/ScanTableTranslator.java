@@ -30,7 +30,7 @@ import org.knime.core.node.ExecutionContext;
 
 public class ScanTableTranslator {
 
-	public static BufferedDataTable rawDataToTable(double[] rawData, String columnX, ExecutionContext exec) throws CanceledExecutionException {
+	public static BufferedDataTable doubleArrayToTable(double[] data, String columnX, ExecutionContext exec) throws CanceledExecutionException {
 
 		int numberOfColumns = 1; // Column x, column y
 		//
@@ -40,12 +40,12 @@ public class ScanTableTranslator {
 		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
 		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
 		//
-		if(rawData != null) {
-			int totalNumSignals = rawData.length;
+		if(data != null) {
+			int totalNumSignals = data.length;
 			for(int i = 0; i < totalNumSignals; i++) {
 				RowKey rowKey = new RowKey(Integer.toString(i));
 				DataCell[] cells = new DataCell[numberOfColumns];
-				cells[0] = new DoubleCell(rawData[i]);
+				cells[0] = new DoubleCell(data[i]);
 				DataRow dataRow = new DefaultRow(rowKey, cells);
 				bufferedDataContainer.addRowToTable(dataRow);
 				exec.checkCanceled();

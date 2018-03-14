@@ -21,7 +21,7 @@ import net.openchrom.xxd.process.supplier.knime.model.scan.ScanTableTranslator;
 
 public class ScanXirTableTranslatorBackgroundSignals implements IScanXirTableTranslator {
 
-	private final String columnName = "background signal";
+	private final String columnName = "Background Signal";
 
 	public ScanXirTableTranslatorBackgroundSignals() {
 	}
@@ -29,6 +29,6 @@ public class ScanXirTableTranslatorBackgroundSignals implements IScanXirTableTra
 	@Override
 	public BufferedDataTable getBufferedDataTable(IScanXIR scanXIR, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
-		return ScanTableTranslator.rawDataToTable(scanXIR.getBackgroundSignals(), columnName, exec);
+		return ScanTableTranslator.doubleArrayToTable(scanXIR.getBackgroundSignals(), columnName, exec);
 	}
 }

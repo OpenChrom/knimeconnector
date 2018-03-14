@@ -21,7 +21,7 @@ import net.openchrom.xxd.process.supplier.knime.model.scan.ScanTableTranslator;
 
 public class ScanXirTableTranslatorRawData implements IScanXirTableTranslator {
 
-	private final String rawColumnName = "";
+	private final String rawColumnName = "Raw Data";
 
 	public ScanXirTableTranslatorRawData() {
 	}
@@ -29,6 +29,6 @@ public class ScanXirTableTranslatorRawData implements IScanXirTableTranslator {
 	@Override
 	public BufferedDataTable getBufferedDataTable(IScanXIR scanXIR, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
-		return ScanTableTranslator.rawDataToTable(scanXIR.getRawSignals(), rawColumnName, exec);
+		return ScanTableTranslator.doubleArrayToTable(scanXIR.getRawSignals(), rawColumnName, exec);
 	}
 }
