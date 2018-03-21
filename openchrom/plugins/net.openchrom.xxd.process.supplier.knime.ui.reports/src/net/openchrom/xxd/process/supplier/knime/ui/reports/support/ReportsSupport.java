@@ -22,11 +22,12 @@ import org.eclipse.chemclipse.chromatogram.xxd.report.exceptions.NoReportSupplie
 import org.eclipse.chemclipse.chromatogram.xxd.report.processing.IChromatogramReportProcessingInfo;
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.IChromatogramReportSettings;
 import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.model.core.IPeak;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public class ReportsSupport {
 
-	public static IChromatogramReportProcessingInfo generate(File file, IChromatogram chromatogram, IChromatogramReportSettings chromatogramReportSettings, String reportSupplierId, IProgressMonitor monitor) throws NoReportSupplierAvailableException {
+	public static IChromatogramReportProcessingInfo generate(File file, IChromatogram<? extends IPeak> chromatogram, IChromatogramReportSettings chromatogramReportSettings, String reportSupplierId, IProgressMonitor monitor) throws NoReportSupplierAvailableException {
 
 		if(isReport(reportSupplierId)) {
 			return ChromatogramReports.generate(file, false, chromatogram, chromatogramReportSettings, reportSupplierId, monitor);
