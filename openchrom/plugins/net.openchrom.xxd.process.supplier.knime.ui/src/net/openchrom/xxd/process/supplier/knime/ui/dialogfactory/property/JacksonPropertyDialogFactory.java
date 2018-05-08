@@ -11,7 +11,17 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
+import org.eclipse.chemclipse.support.settings.FileSettingProperty;
+import org.eclipse.chemclipse.support.settings.FloatSettingsProperty;
+import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
+import org.eclipse.chemclipse.support.settings.IonsSelectionSettingProperty;
+import org.eclipse.chemclipse.support.settings.StringSelectionSettingProperty;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
@@ -65,8 +75,8 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 
 	@Override
 	public void extractProperties(Class<? extends SO> obj, PropertyCollector coll) {
-
 		// TODO is there a more efficient way?
+
 		JavaType javaType = mapper.getSerializationConfig().constructType(obj);
 		BeanDescription beanDesc = mapper.getSerializationConfig().introspect(javaType);
 		List<BeanPropertyDefinition> props = beanDesc.findProperties();
@@ -74,24 +84,72 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 			AnnotatedField annotatedField = p.getField();
 			if(annotatedField != null) {
 				Class<?> rawType = annotatedField.getRawType();
+				String name = p.getName();
+				String id = p.getName();
 				String desc = p.getMetadata().getDescription();
 				String defaultVal = p.getMetadata().getDefaultValue();
 				//
 				if(rawType == int.class || rawType == Integer.class) {
-					coll.addIntProperty(p.getName(), p.getName(), defaultVal == null ? 0 : Integer.valueOf(defaultVal));
-					coll.addPropertyDescriptions(p.getName(), desc);
+					int min = Integer.MIN_VALUE;
+					int max = Integer.MAX_VALUE;
+					int step = 1;
+					IntSettingsProperty intSettingsProperty = annotatedField.getAnnotation(IntSettingsProperty.class);
+					if(intSettingsProperty != null) {
+						min = intSettingsProperty.minValue();
+						max = intSettingsProperty.maxValue();
+						step = intSettingsProperty.step();
+					}
+					coll.addIntProperty(id, name, defaultVal == null ? 0 : Integer.valueOf(defaultVal), desc, step, min, max);
 				} else if(rawType == float.class || rawType == Float.class) {
-					coll.addFloatProperty(p.getName(), p.getName(), Float.valueOf(defaultVal));
-					coll.addPropertyDescriptions(p.getName(), desc);
+					float min = Float.MIN_VALUE;
+					float max = Float.MAX_VALUE;
+					int step = 1;
+					FloatSettingsProperty floatSettingsProperty = annotatedField.getAnnotation(FloatSettingsProperty.class);
+					if(floatSettingsProperty != null) {
+						min = floatSettingsProperty.minValue();
+						max = floatSettingsProperty.maxValue();
+						step = floatSettingsProperty.step();
+					}
+					coll.addFloatProperty(id, name, Float.valueOf(defaultVal), desc, step, min, max);
 				} else if(rawType == double.class || rawType == Double.class) {
-					coll.addDoubleProperty(p.getName(), p.getName(), Double.valueOf(defaultVal));
-					coll.addPropertyDescriptions(p.getName(), desc);
+					double min = Double.MIN_VALUE;
+					double max = Double.MAX_VALUE;
+					int step = 1;
+					DoubleSettingsProperty doubleSettingsProperty = annotatedField.getAnnotation(DoubleSettingsProperty.class);
+					if(doubleSettingsProperty != null) {
+						min = doubleSettingsProperty.minValue();
+						max = doubleSettingsProperty.maxValue();
+						step = doubleSettingsProperty.step();
+					}
+					coll.addDoubleProperty(id, name, Double.valueOf(defaultVal), desc, step, min, max);
 				} else if(rawType == String.class) {
-					coll.addStringProperty(p.getName(), p.getName(), defaultVal);
-					coll.addPropertyDescriptions(p.getName(), desc);
+					FileSettingProperty fileSettingProperty = annotatedField.getAnnotation(FileSettingProperty.class);
+					if(fileSettingProperty != null) {
+						coll.addFileProperty(id, name, defaultVal, desc, obj.getName());
+					} else {
+						StringSelectionSettingProperty selectionSettingProperty = annotatedField.getAnnotation(StringSelectionSettingProperty.class);
+						if(selectionSettingProperty != null) {
+							String[] ids = selectionSettingProperty.ids();
+							String[] labels = selectionSettingProperty.labels();
+							if(labels.length == 0) {
+								labels = ids;
+							}
+							Map<String, String> mapIds = new HashMap<>();
+							for(int i = 0; i < labels.length; i++) {
+								mapIds.put(labels[i], ids[i]);
+							}
+							coll.addStringProperty(id, name, defaultVal, desc, Arrays.asList(labels), mapIds);
+						} else {
+							IonsSelectionSettingProperty ionSelectionSettingProperty = annotatedField.getAnnotation(IonsSelectionSettingProperty.class);
+							if(ionSelectionSettingProperty != null) {
+								coll.addIonSelectionProperty(id, name, defaultVal, desc);
+							} else {
+								coll.addStringProperty(id, name, defaultVal, desc);
+							}
+						}
+					}
 				} else if(rawType == boolean.class || rawType == Boolean.class) {
-					coll.addBooleanProperty(p.getName(), p.getName(), Boolean.valueOf(defaultVal));
-					coll.addPropertyDescriptions(p.getName(), desc);
+					coll.addBooleanProperty(id, name, Boolean.valueOf(defaultVal), desc);
 				}
 			}
 		}

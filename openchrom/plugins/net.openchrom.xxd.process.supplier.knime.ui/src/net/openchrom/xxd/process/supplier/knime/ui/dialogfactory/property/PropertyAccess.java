@@ -12,19 +12,26 @@
 package net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
+import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
 import org.knime.core.node.defaultnodesettings.DialogComponentString;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
 import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelDouble;
+import org.knime.core.node.defaultnodesettings.SettingsModelDoubleBounded;
 import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
+import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
+
+import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentIonSelection;
+import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentStringIdSelection;
 
 /**
  * Helper class for the {@link PropertyDialogFactory} that unifies and implements the {@link PropertyCollector} and {@link PropertyProvider}.
@@ -46,43 +53,63 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	Map<String, SettingsModel> settingsModels = new HashMap<>();
 
 	@Override
-	public void addBooleanProperty(String id, String name, boolean defaultValue) {
+	public void addBooleanProperty(String id, String name, boolean defaultValue, String description) {
 
+		addPropertyDescriptions(name, description);
 		dialogComponents.add(new DialogComponentBoolean(new SettingsModelBoolean(id, defaultValue), name));
 		settingsModels.put(id, new SettingsModelBoolean(id, defaultValue));
 	}
 
 	@Override
-	public void addDoubleProperty(String id, String name, double defaultValue) {
+	public void addDoubleProperty(String id, String name, double defaultValue, String description, int step, double min, double max) {
 
-		dialogComponents.add(new DialogComponentNumber(new SettingsModelDouble(id, defaultValue), name, 1));
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentNumber(new SettingsModelDoubleBounded(id, defaultValue, min, max), name, step));
 		settingsModels.put(id, new SettingsModelDouble(id, defaultValue));
 	}
 
 	@Override
-	public void addFloatProperty(String id, String name, float defaultValue) {
+	public void addFloatProperty(String id, String name, float defaultValue, String description, int step, float min, float max) {
 
-		dialogComponents.add(new DialogComponentNumber(new SettingsModelDouble(id, defaultValue), name, 1));
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentNumber(new SettingsModelDoubleBounded(id, defaultValue, min, max), name, step));
 		settingsModels.put(id, new SettingsModelDouble(id, defaultValue));
 	}
 
 	@Override
-	public void addIntProperty(String id, String name, int defaultValue) {
+	public void addIntProperty(String id, String name, int defaultValue, String description, int step, int min, int max) {
 
-		dialogComponents.add(new DialogComponentNumber(new SettingsModelInteger(id, defaultValue), name, 1));
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentNumber(new SettingsModelIntegerBounded(id, defaultValue, min, max), name, step));
 		settingsModels.put(id, new SettingsModelInteger(id, defaultValue));
 	}
 
-	@Override
-	public void addPropertyDescriptions(String name, String description) {
+	private void addPropertyDescriptions(String name, String description) {
 
 		descriptions.put(name, description);
 	}
 
 	@Override
-	public void addStringProperty(String id, String name, String defaultValue) {
+	public void addStringProperty(String id, String name, String defaultValue, String description) {
 
+		addPropertyDescriptions(name, description);
 		dialogComponents.add(new DialogComponentString(new SettingsModelString(id, defaultValue), name));
+		settingsModels.put(id, new SettingsModelString(id, defaultValue));
+	}
+
+	@Override
+	public void addStringProperty(String id, String name, String defaultValue, String description, Collection<String> list, Map<String, String> ids) {
+
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentStringIdSelection(new SettingsModelString(id, defaultValue), name, list, ids, false));
+		settingsModels.put(id, new SettingsModelString(id, defaultValue));
+	}
+
+	@Override
+	public void addFileProperty(String id, String name, String defaultValue, String description, String idHistory) {
+
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentFileChooser(new SettingsModelString(id, defaultValue), idHistory));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 
@@ -114,5 +141,13 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public String getStringProperty(String id) {
 
 		return ((SettingsModelString)settingsModels.get(id)).getStringValue();
+	}
+
+	@Override
+	public void addIonSelectionProperty(String id, String name, String defaultValue, String description) {
+
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentIonSelection(new SettingsModelString(id, defaultValue), name));
+		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 }
