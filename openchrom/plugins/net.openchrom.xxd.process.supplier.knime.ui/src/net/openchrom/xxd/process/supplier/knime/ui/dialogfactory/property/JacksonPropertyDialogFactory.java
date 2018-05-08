@@ -22,7 +22,9 @@ import org.eclipse.chemclipse.support.settings.FloatSettingsProperty;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
 import org.eclipse.chemclipse.support.settings.IonsSelectionSettingProperty;
 import org.eclipse.chemclipse.support.settings.MultiFileSettingProperty;
+import org.eclipse.chemclipse.support.settings.StringSelectionRadioButtonsSettingProperty;
 import org.eclipse.chemclipse.support.settings.StringSelectionSettingProperty;
+import org.knime.core.node.util.ButtonGroupEnumInterface;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JavaType;
@@ -85,10 +87,10 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 			AnnotatedField annotatedField = p.getField();
 			if(annotatedField != null) {
 				Class<?> rawType = annotatedField.getRawType();
-				String name = p.getName();
-				String id = p.getName();
-				String desc = p.getMetadata().getDescription();
-				String defaultVal = p.getMetadata().getDefaultValue();
+				final String name = p.getName();
+				final String id = p.getName();
+				final String desc = p.getMetadata().getDescription();
+				final String defaultVal = p.getMetadata().getDefaultValue();
 				//
 				if(rawType == int.class || rawType == Integer.class) {
 					int min = Integer.MIN_VALUE;
@@ -149,7 +151,50 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 								if(ionSelectionSettingProperty != null) {
 									coll.addIonSelectionProperty(id, name, defaultVal, desc);
 								} else {
-									coll.addStringProperty(id, name, defaultVal, desc);
+									StringSelectionRadioButtonsSettingProperty stringSelectionRadioButtonsSettingProperty = annotatedField.getAnnotation(StringSelectionRadioButtonsSettingProperty.class);
+									if(stringSelectionRadioButtonsSettingProperty != null) {
+										final String[] labels = stringSelectionRadioButtonsSettingProperty.labels();
+										final String[] ids = stringSelectionRadioButtonsSettingProperty.ids();
+										final String[] tooltips = stringSelectionRadioButtonsSettingProperty.tooltips();
+										final int size = labels.length;
+										ButtonGroupEnumInterface[] listButtons = new ButtonGroupEnumInterface[size];
+										for(int i = 0; i < size; i++) {
+											final int j = i;
+											ButtonGroupEnumInterface buttonGroupEnumInterface = new ButtonGroupEnumInterface() {
+
+												@Override
+												public boolean isDefault() {
+
+													return ids[j].equals(defaultVal);
+												}
+
+												@Override
+												public String getToolTip() {
+
+													if(tooltips.length > 0) {
+														return tooltips[j];
+													}
+													return null;
+												}
+
+												@Override
+												public String getText() {
+
+													return labels[j];
+												}
+
+												@Override
+												public String getActionCommand() {
+
+													return ids[j];
+												}
+											};
+											listButtons[i] = buttonGroupEnumInterface;
+										}
+										coll.addStringProperty(id, name, defaultVal, desc, listButtons);
+									} else {
+										coll.addStringProperty(id, name, defaultVal, desc);
+									}
 								}
 							}
 						}

@@ -19,6 +19,7 @@ import java.util.Map;
 
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
+import org.knime.core.node.defaultnodesettings.DialogComponentButtonGroup;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
 import org.knime.core.node.defaultnodesettings.DialogComponentString;
@@ -29,6 +30,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModelDoubleBounded;
 import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
 import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
+import org.knime.core.node.util.ButtonGroupEnumInterface;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentIonSelection;
 import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentMultiFileChooser;
@@ -157,6 +159,14 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 
 		addPropertyDescriptions(name, description);
 		dialogComponents.add(new DialogComponentMultiFileChooser(new SettingsModelString(id, defaultValue), idHistory, extensions));
+		settingsModels.put(id, new SettingsModelString(id, defaultValue));
+	}
+
+	@Override
+	public void addStringProperty(String id, String name, String defaultValue, String description, ButtonGroupEnumInterface[] list) {
+
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentButtonGroup(new SettingsModelString(id, defaultValue), name, true, list));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 }

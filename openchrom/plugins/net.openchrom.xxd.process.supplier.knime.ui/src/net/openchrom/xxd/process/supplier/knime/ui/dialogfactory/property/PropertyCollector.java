@@ -14,6 +14,8 @@ package net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property;
 import java.util.Collection;
 import java.util.Map;
 
+import org.knime.core.node.util.ButtonGroupEnumInterface;
+
 /**
  * Collects and defines the possible properties that can be added to the {@link PropertyDialogFactory}.
  *
@@ -37,6 +39,8 @@ public interface PropertyCollector {
 	void addMultiFileProperty(String id, String name, String defaultValue, String description, String idHistory, String[] extensions);
 
 	void addStringProperty(String id, String name, String defaultValue, String description, Collection<String> list, Map<String, String> ids);
+
+	void addStringProperty(String id, String name, String defaultValue, String description, ButtonGroupEnumInterface[] list);
 
 	void addIonSelectionProperty(String id, String name, String defaultValue, String description);
 }
