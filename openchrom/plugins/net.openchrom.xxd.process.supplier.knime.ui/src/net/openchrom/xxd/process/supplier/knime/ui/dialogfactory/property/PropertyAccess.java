@@ -31,6 +31,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentIonSelection;
+import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentMultiFileChooser;
 import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentStringIdSelection;
 
 /**
@@ -106,10 +107,10 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	}
 
 	@Override
-	public void addFileProperty(String id, String name, String defaultValue, String description, String idHistory) {
+	public void addFileProperty(String id, String name, String defaultValue, String description, String idHistory, String[] extension) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.add(new DialogComponentFileChooser(new SettingsModelString(id, defaultValue), idHistory));
+		dialogComponents.add(new DialogComponentFileChooser(new SettingsModelString(id, defaultValue), idHistory, extension));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 
@@ -148,6 +149,14 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 
 		addPropertyDescriptions(name, description);
 		dialogComponents.add(new DialogComponentIonSelection(new SettingsModelString(id, defaultValue), name));
+		settingsModels.put(id, new SettingsModelString(id, defaultValue));
+	}
+
+	@Override
+	public void addMultiFileProperty(String id, String name, String defaultValue, String description, String idHistory, String[] extensions) {
+
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentMultiFileChooser(new SettingsModelString(id, defaultValue), idHistory, extensions));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 }

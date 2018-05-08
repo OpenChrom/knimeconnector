@@ -21,6 +21,7 @@ import org.eclipse.chemclipse.support.settings.FileSettingProperty;
 import org.eclipse.chemclipse.support.settings.FloatSettingsProperty;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
 import org.eclipse.chemclipse.support.settings.IonsSelectionSettingProperty;
+import org.eclipse.chemclipse.support.settings.MultiFileSettingProperty;
 import org.eclipse.chemclipse.support.settings.StringSelectionSettingProperty;
 
 import com.fasterxml.jackson.databind.BeanDescription;
@@ -101,7 +102,7 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 					}
 					coll.addIntProperty(id, name, defaultVal == null ? 0 : Integer.valueOf(defaultVal), desc, step, min, max);
 				} else if(rawType == float.class || rawType == Float.class) {
-					float min = Float.MIN_VALUE;
+					float min = -Float.MAX_VALUE;
 					float max = Float.MAX_VALUE;
 					int step = 1;
 					FloatSettingsProperty floatSettingsProperty = annotatedField.getAnnotation(FloatSettingsProperty.class);
@@ -110,9 +111,9 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 						max = floatSettingsProperty.maxValue();
 						step = floatSettingsProperty.step();
 					}
-					coll.addFloatProperty(id, name, Float.valueOf(defaultVal), desc, step, min, max);
+					coll.addFloatProperty(id, name, defaultVal == null ? 0.0f : Float.valueOf(defaultVal), desc, step, min, max);
 				} else if(rawType == double.class || rawType == Double.class) {
-					double min = Double.MIN_VALUE;
+					double min = -Double.MAX_VALUE;
 					double max = Double.MAX_VALUE;
 					int step = 1;
 					DoubleSettingsProperty doubleSettingsProperty = annotatedField.getAnnotation(DoubleSettingsProperty.class);
@@ -121,30 +122,35 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 						max = doubleSettingsProperty.maxValue();
 						step = doubleSettingsProperty.step();
 					}
-					coll.addDoubleProperty(id, name, Double.valueOf(defaultVal), desc, step, min, max);
+					coll.addDoubleProperty(id, name, defaultVal == null ? 0.0 : Double.valueOf(defaultVal), desc, step, min, max);
 				} else if(rawType == String.class) {
 					FileSettingProperty fileSettingProperty = annotatedField.getAnnotation(FileSettingProperty.class);
 					if(fileSettingProperty != null) {
-						coll.addFileProperty(id, name, defaultVal, desc, obj.getName());
+						coll.addFileProperty(id, name, defaultVal, desc, obj.getName(), fileSettingProperty.validExtensions());
 					} else {
-						StringSelectionSettingProperty selectionSettingProperty = annotatedField.getAnnotation(StringSelectionSettingProperty.class);
-						if(selectionSettingProperty != null) {
-							String[] ids = selectionSettingProperty.ids();
-							String[] labels = selectionSettingProperty.labels();
-							if(labels.length == 0) {
-								labels = ids;
-							}
-							Map<String, String> mapIds = new HashMap<>();
-							for(int i = 0; i < labels.length; i++) {
-								mapIds.put(labels[i], ids[i]);
-							}
-							coll.addStringProperty(id, name, defaultVal, desc, Arrays.asList(labels), mapIds);
+						MultiFileSettingProperty multiFileSettingProperty = annotatedField.getAnnotation(MultiFileSettingProperty.class);
+						if(multiFileSettingProperty != null) {
+							coll.addMultiFileProperty(id, name, defaultVal, desc, obj.getName(), multiFileSettingProperty.validExtensions());
 						} else {
-							IonsSelectionSettingProperty ionSelectionSettingProperty = annotatedField.getAnnotation(IonsSelectionSettingProperty.class);
-							if(ionSelectionSettingProperty != null) {
-								coll.addIonSelectionProperty(id, name, defaultVal, desc);
+							StringSelectionSettingProperty selectionSettingProperty = annotatedField.getAnnotation(StringSelectionSettingProperty.class);
+							if(selectionSettingProperty != null) {
+								String[] ids = selectionSettingProperty.ids();
+								String[] labels = selectionSettingProperty.labels();
+								if(labels.length == 0) {
+									labels = ids;
+								}
+								Map<String, String> mapIds = new HashMap<>();
+								for(int i = 0; i < labels.length; i++) {
+									mapIds.put(labels[i], ids[i]);
+								}
+								coll.addStringProperty(id, name, defaultVal, desc, Arrays.asList(labels), mapIds);
 							} else {
-								coll.addStringProperty(id, name, defaultVal, desc);
+								IonsSelectionSettingProperty ionSelectionSettingProperty = annotatedField.getAnnotation(IonsSelectionSettingProperty.class);
+								if(ionSelectionSettingProperty != null) {
+									coll.addIonSelectionProperty(id, name, defaultVal, desc);
+								} else {
+									coll.addStringProperty(id, name, defaultVal, desc);
+								}
 							}
 						}
 					}

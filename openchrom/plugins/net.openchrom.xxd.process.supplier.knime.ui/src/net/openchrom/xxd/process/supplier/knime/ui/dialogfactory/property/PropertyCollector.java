@@ -32,7 +32,9 @@ public interface PropertyCollector {
 
 	void addStringProperty(String id, String name, String defaultValue, String description);
 
-	void addFileProperty(String id, String name, String defaultValue, String description, String idHistory);
+	void addFileProperty(String id, String name, String defaultValue, String description, String idHistory, String[] extensions);
+
+	void addMultiFileProperty(String id, String name, String defaultValue, String description, String idHistory, String[] extensions);
 
 	void addStringProperty(String id, String name, String defaultValue, String description, Collection<String> list, Map<String, String> ids);
 
