@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Martin Horn - initial API and implementation
+ * Jan Holy - implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property;
 
@@ -29,6 +30,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModelDouble;
 import org.knime.core.node.defaultnodesettings.SettingsModelDoubleBounded;
 import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
 import org.knime.core.node.defaultnodesettings.SettingsModelIntegerBounded;
+import org.knime.core.node.defaultnodesettings.SettingsModelOddIntegerBounded;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.util.ButtonGroupEnumInterface;
 
@@ -84,6 +86,14 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 
 		addPropertyDescriptions(name, description);
 		dialogComponents.add(new DialogComponentNumber(new SettingsModelIntegerBounded(id, defaultValue, min, max), name, step));
+		settingsModels.put(id, new SettingsModelInteger(id, defaultValue));
+	}
+
+	@Override
+	public void addIntOddNumberProperty(String id, String name, int defaultValue, String description, int step, int min, int max) {
+
+		addPropertyDescriptions(name, description);
+		dialogComponents.add(new DialogComponentNumber(new SettingsModelOddIntegerBounded(id, defaultValue, min, max), name, step));
 		settingsModels.put(id, new SettingsModelInteger(id, defaultValue));
 	}
 
@@ -158,7 +168,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addMultiFileProperty(String id, String name, String defaultValue, String description, String idHistory, String[] extensions) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.add(new DialogComponentMultiFileChooser(new SettingsModelString(id, defaultValue), idHistory, extensions));
+		dialogComponents.add(new DialogComponentMultiFileChooser(new SettingsModelString(id, defaultValue), name, extensions));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 

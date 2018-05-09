@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Martin Horn - initial API and implementation
+ * Jan Holy - implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property;
 
@@ -31,6 +32,8 @@ public interface PropertyCollector {
 	void addFloatProperty(String id, String name, float defaultValue, String description, int step, float min, float max);
 
 	void addIntProperty(String id, String name, int defaultValue, String description, int step, int min, int max);
+
+	void addIntOddNumberProperty(String id, String name, int defaultValue, String description, int step, int min, int max);
 
 	void addStringProperty(String id, String name, String defaultValue, String description);
 

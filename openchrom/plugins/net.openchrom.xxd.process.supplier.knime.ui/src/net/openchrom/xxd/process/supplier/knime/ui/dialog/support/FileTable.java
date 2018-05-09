@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Jan Holy.
+ * Copyright (c) 2018 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.dialog.support;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -35,6 +36,8 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import org.knime.core.util.FileUtil;
 import org.knime.core.util.SimpleFileFilter;
@@ -72,7 +75,23 @@ public class FileTable extends JPanel {
 		/*
 		 * create table
 		 */
-		table = new JTable(model);
+		table = new JTable(model) {
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -1309806458404643363L;
+
+			@Override
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+
+				Component component = super.prepareRenderer(renderer, row, column);
+				int rendererWidth = component.getPreferredSize().width;
+				TableColumn tableColumn = getColumnModel().getColumn(column);
+				tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()));
+				return component;
+			}
+		};
 		table.setModel(model);
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -105,8 +124,8 @@ public class FileTable extends JPanel {
 		/*
 		 * layout
 		 */
-		setMaximumSize(new Dimension(250, 130));
-		setPreferredSize(new Dimension(250, 130));
+		setMaximumSize(new Dimension(500, 130));
+		setPreferredSize(new Dimension(500, 130));
 		setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
