@@ -9,11 +9,13 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model.scan;
+package net.openchrom.xxd.process.supplier.knime.model.utils;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
+import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 import org.eclipse.chemclipse.model.core.ISignal;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -23,12 +25,78 @@ import org.knime.core.data.DataTableSpec;
 import org.knime.core.data.RowKey;
 import org.knime.core.data.def.DefaultRow;
 import org.knime.core.data.def.DoubleCell;
+import org.knime.core.data.def.StringCell;
 import org.knime.core.node.BufferedDataContainer;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-public class ScanTableTranslator {
+public class TableTranslator {
+
+	private static void createRow(String name, String value, int key, BufferedDataContainer bufferedDataContainer) {
+
+		value = value == null ? "" : value;
+		int columnCell = 0;
+		RowKey rowKey = new RowKey(Integer.toString(key));
+		DataCell[] cells = new DataCell[2];
+		cells[columnCell++] = new StringCell(name);
+		cells[columnCell++] = new StringCell(value);
+		DataRow dataRow = new DefaultRow(rowKey, cells);
+		bufferedDataContainer.addRowToTable(dataRow);
+	}
+
+	private static void createRow(String name, double value, int key, BufferedDataContainer bufferedDataContainer) {
+
+		int columnCell = 0;
+		RowKey rowKey = new RowKey(Integer.toString(key));
+		DataCell[] cells = new DataCell[2];
+		cells[columnCell++] = new StringCell(name);
+		cells[columnCell++] = new StringCell(Double.toString(value));
+		DataRow dataRow = new DefaultRow(rowKey, cells);
+		bufferedDataContainer.addRowToTable(dataRow);
+	}
+
+	private static void createRow(String name, int value, int key, BufferedDataContainer bufferedDataContainer) {
+
+		int columnCell = 0;
+		RowKey rowKey = new RowKey(Integer.toString(key));
+		DataCell[] cells = new DataCell[2];
+		cells[columnCell++] = new StringCell(name);
+		cells[columnCell++] = new StringCell(Integer.toString(value));
+		DataRow dataRow = new DefaultRow(rowKey, cells);
+		bufferedDataContainer.addRowToTable(dataRow);
+	}
+
+	public static BufferedDataTable headerTranslator(IMeasurementInfo measurmentInfo, ExecutionContext exec) throws CanceledExecutionException {
+
+		int numberOfColumns = 2; // Column x, column y
+		//
+		int columnSpec = 0;
+		DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator("Name", StringCell.TYPE).createSpec();
+		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator("Value", StringCell.TYPE).createSpec();
+		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
+		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
+		//
+		int numRow = 0;
+		createRow("Operator", measurmentInfo.getOperator(), numRow++, bufferedDataContainer);
+		createRow("Date", measurmentInfo.getDate().toString(), numRow++, bufferedDataContainer);
+		createRow("Short Info", measurmentInfo.getShortInfo(), numRow++, bufferedDataContainer);
+		createRow("Detail Info", measurmentInfo.getDetailedInfo(), numRow++, bufferedDataContainer);
+		createRow("Sample group", measurmentInfo.getSampleGroup(), numRow++, bufferedDataContainer);
+		createRow("Barcode", measurmentInfo.getBarcode(), numRow++, bufferedDataContainer);
+		createRow("Sample Weight", measurmentInfo.getSampleWeight(), numRow++, bufferedDataContainer);
+		createRow("Weight Unit", measurmentInfo.getSampleWeightUnit(), numRow++, bufferedDataContainer);
+		createRow("Date Name", measurmentInfo.getDataName(), numRow++, bufferedDataContainer);
+		Iterator<Entry<String, String>> it = measurmentInfo.getHeaderDataMap().entrySet().iterator();
+		while(it.hasNext()) {
+			Entry<String, String> e = it.next();
+			createRow(e.getKey(), e.getValue(), numRow++, bufferedDataContainer);
+		}
+		//
+		bufferedDataContainer.close();
+		return bufferedDataContainer.getTable();
+	}
 
 	public static BufferedDataTable doubleArrayToTable(double[] data, String columnX, ExecutionContext exec) throws CanceledExecutionException {
 

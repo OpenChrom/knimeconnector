@@ -17,7 +17,7 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-import net.openchrom.xxd.process.supplier.knime.model.scan.ScanTableTranslator;
+import net.openchrom.xxd.process.supplier.knime.model.utils.TableTranslator;
 
 public class ScanXirTableTranslatorBackgroundSignals implements IScanXirTableTranslator {
 
@@ -29,6 +29,6 @@ public class ScanXirTableTranslatorBackgroundSignals implements IScanXirTableTra
 	@Override
 	public BufferedDataTable getBufferedDataTable(IScanXIR scanXIR, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
-		return ScanTableTranslator.doubleArrayToTable(scanXIR.getBackgroundSignals(), columnName, exec);
+		return TableTranslator.doubleArrayToTable(scanXIR.getBackgroundSignals(), columnName, exec);
 	}
 }

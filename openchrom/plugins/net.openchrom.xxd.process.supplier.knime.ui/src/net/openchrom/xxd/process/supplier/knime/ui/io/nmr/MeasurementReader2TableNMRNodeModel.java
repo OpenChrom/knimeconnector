@@ -38,6 +38,7 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 import net.openchrom.xxd.process.supplier.knime.model.scan.nmr.ScanNmrTableTranslator;
 import net.openchrom.xxd.process.supplier.knime.model.scan.nmr.ScanNmrTableTranslatorRawData;
+import net.openchrom.xxd.process.supplier.knime.model.utils.TableTranslator;
 
 /**
  * This is the model implementation of MeasurementWriterNMR.
@@ -64,7 +65,7 @@ public class MeasurementReader2TableNMRNodeModel extends NodeModel {
 	 */
 	protected MeasurementReader2TableNMRNodeModel() {
 		// TODO one incoming port and one outgoing port is assumed
-		super(0, 1);
+		super(0, 2);
 	}
 
 	/**
@@ -98,7 +99,8 @@ public class MeasurementReader2TableNMRNodeModel extends NodeModel {
 			} else {
 				bufferedDataTable = new ScanNmrTableTranslatorRawData().getBufferedDataTable(scanNMR, exec);
 			}
-			return new BufferedDataTable[]{bufferedDataTable};
+			BufferedDataTable bufferedDataTableHeaders = TableTranslator.headerTranslator(scanNMR, exec);
+			return new BufferedDataTable[]{bufferedDataTable, bufferedDataTableHeaders};
 		} catch(Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
 			throw e;
