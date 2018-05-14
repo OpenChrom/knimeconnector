@@ -30,6 +30,6 @@ public class ScanNmrTableTranslator implements IScanNmrTableTranslator {
 	@Override
 	public BufferedDataTable getBufferedDataTable(IScanNMR scanNMR, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
-		return ScanTableTranslator.scanToTable(scanNMR, scanColumnX, scanColumnY, exec);
+		return ScanTableTranslator.scanToTable(scanNMR.getProcessedSignals(), scanColumnX, scanColumnY, exec);
 	}
 }

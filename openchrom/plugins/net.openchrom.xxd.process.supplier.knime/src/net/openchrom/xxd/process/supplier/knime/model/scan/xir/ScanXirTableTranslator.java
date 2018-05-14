@@ -30,6 +30,6 @@ public class ScanXirTableTranslator implements IScanXirTableTranslator {
 	@Override
 	public BufferedDataTable getBufferedDataTable(IScanXIR scanXIR, ExecutionContext exec) throws CanceledExecutionException, NoExtractedIonSignalStoredException {
 
-		return ScanTableTranslator.scanToTable(scanXIR, scanColumnX, scanColumnY, exec);
+		return ScanTableTranslator.scanToTable(scanXIR.getProcessedSignals(), scanColumnX, scanColumnY, exec);
 	}
 }
