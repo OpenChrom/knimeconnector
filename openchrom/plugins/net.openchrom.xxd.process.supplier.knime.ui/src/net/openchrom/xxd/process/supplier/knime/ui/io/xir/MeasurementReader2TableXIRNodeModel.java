@@ -81,7 +81,7 @@ public class MeasurementReader2TableXIRNodeModel extends NodeModel {
 		// to execute. If the node can execute in its current state return
 		// the spec of its output data table(s) (if you can, otherwise an array
 		// with null elements), or throw an exception with a useful user message
-		return new DataTableSpec[]{null};
+		return new DataTableSpec[]{null, null};
 	}
 
 	/**
