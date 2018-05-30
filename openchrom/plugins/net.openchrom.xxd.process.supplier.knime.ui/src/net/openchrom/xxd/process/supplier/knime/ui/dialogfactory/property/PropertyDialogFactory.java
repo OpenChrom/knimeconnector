@@ -59,7 +59,7 @@ public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory
 
 	protected void builtDialogPane(DefaultNodeSettingsPane defaultNodeSettingsPane) {
 
-		for(DialogComponent dc : getPropertyAccess(settingsObjectClass).dialogComponents) {
+		for(DialogComponent dc : getPropertyAccess(settingsObjectClass).dialogComponents.values()) {
 			defaultNodeSettingsPane.addDialogComponent(dc);
 		}
 	}

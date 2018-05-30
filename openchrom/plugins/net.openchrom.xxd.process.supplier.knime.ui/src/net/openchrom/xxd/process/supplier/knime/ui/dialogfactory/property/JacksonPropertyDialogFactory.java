@@ -17,7 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.chemclipse.support.settings.DialogType;
 import org.eclipse.chemclipse.support.settings.DoubleSettingsProperty;
+import org.eclipse.chemclipse.support.settings.EnumSelectionRadioButtonsSettingProperty;
+import org.eclipse.chemclipse.support.settings.EnumSelectionSettingProperty;
 import org.eclipse.chemclipse.support.settings.FileSettingProperty;
 import org.eclipse.chemclipse.support.settings.FloatSettingsProperty;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
@@ -72,6 +75,9 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 					objectNode.put(p.getName(), prov.getStringProperty(p.getName()));
 				} else if(rawType == boolean.class || rawType == Boolean.class) {
 					objectNode.put(p.getName(), prov.getBooleanProperty(p.getName()));
+				} else if(rawType.isEnum()) {
+					Enum<?> enumValue = Enum.valueOf((Class<? extends Enum>)rawType, prov.getStringProperty(p.getName()));
+					objectNode.putPOJO(p.getName(), enumValue);
 				}
 			}
 		}
@@ -146,7 +152,9 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 				if(rawType == String.class) {
 					FileSettingProperty fileSettingProperty = annotatedField.getAnnotation(FileSettingProperty.class);
 					if(fileSettingProperty != null) {
-						coll.addFileProperty(id, name, defaultVal, desc, obj.getName(), fileSettingProperty.validExtensions());
+						DialogType dialogType = fileSettingProperty.dialogType();
+						boolean onlyDirecotry = fileSettingProperty.onlyDirectory();
+						coll.addFileProperty(id, name, defaultVal, desc, obj.getName(), dialogType, onlyDirecotry, fileSettingProperty.validExtensions());
 						continue;
 					}
 					MultiFileSettingProperty multiFileSettingProperty = annotatedField.getAnnotation(MultiFileSettingProperty.class);
@@ -222,6 +230,57 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 				if(rawType == boolean.class || rawType == Boolean.class) {
 					coll.addBooleanProperty(id, name, Boolean.valueOf(defaultVal), desc);
 					continue;
+				}
+				if(rawType.isEnum()) {
+					EnumSelectionRadioButtonsSettingProperty enumSelectionRadioButtonsSettingProperty = annotatedField.getAnnotation(EnumSelectionRadioButtonsSettingProperty.class);
+					if(enumSelectionRadioButtonsSettingProperty != null) {
+						Enum[] enums = enumSelectionRadioButtonsSettingProperty.enumClass().getEnumConstants();
+						int size = enums.length;
+						ButtonGroupEnumInterface[] listButtons = new ButtonGroupEnumInterface[size];
+						for(int i = 0; i < size; i++) {
+							final int j = i;
+							ButtonGroupEnumInterface buttonGroupEnumInterface = new ButtonGroupEnumInterface() {
+
+								@Override
+								public boolean isDefault() {
+
+									return enums[j].name().equals(defaultVal);
+								}
+
+								@Override
+								public String getText() {
+
+									return enums[j].toString();
+								}
+
+								@Override
+								public String getActionCommand() {
+
+									return enums[j].name();
+								}
+
+								@Override
+								public String getToolTip() {
+
+									return null;
+								}
+							};
+							listButtons[i] = buttonGroupEnumInterface;
+						}
+						coll.addStringProperty(id, name, defaultVal, desc, listButtons);
+						continue;
+					}
+					EnumSelectionSettingProperty selectionSettingProperty = annotatedField.getAnnotation(EnumSelectionSettingProperty.class);
+					if(selectionSettingProperty != null) {
+						Enum[] enums = selectionSettingProperty.enumClass().getEnumConstants();
+						Map<String, String> mapIds = new HashMap<>();
+						for(int i = 0; i < enums.length; i++) {
+							mapIds.put(enums[i].toString(), enums[i].name());
+						}
+						String[] labels = Arrays.stream(enums).map(Enum::toString).toArray(String[]::new);
+						coll.addStringProperty(id, name, defaultVal, desc, Arrays.asList(labels), mapIds);
+						continue;
+					}
 				}
 			}
 		}

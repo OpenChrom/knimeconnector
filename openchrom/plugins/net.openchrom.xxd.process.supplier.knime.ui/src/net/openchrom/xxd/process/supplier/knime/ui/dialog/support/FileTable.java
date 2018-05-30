@@ -11,10 +11,6 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.dialog.support;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
@@ -25,157 +21,51 @@ import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
 import org.knime.core.util.FileUtil;
 import org.knime.core.util.SimpleFileFilter;
 
-public class FileTable extends JPanel {
+public class FileTable extends DialogTable<File> {
 
 	/**
 	 * 
 	 */
+	private static final long serialVersionUID = 1843133714073084163L;
+	/**
+	 * 
+	 */
 	private String[] suffixes;
-	private static final long serialVersionUID = 7443485979459757002L;
-	private JTable table;
-	private JButton addRangeButton;
-	private JButton removeSelectedRangesButton;
-	private JButton removeAllRangesButton;
-	private DefaultTableModel model;
 
-	public FileTable(String[] files, String[] suffixes) {
+	public FileTable(String[] suffixes, List<File> files) {
+		super(new String[]{"File name", "File path"}, new int[]{200, 300}, files, 400, JLabel.LEFT);
 		this.suffixes = suffixes;
-		createComposite();
-		for(String filepath : files) {
-			File file = new File(filepath);
-			model.addRow(new Object[]{file.getName(), file.getAbsolutePath()});
+	}
+
+	@Override
+	protected Object getValue(File data, int columnIndex) {
+
+		if(columnIndex == 0) {
+			return data.getName();
 		}
+		return data.getAbsolutePath();
 	}
 
-	void createComposite() {
+	@Override
+	protected int compare(Object o1, Object o2, int columnIndex) {
 
-		/*
-		 * create table model
-		 */
-		model = new DefaultTableModel();
-		model.addColumn("File name");
-		model.addColumn("File path");
-		/*
-		 * create table
-		 */
-		table = new JTable(model) {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -1309806458404643363L;
-
-			@Override
-			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-
-				Component component = super.prepareRenderer(renderer, row, column);
-				int rendererWidth = component.getPreferredSize().width;
-				TableColumn tableColumn = getColumnModel().getColumn(column);
-				tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()));
-				return component;
-			}
-		};
-		table.setModel(model);
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		/*
-		 * set column alignment
-		 */
-		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
-		leftRenderer.setHorizontalAlignment(JLabel.LEFT);
-		table.getColumnModel().getColumn(0).setCellRenderer(leftRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
-		/*
-		 * create columns
-		 */
-		addRangeButton = new JButton("Add");
-		addRangeButton.addActionListener(e -> {
-			File file = getOutputFileName();
-			if(file != null) {
-				Object[] data = new Object[]{file.getName(), file.getAbsolutePath()};
-				model.addRow(data);
-			}
-		});
-		removeSelectedRangesButton = new JButton("Remove Selection");
-		removeSelectedRangesButton.addActionListener(e -> {
-			removeSelecedRanges();
-		});
-		removeAllRangesButton = new JButton("Remove All");
-		removeAllRangesButton.addActionListener(e -> {
-			removeAllRanges();
-		});
-		/*
-		 * layout
-		 */
-		setMaximumSize(new Dimension(500, 130));
-		setPreferredSize(new Dimension(500, 130));
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridheight = GridBagConstraints.REMAINDER;
-		c.weightx = 1;
-		c.weighty = 1;
-		c.fill = GridBagConstraints.BOTH;
-		JScrollPane jScrollPane = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		;
-		add(jScrollPane, c);
-		c = new GridBagConstraints();
-		c.gridx = 1;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-		add(addRangeButton, c);
-		c.gridy++;
-		add(removeSelectedRangesButton, c);
-		c.gridy++;
-		add(removeAllRangesButton, c);
-		c.gridy++;
+		return Comparator.comparing(String::toString).compare(o1.toString(), o2.toString());
 	}
 
-	public List<File> getData() {
+	@Override
+	protected List<File> add() {
 
 		List<File> files = new ArrayList<>();
-		for(int count = 0; count < model.getRowCount(); count++) {
-			files.add(new File(model.getValueAt(count, 1).toString()));
-		}
-		return files;
-	}
-
-	private void removeSelecedRanges() {
-
-		int[] rows = table.getSelectedRows();
-		for(int row : rows) {
-			model.removeRow(row);
-		}
-		model.fireTableDataChanged();
-	}
-
-	private void removeAllRanges() {
-
-		model.setRowCount(0);
-		model.fireTableDataChanged();
-	}
-
-	private File getOutputFileName() {
-
-		// file chooser triggered by choose button
 		final JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setAcceptAllFileFilterUsed(true);
 		List<SimpleFileFilter> filters = createFiltersFromSuffixes(suffixes);
@@ -185,6 +75,7 @@ public class FileTable extends JPanel {
 		if(filters.size() > 0) {
 			fileChooser.setFileFilter(filters.get(0));
 		}
+		fileChooser.setMultiSelectionEnabled(true);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 		fileChooser.addComponentListener(new ComponentAdapter() {
@@ -196,8 +87,8 @@ public class FileTable extends JPanel {
 			}
 		});
 		try {
-			if(!getData().isEmpty()) {
-				String lastSelectedFile = getData().get(getData().size() - 1).getAbsolutePath();
+			if(!getTableData().isEmpty()) {
+				String lastSelectedFile = getTableData().get(getTableData().size() - 1).getAbsolutePath();
 				URL url = FileUtil.toURL(lastSelectedFile);
 				Path localPath = FileUtil.resolveToPath(url);
 				if(localPath != null) {
@@ -214,10 +105,9 @@ public class FileTable extends JPanel {
 		int r;
 		r = fileChooser.showOpenDialog(FileTable.this);
 		if(r == JFileChooser.APPROVE_OPTION) {
-			File file = fileChooser.getSelectedFile();
-			return file;
+			files.addAll(Arrays.asList(fileChooser.getSelectedFiles()));
 		}
-		return null;
+		return files;
 	}
 
 	private static List<SimpleFileFilter> createFiltersFromSuffixes(final String... extensions) {

@@ -12,8 +12,6 @@
 package net.openchrom.xxd.process.supplier.knime.ui.dialog;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,13 +19,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.eclipse.chemclipse.support.util.IonSettingUtil;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
-import org.knime.core.node.defaultnodesettings.SettingsModel;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObjectSpec;
 
-import net.openchrom.xxd.process.supplier.knime.ui.dialog.support.IntegerRangesTable;
+import net.openchrom.xxd.process.supplier.knime.ui.dialog.support.IonTable;
 
 /**
  * A standard component allowing to choose a location(directory) and/or file
@@ -38,16 +37,18 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialog.support.IntegerRangesT
 public class DialogComponentIonSelection extends DialogComponent {
 
 	private final TitledBorder m_border;
-	private final IntegerRangesTable integerRangesTable;
+	private final IonTable ionTable;
+	private IonSettingUtil ionSettingUtil;
 
-	public DialogComponentIonSelection(SettingsModel model, String title) {
+	public DialogComponentIonSelection(SettingsModelString model, String title) {
 		super(model);
+		ionSettingUtil = new IonSettingUtil();
 		m_border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title);
-		List<String> ranges = new ArrayList<>();
-		integerRangesTable = new IntegerRangesTable(ranges, "Ion");
+		String value = model.getStringValue();
+		ionTable = new IonTable(ionSettingUtil.deserialize(value));
 		getComponentPanel().setBorder(m_border);
 		getComponentPanel().setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
-		getComponentPanel().add(integerRangesTable);
+		getComponentPanel().add(ionTable);
 		getComponentPanel().add(Box.createHorizontalGlue());
 		getModel().addChangeListener(new ChangeListener() {
 
@@ -62,11 +63,19 @@ public class DialogComponentIonSelection extends DialogComponent {
 	@Override
 	protected void updateComponent() {
 
+		String value = ((SettingsModelString)getModel()).getStringValue();
+		ionTable.updateComponent(ionSettingUtil.deserialize(value));
 	}
 
 	@Override
 	protected void validateSettingsBeforeSave() throws InvalidSettingsException {
 
+		updateModel();
+	}
+
+	private void updateModel() {
+
+		((SettingsModelString)getModel()).setStringValue(ionSettingUtil.serialize(ionTable.getTableData()));
 	}
 
 	@Override
@@ -77,12 +86,12 @@ public class DialogComponentIonSelection extends DialogComponent {
 	@Override
 	protected void setEnabledComponents(boolean enabled) {
 
-		integerRangesTable.setEnabled(enabled);
+		ionTable.setEnabled(enabled);
 	}
 
 	@Override
 	public void setToolTipText(String text) {
 
-		integerRangesTable.setToolTipText(text);
+		ionTable.setToolTipText(text);
 	}
 }

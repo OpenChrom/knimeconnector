@@ -28,8 +28,6 @@ import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeLogger;
-import org.knime.core.node.NodeSettingsRO;
-import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
@@ -91,27 +89,12 @@ public class PeakIndetifierNodeModel extends DialogGenerationNodeModel<IPeakIden
 	}
 
 	@Override
-	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
-
-	}
-
-	@Override
 	protected void reset() {
 
 	}
 
 	@Override
 	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
-
-	}
-
-	@Override
-	protected void saveSettingsTo(NodeSettingsWO settings) {
-
-	}
-
-	@Override
-	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
 	}
 }
