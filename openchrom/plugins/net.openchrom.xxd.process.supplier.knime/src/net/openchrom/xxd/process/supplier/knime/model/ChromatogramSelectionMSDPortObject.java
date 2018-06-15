@@ -95,7 +95,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		ZipEntry entry = new ZipEntry("Chromatogram");
 		zipOutputStream.putNextEntry(entry);
 		ChromatogramWriterMSD chromatogramWriterMSD = new ChromatogramWriterMSD();
-		chromatogramWriterMSD.writeChromatogram(zipOutputStream, chromatogramSelectionMSD.getChromatogramMSD(), new NullProgressMonitor());
+		chromatogramWriterMSD.writeChromatogram(zipOutputStream, "", chromatogramSelectionMSD.getChromatogramMSD(), new NullProgressMonitor());
 		zipOutputStream.closeEntry();
 		zipOutputStream.close();
 		return bos.toByteArray();
@@ -105,7 +105,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 
 		if(chromatogramSelectionMSD == null) {
 			ChromatogramReaderMSD chromatogramReaderMSD = new ChromatogramReaderMSD();
-			IChromatogramMSD chromatogramMSD = chromatogramReaderMSD.read(new ZipInputStream(new ByteArrayInputStream(chromatogramByteArray)), new NullProgressMonitor());
+			IChromatogramMSD chromatogramMSD = chromatogramReaderMSD.read(new ZipInputStream(new ByteArrayInputStream(chromatogramByteArray)), "", new NullProgressMonitor());
 			chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
 			chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
 			chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
