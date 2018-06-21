@@ -21,10 +21,10 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
-import org.eclipse.chemclipse.msd.converter.processing.chromatogram.IChromatogramMSDImportConverterProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.ChromatogramSelectionMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -73,8 +73,8 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	private IChromatogramMSD loadChromatogram(String pathChromatogram) {
 
 		File file = new File(pathChromatogram);
-		IChromatogramMSDImportConverterProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
-		return processingInfo.getChromatogram();
+		IProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
+		return processingInfo.getProcessingResult(IChromatogramMSD.class);
 	}
 
 	/**
