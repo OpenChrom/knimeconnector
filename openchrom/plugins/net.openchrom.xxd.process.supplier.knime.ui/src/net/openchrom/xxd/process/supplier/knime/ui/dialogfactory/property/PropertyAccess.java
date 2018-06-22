@@ -12,10 +12,11 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
@@ -23,11 +24,12 @@ import javax.swing.JFileChooser;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.eclipse.chemclipse.support.settings.DialogType;
+import org.eclipse.chemclipse.support.settings.FileSettingProperty.DialogType;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 import org.knime.core.node.defaultnodesettings.DialogComponentButtonGroup;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+import org.knime.core.node.defaultnodesettings.DialogComponentLabel;
 import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
 import org.knime.core.node.defaultnodesettings.DialogComponentString;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
@@ -42,7 +44,9 @@ import org.knime.core.node.util.ButtonGroupEnumInterface;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentIonSelection;
 import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentMultiFileChooser;
+import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentRetentionTimeMinutes;
 import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentStringIdSelection;
+import net.openchrom.xxd.process.supplier.knime.ui.dialog.SettingsModelStringValidated;
 
 /**
  * Helper class for the {@link PropertyDialogFactory} that unifies and implements the {@link PropertyCollector} and {@link PropertyProvider}.
@@ -57,7 +61,8 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	/*
 	 * Components for the dialog.
 	 */
-	Map<String, DialogComponent> dialogComponents = new LinkedHashMap<>();
+	List<DialogComponent> dialogComponents = new ArrayList<>();
+	private Map<String, DialogComponent> dialogComponentsMap = new HashMap<>();
 	/*
 	 * Settings models for the node model (never the same as passed with the respective dialog component!).
 	 */
@@ -79,11 +84,11 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 
 	public void build() {
 
-		Iterator<DialogComponent> it = dialogComponents.values().iterator();
+		Iterator<DialogComponent> it = dialogComponentsMap.values().iterator();
 		while(it.hasNext()) {
 			it.next().getModel().addChangeListener(changeListener);
 		}
-		it = dialogComponents.values().iterator();
+		it = dialogComponentsMap.values().iterator();
 		while(it.hasNext()) {
 			updateDialogComponents(it.next().getModel());
 		}
@@ -111,7 +116,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 			name = modelString.getKey();
 		}
 		if(name != null && value != null) {
-			for(Map.Entry<String, DialogComponent> entry : dialogComponents.entrySet()) {
+			for(Map.Entry<String, DialogComponent> entry : dialogComponentsMap.entrySet()) {
 				BiFunction<String, Object, Boolean> condition = conditions.get(entry.getKey());
 				if(condition != null) {
 					boolean b = condition.apply(name, value);
@@ -125,7 +130,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addBooleanProperty(String id, String name, boolean defaultValue, String description) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentBoolean(new SettingsModelBoolean(id, defaultValue), name));
+		addComponent(id, new DialogComponentBoolean(new SettingsModelBoolean(id, defaultValue), name));
 		settingsModels.put(id, new SettingsModelBoolean(id, defaultValue));
 	}
 
@@ -133,7 +138,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addDoubleProperty(String id, String name, double defaultValue, String description, int step, double min, double max) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentNumber(new SettingsModelDoubleBounded(id, defaultValue, min, max), name, step));
+		addComponent(id, new DialogComponentNumber(new SettingsModelDoubleBounded(id, defaultValue, min, max), name, step));
 		settingsModels.put(id, new SettingsModelDouble(id, defaultValue));
 	}
 
@@ -141,7 +146,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addFloatProperty(String id, String name, float defaultValue, String description, int step, float min, float max) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentNumber(new SettingsModelDoubleBounded(id, defaultValue, min, max), name, step));
+		addComponent(id, new DialogComponentNumber(new SettingsModelDoubleBounded(id, defaultValue, min, max), name, step));
 		settingsModels.put(id, new SettingsModelDouble(id, defaultValue));
 	}
 
@@ -149,7 +154,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addIntProperty(String id, String name, int defaultValue, String description, int step, int min, int max) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentNumber(new SettingsModelIntegerBounded(id, defaultValue, min, max), name, step));
+		addComponent(id, new DialogComponentNumber(new SettingsModelIntegerBounded(id, defaultValue, min, max), name, step));
 		settingsModels.put(id, new SettingsModelInteger(id, defaultValue));
 	}
 
@@ -157,7 +162,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addIntOddNumberProperty(String id, String name, int defaultValue, String description, int step, int min, int max) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentNumber(new SettingsModelOddIntegerBounded(id, defaultValue, min, max), name, step));
+		addComponent(id, new DialogComponentNumber(new SettingsModelOddIntegerBounded(id, defaultValue, min, max), name, step));
 		settingsModels.put(id, new SettingsModelInteger(id, defaultValue));
 	}
 
@@ -167,10 +172,10 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	}
 
 	@Override
-	public void addStringProperty(String id, String name, String defaultValue, String description) {
+	public void addStringProperty(String id, String name, String defaultValue, String description, String regExp) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentString(new SettingsModelString(id, defaultValue), name));
+		addComponent(id, new DialogComponentString(new SettingsModelStringValidated(id, defaultValue, regExp), name));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 
@@ -178,7 +183,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addStringProperty(String id, String name, String defaultValue, String description, Collection<String> list, Map<String, String> ids) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentStringIdSelection(new SettingsModelString(id, defaultValue), name, list, ids, false));
+		addComponent(id, new DialogComponentStringIdSelection(new SettingsModelString(id, defaultValue), name, list, ids, false));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 
@@ -188,10 +193,10 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 		addPropertyDescriptions(name, description);
 		switch(dialogType) {
 			case OPEN_DIALOG:
-				dialogComponents.put(id, new DialogComponentFileChooser(new SettingsModelString(id, defaultValue), idHistory, JFileChooser.OPEN_DIALOG, directoryOnly, extension));
+				addComponent(id, new DialogComponentFileChooser(new SettingsModelString(id, defaultValue), idHistory, JFileChooser.OPEN_DIALOG, directoryOnly, extension));
 				break;
 			case SAVE_DIALOG:
-				dialogComponents.put(id, new DialogComponentFileChooser(new SettingsModelString(id, defaultValue), idHistory, JFileChooser.SAVE_DIALOG, directoryOnly, extension));
+				addComponent(id, new DialogComponentFileChooser(new SettingsModelString(id, defaultValue), idHistory, JFileChooser.SAVE_DIALOG, directoryOnly, extension));
 				break;
 		}
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
@@ -231,7 +236,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addIonSelectionProperty(String id, String name, String defaultValue, String description) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentIonSelection(new SettingsModelString(id, defaultValue), name));
+		addComponent(id, new DialogComponentIonSelection(new SettingsModelString(id, defaultValue), name));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 
@@ -239,7 +244,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addMultiFileProperty(String id, String name, String defaultValue, String description, String idHistory, String[] extensions) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentMultiFileChooser(new SettingsModelString(id, defaultValue), name, extensions));
+		addComponent(id, new DialogComponentMultiFileChooser(new SettingsModelString(id, defaultValue), name, extensions));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 
@@ -247,7 +252,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addStringProperty(String id, String name, String defaultValue, String description, ButtonGroupEnumInterface[] list) {
 
 		addPropertyDescriptions(name, description);
-		dialogComponents.put(id, new DialogComponentButtonGroup(new SettingsModelString(id, defaultValue), name, true, list));
+		addComponent(id, new DialogComponentButtonGroup(new SettingsModelString(id, defaultValue), name, true, list));
 		settingsModels.put(id, new SettingsModelString(id, defaultValue));
 	}
 
@@ -255,5 +260,30 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public void addCondition(String id, BiFunction<String, Object, Boolean> condition) {
 
 		conditions.put(id, condition);
+	}
+
+	@Override
+	public void addRetentionTimeMinutesProperty(String id, String name, int defaultValue, String description, int step, int min, int max) {
+
+		addPropertyDescriptions(name, description);
+		addComponent(id, new DialogComponentRetentionTimeMinutes(new SettingsModelIntegerBounded(id, defaultValue, min, max), name, step, 10));
+		settingsModels.put(id, new SettingsModelInteger(id, defaultValue));
+	}
+
+	@Override
+	public void addLabel(String label) {
+
+		addComponent(new DialogComponentLabel(label));
+	}
+
+	private void addComponent(String id, DialogComponent dialogComponent) {
+
+		dialogComponentsMap.put(id, dialogComponent);
+		dialogComponents.add(dialogComponent);
+	}
+
+	private void addComponent(DialogComponent dialogComponent) {
+
+		dialogComponents.add(dialogComponent);
 	}
 }

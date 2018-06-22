@@ -33,8 +33,8 @@ import org.knime.node2012.TabDocument.Tab;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonPropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.peakintegrators.model.IntegratorPropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.peakintegrators.support.PeakIntegratorsSupport;
 
 public class PeakIntegratorsNodeFactory extends DialogGenerationNodeFactory<PeakIntegratorsNodeModel, IPeakIntegrationSettings> {
@@ -90,7 +90,7 @@ public class PeakIntegratorsNodeFactory extends DialogGenerationNodeFactory<Peak
 	@Override
 	protected SettingsDialogFactory<IPeakIntegrationSettings> createSettingsDialogFactory() {
 
-		JacksonPropertyDialogFactory<IPeakIntegrationSettings> factory = new JacksonPropertyDialogFactory<>();
+		IntegratorPropertyDialogFactory<IPeakIntegrationSettings> factory = new IntegratorPropertyDialogFactory<>();
 		Class<? extends IPeakIntegrationSettings> setingClass;
 		try {
 			setingClass = PeakIntegratorsSupport.getSupplier(id).getPeakIntegrationSettingsClass();

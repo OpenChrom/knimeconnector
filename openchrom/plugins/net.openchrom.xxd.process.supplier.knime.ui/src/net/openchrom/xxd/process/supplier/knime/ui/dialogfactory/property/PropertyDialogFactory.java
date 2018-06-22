@@ -21,6 +21,7 @@ import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
 
+import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 
@@ -32,7 +33,7 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectW
  * @param <SO>
  *            see {@link SettingsDialogFactory}
  */
-public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory<SO> {
+public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory<SO>, SettingObjectSupplier<SO> {
 
 	private PropertyAccess propertyAccess;
 	private Class<? extends SO> settingsObjectClass;
@@ -59,7 +60,7 @@ public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory
 
 	protected void builtDialogPane(DefaultNodeSettingsPane defaultNodeSettingsPane) {
 
-		for(DialogComponent dc : getPropertyAccess(settingsObjectClass).dialogComponents.values()) {
+		for(DialogComponent dc : getPropertyAccess(settingsObjectClass).dialogComponents) {
 			defaultNodeSettingsPane.addDialogComponent(dc);
 		}
 	}
@@ -69,15 +70,6 @@ public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory
 
 		return getPropertyAccess(settingsObjectClass).descriptions;
 	}
-
-	/**
-	 * Creates the actual settings object from the given settings object class and the {@link PropertyProvider}.
-	 *
-	 * @param settingsObjectClass
-	 * @param prov
-	 * @return the settings object instance
-	 */
-	public abstract SO createSettingsObject(Class<? extends SO> settingsObjectClass, PropertyProvider prov);
 
 	@Override
 	public SettingsObjectWrapper<SO> createSettingsObjectWrapper() {
@@ -122,14 +114,6 @@ public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory
 			}
 		};
 	}
-
-	/**
-	 * Extract the properties, e.g. via reflection represented by getter and setter methods, from the settings object class. The extracted properties are added to the provided {@link PropertyCollector}.
-	 *
-	 * @param settingsObjectClass
-	 * @param coll
-	 */
-	public abstract void extractProperties(Class<? extends SO> settingsObjectClass, PropertyCollector coll);
 
 	@Override
 	public int getPriority() {

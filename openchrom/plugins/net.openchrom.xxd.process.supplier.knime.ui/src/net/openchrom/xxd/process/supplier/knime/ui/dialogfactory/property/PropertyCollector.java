@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-import org.eclipse.chemclipse.support.settings.DialogType;
+import org.eclipse.chemclipse.support.settings.FileSettingProperty.DialogType;
 import org.knime.core.node.util.ButtonGroupEnumInterface;
 
 /**
@@ -37,7 +37,9 @@ public interface PropertyCollector {
 
 	void addIntOddNumberProperty(String id, String name, int defaultValue, String description, int step, int min, int max);
 
-	void addStringProperty(String id, String name, String defaultValue, String description);
+	void addRetentionTimeMinutesProperty(String id, String name, int defaultValue, String description, int step, int min, int max);
+
+	void addStringProperty(String id, String name, String defaultValue, String description, String reExp);
 
 	void addFileProperty(String id, String name, String defaultValue, String description, String idHistory, DialogType dialogType, boolean directroryOnly, String[] extensions);
 
@@ -50,4 +52,6 @@ public interface PropertyCollector {
 	void addIonSelectionProperty(String id, String name, String defaultValue, String description);
 
 	void addCondition(String id, BiFunction<String, Object, Boolean> condition);
+
+	void addLabel(String label);
 }
