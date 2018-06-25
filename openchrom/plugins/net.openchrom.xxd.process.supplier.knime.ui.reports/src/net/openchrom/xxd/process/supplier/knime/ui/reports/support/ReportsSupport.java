@@ -19,15 +19,15 @@ import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilte
 import org.eclipse.chemclipse.chromatogram.xxd.report.core.ChromatogramReports;
 import org.eclipse.chemclipse.chromatogram.xxd.report.core.IChromatogramReportSupplier;
 import org.eclipse.chemclipse.chromatogram.xxd.report.exceptions.NoReportSupplierAvailableException;
-import org.eclipse.chemclipse.chromatogram.xxd.report.processing.IChromatogramReportProcessingInfo;
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.IChromatogramReportSettings;
 import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.model.core.IPeak;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 public class ReportsSupport {
 
-	public static IChromatogramReportProcessingInfo generate(File file, IChromatogram<? extends IPeak> chromatogram, IChromatogramReportSettings chromatogramReportSettings, String reportSupplierId, IProgressMonitor monitor) throws NoReportSupplierAvailableException {
+	public static IProcessingInfo generate(File file, IChromatogram<? extends IPeak> chromatogram, IChromatogramReportSettings chromatogramReportSettings, String reportSupplierId, IProgressMonitor monitor) throws NoReportSupplierAvailableException {
 
 		if(isReport(reportSupplierId)) {
 			return ChromatogramReports.generate(file, false, chromatogram, chromatogramReportSettings, reportSupplierId, monitor);
