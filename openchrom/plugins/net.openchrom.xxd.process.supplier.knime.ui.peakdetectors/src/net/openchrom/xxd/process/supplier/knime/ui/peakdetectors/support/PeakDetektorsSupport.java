@@ -15,10 +15,10 @@ import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.IPeakDetectorMSDSupplier;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMSD;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.processing.IPeakDetectorMSDProcessingInfo;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -37,7 +37,7 @@ public class PeakDetektorsSupport {
 		}
 	}
 
-	public static IPeakDetectorMSDProcessingInfo detectMSD(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorMSDSettings peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
+	public static IProcessingInfo detectMSD(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorMSDSettings peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
 
 		if(containsPeakDetectorMSD(peakDetectorId)) {
 			return PeakDetectorMSD.detect(chromatogramSelection, peakDetectorSettings, peakDetectorId, monitor);
