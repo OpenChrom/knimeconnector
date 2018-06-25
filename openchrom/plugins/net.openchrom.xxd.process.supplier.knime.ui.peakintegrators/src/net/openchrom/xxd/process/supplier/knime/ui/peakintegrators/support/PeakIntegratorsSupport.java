@@ -17,9 +17,9 @@ import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.IPeakIntegr
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.PeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.exceptions.NoIntegratorAvailableException;
-import org.eclipse.chemclipse.chromatogram.xxd.integrator.processing.IPeakIntegratorProcessingInfo;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -59,7 +59,7 @@ public class PeakIntegratorsSupport {
 		throw new NoIntegratorAvailableException();
 	}
 
-	public static IPeakIntegratorProcessingInfo integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, String integratorId, IProgressMonitor monitor) throws NoIntegratorAvailableException {
+	public static IProcessingInfo integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, String integratorId, IProgressMonitor monitor) throws NoIntegratorAvailableException {
 
 		if(conteinsIntegrators(integratorId)) {
 			return PeakIntegrator.integrate(chromatogramSelection, peakIntegrationSettings, integratorId, monitor);

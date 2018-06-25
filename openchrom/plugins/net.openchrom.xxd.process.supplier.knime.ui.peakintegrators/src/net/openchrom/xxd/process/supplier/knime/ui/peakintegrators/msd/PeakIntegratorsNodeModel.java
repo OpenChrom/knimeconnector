@@ -15,8 +15,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
-import org.eclipse.chemclipse.chromatogram.xxd.integrator.processing.IPeakIntegratorProcessingInfo;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
@@ -61,7 +61,7 @@ public class PeakIntegratorsNodeModel extends DialogGenerationNodeModel<IPeakInt
 		if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
 			logger.info("Apply the filter");
 			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
-			IPeakIntegratorProcessingInfo processingInfo = PeakIntegratorsSupport.integrate(chromatogramSelection, getSettingsObject(), id, new NullProgressMonitor());
+			IProcessingInfo processingInfo = PeakIntegratorsSupport.integrate(chromatogramSelection, getSettingsObject(), id, new NullProgressMonitor());
 			chromatogramSelectionPortObject.chromatogramSelectionUpdate();
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
