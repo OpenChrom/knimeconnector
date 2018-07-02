@@ -75,7 +75,7 @@
 <repository location="http://update.knime.org/analytics-platform/3.3/"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="net.openchrom.rcp.compilation.community.feature.feature.group" version="1.3.0.201806221101"/>
+<unit id="net.openchrom.rcp.compilation.community.feature.feature.group" version="1.3.0"/>
 <repository location="https://update.openchrom.net/repositories/community/latest/compilation"/>
 </location>
 </locations>
