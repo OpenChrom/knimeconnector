@@ -33,7 +33,7 @@ pipeline {
 					sh 'scp -r openchromcomp/openchrom/sites/net.openchrom.rcp.compilation.community.updateSite/target/site/* '+"${DEPLOY_HOST}knime/3.3.2/repository"
 				}
 		    }
-		}cd rep	
+		}
     }
     post {
     	always {
