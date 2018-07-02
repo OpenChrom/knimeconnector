@@ -26,7 +26,7 @@ pipeline {
 				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml install'
 			}
 		}
-		tage('deploy') {
+		stage('deploy') {
 			//when { branch 'develop' }
 		    steps {
 		        withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
