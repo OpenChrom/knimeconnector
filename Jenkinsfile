@@ -27,10 +27,10 @@ pipeline {
 			}
 		}
 		stage('deploy') {
-			//when { branch 'develop' }
+			when { branch 'develop' }
 		    steps {
 		        withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
-					sh 'scp -r openchromcomp/openchrom/sites/net.openchrom.rcp.compilation.community.updateSite/target/site/* '+"${DEPLOY_HOST}knime/3.3.2/repository"
+					sh 'scp -r knimeconnector/openchrom/sites/net.openchrom.xxd.process.supplier.knime.updateSite/target/site/* '+"${DEPLOY_HOST}knime/3.3.2/repository"
 				}
 		    }
 		}
