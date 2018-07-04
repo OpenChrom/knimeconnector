@@ -135,7 +135,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	}
 
 	@Override
-	public void addDoubleProperty(String id, String name, double defaultValue, String description, int step, double min, double max) {
+	public void addDoubleProperty(String id, String name, double defaultValue, String description, double step, double min, double max) {
 
 		addPropertyDescriptions(name, description);
 		addComponent(id, new DialogComponentNumber(new SettingsModelDoubleBounded(id, defaultValue, min, max), name, step));
@@ -143,7 +143,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	}
 
 	@Override
-	public void addFloatProperty(String id, String name, float defaultValue, String description, int step, float min, float max) {
+	public void addFloatProperty(String id, String name, float defaultValue, String description, float step, float min, float max) {
 
 		addPropertyDescriptions(name, description);
 		addComponent(id, new DialogComponentNumber(new SettingsModelDoubleBounded(id, defaultValue, min, max), name, step));

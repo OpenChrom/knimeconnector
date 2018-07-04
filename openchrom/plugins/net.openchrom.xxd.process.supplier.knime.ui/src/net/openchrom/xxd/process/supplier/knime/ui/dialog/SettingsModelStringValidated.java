@@ -28,14 +28,30 @@ public class SettingsModelStringValidated extends SettingsModelString {
 	}
 
 	@Override
+	public void setStringValue(String newValue) {
+
+		checkValue(newValue);
+		super.setStringValue(newValue);
+	}
+
+	@Override
 	protected void validateSettingsForModel(NodeSettingsRO settings) throws InvalidSettingsException {
 
+		super.validateSettingsForModel(settings);
 		String value = settings.getString(getKey());
+		try {
+			checkValue(value);
+		} catch(IllegalArgumentException iae) {
+			throw new InvalidSettingsException(iae.getMessage());
+		}
+	}
+
+	private void checkValue(String value) {
+
 		Pattern p = Pattern.compile(regExpression);
 		Matcher m = p.matcher(value);
 		if(!m.matches()) {
-			throw new InvalidSettingsException("Input string is not valid");
+			// throw new IllegalArgumentException("Input string is not valid");
 		}
-		super.validateSettingsForModel(settings);
 	}
 }

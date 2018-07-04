@@ -29,9 +29,9 @@ public interface PropertyCollector {
 
 	void addBooleanProperty(String id, String name, boolean defaultValue, String description);
 
-	void addDoubleProperty(String id, String name, double defaultValue, String description, int step, double min, double max);
+	void addDoubleProperty(String id, String name, double defaultValue, String description, double step, double min, double max);
 
-	void addFloatProperty(String id, String name, float defaultValue, String description, int step, float min, float max);
+	void addFloatProperty(String id, String name, float defaultValue, String description, float step, float min, float max);
 
 	void addIntProperty(String id, String name, int defaultValue, String description, int step, int min, int max);
 

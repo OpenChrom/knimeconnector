@@ -54,7 +54,7 @@ public class IonTable extends DialogTable<String> {
 				"Set Ranges Single Values ", //
 				JOptionPane.DEFAULT_OPTION);
 		if(ranges != null) {
-			return ionSettingUtils.extractRangesInput(ranges);
+			return ionSettingUtils.parseInput(ranges);
 		}
 		return new ArrayList<>();
 	}

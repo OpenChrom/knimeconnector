@@ -39,7 +39,6 @@
  * 18.09.2005 (mb): created
  * 25.09.2006 (ohl): using SettingModel
  * 22.08.2018: (jan Holy) adjusting
- * 
  */
 package net.openchrom.xxd.process.supplier.knime.ui.dialog;
 
@@ -102,13 +101,15 @@ public class DialogComponentRetentionTimeMinutes extends DialogComponent {
 		SpinnerNumberModel spinnerModel;
 		double min;
 		double max;
+		double step;
 		double value;
-		min = numberModel.getLowerBound();
-		max = numberModel.getUpperBound();
-		value = numberModel.getIntValue();
-		spinnerModel = new SpinnerNumberModel(value, min, max, stepSize);
+		min = numberModel.getLowerBound() / MINUTE_CORRELATION_FACTOR;
+		max = numberModel.getUpperBound() / MINUTE_CORRELATION_FACTOR;
+		value = numberModel.getIntValue() / MINUTE_CORRELATION_FACTOR;
+		step = stepSize.doubleValue() / MINUTE_CORRELATION_FACTOR;
+		spinnerModel = new SpinnerNumberModel(value, min, max, step);
 		m_spinner = new JSpinner(spinnerModel);
-		m_spinner.setEditor(new JSpinner.NumberEditor(m_spinner, "0.0###"));
+		m_spinner.setEditor(new JSpinner.NumberEditor(m_spinner, "0.0##############"));
 		final JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor)m_spinner.getEditor();
 		editor.getTextField().setColumns(compWidth);
 		editor.getTextField().setFocusLostBehavior(JFormattedTextField.COMMIT);

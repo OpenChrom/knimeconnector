@@ -15,6 +15,7 @@ import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.IIntegra
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IAreaSupport;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IIntegrationSupport;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
+import org.eclipse.chemclipse.support.util.IonSettingUtil;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonSettingObjectSupplier;
@@ -40,10 +41,12 @@ public class IntegratorPropertyDialogFactory<SO extends IIntegrationSettings> ex
 		SO settingsObject = settingObjectSupplier.createSettingsObject(settingsObjectClass, prov);
 		if(IPeakIntegrationSettings.class.isAssignableFrom(settingsObjectClass)) {
 			IPeakIntegrationSettings peakIntegrationSettings = (IPeakIntegrationSettings)settingsObject;
-			// String ions = prov.getStringProperty(SELECTED_ION_NAME);
+			String ions = prov.getStringProperty(SELECTED_ION_NAME);
 			int minimumPeakWidth = prov.getIntProperty(MINIMUM_PEAK_WIDTH_NAME);
 			int minimumSNRetio = prov.getIntProperty(MINIMUM_SN_RETIO);
 			int minimumArea = prov.getIntProperty(MINIMUM_PEAK_AREA_NAME);
+			IonSettingUtil ionSettingUtil = new IonSettingUtil();
+			peakIntegrationSettings.getSelectedIons().add(ionSettingUtil.extractIons(ionSettingUtil.deserialize(ions)));
 			// Integrator support
 			IIntegrationSupport integratorSuppoert = peakIntegrationSettings.getIntegrationSupport();
 			integratorSuppoert.setMinimumPeakWidth(minimumPeakWidth);
@@ -59,8 +62,8 @@ public class IntegratorPropertyDialogFactory<SO extends IIntegrationSettings> ex
 	public void extractProperties(Class<? extends SO> settingsObjectClass, PropertyCollector coll) {
 
 		if(IPeakIntegrationSettings.class.isAssignableFrom(settingsObjectClass)) {
-			// coll.addIonSelectionProperty(SELECTED_ION_NAME, SELECTED_ION_NAME, "", "");
-			coll.addRetentionTimeMinutesProperty(MINIMUM_PEAK_WIDTH_NAME, MINIMUM_PEAK_WIDTH_NAME, 0, "", 1, 0, Integer.MAX_VALUE);
+			coll.addIonSelectionProperty(SELECTED_ION_NAME, SELECTED_ION_NAME, "", "");
+			coll.addRetentionTimeMinutesProperty(MINIMUM_PEAK_WIDTH_NAME, MINIMUM_PEAK_WIDTH_NAME, 0, "", 6000, 0, Integer.MAX_VALUE);
 			coll.addIntProperty(MINIMUM_SN_RETIO, MINIMUM_SN_RETIO, 0, "", 1, 0, Integer.MAX_VALUE);
 			coll.addIntProperty(MINIMUM_PEAK_AREA_NAME, MINIMUM_PEAK_AREA_NAME, 0, "", 1, 0, Integer.MAX_VALUE);
 		}
