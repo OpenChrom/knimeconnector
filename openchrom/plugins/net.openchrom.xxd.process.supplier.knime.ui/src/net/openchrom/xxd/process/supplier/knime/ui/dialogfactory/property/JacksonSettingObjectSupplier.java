@@ -112,7 +112,7 @@ public class JacksonSettingObjectSupplier<SO> implements SettingObjectSupplier<S
 					IDynamicSettingProperty dynamicSetting = null;
 					if(dynamicSettingsProperty != null) {
 						try {
-							dynamicSetting = dynamicSettingsProperty.getAnnotations().newInstance();
+							dynamicSetting = dynamicSettingsProperty.dynamicSettingPropertyClass().newInstance();
 						} catch(InstantiationException
 								| IllegalAccessException e) {
 						}

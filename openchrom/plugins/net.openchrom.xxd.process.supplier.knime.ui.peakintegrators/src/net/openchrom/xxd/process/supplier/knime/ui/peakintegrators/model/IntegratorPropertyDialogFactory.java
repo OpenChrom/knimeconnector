@@ -27,7 +27,7 @@ public class IntegratorPropertyDialogFactory<SO extends IIntegrationSettings> ex
 
 	private final String SELECTED_ION_NAME = "Selected ions (default empty list 0 = TIC)";
 	private final String MINIMUM_PEAK_WIDTH_NAME = "Minimum peak width (minutes)";
-	private final String MINIMUM_SN_RETIO = "Minimum S/N retio";
+	private final String MINIMUM_SN_RATIO = "Minimum S/N ratio";
 	private final String MINIMUM_PEAK_AREA_NAME = "Minimum peak area";
 	private SettingObjectSupplier<SO> settingObjectSupplier;
 
@@ -43,7 +43,7 @@ public class IntegratorPropertyDialogFactory<SO extends IIntegrationSettings> ex
 			IPeakIntegrationSettings peakIntegrationSettings = (IPeakIntegrationSettings)settingsObject;
 			String ions = prov.getStringProperty(SELECTED_ION_NAME);
 			int minimumPeakWidth = prov.getIntProperty(MINIMUM_PEAK_WIDTH_NAME);
-			int minimumSNRetio = prov.getIntProperty(MINIMUM_SN_RETIO);
+			int minimumSNRetio = prov.getIntProperty(MINIMUM_SN_RATIO);
 			int minimumArea = prov.getIntProperty(MINIMUM_PEAK_AREA_NAME);
 			IonSettingUtil ionSettingUtil = new IonSettingUtil();
 			peakIntegrationSettings.getSelectedIons().add(ionSettingUtil.extractIons(ionSettingUtil.deserialize(ions)));
@@ -64,7 +64,7 @@ public class IntegratorPropertyDialogFactory<SO extends IIntegrationSettings> ex
 		if(IPeakIntegrationSettings.class.isAssignableFrom(settingsObjectClass)) {
 			coll.addIonSelectionProperty(SELECTED_ION_NAME, SELECTED_ION_NAME, "", "");
 			coll.addRetentionTimeMinutesProperty(MINIMUM_PEAK_WIDTH_NAME, MINIMUM_PEAK_WIDTH_NAME, 0, "", 6000, 0, Integer.MAX_VALUE);
-			coll.addIntProperty(MINIMUM_SN_RETIO, MINIMUM_SN_RETIO, 0, "", 1, 0, Integer.MAX_VALUE);
+			coll.addIntProperty(MINIMUM_SN_RATIO, MINIMUM_SN_RATIO, 0, "", 1, 0, Integer.MAX_VALUE);
 			coll.addIntProperty(MINIMUM_PEAK_AREA_NAME, MINIMUM_PEAK_AREA_NAME, 0, "", 1, 0, Integer.MAX_VALUE);
 		}
 		settingObjectSupplier.extractProperties(settingsObjectClass, coll);

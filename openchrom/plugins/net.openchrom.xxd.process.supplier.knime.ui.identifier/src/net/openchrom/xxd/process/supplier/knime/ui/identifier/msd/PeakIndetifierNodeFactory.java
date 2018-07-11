@@ -29,8 +29,8 @@ import org.knime.node2012.PortsDocument.Ports;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonPropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.identifier.model.IdentifierPropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.support.IdentifierSupport;
 
 public class PeakIndetifierNodeFactory extends DialogGenerationNodeFactory<PeakIndetifierNodeModel, IPeakIdentifierSettings> {
@@ -87,7 +87,7 @@ public class PeakIndetifierNodeFactory extends DialogGenerationNodeFactory<PeakI
 	@Override
 	protected SettingsDialogFactory<IPeakIdentifierSettings> createSettingsDialogFactory() {
 
-		JacksonPropertyDialogFactory<IPeakIdentifierSettings> factory = new JacksonPropertyDialogFactory<>();
+		IdentifierPropertyDialogFactory<IPeakIdentifierSettings> factory = new IdentifierPropertyDialogFactory<>();
 		Class<? extends IPeakIdentifierSettings> setingClass;
 		try {
 			setingClass = IdentifierSupport.getSupplierMSD(indetifierId).getIdentifierSettingsClass();
