@@ -11,7 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.identifier.model;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.GenereteIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.GeneratedIdentifierSettings;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IIdentifierSettings;
 import org.knime.core.node.util.ButtonGroupEnumInterface;
 
@@ -45,8 +45,8 @@ public class IdentifierPropertyDialogFactory<SO extends IIdentifierSettings> ext
 	@Override
 	public void extractProperties(Class<? extends SO> settingsObjectClass, PropertyCollector coll) {
 
-		GenereteIdentifierSettings genereteIdentifierSettings = settingsObjectClass.getAnnotation(GenereteIdentifierSettings.class);
-		if(genereteIdentifierSettings != null && genereteIdentifierSettings.isGenereted()) {
+		GeneratedIdentifierSettings genereteIdentifierSettings = settingsObjectClass.getAnnotation(GeneratedIdentifierSettings.class);
+		if(genereteIdentifierSettings != null && genereteIdentifierSettings.isGenerated()) {
 			String[][] penalityCalculations = IIdentifierSettings.PENALTY_CALCULATION_OPTIONS;
 			ButtonGroupEnumInterface[] buttons = new ButtonGroupEnumInterface[penalityCalculations.length];
 			int i = 0;
