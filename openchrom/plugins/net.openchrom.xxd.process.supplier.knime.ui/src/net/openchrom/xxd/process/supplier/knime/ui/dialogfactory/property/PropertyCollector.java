@@ -54,4 +54,10 @@ public interface PropertyCollector {
 	void addCondition(String id, BiFunction<String, Object, Boolean> condition);
 
 	void addLabel(String label);
+
+	void createGroup(String title);
+
+	void closeGroup();
+
+	void createNewTab(String title, boolean isDefault);
 }

@@ -21,7 +21,7 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogF
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 
 /**
- * Node model for the {@link DialogGenerationNodeFactory}. Essentially loads and saves the {@link SettingsObjectWrapper}.
+ * Node model for the {@link DialogGenerationDynamicNodeFactory}. Essentially loads and saves the {@link SettingsObjectWrapper}.
  *
  * @author Martin Horn, University of Konstanz
  *

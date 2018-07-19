@@ -66,6 +66,12 @@ public abstract class AbstractChromatogramSelectionProcessing<Settings, Chromato
 		}
 	}
 
+	@Override
+	public String getId() {
+
+		return id;
+	}
+
 	protected abstract IProcessingInfo process(ChromatogramSelection chromatogramSelection, String id, IProgressMonitor monitor) throws Exception;
 
 	protected abstract IProcessingInfo process(ChromatogramSelection chromatogramSelection, String id, Settings settings, IProgressMonitor monitor) throws Exception;

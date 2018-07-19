@@ -38,7 +38,7 @@ public class FiltersSupport {
 	public static IProcessingInfo apply(IChromatogramSelection chromatogramSelection, IChromatogramFilterSettings setting, String id, IProgressMonitor monitor) throws NoChromatogramFilterSupplierAvailableException {
 
 		if(isFilter(id)) {
-			return ChromatogramFilter.applyFilter(chromatogramSelection, id, monitor);
+			return ChromatogramFilter.applyFilter(chromatogramSelection, setting, id, monitor);
 		} else if(isFilterMSD(id)) {
 			return ChromatogramFilterMSD.applyFilter((IChromatogramSelectionMSD)chromatogramSelection, setting, id, monitor);
 		} else if(isFilterCSD(id)) {

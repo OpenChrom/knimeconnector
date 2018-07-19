@@ -61,7 +61,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	/*
 	 * Components for the dialog.
 	 */
-	List<DialogComponent> dialogComponents = new ArrayList<>();
+	List<Object> dialogComponents = new ArrayList<>();
 	private Map<String, DialogComponent> dialogComponentsMap = new HashMap<>();
 	/*
 	 * Settings models for the node model (never the same as passed with the respective dialog component!).
@@ -285,5 +285,23 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	private void addComponent(DialogComponent dialogComponent) {
 
 		dialogComponents.add(dialogComponent);
+	}
+
+	@Override
+	public void createGroup(String title) {
+
+		dialogComponents.add(new CreateNewGroup(title));
+	}
+
+	@Override
+	public void closeGroup() {
+
+		dialogComponents.add(new CloseGroup());
+	}
+
+	@Override
+	public void createNewTab(String title, boolean isDefault) {
+
+		dialogComponents.add(new CreateNewTab(title, isDefault));
 	}
 }

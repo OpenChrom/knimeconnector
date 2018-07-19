@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.exceptions.NoIdentifierAvailableException;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.IPeakIdentifierSupplier;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifier;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -54,10 +55,10 @@ public class IdentifierSupport {
 		return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(identifierId);
 	}
 
-	public static IProcessingInfo identifyMSD(List<IPeakMSD> peaks, String identifierId, IProgressMonitor monitor) throws NoIdentifierAvailableException {
+	public static IProcessingInfo identifyMSD(List<IPeakMSD> peaks, IPeakIdentifierSettings identifierSettings, String identifierId, IProgressMonitor monitor) throws NoIdentifierAvailableException {
 
 		if(containsIdentifierMSDId(identifierId)) {
-			return PeakIdentifier.identify(peaks, identifierId, monitor);
+			return PeakIdentifier.identify(peaks, identifierSettings, identifierId, monitor);
 		} else {
 			throw new NoIdentifierAvailableException();
 		}

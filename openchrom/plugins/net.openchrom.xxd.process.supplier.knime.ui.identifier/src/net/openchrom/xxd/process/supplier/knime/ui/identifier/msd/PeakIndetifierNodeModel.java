@@ -70,7 +70,7 @@ public class PeakIndetifierNodeModel extends DialogGenerationNodeModel<IPeakIden
 			for(IChromatogramPeakMSD chromatogramPeak : peaks) {
 				peakList.add(chromatogramPeak);
 			}
-			IProcessingInfo processingInfo = IdentifierSupport.identifyMSD(peakList, id, new NullProgressMonitor());
+			IProcessingInfo processingInfo = IdentifierSupport.identifyMSD(peakList, getSettingsObject(), id, new NullProgressMonitor());
 			chromatogramSelectionPortObject.chromatogramSelectionUpdate();
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {

@@ -39,6 +39,10 @@ public class IdentifierPropertyDialogFactory<SO extends IIdentifierSettings> ext
 	public SO createSettingsObject(Class<? extends SO> settingsObjectClass, PropertyProvider prov) {
 
 		SO settingsObject = settingObjectSupplier.createSettingsObject(settingsObjectClass, prov);
+		settingsObject.setPenaltyCalculation(prov.getStringProperty(PENALITY_CALCULATION));
+		settingsObject.setPenaltyCalculationLevelFactor(prov.getFloatProperty(PENALITY_CALCULATION_LEVEL_FACTOR));
+		settingsObject.setMaxPenalty(prov.getFloatProperty(MAX_PENALITY));
+		settingsObject.setRetentionIndexWindow(prov.getFloatProperty(RETENTION_TIME_WINDOW));
 		return settingsObject;
 	}
 

@@ -60,8 +60,28 @@ public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory
 
 	protected void builtDialogPane(DefaultNodeSettingsPane defaultNodeSettingsPane) {
 
-		for(DialogComponent dc : getPropertyAccess(settingsObjectClass).dialogComponents) {
-			defaultNodeSettingsPane.addDialogComponent(dc);
+		String defaultTab = null;
+		for(Object object : getPropertyAccess(settingsObjectClass).dialogComponents) {
+			if(object instanceof DialogComponent) {
+				defaultNodeSettingsPane.addDialogComponent((DialogComponent)object);
+			}
+			if(object instanceof CreateNewGroup) {
+				CreateNewGroup newGroup = (CreateNewGroup)object;
+				defaultNodeSettingsPane.createNewGroup(newGroup.getTitle());
+			}
+			if(object instanceof CloseGroup) {
+				defaultNodeSettingsPane.closeCurrentGroup();
+			}
+			if(object instanceof CreateNewTab) {
+				CreateNewTab newTab = (CreateNewTab)object;
+				defaultNodeSettingsPane.createNewTab(newTab.getTabName());
+				if(newTab.isDefault()) {
+					defaultTab = newTab.getTabName();
+				}
+			}
+		}
+		if(defaultTab != null) {
+			defaultNodeSettingsPane.setDefaultTabTitle(defaultTab);
 		}
 	}
 

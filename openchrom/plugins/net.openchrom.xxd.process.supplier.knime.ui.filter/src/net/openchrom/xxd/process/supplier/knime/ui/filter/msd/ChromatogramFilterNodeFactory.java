@@ -34,7 +34,7 @@ import org.knime.node2012.TabDocument.Tab;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonPropertyDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationDynamicNodeFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.support.FiltersSupport;
 
 /**
@@ -43,7 +43,7 @@ import net.openchrom.xxd.process.supplier.knime.ui.filter.support.FiltersSupport
  * @author Martin Horn, University of Konstanz
  *
  */
-public class ChromatogramFilterNodeFactory extends DialogGenerationNodeFactory<ChromatogramFilterNodeModel, IChromatogramFilterSettings> {
+public class ChromatogramFilterNodeFactory extends DialogGenerationDynamicNodeFactory<ChromatogramFilterNodeModel, IChromatogramFilterSettings> {
 
 	private String filterId;
 

@@ -34,10 +34,10 @@ import org.knime.node2012.TabDocument.Tab;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonPropertyDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationDynamicNodeFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.peakdetectors.support.PeakDetektorsSupport;
 
-public class PeakDetectorsNodeFactory extends DialogGenerationNodeFactory<PeakDetectorsNodeModel, IPeakDetectorMSDSettings> {
+public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory<PeakDetectorsNodeModel, IPeakDetectorMSDSettings> {
 
 	private String id;
 

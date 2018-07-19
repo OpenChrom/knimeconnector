@@ -33,11 +33,11 @@ import org.knime.node2012.TabDocument.Tab;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
-import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeFactory;
+import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationDynamicNodeFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.peakintegrators.model.IntegratorPropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.peakintegrators.support.PeakIntegratorsSupport;
 
-public class PeakIntegratorsNodeFactory extends DialogGenerationNodeFactory<PeakIntegratorsNodeModel, IPeakIntegrationSettings> {
+public class PeakIntegratorsNodeFactory extends DialogGenerationDynamicNodeFactory<PeakIntegratorsNodeModel, IPeakIntegrationSettings> {
 
 	private String id;
 

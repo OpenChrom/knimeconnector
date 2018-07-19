@@ -13,8 +13,8 @@ package net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration;
 
 import java.util.Map;
 
+import org.knime.core.node.DynamicNodeFactory;
 import org.knime.core.node.NodeDialogPane;
-import org.knime.core.node.NodeFactory;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
@@ -29,7 +29,7 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectW
  * @param <SO>
  *            see {@link SettingsDialogFactory}
  */
-public abstract class DialogGenerationNodeFactory<NM extends DialogGenerationNodeModel<SO>, SO> extends NodeFactory<NM> {
+public abstract class DialogGenerationDynamicNodeFactory<NM extends DialogGenerationNodeModel<SO>, SO> extends DynamicNodeFactory<NM> {
 
 	private SettingsDialogFactory<SO> dialogFactory;
 
