@@ -42,7 +42,8 @@ public class IdentifierPropertyDialogFactory<SO extends IIdentifierSettings> ext
 		settingsObject.setPenaltyCalculation(prov.getStringProperty(PENALITY_CALCULATION));
 		settingsObject.setPenaltyCalculationLevelFactor(prov.getFloatProperty(PENALITY_CALCULATION_LEVEL_FACTOR));
 		settingsObject.setMaxPenalty(prov.getFloatProperty(MAX_PENALITY));
-		settingsObject.setRetentionIndexWindow(prov.getFloatProperty(RETENTION_TIME_WINDOW));
+		settingsObject.setRetentionTimeWindow(prov.getIntProperty(RETENTION_TIME_WINDOW));
+		settingsObject.setRetentionIndexWindow(prov.getFloatProperty(RETENTION_INDEX_WINDOW));
 		return settingsObject;
 	}
 
@@ -85,10 +86,10 @@ public class IdentifierPropertyDialogFactory<SO extends IIdentifierSettings> ext
 				i++;
 			}
 			coll.addStringProperty(PENALITY_CALCULATION, PENALITY_CALCULATION, penalityCalculations[0][1], "", buttons);
-			coll.addIntProperty(MAX_PENALITY, MAX_PENALITY, 20, "", 10, 0, 100);
-			coll.addIntProperty(PENALITY_CALCULATION_LEVEL_FACTOR, PENALITY_CALCULATION_LEVEL_FACTOR, 5, "", 10, 1, 1000);
+			coll.addFloatProperty(MAX_PENALITY, MAX_PENALITY, 20f, "", 10f, 0f, 100f);
+			coll.addFloatProperty(PENALITY_CALCULATION_LEVEL_FACTOR, PENALITY_CALCULATION_LEVEL_FACTOR, 5f, "", 10f, 1f, 1000f);
 			coll.addRetentionTimeMinutesProperty(RETENTION_TIME_WINDOW, RETENTION_TIME_WINDOW, 12000, "", 6000, 6, 60000);
-			coll.addDoubleProperty(RETENTION_INDEX_WINDOW, RETENTION_INDEX_WINDOW, 10.0, "", 1.0, 10.0, 20.0);
+			coll.addFloatProperty(RETENTION_INDEX_WINDOW, RETENTION_INDEX_WINDOW, 10.0f, "", 1.0f, 10.0f, 20.0f);
 		}
 		settingObjectSupplier.extractProperties(settingsObjectClass, coll);
 	}
