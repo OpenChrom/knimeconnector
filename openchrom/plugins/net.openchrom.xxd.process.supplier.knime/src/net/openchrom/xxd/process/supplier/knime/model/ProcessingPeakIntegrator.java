@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.knime.model;
 
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.PeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
+import org.eclipse.chemclipse.chromatogram.xxd.integrator.exceptions.NoIntegratorAvailableException;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,5 +55,27 @@ public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProce
 	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, String id, IProgressMonitor monitor) throws Exception {
 
 		return PeakIntegrator.integrate(chromatogramSelection, id, monitor);
+	}
+
+	@Override
+	public String getName() {
+
+		try {
+			return PeakIntegrator.getPeakIntegratorSupport().getIntegratorSupplier(getId()).getIntegratorName();
+		} catch(NoIntegratorAvailableException e) {
+			// TODO:
+		}
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
+
+		try {
+			return PeakIntegrator.getPeakIntegratorSupport().getIntegratorSupplier(getId()).getDescription();
+		} catch(NoIntegratorAvailableException e) {
+			// TODO:
+		}
+		return null;
 	}
 }

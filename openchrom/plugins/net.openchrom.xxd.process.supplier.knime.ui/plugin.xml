@@ -155,7 +155,7 @@
       </node>
       <node
             category-path="/openchrom/msd/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramWriterMSDNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramExportMSDNodeFactory">
       </node>
       <node
             category-path="/openchrom/msd/da"

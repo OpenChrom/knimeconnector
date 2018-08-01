@@ -17,50 +17,16 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
-import org.knime.core.node.NodeView;
+import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 
-/**
- * <code>NodeView</code> for the "ChromatogramWriterMSD" Node.
- * This node writes chromatographic data.
- */
-public class ChromatogramWriterMSDNodeView extends NodeView<ChromatogramWriterMSDNodeModel> {
+import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentChromatogramMSDExport;
+import net.openchrom.xxd.process.supplier.knime.ui.dialog.DialogComponentChromatogramReport;
 
-	/**
-	 * Creates a new view.
-	 *
-	 * @param nodeModel
-	 *            The model (class: {@link ChromatogramWriterMSDNodeModel})
-	 */
-	protected ChromatogramWriterMSDNodeView(final ChromatogramWriterMSDNodeModel nodeModel) {
-		super(nodeModel);
-		/*
-		 * TODO add chromatogram TIC view
-		 */
-	}
+public class ChromatogramExportMSDNodeDialog extends DefaultNodeSettingsPane {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void modelChanged() {
-
-		ChromatogramWriterMSDNodeModel nodeModel = getNodeModel();
-		assert nodeModel != null;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void onClose() {
-
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void onOpen() {
-
+	protected ChromatogramExportMSDNodeDialog() {
+		super();
+		addDialogComponent(new DialogComponentChromatogramMSDExport(ChromatogramExportMSDNodeModel.getSettingsModelChromatogramMSDExport(), "Export Chromatogram"));
+		addDialogComponent(new DialogComponentChromatogramReport(ChromatogramExportMSDNodeModel.getCreateSettingsModelReport(), "Create Report"));
 	}
 }

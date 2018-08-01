@@ -19,9 +19,9 @@ package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
-import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -37,30 +37,37 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramMSDExportSerialization;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramReportSerialization;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
+import net.openchrom.xxd.process.supplier.knime.model.IChromatogramMSDExport;
+import net.openchrom.xxd.process.supplier.knime.model.IChromatogramReport;
 
 /**
  * This is the model implementation of ChromatogramWriterMSD.
  * This node writes chromatographic data.
  */
-public class ChromatogramWriterMSDNodeModel extends NodeModel {
+public class ChromatogramExportMSDNodeModel extends NodeModel {
 
-	private static final String EXPORT_CONVERTER_ID = "org.eclipse.chemclipse.xxd.converter.supplier.chemclipse";
-	/*
-	 * Export the data in *.ocb format.
-	 */
-	protected static final String EXPORT_FILE_EXTENSION = ".ocb";
 	//
-	private static final String CHROMATOGRAM_FILE_OUTPUT = "ChromatgramFileOutput";
-	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramWriterMSDNodeModel.class);
-	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_OUTPUT = new SettingsModelString(CHROMATOGRAM_FILE_OUTPUT, "");
+	private static final String CHROMATOGRAM_MSD_EXPORT = "ChromatgramMSDExport";
+	private static final String CHROMATOGRAM_REPORT = "ChromatgramMSDReport";
+	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramExportMSDNodeModel.class);
+	private SettingsModelString chromatogramMSDExport;
+	private SettingsModelString chromatogramReport;
+	private ChromatogramMSDExportSerialization chromatogramMSDExportSerialization;
+	private ChromatogramReportSerialization chromatogramReprotSerialization;
 
 	/**
 	 * Constructor for the node model.
 	 */
-	protected ChromatogramWriterMSDNodeModel() {
+	protected ChromatogramExportMSDNodeModel() {
 		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)}, new PortType[]{});
+		chromatogramMSDExport = getSettingsModelChromatogramMSDExport();
+		chromatogramReport = getCreateSettingsModelReport();
+		chromatogramMSDExportSerialization = new ChromatogramMSDExportSerialization();
+		chromatogramReprotSerialization = new ChromatogramReportSerialization();
 	}
 
 	@Override
@@ -72,15 +79,20 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		logger.info("Read the chromatographic raw data.");
-		//
-		ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject = PortObjectSupport.getChromatogramSelectionMSDPortObject(inObjects);
-		if(chromatogramSelectionMSDPortObject != null) {
-			File file = new File(SETTING_CHROMATOGRAM_FILE_OUTPUT.getStringValue());
-			IChromatogramMSD chromatogramMSD = chromatogramSelectionMSDPortObject.getChromatogramSelectionMSD().getChromatogramMSD();
-			ChromatogramConverterMSD.convert(file, chromatogramMSD, EXPORT_CONVERTER_ID, new NullProgressMonitor());
+		logger.info("Extract chromatogram");
+		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject = (ChromatogramSelectionMSDPortObject)inObjects[0];
+		ChromatogramSelectionMSDPortObjectSpec chromatogramSelectionMSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
+		IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
+		logger.info("Export chromatogram");
+		List<IChromatogramMSDExport> exporters = chromatogramMSDExportSerialization.deserialize(chromatogramMSDExport.getStringValue());
+		for(IChromatogramMSDExport exporter : exporters) {
+			exporter.process(chromatogramSelection, new NullProgressMonitor());
 		}
-		//
+		logger.info("Create reports");
+		List<IChromatogramReport> retorters = chromatogramReprotSerialization.deserialize(chromatogramReport.getStringValue());
+		for(IChromatogramReport reporter : retorters) {
+			reporter.process(chromatogramSelection, new NullProgressMonitor());
+		}
 		return new PortObject[]{};
 	}
 
@@ -98,7 +110,8 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_CHROMATOGRAM_FILE_OUTPUT.loadSettingsFrom(settings);
+		chromatogramMSDExport.loadSettingsFrom(settings);
+		chromatogramReport.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -123,7 +136,8 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		SETTING_CHROMATOGRAM_FILE_OUTPUT.saveSettingsTo(settings);
+		chromatogramMSDExport.saveSettingsTo(settings);
+		chromatogramReport.saveSettingsTo(settings);
 	}
 
 	/**
@@ -132,6 +146,17 @@ public class ChromatogramWriterMSDNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_CHROMATOGRAM_FILE_OUTPUT.validateSettings(settings);
+		chromatogramMSDExport.validateSettings(settings);
+		chromatogramReport.validateSettings(settings);
+	}
+
+	static SettingsModelString getSettingsModelChromatogramMSDExport() {
+
+		return new SettingsModelString(CHROMATOGRAM_MSD_EXPORT, "");
+	}
+
+	static SettingsModelString getCreateSettingsModelReport() {
+
+		return new SettingsModelString(CHROMATOGRAM_REPORT, "");
 	}
 }

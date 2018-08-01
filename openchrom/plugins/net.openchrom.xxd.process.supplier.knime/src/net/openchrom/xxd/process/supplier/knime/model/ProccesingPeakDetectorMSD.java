@@ -13,6 +13,7 @@ package net.openchrom.xxd.process.supplier.knime.model;
 
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
+import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,5 +55,25 @@ public class ProccesingPeakDetectorMSD extends AbstractChromatogramSelectionProc
 	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IProgressMonitor monitor) throws Exception {
 
 		return PeakDetectorMSD.detect(chromatogramSelection, id, monitor);
+	}
+
+	@Override
+	public String getName() {
+
+		try {
+			return PeakDetectorMSD.getPeakDetectorSupport().getPeakDetectorSupplier(getId()).getPeakDetectorName();
+		} catch(NoPeakDetectorAvailableException e) {
+		}
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
+
+		try {
+			return PeakDetectorMSD.getPeakDetectorSupport().getPeakDetectorSupplier(getId()).getDescription();
+		} catch(NoPeakDetectorAvailableException e) {
+		}
+		return null;
 	}
 }

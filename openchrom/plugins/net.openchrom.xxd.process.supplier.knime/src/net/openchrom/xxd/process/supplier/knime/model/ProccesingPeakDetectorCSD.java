@@ -56,4 +56,24 @@ public class ProccesingPeakDetectorCSD extends AbstractChromatogramSelectionProc
 
 		return PeakDetectorCSD.detect(chromatogramSelection, id, monitor);
 	}
+
+	@Override
+	public String getName() {
+
+		try {
+			return PeakDetectorCSD.getPeakDetectorSupport().getPeakDetectorSupplier(getId()).getPeakDetectorName();
+		} catch(NoPeakDetectorAvailableException e) {
+		}
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
+
+		try {
+			return PeakDetectorCSD.getPeakDetectorSupport().getPeakDetectorSupplier(getId()).getDescription();
+		} catch(NoPeakDetectorAvailableException e) {
+		}
+		return null;
+	}
 }

@@ -14,6 +14,7 @@ package net.openchrom.xxd.process.supplier.knime.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.chemclipse.chromatogram.msd.identifier.exceptions.NoIdentifierAvailableException;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifier;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
@@ -63,5 +64,27 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 			peakList.add(chromatogramPeak);
 		}
 		return PeakIdentifier.identify(peakList, id, monitor);
+	}
+
+	@Override
+	public String getName() {
+
+		try {
+			return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(getId()).getIdentifierName();
+		} catch(NoIdentifierAvailableException e) {
+			// TODO:
+		}
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
+
+		try {
+			return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(getId()).getDescription();
+		} catch(NoIdentifierAvailableException e) {
+			// TODO:
+		}
+		return null;
 	}
 }

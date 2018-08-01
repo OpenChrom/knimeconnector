@@ -27,7 +27,7 @@ import org.knime.core.node.NodeView;
  *
  * @author OpenChrom
  */
-public class ChromatogramWriterMSDNodeFactory extends NodeFactory<ChromatogramWriterMSDNodeModel> {
+public class ChromatogramExportMSDNodeFactory extends NodeFactory<ChromatogramExportMSDNodeModel> {
 
 	/**
 	 * {@inheritDoc}
@@ -35,25 +35,25 @@ public class ChromatogramWriterMSDNodeFactory extends NodeFactory<ChromatogramWr
 	@Override
 	public NodeDialogPane createNodeDialogPane() {
 
-		return new ChromatogramWriterMSDNodeDialog();
+		return new ChromatogramExportMSDNodeDialog();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ChromatogramWriterMSDNodeModel createNodeModel() {
+	public ChromatogramExportMSDNodeModel createNodeModel() {
 
-		return new ChromatogramWriterMSDNodeModel();
+		return new ChromatogramExportMSDNodeModel();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NodeView<ChromatogramWriterMSDNodeModel> createNodeView(final int viewIndex, final ChromatogramWriterMSDNodeModel nodeModel) {
+	public NodeView<ChromatogramExportMSDNodeModel> createNodeView(final int viewIndex, final ChromatogramExportMSDNodeModel nodeModel) {
 
-		return new ChromatogramWriterMSDNodeView(nodeModel);
+		return new ChromatogramExportMSDNodeView(nodeModel);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class ChromatogramWriterMSDNodeFactory extends NodeFactory<ChromatogramWr
 	@Override
 	public int getNrNodeViews() {
 
-		return 1;
+		return 0;
 	}
 
 	/**

@@ -11,6 +11,7 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
 import org.eclipse.chemclipse.chromatogram.msd.filter.core.chromatogram.ChromatogramFilterMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
@@ -54,5 +55,25 @@ public class ProcessingFilterMSD extends AbstractChromatogramSelectionProcessing
 	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IProgressMonitor monitor) throws Exception {
 
 		return ChromatogramFilterMSD.applyFilter(chromatogramSelection, id, monitor);
+	}
+
+	@Override
+	public String getName() {
+
+		try {
+			return ChromatogramFilterMSD.getChromatogramFilterSupport().getFilterSupplier(getId()).getFilterName();
+		} catch(NoChromatogramFilterSupplierAvailableException e) {
+		}
+		return null;
+	}
+
+	@Override
+	public String getDescription() {
+
+		try {
+			return ChromatogramFilterMSD.getChromatogramFilterSupport().getFilterSupplier(getId()).getDescription();
+		} catch(NoChromatogramFilterSupplierAvailableException e) {
+		}
+		return null;
 	}
 }

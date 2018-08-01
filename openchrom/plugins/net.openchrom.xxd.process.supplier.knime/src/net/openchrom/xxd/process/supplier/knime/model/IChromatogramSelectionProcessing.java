@@ -45,4 +45,8 @@ public interface IChromatogramSelectionProcessing<ChromatogramSelection extends 
 	IProcessingInfo process(ChromatogramSelection chromatogramSelection, IProgressMonitor monitor) throws Exception;
 
 	String getId();
+
+	String getName();
+
+	String getDescription();
 }

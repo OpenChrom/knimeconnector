@@ -17,17 +17,50 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.io.msd;
 
-import javax.swing.JFileChooser;
+import org.knime.core.node.NodeView;
 
-import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+/**
+ * <code>NodeView</code> for the "ChromatogramWriterMSD" Node.
+ * This node writes chromatographic data.
+ */
+public class ChromatogramExportMSDNodeView extends NodeView<ChromatogramExportMSDNodeModel> {
 
-public class ChromatogramWriterMSDNodeDialog extends DefaultNodeSettingsPane {
+	/**
+	 * Creates a new view.
+	 *
+	 * @param nodeModel
+	 *            The model (class: {@link ChromatogramExportMSDNodeModel})
+	 */
+	protected ChromatogramExportMSDNodeView(final ChromatogramExportMSDNodeModel nodeModel) {
+		super(nodeModel);
+		/*
+		 * TODO add chromatogram TIC view
+		 */
+	}
 
-	protected ChromatogramWriterMSDNodeDialog() {
-		super();
-		//
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ChromatogramWriterMSDNodeModel.SETTING_CHROMATOGRAM_FILE_OUTPUT, "", JFileChooser.SAVE_DIALOG, ChromatogramWriterMSDNodeModel.EXPORT_FILE_EXTENSION);
-		addDialogComponent(dialogComponentFileChooser);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void modelChanged() {
+
+		ChromatogramExportMSDNodeModel nodeModel = getNodeModel();
+		assert nodeModel != null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onClose() {
+
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected void onOpen() {
+
 	}
 }

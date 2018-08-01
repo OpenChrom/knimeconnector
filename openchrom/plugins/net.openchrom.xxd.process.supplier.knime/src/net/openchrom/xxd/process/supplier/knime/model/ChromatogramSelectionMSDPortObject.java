@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -73,6 +74,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	private int startRetentionTime;
 	private float stopAbundance;
 	private int stopRetentionTime;
+	private File inputFile;
 
 	public ChromatogramSelectionMSDPortObject() throws IOException {
 		this(EMPTY_CHROMATOGRAM_SELECTION);
@@ -81,6 +83,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 	public ChromatogramSelectionMSDPortObject(IChromatogramSelectionMSD chromatogramSelectionMSD) throws IOException {
 		this.chromatogramSelectionMSD = chromatogramSelectionMSD;
 		this.portObjectSpec = new ChromatogramSelectionMSDPortObjectSpec();
+		this.inputFile = chromatogramSelectionMSD.getChromatogram().getFile();
 	}
 
 	public void addProcessings(IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> chromatogramSelectionProcessing) {
@@ -106,6 +109,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		if(chromatogramSelectionMSD == null) {
 			ChromatogramReaderMSD chromatogramReaderMSD = new ChromatogramReaderMSD();
 			IChromatogramMSD chromatogramMSD = chromatogramReaderMSD.read(new ZipInputStream(new ByteArrayInputStream(chromatogramByteArray)), "", new NullProgressMonitor());
+			chromatogramMSD.setFile(inputFile);
 			chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
 			chromatogramSelectionMSD.setStartRetentionTime(startRetentionTime);
 			chromatogramSelectionMSD.setStopRetentionTime(stopRetentionTime);
@@ -121,6 +125,15 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 
 		if(this.portObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
 			return extractChromatogramSelectionMSD();
+		} else {
+			throw new InvalidDataException("To avoid this exception add a node \"End Processing\", before the node where the exception occured.");
+		}
+	}
+
+	public byte[] getChromatogramByteArray() throws InvalidDataException {
+
+		if(this.portObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
+			return chromatogramByteArray;
 		} else {
 			throw new InvalidDataException("To avoid this exception add a node \"End Processing\", before the node where the exception occured.");
 		}
@@ -163,6 +176,12 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 			chromatogramSelectionMSD = EMPTY_CHROMATOGRAM_SELECTION;
 			return;
 		}
+		ObjectInputStream objectInputStream = new ObjectInputStream(in);
+		try {
+			inputFile = (File)objectInputStream.readObject();
+		} catch(ClassNotFoundException e) {
+			throw new IOException(e);
+		}
 		//
 		zipEntry = in.getNextEntry();
 		assert zipEntry.getName().equals(CHROMATOGRAM_SELECTION_DATA);
@@ -181,7 +200,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		//
 		zipEntry = in.getNextEntry();
 		assert zipEntry.getName().equals(CHROMATOGRAM_SELECTION_PROCESSING);
-		ObjectInputStream objectInputStream = new ObjectInputStream(in);
+		objectInputStream = new ObjectInputStream(in);
 		int size = objectInputStream.readInt();
 		for(int i = 0; i < size; i++) {
 			try {
@@ -205,6 +224,8 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		} else {
 			out.write(1);
 		}
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+		objectOutputStream.writeObject(inputFile);
 		//
 		zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION_DATA);
 		out.putNextEntry(zipEntry);
@@ -234,7 +255,7 @@ public class ChromatogramSelectionMSDPortObject extends AbstractPortObject {
 		//
 		zipEntry = new ZipEntry(CHROMATOGRAM_SELECTION_PROCESSING);
 		out.putNextEntry(zipEntry);
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+		objectOutputStream = new ObjectOutputStream(out);
 		objectOutputStream.writeInt(processing.size());
 		for(int i = 0; i < processing.size(); i++) {
 			objectOutputStream.writeObject(processing.get(i));

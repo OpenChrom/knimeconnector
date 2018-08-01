@@ -47,10 +47,11 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	//
 	private static final String CHROMATOGRAM_FILE_INPUT = "ChromatgramFileInput";
 	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramReaderMSDNodeModel.class);
-	protected static final SettingsModelString SETTING_CHROMATOGRAM_FILE_INPUT = new SettingsModelString(CHROMATOGRAM_FILE_INPUT, "");
+	private SettingsModelString settingChromatogramFileInput;
 
 	protected ChromatogramReaderMSDNodeModel() {
 		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionMSDPortObject.class)});
+		settingChromatogramFileInput = getSettingsChromatogamFileInput();
 	}
 
 	@Override
@@ -64,17 +65,19 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 
 		logger.info("Read the chromatographic raw data.");
 		//
-		IChromatogramMSD chromatogramMSD = loadChromatogram(SETTING_CHROMATOGRAM_FILE_INPUT.getStringValue());
+		File file = new File(settingChromatogramFileInput.getStringValue());
+		IChromatogramMSD chromatogramMSD = loadChromatogram(file);
 		IChromatogramSelectionMSD chromatogramSelectionMSD = new ChromatogramSelectionMSD(chromatogramMSD);
 		ChromatogramSelectionMSDPortObject portObjectSelectionMSD = new ChromatogramSelectionMSDPortObject(chromatogramSelectionMSD);
 		return new PortObject[]{portObjectSelectionMSD};
 	}
 
-	private IChromatogramMSD loadChromatogram(String pathChromatogram) {
+	private IChromatogramMSD loadChromatogram(File file) {
 
-		File file = new File(pathChromatogram);
 		IProcessingInfo processingInfo = ChromatogramConverterMSD.convert(file, new NullProgressMonitor());
-		return processingInfo.getProcessingResult(IChromatogramMSD.class);
+		IChromatogramMSD chromatogramMSD = processingInfo.getProcessingResult(IChromatogramMSD.class);
+		chromatogramMSD.setFile(file);
+		return chromatogramMSD;
 	}
 
 	/**
@@ -91,7 +94,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_CHROMATOGRAM_FILE_INPUT.loadSettingsFrom(settings);
+		settingChromatogramFileInput.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -116,7 +119,7 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		SETTING_CHROMATOGRAM_FILE_INPUT.saveSettingsTo(settings);
+		settingChromatogramFileInput.saveSettingsTo(settings);
 	}
 
 	/**
@@ -125,6 +128,11 @@ public class ChromatogramReaderMSDNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_CHROMATOGRAM_FILE_INPUT.validateSettings(settings);
+		settingChromatogramFileInput.validateSettings(settings);
+	}
+
+	static SettingsModelString getSettingsChromatogamFileInput() {
+
+		return new SettingsModelString(CHROMATOGRAM_FILE_INPUT, "");
 	}
 }
