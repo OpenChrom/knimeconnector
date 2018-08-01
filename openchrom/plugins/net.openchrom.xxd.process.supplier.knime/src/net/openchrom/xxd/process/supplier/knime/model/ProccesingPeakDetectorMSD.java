@@ -12,7 +12,7 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMSD;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorCSDSettings;
+import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class ProccesingPeakDetectorMSD extends AbstractChromatogramSelectionProcessing<IPeakDetectorCSDSettings, IChromatogramSelectionMSD> {
+public class ProccesingPeakDetectorMSD extends AbstractChromatogramSelectionProcessing<IPeakDetectorMSDSettings, IChromatogramSelectionMSD> {
 
 	/**
 	 *
@@ -35,18 +35,18 @@ public class ProccesingPeakDetectorMSD extends AbstractChromatogramSelectionProc
 		super(id);
 	}
 
-	public ProccesingPeakDetectorMSD(String id, IPeakDetectorCSDSettings settings) throws JsonProcessingException {
+	public ProccesingPeakDetectorMSD(String id, IPeakDetectorMSDSettings settings) throws JsonProcessingException {
 		super(id, settings);
 	}
 
 	@Override
-	protected Class<? extends IPeakDetectorCSDSettings> getSettingsClass(String id) throws Exception {
+	protected Class<? extends IPeakDetectorMSDSettings> getSettingsClass(String id) throws Exception {
 
 		return PeakDetectorMSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getPeakDetectorSettingsClass();
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakDetectorCSDSettings settings, IProgressMonitor monitor) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakDetectorMSDSettings settings, IProgressMonitor monitor) throws Exception {
 
 		return PeakDetectorMSD.detect(chromatogramSelection, settings, id, monitor);
 	}

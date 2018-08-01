@@ -14,7 +14,7 @@ package net.openchrom.xxd.process.supplier.knime.ui.peakdetectors.msd;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorCSDSettings;
+import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
@@ -34,12 +34,12 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectW
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
 import net.openchrom.xxd.process.supplier.knime.ui.peakdetectors.support.PeakDetektorsSupport;
 
-public class PeakDetectorsNodeModel extends DialogGenerationNodeModel<IPeakDetectorCSDSettings> {
+public class PeakDetectorsNodeModel extends DialogGenerationNodeModel<IPeakDetectorMSDSettings> {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(PeakDetectorsNodeModel.class);
 	private String id;
 
-	protected PeakDetectorsNodeModel(String id, SettingsObjectWrapper<IPeakDetectorCSDSettings> settingsObject) {
+	protected PeakDetectorsNodeModel(String id, SettingsObjectWrapper<IPeakDetectorMSDSettings> settingsObject) {
 		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, settingsObject);
 		this.id = id;
 	}
@@ -66,7 +66,7 @@ public class PeakDetectorsNodeModel extends DialogGenerationNodeModel<IPeakDetec
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			logger.info("Add the peak detector");
-			IPeakDetectorCSDSettings settings = getSettingsObject();
+			IPeakDetectorMSDSettings settings = getSettingsObject();
 			chromatogramSelectionPortObject.addProcessings(PeakDetektorsSupport.getProcessingPeakDetectorMSD(id, settings));
 		}
 		/*
