@@ -11,5 +11,14 @@
             specClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec"
             specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec$Serializer">
       </portType>
+      
+       <portType
+            hidden="false"
+            name="Chromatogram Selection (CSD)"
+            objectClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObject"
+            objectSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObject$Serializer"
+            specClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObjectSpec"
+            specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObjectSpec$Serializer">
+      </portType>
    </extension>
 </plugin>

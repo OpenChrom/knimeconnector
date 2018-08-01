@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./StartProcessing.gif" type="LoopStart" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>Start Processing</name>
+    <shortDescription>
+        This node set processing mode.
+    </shortDescription>
+    <fullDescription>
+        <intro>You can set Postponed Processing when all processes are applied in node Chromatogram Process Apply 
+        	   or Immediate processing when processes are applied in nodes.
+        </intro>
+    </fullDescription>
+    <ports>
+    <inPort index="0" name="Chromatogram Selection">Chromatogram Selection</inPort>
+    <outPort index="0" name="Chromatogram Selection">Chromatogram Selection</outPort>
+    </ports>
+</knimeNode>

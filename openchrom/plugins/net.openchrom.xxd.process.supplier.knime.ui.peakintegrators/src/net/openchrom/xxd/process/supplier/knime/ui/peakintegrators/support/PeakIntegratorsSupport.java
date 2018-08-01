@@ -17,6 +17,7 @@ import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.IPeakIntegr
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.PeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.exceptions.NoIntegratorAvailableException;
+import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -51,7 +52,7 @@ public class PeakIntegratorsSupport {
 		throw new NoIntegratorAvailableException();
 	}
 
-	public static IPeakIntegratorSupplier getSupplier(String id) throws NoIntegratorAvailableException {
+	public static IPeakIntegratorSupplier getSupplierMSD(String id) throws NoIntegratorAvailableException {
 
 		if(conteinsIntegrators(id)) {
 			return PeakIntegrator.getPeakIntegratorSupport().getIntegratorSupplier(id);
@@ -59,7 +60,36 @@ public class PeakIntegratorsSupport {
 		throw new NoIntegratorAvailableException();
 	}
 
-	public static IProcessingInfo integrate(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, String integratorId, IProgressMonitor monitor) throws NoIntegratorAvailableException {
+	public static IProcessingInfo integrateMSD(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, String integratorId, IProgressMonitor monitor) throws NoIntegratorAvailableException {
+
+		if(conteinsIntegrators(integratorId)) {
+			return PeakIntegrator.integrate(chromatogramSelection, peakIntegrationSettings, integratorId, monitor);
+		}
+		throw new NoIntegratorAvailableException();
+	}
+
+	public static List<String> getIdsPeakIntegratorsCSD() throws NoIntegratorAvailableException {
+
+		return PeakIntegrator.getPeakIntegratorSupport().getAvailableIntegratorIds();
+	}
+
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingPeakIntegratoCSD(String id, IPeakIntegrationSettings detectorMSDSettings) throws NoIntegratorAvailableException, JsonProcessingException {
+
+		if(conteinsIntegrators(id)) {
+			return new ProcessingPeakIntegrator(id, detectorMSDSettings);
+		}
+		throw new NoIntegratorAvailableException();
+	}
+
+	public static IPeakIntegratorSupplier getSupplierCSD(String id) throws NoIntegratorAvailableException {
+
+		if(conteinsIntegrators(id)) {
+			return PeakIntegrator.getPeakIntegratorSupport().getIntegratorSupplier(id);
+		}
+		throw new NoIntegratorAvailableException();
+	}
+
+	public static IProcessingInfo integrateCSD(IChromatogramSelection chromatogramSelection, IPeakIntegrationSettings peakIntegrationSettings, String integratorId, IProgressMonitor monitor) throws NoIntegratorAvailableException {
 
 		if(conteinsIntegrators(integratorId)) {
 			return PeakIntegrator.integrate(chromatogramSelection, peakIntegrationSettings, integratorId, monitor);

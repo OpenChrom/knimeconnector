@@ -13,10 +13,13 @@ package net.openchrom.xxd.process.supplier.knime.ui.peakdetectors.support;
 
 import java.util.List;
 
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSDSupplier;
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.PeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.IPeakDetectorMSDSupplier;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMSD;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
+import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorCSDSettings;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
+import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,6 +27,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
+import net.openchrom.xxd.process.supplier.knime.model.ProccesingPeakDetectorCSD;
 import net.openchrom.xxd.process.supplier.knime.model.ProccesingPeakDetectorMSD;
 
 public class PeakDetektorsSupport {
@@ -37,10 +41,27 @@ public class PeakDetektorsSupport {
 		}
 	}
 
-	public static IProcessingInfo detectMSD(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorMSDSettings peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
+	private static boolean containsPeakDetectorCSD(String id) {
+
+		try {
+			return PeakDetectorCSD.getPeakDetectorSupport().getAvailablePeakDetectorIds().contains(id);
+		} catch(NoPeakDetectorAvailableException e) {
+			return false;
+		}
+	}
+
+	public static IProcessingInfo detectMSD(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorCSDSettings peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
 
 		if(containsPeakDetectorMSD(peakDetectorId)) {
 			return PeakDetectorMSD.detect(chromatogramSelection, peakDetectorSettings, peakDetectorId, monitor);
+		}
+		throw new NoPeakDetectorAvailableException();
+	}
+
+	public static IProcessingInfo detectCSD(IChromatogramSelectionCSD chromatogramSelection, org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
+
+		if(containsPeakDetectorCSD(peakDetectorId)) {
+			return PeakDetectorCSD.detect(chromatogramSelection, peakDetectorSettings, peakDetectorId, monitor);
 		}
 		throw new NoPeakDetectorAvailableException();
 	}
@@ -50,7 +71,12 @@ public class PeakDetektorsSupport {
 		return PeakDetectorMSD.getPeakDetectorSupport().getAvailablePeakDetectorIds();
 	}
 
-	public static IChromatogramSelectionProcessing<IChromatogramSelectionMSD> getProcessingPeakDetector(String id) throws NoPeakDetectorAvailableException {
+	public static List<String> getIDsPeakDectorsCSD() throws NoPeakDetectorAvailableException {
+
+		return PeakDetectorCSD.getPeakDetectorSupport().getAvailablePeakDetectorIds();
+	}
+
+	public static IChromatogramSelectionProcessing<IChromatogramSelectionMSD> getProcessingPeakDetectorMSD(String id) throws NoPeakDetectorAvailableException {
 
 		if(containsPeakDetectorMSD(id)) {
 			return new ProccesingPeakDetectorMSD(id);
@@ -58,7 +84,15 @@ public class PeakDetektorsSupport {
 		throw new NoPeakDetectorAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<IChromatogramSelectionMSD> getProcessingPeakDetector(String id, IPeakDetectorMSDSettings detectorMSDSettings) throws NoPeakDetectorAvailableException, JsonProcessingException {
+	public static IChromatogramSelectionProcessing<IChromatogramSelectionCSD> getProcessingPeakDetectorCSD(String id) throws NoPeakDetectorAvailableException {
+
+		if(containsPeakDetectorMSD(id)) {
+			return new ProccesingPeakDetectorCSD(id);
+		}
+		throw new NoPeakDetectorAvailableException();
+	}
+
+	public static IChromatogramSelectionProcessing<IChromatogramSelectionMSD> getProcessingPeakDetectorMSD(String id, IPeakDetectorCSDSettings detectorMSDSettings) throws NoPeakDetectorAvailableException, JsonProcessingException {
 
 		if(containsPeakDetectorMSD(id)) {
 			return new ProccesingPeakDetectorMSD(id, detectorMSDSettings);
@@ -66,10 +100,26 @@ public class PeakDetektorsSupport {
 		throw new NoPeakDetectorAvailableException();
 	}
 
-	public static IPeakDetectorMSDSupplier getSupplier(String id) throws NoPeakDetectorAvailableException {
+	public static IChromatogramSelectionProcessing<IChromatogramSelectionCSD> getProcessingPeakDetectorCSD(String id, org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings detectorCSDSettings) throws NoPeakDetectorAvailableException, JsonProcessingException {
+
+		if(containsPeakDetectorMSD(id)) {
+			return new ProccesingPeakDetectorCSD(id, detectorCSDSettings);
+		}
+		throw new NoPeakDetectorAvailableException();
+	}
+
+	public static IPeakDetectorMSDSupplier getSupplierMSD(String id) throws NoPeakDetectorAvailableException {
 
 		if(containsPeakDetectorMSD(id)) {
 			return PeakDetectorMSD.getPeakDetectorSupport().getPeakDetectorSupplier(id);
+		}
+		throw new NoPeakDetectorAvailableException();
+	}
+
+	public static IPeakDetectorCSDSupplier getSupplierCSD(String id) throws NoPeakDetectorAvailableException {
+
+		if(containsPeakDetectorCSD(id)) {
+			return PeakDetectorCSD.getPeakDetectorSupport().getPeakDetectorSupplier(id);
 		}
 		throw new NoPeakDetectorAvailableException();
 	}

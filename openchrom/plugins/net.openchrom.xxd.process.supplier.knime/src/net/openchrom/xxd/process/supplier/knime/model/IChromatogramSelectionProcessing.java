@@ -14,6 +14,7 @@ package net.openchrom.xxd.process.supplier.knime.model;
 import java.io.Serializable;
 import java.util.List;
 
+import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
@@ -40,6 +41,24 @@ public interface IChromatogramSelectionProcessing<ChromatogramSelection extends 
 			processing.clear();
 		}
 		chromatogramSelectionMSDPortObject.chromatogramSelectionUpdate();
+	}
+
+	static void updateChromatogramSelection(ChromatogramSelectionCSDPortObject chromatogramSelectionCSDPortObject, IProgressMonitor monitor, boolean clear) throws Exception {
+
+		List<IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD>> processing = chromatogramSelectionCSDPortObject.processing;
+		IChromatogramSelectionCSD chromatogramSelectionCSD = chromatogramSelectionCSDPortObject.extractChromatogramSelectionCSD();
+		for(int i = 0; i < processing.size(); i++) {
+			IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> p = processing.get(i);
+			try {
+				p.process(chromatogramSelectionCSD, monitor);
+			} catch(Exception e) {
+				log.fatal("Process with id " + p.getId() + " faild", e);
+			}
+		}
+		if(clear) {
+			processing.clear();
+		}
+		chromatogramSelectionCSDPortObject.chromatogramSelectionUpdate();
 	}
 
 	IProcessingInfo process(ChromatogramSelection chromatogramSelection, IProgressMonitor monitor) throws Exception;

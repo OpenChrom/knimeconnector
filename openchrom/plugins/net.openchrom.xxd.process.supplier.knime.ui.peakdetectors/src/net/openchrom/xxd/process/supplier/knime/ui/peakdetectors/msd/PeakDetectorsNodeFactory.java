@@ -13,7 +13,7 @@ package net.openchrom.xxd.process.supplier.knime.ui.peakdetectors.msd;
 
 import java.util.Map.Entry;
 
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
+import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorCSDSettings;
 import org.eclipse.chemclipse.chromatogram.peak.detector.core.IPeakDetectorSupplier;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.knime.core.node.InvalidSettingsException;
@@ -37,7 +37,7 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.Jackso
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationDynamicNodeFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.peakdetectors.support.PeakDetektorsSupport;
 
-public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory<PeakDetectorsNodeModel, IPeakDetectorMSDSettings> {
+public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory<PeakDetectorsNodeModel, IPeakDetectorCSDSettings> {
 
 	private String id;
 
@@ -46,7 +46,7 @@ public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory
 
 		KnimeNodeDocument doc = KnimeNodeDocument.Factory.newInstance();
 		try {
-			IPeakDetectorSupplier filterSupplier = PeakDetektorsSupport.getSupplier(id);
+			IPeakDetectorSupplier filterSupplier = PeakDetektorsSupport.getSupplierMSD(id);
 			KnimeNode node = doc.addNewKnimeNode();
 			node.setIcon("./peakdetectors.png");
 			node.setType(KnimeNode.Type.MANIPULATOR);
@@ -77,7 +77,7 @@ public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory
 	}
 
 	@Override
-	public PeakDetectorsNodeModel createNodeModel(SettingsObjectWrapper<IPeakDetectorMSDSettings> settingsObjectWrapper) {
+	public PeakDetectorsNodeModel createNodeModel(SettingsObjectWrapper<IPeakDetectorCSDSettings> settingsObjectWrapper) {
 
 		return new PeakDetectorsNodeModel(id, settingsObjectWrapper);
 	}
@@ -89,12 +89,12 @@ public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory
 	}
 
 	@Override
-	protected SettingsDialogFactory<IPeakDetectorMSDSettings> createSettingsDialogFactory() {
+	protected SettingsDialogFactory<IPeakDetectorCSDSettings> createSettingsDialogFactory() {
 
-		JacksonPropertyDialogFactory<IPeakDetectorMSDSettings> factory = new JacksonPropertyDialogFactory<>();
-		Class<? extends IPeakDetectorMSDSettings> settingsClass;
+		JacksonPropertyDialogFactory<IPeakDetectorCSDSettings> factory = new JacksonPropertyDialogFactory<>();
+		Class<? extends IPeakDetectorCSDSettings> settingsClass;
 		try {
-			settingsClass = PeakDetektorsSupport.getSupplier(id).getPeakDetectorSettingsClass();
+			settingsClass = PeakDetektorsSupport.getSupplierMSD(id).getPeakDetectorSettingsClass();
 			if(settingsClass == null) {
 				throw new IllegalStateException("Peak detectors settings class for detector id '" + id + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}

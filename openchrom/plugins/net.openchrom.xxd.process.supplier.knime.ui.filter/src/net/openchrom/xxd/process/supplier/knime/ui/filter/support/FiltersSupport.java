@@ -50,16 +50,34 @@ public class FiltersSupport {
 	public static List<String> getIDsFilterChromatogramCSD() throws NoChromatogramFilterSupplierAvailableException {
 
 		List<String> ids = new ArrayList<>();
-		ids.addAll(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds());
-		ids.addAll(ChromatogramFilterCSD.getChromatogramFilterSupport().getAvailableFilterIds());
+		try {
+			ids.addAll(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds());
+		} catch(NoChromatogramFilterSupplierAvailableException e) {
+		}
+		try {
+			ids.addAll(ChromatogramFilterCSD.getChromatogramFilterSupport().getAvailableFilterIds());
+		} catch(NoChromatogramFilterSupplierAvailableException e) {
+		}
+		if(ids.isEmpty()) {
+			throw new NoChromatogramFilterSupplierAvailableException();
+		}
 		return ids;
 	}
 
 	public static List<String> getIDsFilterChromatogramMSD() throws NoChromatogramFilterSupplierAvailableException {
 
 		List<String> ids = new ArrayList<>();
-		ids.addAll(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds());
-		ids.addAll(ChromatogramFilterMSD.getChromatogramFilterSupport().getAvailableFilterIds());
+		try {
+			ids.addAll(ChromatogramFilter.getChromatogramFilterSupport().getAvailableFilterIds());
+		} catch(NoChromatogramFilterSupplierAvailableException e) {
+		}
+		try {
+			ids.addAll(ChromatogramFilterMSD.getChromatogramFilterSupport().getAvailableFilterIds());
+		} catch(NoChromatogramFilterSupplierAvailableException e) {
+		}
+		if(ids.isEmpty()) {
+			throw new NoChromatogramFilterSupplierAvailableException();
+		}
 		return ids;
 	}
 

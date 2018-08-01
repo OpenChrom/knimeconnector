@@ -31,13 +31,28 @@
             icon="icons/msd.png"
             description="Mass Spectrum Detector"
             path="/openchrom">
-      </category>      
+      </category>
+      <category
+            level-id="csd"
+            name="CSD"
+            icon="icons/csd.png"
+            description="Detector"
+            path="/openchrom">
+      </category>           
       <category
             level-id="io"
             name="I/O"
             icon="icons/io.png"
             description="Data input and output of various file formats."
             path="/openchrom/msd">
+      </category>
+      
+      <category
+            level-id="io"
+            name="I/O"
+            icon="icons/io.png"
+            description="Data input and output of various file formats."
+            path="/openchrom/csd">
       </category>
       <category
             level-id="da"
@@ -52,6 +67,48 @@
             icon="icons/visualization.png"
             description="Data visualization"
             path="/openchrom">
+      </category>
+     	<category
+            level-id="detector"
+            name="Peak Detectors"
+            icon="icons/peakdetectors.png"
+            description="Peak Detectors"
+            path="/openchrom/csd">
+      </category>
+      <category
+            level-id="filter"
+            name="Filter"
+            icon="icons/filter.png"
+            description="Filter"
+            path="/openchrom/csd">
+      </category>
+      <category
+      		level-id="identifier"
+      		name="Identifier"
+      		icon="icons/identifier.png"
+      		description="Identifier"
+      		path="/openchrom/csd">
+      </category>
+      <category
+      		level-id="integrator"
+      		name="Peak Integrator"
+      		icon="icons/peakIntegrators.png"
+      		description="Peak Integrator"
+      		path="/openchrom/csd">
+      </category>   
+      <category
+            level-id="translator"
+            name="Translator"
+            icon="icons/translator.png"
+            description="Translator"
+            path="/openchrom/csd">
+      </category>  
+      <category
+      		level-id="process_control"
+      		name="Process Control"
+      		icon="icons/ProcessControl.gif"
+      		description="Process Control"
+      		path="/openchrom/csd">
       </category>
       <category
             level-id="detector"
@@ -150,12 +207,20 @@
    <extension
          point="org.knime.workbench.repository.nodes">
       <node
-            category-path="/openchrom/msd/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramReaderMSDNodeFactory">
+            category-path="/openchrom/csd/io"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.csd.ChromatogramReaderNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/csd/io"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.csd.ChromatogramExportNodeFactory">
       </node>
       <node
             category-path="/openchrom/msd/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramExportMSDNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramReaderNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/msd/io"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramExportNodeFactory">
       </node>
       <node
             category-path="/openchrom/msd/da"
@@ -187,11 +252,19 @@
       </node>
       <node
       		category-path="/openchrom/msd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerMSDStartNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerStartNodeFactory">
       </node>    
       <node
       		category-path="/openchrom/msd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerMSDEndNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerEndNodeFactory">
+      </node>
+      <node
+      		category-path="/openchrom/csd/process_control"
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerStartNodeFactory">
+      </node>    
+      <node
+      		category-path="/openchrom/csd/process_control"
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerEndNodeFactory">
       </node>
        <node
             category-path="/openchrom/nmr/io"

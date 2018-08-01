@@ -46,7 +46,7 @@ public class PeakIntegratorsNodeFactory extends DialogGenerationDynamicNodeFacto
 
 		KnimeNodeDocument doc = KnimeNodeDocument.Factory.newInstance();
 		try {
-			IPeakIntegratorSupplier supplier = PeakIntegratorsSupport.getSupplier(id);
+			IPeakIntegratorSupplier supplier = PeakIntegratorsSupport.getSupplierMSD(id);
 			KnimeNode node = doc.addNewKnimeNode();
 			node.setIcon("./peakIntegrators.png");
 			node.setType(KnimeNode.Type.MANIPULATOR);
@@ -93,7 +93,7 @@ public class PeakIntegratorsNodeFactory extends DialogGenerationDynamicNodeFacto
 		IntegratorPropertyDialogFactory<IPeakIntegrationSettings> factory = new IntegratorPropertyDialogFactory<>();
 		Class<? extends IPeakIntegrationSettings> setingClass;
 		try {
-			setingClass = PeakIntegratorsSupport.getSupplier(id).getPeakIntegrationSettingsClass();
+			setingClass = PeakIntegratorsSupport.getSupplierMSD(id).getPeakIntegrationSettingsClass();
 			if(setingClass == null) {
 				throw new IllegalStateException("Peak integrator settings class for filter id '" + id + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}
