@@ -11,9 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.identifier.msd;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.core.ISupplier;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.exceptions.NoIdentifierAvailableException;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
+import org.eclipse.chemclipse.model.exceptions.NoIdentifierAvailableException;
+import org.eclipse.chemclipse.model.identifier.core.ISupplier;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeDescription;
 import org.knime.core.node.NodeDescription27Proxy;
@@ -33,7 +33,7 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenera
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.model.IdentifierPropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.support.IdentifierSupport;
 
-public class PeakIndetifierNodeFactory extends DialogGenerationDynamicNodeFactory<PeakIndetifierNodeModel, IPeakIdentifierSettings> {
+public class PeakIndetifierNodeFactory extends DialogGenerationDynamicNodeFactory<PeakIndetifierNodeModel, IPeakIdentifierSettingsMSD> {
 
 	private String indetifierId;
 
@@ -85,10 +85,10 @@ public class PeakIndetifierNodeFactory extends DialogGenerationDynamicNodeFactor
 	}
 
 	@Override
-	protected SettingsDialogFactory<IPeakIdentifierSettings> createSettingsDialogFactory() {
+	protected SettingsDialogFactory<IPeakIdentifierSettingsMSD> createSettingsDialogFactory() {
 
-		IdentifierPropertyDialogFactory<IPeakIdentifierSettings> factory = new IdentifierPropertyDialogFactory<>();
-		Class<? extends IPeakIdentifierSettings> setingClass;
+		IdentifierPropertyDialogFactory<IPeakIdentifierSettingsMSD> factory = new IdentifierPropertyDialogFactory<>();
+		Class<? extends IPeakIdentifierSettingsMSD> setingClass;
 		try {
 			setingClass = IdentifierSupport.getSupplierMSD(indetifierId).getIdentifierSettingsClass();
 			if(setingClass == null) {
@@ -102,7 +102,7 @@ public class PeakIndetifierNodeFactory extends DialogGenerationDynamicNodeFactor
 	}
 
 	@Override
-	public PeakIndetifierNodeModel createNodeModel(SettingsObjectWrapper<IPeakIdentifierSettings> settingsObjectWrapper) {
+	public PeakIndetifierNodeModel createNodeModel(SettingsObjectWrapper<IPeakIdentifierSettingsMSD> settingsObjectWrapper) {
 
 		return new PeakIndetifierNodeModel(indetifierId, settingsObjectWrapper);
 	}

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
@@ -38,12 +38,12 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectW
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.support.IdentifierSupport;
 
-public class PeakIndetifierNodeModel extends DialogGenerationNodeModel<IPeakIdentifierSettings> {
+public class PeakIndetifierNodeModel extends DialogGenerationNodeModel<IPeakIdentifierSettingsMSD> {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(PeakIndetifierNodeModel.class);
 	private String id;
 
-	protected PeakIndetifierNodeModel(String id, SettingsObjectWrapper<IPeakIdentifierSettings> settingsObject) {
+	protected PeakIndetifierNodeModel(String id, SettingsObjectWrapper<IPeakIdentifierSettingsMSD> settingsObject) {
 		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, settingsObject);
 		this.id = id;
 	}

@@ -13,10 +13,10 @@ package net.openchrom.xxd.process.supplier.knime.ui.identifier.support;
 
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.exceptions.NoIdentifierAvailableException;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.IPeakIdentifierSupplier;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifier;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.IPeakIdentifierSupplierMSD;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifierMSD;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
+import org.eclipse.chemclipse.model.exceptions.NoIdentifierAvailableException;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -30,7 +30,7 @@ public class IdentifierSupport {
 	private static boolean containsIdentifierMSDId(String id) {
 
 		try {
-			return PeakIdentifier.getPeakIdentifierSupport().getAvailableIdentifierIds().contains(id);
+			return PeakIdentifierMSD.getPeakIdentifierSupport().getAvailableIdentifierIds().contains(id);
 		} catch(NoIdentifierAvailableException e) {
 			return false;
 		}
@@ -38,7 +38,7 @@ public class IdentifierSupport {
 
 	public static List<String> getIDsPeakIdentifierMSD() throws NoIdentifierAvailableException {
 
-		return PeakIdentifier.getPeakIdentifierSupport().getAvailableIdentifierIds();
+		return PeakIdentifierMSD.getPeakIdentifierSupport().getAvailableIdentifierIds();
 	}
 
 	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProceessingIdentifierMSD(String id) throws NoIdentifierAvailableException {
@@ -50,15 +50,15 @@ public class IdentifierSupport {
 		}
 	}
 
-	public static IPeakIdentifierSupplier getSupplierMSD(String identifierId) throws NoIdentifierAvailableException {
+	public static IPeakIdentifierSupplierMSD getSupplierMSD(String identifierId) throws NoIdentifierAvailableException {
 
-		return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(identifierId);
+		return PeakIdentifierMSD.getPeakIdentifierSupport().getIdentifierSupplier(identifierId);
 	}
 
-	public static IProcessingInfo identifyMSD(List<IPeakMSD> peaks, IPeakIdentifierSettings identifierSettings, String identifierId, IProgressMonitor monitor) throws NoIdentifierAvailableException {
+	public static IProcessingInfo identifyMSD(List<IPeakMSD> peaks, IPeakIdentifierSettingsMSD identifierSettings, String identifierId, IProgressMonitor monitor) throws NoIdentifierAvailableException {
 
 		if(containsIdentifierMSDId(identifierId)) {
-			return PeakIdentifier.identify(peaks, identifierSettings, identifierId, monitor);
+			return PeakIdentifierMSD.identify(peaks, identifierSettings, identifierId, monitor);
 		} else {
 			throw new NoIdentifierAvailableException();
 		}

@@ -14,16 +14,16 @@ package net.openchrom.xxd.process.supplier.knime.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.exceptions.NoIdentifierAvailableException;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifier;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifierMSD;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
+import org.eclipse.chemclipse.model.exceptions.NoIdentifierAvailableException;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionProcessing<IPeakIdentifierSettings, IChromatogramSelectionMSD> {
+public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionProcessing<IPeakIdentifierSettingsMSD, IChromatogramSelectionMSD> {
 
 	/**
 	 *
@@ -39,20 +39,20 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 	}
 
 	@Override
-	protected Class<? extends IPeakIdentifierSettings> getSettingsClass(String id) throws Exception {
+	protected Class<? extends IPeakIdentifierSettingsMSD> getSettingsClass(String id) throws Exception {
 
-		return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(id).getIdentifierSettingsClass();
+		return PeakIdentifierMSD.getPeakIdentifierSupport().getIdentifierSupplier(id).getIdentifierSettingsClass();
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakIdentifierSettings settings, IProgressMonitor monitor) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakIdentifierSettingsMSD settings, IProgressMonitor monitor) throws Exception {
 
 		List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection);
 		List<IPeakMSD> peakList = new ArrayList<IPeakMSD>();
 		for(IChromatogramPeakMSD chromatogramPeak : peaks) {
 			peakList.add(chromatogramPeak);
 		}
-		return PeakIdentifier.identify(peakList, settings, id, monitor);
+		return PeakIdentifierMSD.identify(peakList, settings, id, monitor);
 	}
 
 	@Override
@@ -63,14 +63,14 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 		for(IChromatogramPeakMSD chromatogramPeak : peaks) {
 			peakList.add(chromatogramPeak);
 		}
-		return PeakIdentifier.identify(peakList, id, monitor);
+		return PeakIdentifierMSD.identify(peakList, id, monitor);
 	}
 
 	@Override
 	public String getName() {
 
 		try {
-			return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(getId()).getIdentifierName();
+			return PeakIdentifierMSD.getPeakIdentifierSupport().getIdentifierSupplier(getId()).getIdentifierName();
 		} catch(NoIdentifierAvailableException e) {
 			// TODO:
 		}
@@ -81,7 +81,7 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 	public String getDescription() {
 
 		try {
-			return PeakIdentifier.getPeakIdentifierSupport().getIdentifierSupplier(getId()).getDescription();
+			return PeakIdentifierMSD.getPeakIdentifierSupport().getIdentifierSupplier(getId()).getDescription();
 		} catch(NoIdentifierAvailableException e) {
 			// TODO:
 		}

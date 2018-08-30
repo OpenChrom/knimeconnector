@@ -11,8 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.identifier.model;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.GeneratedIdentifierSettings;
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IIdentifierSettings;
+import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IIdentifierSettingsMSD;
+import org.eclipse.chemclipse.model.identifier.GeneratedIdentifierSettings;
 import org.knime.core.node.util.ButtonGroupEnumInterface;
 
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
@@ -21,7 +21,7 @@ import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.Proper
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.PropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.PropertyProvider;
 
-public class IdentifierPropertyDialogFactory<SO extends IIdentifierSettings> extends PropertyDialogFactory<SO> {
+public class IdentifierPropertyDialogFactory<SO extends IIdentifierSettingsMSD> extends PropertyDialogFactory<SO> {
 
 	private final String PENALITY_CALCULATION = "Force Match Quality Penalty calculation";
 	private final String RETENTION_TIME_WINDOW = "Retention Time Window (minutes)";
@@ -52,7 +52,7 @@ public class IdentifierPropertyDialogFactory<SO extends IIdentifierSettings> ext
 
 		GeneratedIdentifierSettings genereteIdentifierSettings = settingsObjectClass.getAnnotation(GeneratedIdentifierSettings.class);
 		if(genereteIdentifierSettings != null && genereteIdentifierSettings.isGenerated()) {
-			String[][] penalityCalculations = IIdentifierSettings.PENALTY_CALCULATION_OPTIONS;
+			String[][] penalityCalculations = IIdentifierSettingsMSD.PENALTY_CALCULATION_OPTIONS;
 			ButtonGroupEnumInterface[] buttons = new ButtonGroupEnumInterface[penalityCalculations.length];
 			int i = 0;
 			for(String[] penalityCalculation : penalityCalculations) {
