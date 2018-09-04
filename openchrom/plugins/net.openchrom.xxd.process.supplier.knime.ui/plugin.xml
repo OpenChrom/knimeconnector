@@ -260,11 +260,11 @@
       </node>
       <node
       		category-path="/openchrom/csd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerStartNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.csd.ProcessControllerStartNodeFactory">
       </node>    
       <node
       		category-path="/openchrom/csd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerEndNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.csd.ProcessControllerEndNodeFactory">
       </node>
        <node
             category-path="/openchrom/nmr/io"
