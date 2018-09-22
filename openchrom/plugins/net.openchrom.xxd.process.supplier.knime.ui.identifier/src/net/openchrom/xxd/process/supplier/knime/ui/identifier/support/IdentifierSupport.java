@@ -13,16 +13,24 @@ package net.openchrom.xxd.process.supplier.knime.ui.identifier.support;
 
 import java.util.List;
 
+import org.eclipse.chemclipse.chromatogram.csd.identifier.peak.IPeakIdentifierSupplierCSD;
+import org.eclipse.chemclipse.chromatogram.csd.identifier.peak.PeakIdentifierCSD;
+import org.eclipse.chemclipse.chromatogram.csd.identifier.settings.IPeakIdentifierSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.IPeakIdentifierSupplierMSD;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.peak.PeakIdentifierMSD;
 import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
+import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
+import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.model.exceptions.NoIdentifierAvailableException;
 import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
+import net.openchrom.xxd.process.supplier.knime.model.ProcessingPeakIdentifierCSD;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingPeakIdentifierMSD;
 
 public class IdentifierSupport {
@@ -41,10 +49,14 @@ public class IdentifierSupport {
 		return PeakIdentifierMSD.getPeakIdentifierSupport().getAvailableIdentifierIds();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProceessingIdentifierMSD(String id) throws NoIdentifierAvailableException {
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProceessingIdentifierMSD(String id, IPeakIdentifierSettingsMSD settings) throws NoIdentifierAvailableException {
 
 		if(containsIdentifierMSDId(id)) {
-			return new ProcessingPeakIdentifierMSD(id);
+			try {
+				return new ProcessingPeakIdentifierMSD(id, settings);
+			} catch(JsonProcessingException e) {
+				throw new NoIdentifierAvailableException();
+			}
 		} else {
 			throw new NoIdentifierAvailableException();
 		}
@@ -59,6 +71,47 @@ public class IdentifierSupport {
 
 		if(containsIdentifierMSDId(identifierId)) {
 			return PeakIdentifierMSD.identify(peaks, identifierSettings, identifierId, monitor);
+		} else {
+			throw new NoIdentifierAvailableException();
+		}
+	}
+
+	private static boolean containsIdentifierCSDId(String id) {
+
+		try {
+			return PeakIdentifierCSD.getPeakIdentifierSupport().getAvailableIdentifierIds().contains(id);
+		} catch(NoIdentifierAvailableException e) {
+			return false;
+		}
+	}
+
+	public static List<String> getIDsPeakIdentifierCSD() throws NoIdentifierAvailableException {
+
+		return PeakIdentifierCSD.getPeakIdentifierSupport().getAvailableIdentifierIds();
+	}
+
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProceessingIdentifierCSD(String id, IPeakIdentifierSettingsCSD settings) throws NoIdentifierAvailableException {
+
+		if(containsIdentifierCSDId(id)) {
+			try {
+				return new ProcessingPeakIdentifierCSD(id, settings);
+			} catch(JsonProcessingException e) {
+				throw new NoIdentifierAvailableException();
+			}
+		} else {
+			throw new NoIdentifierAvailableException();
+		}
+	}
+
+	public static IPeakIdentifierSupplierCSD getSupplierCSD(String identifierId) throws NoIdentifierAvailableException {
+
+		return PeakIdentifierCSD.getPeakIdentifierSupport().getIdentifierSupplier(identifierId);
+	}
+
+	public static IProcessingInfo identifyCSD(List<IPeakCSD> peaks, IPeakIdentifierSettingsCSD identifierSettings, String identifierId, IProgressMonitor monitor) throws NoIdentifierAvailableException {
+
+		if(containsIdentifierMSDId(identifierId)) {
+			return PeakIdentifierCSD.identify(peaks, identifierSettings, identifierId, monitor);
 		} else {
 			throw new NoIdentifierAvailableException();
 		}

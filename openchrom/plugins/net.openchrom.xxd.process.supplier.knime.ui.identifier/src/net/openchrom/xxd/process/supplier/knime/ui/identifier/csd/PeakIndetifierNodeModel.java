@@ -9,17 +9,17 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.identifier.msd;
+package net.openchrom.xxd.process.supplier.knime.ui.identifier.csd;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.chemclipse.chromatogram.msd.identifier.settings.IPeakIdentifierSettingsMSD;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
-import org.eclipse.chemclipse.msd.model.core.IPeakMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.chromatogram.csd.identifier.settings.IPeakIdentifierSettingsCSD;
+import org.eclipse.chemclipse.csd.model.core.IChromatogramPeakCSD;
+import org.eclipse.chemclipse.csd.model.core.IPeakCSD;
+import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.chemclipse.processing.ui.support.ProcessingInfoViewSupport;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -32,51 +32,51 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObject;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObjectSpec;
 import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.support.IdentifierSupport;
 
-public class PeakIndetifierNodeModel extends DialogGenerationNodeModel<IPeakIdentifierSettingsMSD> {
+public class PeakIndetifierNodeModel extends DialogGenerationNodeModel<IPeakIdentifierSettingsCSD> {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(PeakIndetifierNodeModel.class);
 	private String id;
 
-	protected PeakIndetifierNodeModel(String id, SettingsObjectWrapper<IPeakIdentifierSettingsMSD> settingsObject) {
+	protected PeakIndetifierNodeModel(String id, SettingsObjectWrapper<IPeakIdentifierSettingsCSD> settingsObject) {
 
-		super(new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionMSDPortObject.TYPE}, settingsObject);
+		super(new PortType[]{ChromatogramSelectionCSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionCSDPortObject.TYPE}, settingsObject);
 		this.id = id;
 	}
 
 	@Override
 	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
 
-		return new PortObjectSpec[]{new ChromatogramSelectionMSDPortObjectSpec()};
+		return new PortObjectSpec[]{new ChromatogramSelectionCSDPortObjectSpec()};
 	}
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		ChromatogramSelectionMSDPortObject chromatogramSelectionPortObject = (ChromatogramSelectionMSDPortObject)inObjects[0];
-		ChromatogramSelectionMSDPortObjectSpec chromatogramSelectionMSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
+		ChromatogramSelectionCSDPortObject chromatogramSelectionPortObject = (ChromatogramSelectionCSDPortObject)inObjects[0];
+		ChromatogramSelectionCSDPortObjectSpec chromatogramSelectionCSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
 		/*
 		 * Apply the filter if a chromatogram selection is given at port 0.
 		 */
-		if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
+		if(chromatogramSelectionCSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionCSDPortObjectSpec.MODE_IMMEDIATE_PROCESSING)) {
 			logger.info("Identify Peaks");
-			IChromatogramSelectionMSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionMSD();
-			List<IChromatogramPeakMSD> peaks = chromatogramSelection.getChromatogramMSD().getPeaks(chromatogramSelection);
-			List<IPeakMSD> peakList = new ArrayList<IPeakMSD>();
-			for(IChromatogramPeakMSD chromatogramPeak : peaks) {
+			IChromatogramSelectionCSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionCSD();
+			List<IChromatogramPeakCSD> peaks = chromatogramSelection.getChromatogramCSD().getPeaks(chromatogramSelection);
+			List<IPeakCSD> peakList = new ArrayList<IPeakCSD>();
+			for(IChromatogramPeakCSD chromatogramPeak : peaks) {
 				peakList.add(chromatogramPeak);
 			}
-			IProcessingInfo processingInfo = IdentifierSupport.identifyMSD(peakList, getSettingsObject(), id, new NullProgressMonitor());
+			IProcessingInfo processingInfo = IdentifierSupport.identifyCSD(peakList, getSettingsObject(), id, new NullProgressMonitor());
 			chromatogramSelectionPortObject.chromatogramSelectionUpdate();
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
-		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
+		} else if(chromatogramSelectionCSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionCSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			logger.info("Add the peak identifier");
-			chromatogramSelectionPortObject.addProcessings(IdentifierSupport.getProceessingIdentifierMSD(id, getSettingsObject()));
+			chromatogramSelectionPortObject.addProcessings(IdentifierSupport.getProceessingIdentifierCSD(id, getSettingsObject()));
 		}
 		/*
 		 * Store applied chromatogram filter and it's settings

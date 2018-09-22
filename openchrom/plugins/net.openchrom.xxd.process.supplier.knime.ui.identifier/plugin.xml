@@ -8,4 +8,13 @@
             factory-class="net.openchrom.xxd.process.supplier.knime.ui.identifier.msd.PeakIndetifierNodeSetFactory">
       </nodeset>
    </extension>
+   
+   <extension
+         point="org.knime.workbench.repository.nodesets">
+      <nodeset
+            default-category-icon="icons/identifier.png"
+            deprecated="false"
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.identifier.csd.PeakIndetifierNodeSetFactory">
+      </nodeset>
+   </extension>
 </plugin>

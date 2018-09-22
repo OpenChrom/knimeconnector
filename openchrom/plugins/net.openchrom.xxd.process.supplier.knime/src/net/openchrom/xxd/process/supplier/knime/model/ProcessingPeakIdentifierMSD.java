@@ -23,6 +23,8 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionProcessing<IPeakIdentifierSettingsMSD, IChromatogramSelectionMSD> {
 
 	/**
@@ -31,11 +33,18 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 	private static final long serialVersionUID = -1128763603573631815L;
 
 	protected ProcessingPeakIdentifierMSD() {
+
 		super();
 	}
 
 	public ProcessingPeakIdentifierMSD(String id) {
+
 		super(id);
+	}
+
+	public ProcessingPeakIdentifierMSD(String id, IPeakIdentifierSettingsMSD settings) throws JsonProcessingException {
+
+		super(id, settings);
 	}
 
 	@Override
