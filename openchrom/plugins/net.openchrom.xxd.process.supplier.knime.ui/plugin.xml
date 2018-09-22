@@ -144,7 +144,15 @@
             icon="icons/translator.png"
             description="Translator"
             path="/openchrom/msd">
-      </category>  
+      </category>
+      <category
+            level-id="peakquantifier"
+            name="Peak Quantifiers"
+            icon="icons/peakQuantifiers.gif"
+            description="Peak Quantifiers"
+            path="/openchrom/msd">
+      </category>
+        
       <category
       		level-id="process_control"
       		name="Process Control"
