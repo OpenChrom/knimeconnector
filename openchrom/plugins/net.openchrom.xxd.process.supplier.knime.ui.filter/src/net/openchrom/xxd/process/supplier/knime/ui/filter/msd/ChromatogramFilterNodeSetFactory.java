@@ -45,7 +45,7 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 			filterIds = new ArrayList<>();
 			filterIds.addAll(FiltersSupport.getIDsFilterChromatogramMSD().stream().filter(f -> {
 				try {
-					Class<? extends IChromatogramFilterSettings> filterSettingsClass = FiltersSupport.getSupplier(f).getFilterSettingsClass();
+					Class<? extends IChromatogramFilterSettings> filterSettingsClass = FiltersSupport.getSupplier(f).getSettingsClass();
 					if(filterSettingsClass == null) {
 						LOGGER.warn("Filter settings class for filter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;

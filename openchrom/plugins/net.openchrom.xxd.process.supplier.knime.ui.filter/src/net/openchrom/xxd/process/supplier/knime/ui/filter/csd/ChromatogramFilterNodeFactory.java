@@ -100,7 +100,7 @@ public class ChromatogramFilterNodeFactory extends DialogGenerationDynamicNodeFa
 		JacksonPropertyDialogFactory<IChromatogramFilterSettings> factory = new JacksonPropertyDialogFactory<>();
 		Class<? extends IChromatogramFilterSettings> filterSettingsClass;
 		try {
-			filterSettingsClass = FiltersSupport.getSupplier(filterId).getFilterSettingsClass();
+			filterSettingsClass = FiltersSupport.getSupplier(filterId).getSettingsClass();
 			if(filterSettingsClass == null) {
 				throw new IllegalStateException("Filter settings class for filter id '" + filterId + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}

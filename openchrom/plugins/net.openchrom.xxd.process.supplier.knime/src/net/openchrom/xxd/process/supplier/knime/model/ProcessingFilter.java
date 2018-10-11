@@ -42,7 +42,7 @@ public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<IC
 	@Override
 	protected Class<? extends IChromatogramFilterSettings> getSettingsClass(String id) throws Exception {
 
-		return ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(id).getFilterSettingsClass();
+		return ChromatogramFilter.getChromatogramFilterSupport().getFilterSupplier(id).getSettingsClass();
 	}
 
 	@Override
