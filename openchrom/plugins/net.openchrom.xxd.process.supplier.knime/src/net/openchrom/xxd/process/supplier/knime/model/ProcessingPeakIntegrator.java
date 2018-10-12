@@ -42,7 +42,7 @@ public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProce
 	@Override
 	protected Class<? extends IPeakIntegrationSettings> getSettingsClass(String id) throws Exception {
 
-		return PeakIntegrator.getPeakIntegratorSupport().getIntegratorSupplier(id).getPeakIntegrationSettingsClass();
+		return PeakIntegrator.getPeakIntegratorSupport().getIntegratorSupplier(id).getSettingsClass();
 	}
 
 	@Override

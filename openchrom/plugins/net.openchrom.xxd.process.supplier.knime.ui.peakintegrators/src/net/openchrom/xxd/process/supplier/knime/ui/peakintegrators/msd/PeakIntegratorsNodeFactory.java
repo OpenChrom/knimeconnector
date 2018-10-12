@@ -93,7 +93,7 @@ public class PeakIntegratorsNodeFactory extends DialogGenerationDynamicNodeFacto
 		IntegratorPropertyDialogFactory<IPeakIntegrationSettings> factory = new IntegratorPropertyDialogFactory<>();
 		Class<? extends IPeakIntegrationSettings> setingClass;
 		try {
-			setingClass = PeakIntegratorsSupport.getSupplierMSD(id).getPeakIntegrationSettingsClass();
+			setingClass = PeakIntegratorsSupport.getSupplierMSD(id).getSettingsClass();
 			if(setingClass == null) {
 				throw new IllegalStateException("Peak integrator settings class for filter id '" + id + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}

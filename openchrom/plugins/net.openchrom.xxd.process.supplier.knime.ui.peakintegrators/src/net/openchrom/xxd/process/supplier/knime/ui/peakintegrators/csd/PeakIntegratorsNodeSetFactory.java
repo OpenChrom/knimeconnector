@@ -39,7 +39,7 @@ public class PeakIntegratorsNodeSetFactory implements NodeSetFactory {
 			ids = new ArrayList<>();
 			ids.addAll(PeakIntegratorsSupport.getIdsPeakIntegratorsCSD().stream().filter(f -> {
 				try {
-					Class<? extends IPeakIntegrationSettings> settingClass = PeakIntegratorsSupport.getSupplierCSD(f).getPeakIntegrationSettingsClass();
+					Class<? extends IPeakIntegrationSettings> settingClass = PeakIntegratorsSupport.getSupplierCSD(f).getSettingsClass();
 					if(settingClass == null) {
 						LOGGER.warn("Peak integratoss settings class for interatort id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;
