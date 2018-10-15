@@ -33,10 +33,10 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
-import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
+import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObject;
+import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObjectSpec;
 import net.openchrom.xxd.process.supplier.knime.ui.peakquantifiers.support.PeakQuantifiersSupport;
 
 public class PeakQuantifiersNodeModel extends DialogGenerationNodeModel<IPeakQuantifierSettings> {
