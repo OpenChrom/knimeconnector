@@ -17,11 +17,11 @@ import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.II
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
 import org.eclipse.chemclipse.support.util.IonSettingUtil;
 
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonSettingObjectSupplier;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.PropertyCollector;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.PropertyDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.JacksonSettingObjectSupplier;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyCollector;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyDialogFactory;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyProvider;
 
 public class IntegratorPropertyDialogFactory<SO extends IIntegrationSettings> extends PropertyDialogFactory<SO> {
 
@@ -32,6 +32,7 @@ public class IntegratorPropertyDialogFactory<SO extends IIntegrationSettings> ex
 	private SettingObjectSupplier<SO> settingObjectSupplier;
 
 	public IntegratorPropertyDialogFactory() {
+
 		settingObjectSupplier = new JacksonSettingObjectSupplier<SO>();
 	}
 

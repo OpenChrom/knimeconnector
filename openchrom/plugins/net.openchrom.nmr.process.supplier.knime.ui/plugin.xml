@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+   <extension
+         point="org.knime.workbench.repository.categories">
+      <category
+            level-id="nmr"
+            name="NMR"
+            icon="icons/nmr.png"
+            description="Nuclear Magnetic Resonance Spectroscopy"
+            path="/openchrom">
+      </category>      
+      <category
+            level-id="io"
+            name="I/O"
+            icon="icons/io.png"
+            description="Data input and output of various file formats."
+            path="/openchrom/nmr">
+      </category>
+      <category
+            level-id="translator"
+            name="Translator"
+            icon="icons/translator.png"
+            description="Translator"
+            path="/openchrom/nmr">
+      </category>		                     
+   </extension>
+   
+   <extension
+         point="org.knime.workbench.repository.nodes">
+       <node
+            category-path="/openchrom/nmr/io"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.io.MeasurementReader2TableNMRNodeFactory">
+      </node>
+                         
+   </extension>
+</plugin>

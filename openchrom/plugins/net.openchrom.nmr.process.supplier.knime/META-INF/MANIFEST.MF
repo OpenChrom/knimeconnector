@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Knime
+Bundle-SymbolicName: net.openchrom.nmr.process.supplier.knime;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.nmr.process.supplier.knime.Activator
+Bundle-Vendor: OpenChrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.chemclipse.nmr.model,
+ org.eclipse.chemclipse.model,
+ org.knime.core,
+ net.openchrom.process.supplier.knime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: net.openchrom.nmr.process.supplier.knime.portobject,
+ net.openchrom.nmr.process.supplier.knime.table

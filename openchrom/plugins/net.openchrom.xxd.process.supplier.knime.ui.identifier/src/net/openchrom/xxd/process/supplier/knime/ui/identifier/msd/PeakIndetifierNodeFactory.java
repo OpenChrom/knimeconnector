@@ -27,9 +27,9 @@ import org.knime.node2012.KnimeNodeDocument.KnimeNode;
 import org.knime.node2012.OutPortDocument.OutPort;
 import org.knime.node2012.PortsDocument.Ports;
 
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
-import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationDynamicNodeFactory;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.process.supplier.knime.ui.dialoggeneration.DialogGenerationDynamicNodeFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.model.IdentifierPropertyDialogFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.identifier.support.IdentifierSupport;
 

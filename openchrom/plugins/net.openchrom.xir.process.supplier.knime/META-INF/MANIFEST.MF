@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Knime
+Bundle-SymbolicName: net.openchrom.xir.process.supplier.knime;singleton:=true
+Bundle-Version: 1.4.0.qualifier
+Bundle-Activator: net.openchrom.xir.process.supplier.knime.Activator
+Bundle-Vendor: Openchrom
+Require-Bundle: org.eclipse.core.runtime,
+ org.knime.core,
+ org.eclipse.chemclipse.xir.model,
+ org.eclipse.chemclipse.model,
+ net.openchrom.process.supplier.knime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: net.openchrom.xir.process.supplier.knime.portobject,
+ net.openchrom.xir.process.supplier.knime.table

@@ -35,6 +35,7 @@ public class PeakDetectorsNodeSetFactory implements NodeSetFactory {
 	private List<String> ids;
 
 	public PeakDetectorsNodeSetFactory() {
+
 		ids = new ArrayList<>();
 		try {
 			ids.addAll(PeakDetektorsSupport.getIDsPeakDectorsMSD().stream().filter(f -> {

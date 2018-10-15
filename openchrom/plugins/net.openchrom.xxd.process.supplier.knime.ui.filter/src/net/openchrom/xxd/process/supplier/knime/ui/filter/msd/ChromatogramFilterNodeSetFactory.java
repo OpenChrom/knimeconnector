@@ -41,6 +41,7 @@ public class ChromatogramFilterNodeSetFactory implements NodeSetFactory {
 	private List<String> filterIds;
 
 	public ChromatogramFilterNodeSetFactory() {
+
 		try {
 			filterIds = new ArrayList<>();
 			filterIds.addAll(FiltersSupport.getIDsFilterChromatogramMSD().stream().filter(f -> {

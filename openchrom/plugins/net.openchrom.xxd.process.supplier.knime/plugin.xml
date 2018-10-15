@@ -6,19 +6,19 @@
       <portType
             hidden="false"
             name="Chromatogram Selection (MSD)"
-            objectClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject"
-            objectSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObject$Serializer"
-            specClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec"
-            specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionMSDPortObjectSpec$Serializer">
+            objectClass="net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObject"
+            objectSerializer="net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObject$Serializer"
+            specClass="net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObjectSpec"
+            specSerializer="net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObjectSpec$Serializer">
       </portType>
       
        <portType
             hidden="false"
             name="Chromatogram Selection (CSD)"
-            objectClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObject"
-            objectSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObject$Serializer"
-            specClass="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObjectSpec"
-            specSerializer="net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObjectSpec$Serializer">
+            objectClass="net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObject"
+            objectSerializer="net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObject$Serializer"
+            specClass="net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObjectSpec"
+            specSerializer="net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObjectSpec$Serializer">
       </portType>
    </extension>
 </plugin>

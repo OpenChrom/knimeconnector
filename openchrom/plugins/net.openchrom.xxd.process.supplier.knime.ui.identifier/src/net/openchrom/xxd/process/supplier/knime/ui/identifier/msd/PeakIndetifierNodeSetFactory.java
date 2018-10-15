@@ -35,6 +35,7 @@ public class PeakIndetifierNodeSetFactory implements NodeSetFactory {
 	private List<String> ids;
 
 	public PeakIndetifierNodeSetFactory() {
+
 		List<String> ids = new ArrayList<>();
 		try {
 			ids.addAll(IdentifierSupport.getIDsPeakIdentifierMSD().stream().filter(f -> {

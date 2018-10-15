@@ -24,8 +24,6 @@ Require-Bundle: org.eclipse.chemclipse.msd.model;bundle-version="0.8.0",
  org.eclipse.chemclipse.chromatogram.csd.peak.detector,
  org.eclipse.chemclipse.chromatogram.xxd.integrator,
  org.eclipse.chemclipse.chromatogram.msd.identifier,
- org.eclipse.chemclipse.nmr.model,
- org.eclipse.chemclipse.xir.model,
  org.eclipse.chemclipse.csd.converter,
  org.knime.base,
  org.eclipse.e4.core.di;bundle-version="1.6.1",
@@ -39,12 +37,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .
 Export-Package: net.openchrom.xxd.process.supplier.knime.model,
- net.openchrom.xxd.process.supplier.knime.model.chromatogram,
- net.openchrom.xxd.process.supplier.knime.model.chromatogram.csd,
- net.openchrom.xxd.process.supplier.knime.model.chromatogram.msd,
- net.openchrom.xxd.process.supplier.knime.model.scan.nmr,
- net.openchrom.xxd.process.supplier.knime.model.scan.xir,
- net.openchrom.xxd.process.supplier.knime.model.utils,
- net.openchrom.xxd.process.supplier.knime.notifier
-Import-Package: org.eclipse.chemclipse.converter.exceptions,
- org.eclipse.chemclipse.msd.converter.io
+ net.openchrom.xxd.process.supplier.knime.model.table,
+ net.openchrom.xxd.process.supplier.knime.model.table.csd,
+ net.openchrom.xxd.process.supplier.knime.model.table.msd,
+ net.openchrom.xxd.process.supplier.knime.notifier,
+ net.openchrom.xxd.process.supplier.knime.portobject

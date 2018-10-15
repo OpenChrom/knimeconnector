@@ -8,15 +8,6 @@
       </fragment>
    </extension>
    <extension
-         point="org.eclipse.ui.preferencePages">
-      <page
-            name="KNIME Integration"
-            category="org.eclipse.chemclipse.xxd.process.ui.preferences.processPreferencePage"
-            class="net.openchrom.xxd.process.supplier.knime.ui.preferences.PreferencePage"
-            id="net.openchrom.chromatogram.xxd.process.supplier.knime.ui.preferences.preferencePage">
-      </page>
-   </extension>
-   <extension
          point="org.knime.workbench.repository.categories">
       <category
             level-id="openchrom"
@@ -216,19 +207,19 @@
          point="org.knime.workbench.repository.nodes">
       <node
             category-path="/openchrom/csd/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.csd.ChromatogramReaderNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.reader.csd.ChromatogramReaderNodeFactory">
       </node>
       <node
             category-path="/openchrom/csd/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.csd.ChromatogramExportNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.exporter.csd.ChromatogramExportNodeFactory">
       </node>
       <node
             category-path="/openchrom/msd/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramReaderNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.reader.msd.ChromatogramReaderNodeFactory">
       </node>
       <node
             category-path="/openchrom/msd/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.msd.ChromatogramExportNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.exporter.msd.ChromatogramExportNodeFactory">
       </node>
       <node
             category-path="/openchrom/msd/da"
@@ -248,39 +239,31 @@
       </node>
       <node
             category-path="/openchrom/msd/translator"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.msd.CsMsdToTableNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.scan2table.msd.ScanMSDToTableNodeFactory">
       </node>
       <node
             category-path="/openchrom/msd/translator"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.msd.TableToCsMsdNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.table2chromatogram.msd.TableToChromatogramMSDNodeFactory">
       </node>
             <node
             category-path="/openchrom/msd/translator"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.msd.PeakMsdToTableNodeFactory">
+            factory-class="net.openchrom.xxd.process.supplier.knime.ui.translator.peak2table.msd.PeakMsdToTableNodeFactory">
       </node>
       <node
       		category-path="/openchrom/msd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerStartNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.process.start.msd.ProcessControllerStartNodeFactory">
       </node>    
       <node
       		category-path="/openchrom/msd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.msd.ProcessControllerEndNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.process.end.msd.ProcessControllerEndNodeFactory">
       </node>
       <node
       		category-path="/openchrom/csd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.csd.ProcessControllerStartNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.process.start.csd.ProcessControllerStartNodeFactory">
       </node>    
       <node
       		category-path="/openchrom/csd/process_control"
-      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.processing.csd.ProcessControllerEndNodeFactory">
-      </node>
-       <node
-            category-path="/openchrom/nmr/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.nmr.MeasurementReader2TableNMRNodeFactory">
-      </node>
-       <node
-            category-path="/openchrom/xir/io"
-            factory-class="net.openchrom.xxd.process.supplier.knime.ui.io.xir.MeasurementReader2TableXIRNodeFactory">
+      		factory-class="net.openchrom.xxd.process.supplier.knime.ui.process.end.csd.ProcessControllerEndNodeFactory">
       </node>
                          
    </extension>

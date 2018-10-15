@@ -28,10 +28,10 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObject;
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramSelectionCSDPortObjectSpec;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
-import net.openchrom.xxd.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
+import net.openchrom.process.supplier.knime.ui.dialoggeneration.DialogGenerationNodeModel;
+import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObject;
+import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObjectSpec;
 import net.openchrom.xxd.process.supplier.knime.ui.filter.support.FiltersSupport;
 
 /**
@@ -46,6 +46,7 @@ public class ChromatogramFilterNodeModel extends DialogGenerationNodeModel<IChro
 	private String filterId;
 
 	ChromatogramFilterNodeModel(String filterId, SettingsObjectWrapper<IChromatogramFilterSettings> so) {
+
 		super(new PortType[]{ChromatogramSelectionCSDPortObject.TYPE}, new PortType[]{ChromatogramSelectionCSDPortObject.TYPE}, so);
 		this.filterId = filterId;
 	}

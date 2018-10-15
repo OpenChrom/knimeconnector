@@ -22,6 +22,9 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 
+import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObject;
+import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObjectSpec;
+
 public class PortObjectSupport {
 
 	public static BufferedDataTable getBufferedDataTable(PortObject[] inObjects) {
@@ -49,46 +52,6 @@ public class PortObjectSupport {
 		for(PortObjectSpec portObjectSpec : inObjects) {
 			if(portObjectSpec instanceof ChromatogramSelectionMSDPortObjectSpec) {
 				return (ChromatogramSelectionMSDPortObjectSpec)portObjectSpec;
-			}
-		}
-		return null;
-	}
-
-	public static ScanNMRPortObjectSpec getScanNMRPortObjectSpec(PortObjectSpec[] inObjects) {
-
-		for(PortObjectSpec portObjectSpec : inObjects) {
-			if(portObjectSpec instanceof ScanNMRPortObjectSpec) {
-				return (ScanNMRPortObjectSpec)portObjectSpec;
-			}
-		}
-		return null;
-	}
-
-	public static ScanNMRPortObject getScanNMRPortObject(PortObject[] inObjects) {
-
-		for(Object object : inObjects) {
-			if(object instanceof ScanNMRPortObject) {
-				return (ScanNMRPortObject)object;
-			}
-		}
-		return null;
-	}
-
-	public static ScanXIRPortObjectSpec getScanXIRPortObjectSpec(PortObjectSpec[] inObjects) {
-
-		for(PortObjectSpec portObjectSpec : inObjects) {
-			if(portObjectSpec instanceof ScanNMRPortObjectSpec) {
-				return (ScanXIRPortObjectSpec)portObjectSpec;
-			}
-		}
-		return null;
-	}
-
-	public static ScanXIRPortObject getScanXIRPortObject(PortObject[] inObjects) {
-
-		for(Object object : inObjects) {
-			if(object instanceof ScanNMRPortObject) {
-				return (ScanXIRPortObject)object;
 			}
 		}
 		return null;

@@ -35,6 +35,7 @@ public class PeakIntegratorsNodeSetFactory implements NodeSetFactory {
 	private List<String> ids;
 
 	public PeakIntegratorsNodeSetFactory() {
+
 		try {
 			ids = new ArrayList<>();
 			ids.addAll(PeakIntegratorsSupport.getIdsPeakIntegratorsMSD().stream().filter(f -> {

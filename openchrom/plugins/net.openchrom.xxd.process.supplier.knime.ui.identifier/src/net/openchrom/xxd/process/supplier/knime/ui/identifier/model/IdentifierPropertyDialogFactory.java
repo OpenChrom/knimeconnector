@@ -15,11 +15,11 @@ import org.eclipse.chemclipse.model.identifier.GeneratedIdentifierSettings;
 import org.eclipse.chemclipse.model.identifier.IIdentifierSettings;
 import org.knime.core.node.util.ButtonGroupEnumInterface;
 
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.JacksonSettingObjectSupplier;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.PropertyCollector;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.PropertyDialogFactory;
-import net.openchrom.xxd.process.supplier.knime.ui.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.JacksonSettingObjectSupplier;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyCollector;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyDialogFactory;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyProvider;
 
 public class IdentifierPropertyDialogFactory<SO extends IIdentifierSettings> extends PropertyDialogFactory<SO> {
 
