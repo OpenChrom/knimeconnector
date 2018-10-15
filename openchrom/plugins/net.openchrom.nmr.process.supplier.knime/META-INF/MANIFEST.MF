@@ -4,7 +4,7 @@ Bundle-Name: Knime
 Bundle-SymbolicName: net.openchrom.nmr.process.supplier.knime;singleton:=true
 Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.nmr.process.supplier.knime.Activator
-Bundle-Vendor: OpenChrom
+Bundle-Vendor: Openchrom
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.nmr.model,
  org.eclipse.chemclipse.model,

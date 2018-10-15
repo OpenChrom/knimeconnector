@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Ui
+Bundle-Name: Knime
 Bundle-SymbolicName: net.openchrom.xir.process.supplier.knime.ui;singleton:=true
 Bundle-Version: 1.4.0.qualifier
 Bundle-Activator: net.openchrom.xir.process.supplier.knime.ui.Activator
@@ -15,3 +15,4 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.process.supplier.knime
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Bundle-Vendor: Openchrom
