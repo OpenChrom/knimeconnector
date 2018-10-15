@@ -31,7 +31,7 @@
   
        <node
             category-path="/openchrom/xir/io"
-            factory-class="net.openchrom.xir.process.supplier.knime.ui.io.xir.MeasurementReader2TableXIRNodeFactory">
+            factory-class="net.openchrom.xir.process.supplier.knime.ui.io.MeasurementReader2TableXIRNodeFactory">
       </node>
                          
    </extension>
