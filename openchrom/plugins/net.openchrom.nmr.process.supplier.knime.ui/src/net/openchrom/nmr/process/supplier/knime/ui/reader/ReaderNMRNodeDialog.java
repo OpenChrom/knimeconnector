@@ -15,7 +15,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.io;
+package net.openchrom.nmr.process.supplier.knime.ui.reader;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -39,9 +39,9 @@ import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
  *
  * @author OpenChrom
  */
-public class MeasurementReaderNMRNodeDialog extends DefaultNodeSettingsPane {
+public class ReaderNMRNodeDialog extends DefaultNodeSettingsPane {
 
-	protected MeasurementReaderNMRNodeDialog() {
+	protected ReaderNMRNodeDialog() {
 		super();
 		IScanConverterSupport converterSupport = ScanConverterNMR.getScanConverterSupport();
 		Set<String> extensions = new HashSet<String>();
@@ -66,7 +66,7 @@ public class MeasurementReaderNMRNodeDialog extends DefaultNodeSettingsPane {
 			validExtensions = new String[]{};
 		}
 		//
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(MeasurementReaderNMRNodeModel.SETTING_NMR_FILE_INPUT, "", validExtensions);
+		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ReaderNMRNodeModel.SETTING_NMR_FILE_INPUT, "", validExtensions);
 		addDialogComponent(dialogComponentFileChooser);
 	}
 }

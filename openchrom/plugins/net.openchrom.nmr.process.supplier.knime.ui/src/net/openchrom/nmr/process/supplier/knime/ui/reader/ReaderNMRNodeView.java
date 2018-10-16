@@ -15,7 +15,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.io;
+package net.openchrom.nmr.process.supplier.knime.ui.reader;
 
 import org.knime.core.node.NodeView;
 
@@ -25,15 +25,15 @@ import org.knime.core.node.NodeView;
  *
  * @author OpenChrom
  */
-public class MeasurementReaderNMRNodeView extends NodeView<MeasurementReaderNMRNodeModel> {
+public class ReaderNMRNodeView extends NodeView<ReaderNMRNodeModel> {
 
 	/**
 	 * Creates a new view.
 	 *
 	 * @param nodeModel
-	 *            The model (class: {@link MeasurementReaderNMRNodeModel})
+	 *            The model (class: {@link ReaderNMRNodeModel})
 	 */
-	protected MeasurementReaderNMRNodeView(final MeasurementReaderNMRNodeModel nodeModel) {
+	protected ReaderNMRNodeView(final ReaderNMRNodeModel nodeModel) {
 		super(nodeModel);
 		// TODO instantiate the components of the view here.
 	}
@@ -46,7 +46,7 @@ public class MeasurementReaderNMRNodeView extends NodeView<MeasurementReaderNMRN
 
 		// TODO retrieve the new model from your nodemodel and
 		// update the view.
-		MeasurementReaderNMRNodeModel nodeModel = getNodeModel();
+		ReaderNMRNodeModel nodeModel = getNodeModel();
 		assert nodeModel != null;
 		// be aware of a possibly not executed nodeModel! The data you retrieve
 		// from your nodemodel could be null, emtpy, or invalid in any kind.

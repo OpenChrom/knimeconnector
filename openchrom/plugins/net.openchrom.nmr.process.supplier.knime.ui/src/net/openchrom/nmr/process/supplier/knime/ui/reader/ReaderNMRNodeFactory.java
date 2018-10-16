@@ -15,7 +15,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.io;
+package net.openchrom.nmr.process.supplier.knime.ui.reader;
 
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
@@ -27,7 +27,7 @@ import org.knime.core.node.NodeView;
  *
  * @author OpenChrom
  */
-public class MeasurementReaderNMRNodeFactory extends NodeFactory<MeasurementReaderNMRNodeModel> {
+public class ReaderNMRNodeFactory extends NodeFactory<ReaderNMRNodeModel> {
 
 	/**
 	 * {@inheritDoc}
@@ -35,25 +35,25 @@ public class MeasurementReaderNMRNodeFactory extends NodeFactory<MeasurementRead
 	@Override
 	public NodeDialogPane createNodeDialogPane() {
 
-		return new MeasurementReaderNMRNodeDialog();
+		return new ReaderNMRNodeDialog();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public MeasurementReaderNMRNodeModel createNodeModel() {
+	public ReaderNMRNodeModel createNodeModel() {
 
-		return new MeasurementReaderNMRNodeModel();
+		return new ReaderNMRNodeModel();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NodeView<MeasurementReaderNMRNodeModel> createNodeView(final int viewIndex, final MeasurementReaderNMRNodeModel nodeModel) {
+	public NodeView<ReaderNMRNodeModel> createNodeView(final int viewIndex, final ReaderNMRNodeModel nodeModel) {
 
-		return new MeasurementReaderNMRNodeView(nodeModel);
+		return new ReaderNMRNodeView(nodeModel);
 	}
 
 	/**

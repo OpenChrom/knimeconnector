@@ -15,7 +15,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.io;
+package net.openchrom.nmr.process.supplier.knime.ui.reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,7 +47,7 @@ import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObjectSpec
  *
  * @author OpenChrom
  */
-public class MeasurementReaderNMRNodeModel extends NodeModel {
+public class ReaderNMRNodeModel extends NodeModel {
 
 	/**
 	 * the settings key which is used to retrieve and
@@ -57,11 +57,11 @@ public class MeasurementReaderNMRNodeModel extends NodeModel {
 	/**
 	 * Constructor for the node model.
 	 */
-	private static final NodeLogger logger = NodeLogger.getLogger(MeasurementReaderNMRNodeModel.class);
+	private static final NodeLogger logger = NodeLogger.getLogger(ReaderNMRNodeModel.class);
 	private static final String NMR_FILE_INPUT = "FileInput";
 	protected static final SettingsModelString SETTING_NMR_FILE_INPUT = new SettingsModelString(NMR_FILE_INPUT, "");
 
-	protected MeasurementReaderNMRNodeModel() {
+	protected ReaderNMRNodeModel() {
 
 		// TODO one incoming port and one outgoing port is assumed
 		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class)});
