@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
-import org.eclipse.chemclipse.nmr.model.core.ScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
@@ -59,12 +59,13 @@ public class ReaderNMRNodeModel extends NodeModel {
 	 */
 	private static final NodeLogger logger = NodeLogger.getLogger(ReaderNMRNodeModel.class);
 	private static final String NMR_FILE_INPUT = "FileInput";
-	protected static final SettingsModelString SETTING_NMR_FILE_INPUT = new SettingsModelString(NMR_FILE_INPUT, "");
+	private SettingsModelString settingsFileInput;
 
 	protected ReaderNMRNodeModel() {
 
 		// TODO one incoming port and one outgoing port is assumed
 		super(new PortType[]{}, new PortType[]{PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class)});
+		settingsFileInput = getSettingsFileInput();
 	}
 
 	@Override
@@ -80,10 +81,10 @@ public class ReaderNMRNodeModel extends NodeModel {
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
 		logger.info("Read the scans nmr data.");
-		File file = new File(SETTING_NMR_FILE_INPUT.getStringValue());
+		File file = new File(settingsFileInput.getStringValue());
 		try {
 			IProcessingInfo processingInfo = ScanConverterNMR.convert(file, new NullProgressMonitor());
-			ScanNMR scanNMR = (ScanNMR)processingInfo.getProcessingResult();
+			IScanNMR scanNMR = (IScanNMR)processingInfo.getProcessingResult();
 			return new PortObject[]{new ScanNMRPortObject(scanNMR)};
 		} catch(Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
@@ -108,7 +109,7 @@ public class ReaderNMRNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_NMR_FILE_INPUT.loadSettingsFrom(settings);
+		settingsFileInput.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -125,7 +126,7 @@ public class ReaderNMRNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		SETTING_NMR_FILE_INPUT.saveSettingsTo(settings);
+		settingsFileInput.saveSettingsTo(settings);
 	}
 
 	@Override
@@ -136,6 +137,11 @@ public class ReaderNMRNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
-		SETTING_NMR_FILE_INPUT.validateSettings(settings);
+		settingsFileInput.validateSettings(settings);
+	}
+
+	static SettingsModelString getSettingsFileInput() {
+
+		return new SettingsModelString(NMR_FILE_INPUT, "");
 	}
 }

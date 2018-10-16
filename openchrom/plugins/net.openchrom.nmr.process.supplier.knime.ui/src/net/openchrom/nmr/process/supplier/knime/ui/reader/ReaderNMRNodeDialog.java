@@ -42,6 +42,7 @@ import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 public class ReaderNMRNodeDialog extends DefaultNodeSettingsPane {
 
 	protected ReaderNMRNodeDialog() {
+
 		super();
 		IScanConverterSupport converterSupport = ScanConverterNMR.getScanConverterSupport();
 		Set<String> extensions = new HashSet<String>();
@@ -66,7 +67,7 @@ public class ReaderNMRNodeDialog extends DefaultNodeSettingsPane {
 			validExtensions = new String[]{};
 		}
 		//
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ReaderNMRNodeModel.SETTING_NMR_FILE_INPUT, "", validExtensions);
+		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ReaderNMRNodeModel.getSettingsFileInput(), "", validExtensions);
 		addDialogComponent(dialogComponentFileChooser);
 	}
 }
