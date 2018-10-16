@@ -16,10 +16,8 @@ import java.util.List;
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.IPeakQuantifierSupplier;
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.core.PeakQuantifier;
 import org.eclipse.chemclipse.chromatogram.msd.quantitation.exceptions.NoPeakQuantifierAvailableException;
-import org.eclipse.chemclipse.chromatogram.msd.quantitation.settings.IPeakQuantifierSettings;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingQuantifierMSD;
 
 public class PeakQuantifiersSupport {
@@ -34,8 +32,8 @@ public class PeakQuantifiersSupport {
 		return PeakQuantifier.getPeakQuantifierSupport().getPeakQuantifierSupplier(id);
 	}
 
-	public static ProcessingQuantifierMSD getProcessingPeakIntegratoMSD(String id, IPeakQuantifierSettings settings) throws JsonProcessingException {
+	public static ProcessingQuantifierMSD getProcessingPeakIntegratoMSD(String id, PropertyProvider prov) throws Exception {
 
-		return new ProcessingQuantifierMSD(id, settings);
+		return new ProcessingQuantifierMSD(id, prov);
 	}
 }

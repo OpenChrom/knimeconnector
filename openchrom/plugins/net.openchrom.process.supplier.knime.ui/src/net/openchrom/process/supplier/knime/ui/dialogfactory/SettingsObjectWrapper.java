@@ -15,6 +15,8 @@ import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+
 /**
  * Wraps a settings object (i.e. one class/instance that represents all settings in a way, usually a bean-like class) and adds the functionality to save/load the settings within a KNIME node.
  *
@@ -53,4 +55,6 @@ public interface SettingsObjectWrapper<S> {
 	 * @throws InvalidSettingsException
 	 */
 	void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException;
+
+	PropertyProvider getPropertyProvider();
 }

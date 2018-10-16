@@ -7,7 +7,12 @@ Bundle-Activator: net.openchrom.process.supplier.knime.Activator
 Bundle-Vendor: Openchrom
 Require-Bundle: org.eclipse.core.runtime,
  org.knime.core,
- org.eclipse.chemclipse.model
+ org.eclipse.chemclipse.model,
+ com.fasterxml.jackson.core.jackson-core;bundle-version="2.7.1",
+ com.fasterxml.jackson.core.jackson-databind;bundle-version="2.7.1",
+ org.eclipse.chemclipse.support
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: net.openchrom.process.supplier.knime.support
+Export-Package: net.openchrom.process.supplier.knime.dialogfactory,
+ net.openchrom.process.supplier.knime.dialogfactory.property,
+ net.openchrom.process.supplier.knime.support
 Bundle-ActivationPolicy: lazy

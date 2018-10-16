@@ -20,6 +20,7 @@ Require-Bundle: org.knime.workbench.core;bundle-version="3.3.0",
  org.eclipse.chemclipse.chromatogram.msd.identifier,
  org.knime.core,
  org.eclipse.chemclipse.chromatogram.csd.identifier,
- net.openchrom.process.supplier.knime.ui
+ net.openchrom.process.supplier.knime.ui,
+ net.openchrom.process.supplier.knime
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.openchrom.xxd.process.supplier.knime.ui.identifier.Activator

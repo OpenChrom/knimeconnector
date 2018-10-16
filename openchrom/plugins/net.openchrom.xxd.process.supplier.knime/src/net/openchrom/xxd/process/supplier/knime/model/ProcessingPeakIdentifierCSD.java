@@ -23,7 +23,9 @@ import org.eclipse.chemclipse.model.exceptions.NoIdentifierAvailableException;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 
 public class ProcessingPeakIdentifierCSD extends AbstractChromatogramSelectionProcessing<IPeakIdentifierSettingsCSD, IChromatogramSelectionCSD> {
 
@@ -31,6 +33,7 @@ public class ProcessingPeakIdentifierCSD extends AbstractChromatogramSelectionPr
 	 * 
 	 */
 	private static final long serialVersionUID = 1078442496546681924L;
+	private transient JacksonSettingObjectSupplier<? extends IPeakIdentifierSettingsCSD> jacksonSettingObjectSupplier;
 
 	protected ProcessingPeakIdentifierCSD() {
 
@@ -42,9 +45,9 @@ public class ProcessingPeakIdentifierCSD extends AbstractChromatogramSelectionPr
 		super(id);
 	}
 
-	public ProcessingPeakIdentifierCSD(String id, IPeakIdentifierSettingsCSD settings) throws JsonProcessingException {
+	public ProcessingPeakIdentifierCSD(String id, PropertyProvider prov) throws Exception {
 
-		super(id, settings);
+		super(id, prov);
 	}
 
 	@Override
@@ -95,5 +98,14 @@ public class ProcessingPeakIdentifierCSD extends AbstractChromatogramSelectionPr
 			// TODO:
 		}
 		return null;
+	}
+
+	@Override
+	protected SettingObjectSupplier<? extends IPeakIdentifierSettingsCSD> getSettingsClassSupplier() {
+
+		if(jacksonSettingObjectSupplier == null) {
+			jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
+		}
+		return jacksonSettingObjectSupplier;
 	}
 }

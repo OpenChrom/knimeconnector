@@ -9,10 +9,11 @@
  * Contributors:
  * Martin Horn - initial API and implementation
  *******************************************************************************/
-package net.openchrom.process.supplier.knime.ui.dialogfactory.property;
+package net.openchrom.process.supplier.knime.dialogfactory.property;
+
+import java.util.Map;
 
 /**
- * Provides (and defines) the possible properties from a {@link PropertyDialogFactory}. It's usually used in order to create the final settings object (via {@link PropertyDialogFactory#createSettingsObject(Class, PropertyProvider)}).
  *
  * @author Martin Horn, University of Konstanz
  *
@@ -28,4 +29,6 @@ public interface PropertyProvider {
 	int getIntProperty(String id);
 
 	String getStringProperty(String id);
+
+	Map<String, Object> values();
 }

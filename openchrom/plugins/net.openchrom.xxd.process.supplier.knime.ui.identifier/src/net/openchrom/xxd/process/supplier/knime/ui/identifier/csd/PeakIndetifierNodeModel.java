@@ -76,7 +76,7 @@ public class PeakIndetifierNodeModel extends DialogGenerationNodeModel<IPeakIden
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 		} else if(chromatogramSelectionCSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionCSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			logger.info("Add the peak identifier");
-			chromatogramSelectionPortObject.addProcessings(IdentifierSupport.getProceessingIdentifierCSD(id, getSettingsObject()));
+			chromatogramSelectionPortObject.addProcessings(IdentifierSupport.getProceessingIdentifierCSD(id, getPropertyProvider()));
 		}
 		/*
 		 * Store applied chromatogram filter and it's settings

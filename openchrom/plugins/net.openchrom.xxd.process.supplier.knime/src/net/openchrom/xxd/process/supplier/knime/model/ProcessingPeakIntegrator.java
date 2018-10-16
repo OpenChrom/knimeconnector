@@ -18,7 +18,9 @@ import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.xxd.process.supplier.knime.model.settingssupplier.IntegratorSettingsObjectSupplier;
 
 public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProcessing<IPeakIntegrationSettings, IChromatogramSelection> {
 
@@ -26,17 +28,21 @@ public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProce
 	 *
 	 */
 	private static final long serialVersionUID = 6755275500252238458L;
+	private transient SettingObjectSupplier<? extends IPeakIntegrationSettings> settingsClassSupplier;
 
 	protected ProcessingPeakIntegrator() {
+
 		super();
 	}
 
 	public ProcessingPeakIntegrator(String id) {
+
 		super(id);
 	}
 
-	public ProcessingPeakIntegrator(String id, IPeakIntegrationSettings settings) throws JsonProcessingException {
-		super(id, settings);
+	public ProcessingPeakIntegrator(String id, PropertyProvider prov) throws Exception {
+
+		super(id, prov);
 	}
 
 	@Override
@@ -77,5 +83,14 @@ public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProce
 			// TODO:
 		}
 		return null;
+	}
+
+	@Override
+	protected SettingObjectSupplier<? extends IPeakIntegrationSettings> getSettingsClassSupplier() {
+
+		if(settingsClassSupplier == null) {
+			settingsClassSupplier = new IntegratorSettingsObjectSupplier<>();
+		}
+		return settingsClassSupplier;
 	}
 }

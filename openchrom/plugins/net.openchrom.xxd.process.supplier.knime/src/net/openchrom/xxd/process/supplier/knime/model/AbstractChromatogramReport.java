@@ -37,26 +37,31 @@ public abstract class AbstractChromatogramReport extends AbstractChromatogramOut
 	private String settings;
 
 	protected AbstractChromatogramReport() {
+
 		super();
 	}
 
 	public AbstractChromatogramReport(String id, File directory) {
+
 		super(id, directory);
 		append = false;
 	}
 
 	public AbstractChromatogramReport(String id, File directory, IChromatogramReportSettings settings) throws JsonProcessingException {
+
 		super(id, directory);
 		this.settings = mapper.writeValueAsString(settings);
 		append = false;
 	}
 
 	public AbstractChromatogramReport(String id, File directory, String fileName) {
+
 		super(id, directory, fileName);
 		append = true;
 	}
 
 	public AbstractChromatogramReport(String id, File directory, String fileName, IChromatogramReportSettings settings) throws JsonProcessingException {
+
 		super(id, directory, fileName);
 		this.settings = mapper.writeValueAsString(settings);
 		append = true;

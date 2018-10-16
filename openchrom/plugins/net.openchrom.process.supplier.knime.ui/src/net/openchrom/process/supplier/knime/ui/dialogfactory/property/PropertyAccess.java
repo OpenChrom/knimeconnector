@@ -14,10 +14,12 @@ package net.openchrom.process.supplier.knime.ui.dialogfactory.property;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.BiFunction;
 
 import javax.swing.JFileChooser;
@@ -42,6 +44,8 @@ import org.knime.core.node.defaultnodesettings.SettingsModelOddIntegerBounded;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.util.ButtonGroupEnumInterface;
 
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyCollector;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.process.supplier.knime.ui.dialog.DialogComponentIonSelection;
 import net.openchrom.process.supplier.knime.ui.dialog.DialogComponentMultiFileChooser;
 import net.openchrom.process.supplier.knime.ui.dialog.DialogComponentRetentionTimeMinutes;
@@ -79,6 +83,7 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	};
 
 	public PropertyAccess() {
+
 		conditions = new HashMap<>();
 	}
 
@@ -230,6 +235,28 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	public String getStringProperty(String id) {
 
 		return ((SettingsModelString)settingsModels.get(id)).getStringValue();
+	}
+
+	@Override
+	public Map<String, Object> values() {
+
+		Map<String, Object> extractValues = new HashMap<>();
+		for(Entry<String, SettingsModel> entry : settingsModels.entrySet()) {
+			String id = entry.getKey();
+			SettingsModel model = entry.getValue();
+			Object value = null;
+			if(model instanceof SettingsModelBoolean) {
+				value = ((SettingsModelBoolean)settingsModels.get(id)).getBooleanValue();
+			} else if(model instanceof SettingsModelDouble) {
+				value = ((SettingsModelDouble)settingsModels.get(id)).getDoubleValue();
+			} else if(model instanceof SettingsModelInteger) {
+				value = ((SettingsModelInteger)settingsModels.get(id)).getIntValue();
+			} else if(model instanceof SettingsModelString) {
+				value = ((SettingsModelString)settingsModels.get(id)).getStringValue();
+			}
+			extractValues.put(id, value);
+		}
+		return Collections.unmodifiableMap(extractValues);
 	}
 
 	@Override

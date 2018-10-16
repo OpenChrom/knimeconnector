@@ -10,9 +10,12 @@
  * Martin Horn - initial API and implementation
  * Jan Holy - implementation
  *******************************************************************************/
-package net.openchrom.process.supplier.knime.ui.dialogfactory.property;
+package net.openchrom.process.supplier.knime.ui.dialogfactory;
 
-import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
+import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyCollector;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyDialogFactory;
 
 /**
  * A {@link PropertyDialogFactory} implementation that extracts the properties from jackson-annotated classes.
@@ -28,6 +31,7 @@ public class JacksonPropertyDialogFactory<SO> extends PropertyDialogFactory<SO> 
 	private JacksonSettingObjectSupplier<SO> jacksonSettingObjectSupplier;
 
 	public JacksonPropertyDialogFactory() {
+
 		jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
 	}
 

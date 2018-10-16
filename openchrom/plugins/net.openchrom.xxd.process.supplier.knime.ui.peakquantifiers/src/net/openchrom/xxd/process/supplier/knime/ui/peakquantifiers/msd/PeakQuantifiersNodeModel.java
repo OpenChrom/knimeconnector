@@ -78,7 +78,7 @@ public class PeakQuantifiersNodeModel extends DialogGenerationNodeModel<IPeakQua
 		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			logger.info("Add the quantifier");
 			IPeakQuantifierSettings settings = getSettingsObject();
-			chromatogramSelectionPortObject.addProcessings(PeakQuantifiersSupport.getProcessingPeakIntegratoMSD(id, settings));
+			chromatogramSelectionPortObject.addProcessings(PeakQuantifiersSupport.getProcessingPeakIntegratoMSD(id, getPropertyProvider()));
 		}
 		/*
 		 * Store applied chromatogram filter and it's settings

@@ -18,5 +18,6 @@ Require-Bundle: org.eclipse.osgi,
  org.eclipse.chemclipse.chromatogram.msd.quantitation,
  com.fasterxml.jackson.core.jackson-core;bundle-version="2.7.1",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.7.1",
- net.openchrom.process.supplier.knime.ui
+ net.openchrom.process.supplier.knime.ui,
+ net.openchrom.process.supplier.knime
 Bundle-Activator: net.openchrom.xxd.process.supplier.knime.ui.peakquantifiers.Activator

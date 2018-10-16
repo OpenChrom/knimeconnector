@@ -17,6 +17,7 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.port.PortType;
 
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 
@@ -33,6 +34,7 @@ public abstract class DialogGenerationNodeModel<S> extends NodeModel {
 	private SettingsObjectWrapper<S> settingsObjectWrapper;
 
 	protected DialogGenerationNodeModel(PortType[] inPortTypes, PortType[] outPortTypes, SettingsObjectWrapper<S> settingsObject) {
+
 		super(inPortTypes, outPortTypes);
 		this.settingsObjectWrapper = settingsObject;
 	}
@@ -58,5 +60,10 @@ public abstract class DialogGenerationNodeModel<S> extends NodeModel {
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
 		settingsObjectWrapper.validateSettings(settings);
+	}
+
+	protected PropertyProvider getPropertyProvider() {
+
+		return settingsObjectWrapper.getPropertyProvider();
 	}
 }

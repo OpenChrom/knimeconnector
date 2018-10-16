@@ -26,8 +26,7 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilter;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilterCSD;
@@ -91,12 +90,12 @@ public class FiltersSupport {
 		throw new NoChromatogramFilterSupplierAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingFilterChromatogramCSD(String id, IChromatogramFilterSettings settings) throws JsonProcessingException, NoChromatogramFilterSupplierAvailableException {
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingFilterChromatogramCSD(String id, PropertyProvider prov) throws Exception {
 
 		if(isFilter(id)) {
-			return new ProcessingFilter(id, settings);
+			return new ProcessingFilter(id, prov);
 		} else if(isFilterMSD(id)) {
-			return new ProcessingFilterCSD(id, settings);
+			return new ProcessingFilterCSD(id, prov);
 		}
 		throw new NoChromatogramFilterSupplierAvailableException();
 	}
@@ -111,12 +110,12 @@ public class FiltersSupport {
 		throw new NoChromatogramFilterSupplierAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProcessingFilterChromatogramMSD(String id, IChromatogramFilterSettings settings) throws JsonProcessingException, NoChromatogramFilterSupplierAvailableException {
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProcessingFilterChromatogramMSD(String id, PropertyProvider prov) throws Exception {
 
 		if(isFilter(id)) {
-			return new ProcessingFilter(id, settings);
+			return new ProcessingFilter(id, prov);
 		} else if(isFilterMSD(id)) {
-			return new ProcessingFilterMSD(id, settings);
+			return new ProcessingFilterMSD(id, prov);
 		}
 		throw new NoChromatogramFilterSupplierAvailableException();
 	}

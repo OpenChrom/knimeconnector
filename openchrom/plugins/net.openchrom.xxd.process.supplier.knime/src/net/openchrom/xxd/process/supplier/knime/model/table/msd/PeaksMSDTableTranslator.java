@@ -45,6 +45,7 @@ public class PeaksMSDTableTranslator implements IPeaksMSDTableTranslator {
 	private TargetExtendedComparator targetExtendedComparator;
 
 	public PeaksMSDTableTranslator() {
+
 		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
 		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
 	}
@@ -96,7 +97,11 @@ public class PeaksMSDTableTranslator implements IPeaksMSDTableTranslator {
 			cells[columnCell++] = new DoubleCell(peakModel.getTailing());
 			cells[columnCell++] = new StringCell(peak.getModelDescription());
 			cells[columnCell++] = new DoubleCell(peak.getSuggestedNumberOfComponents());
-			cells[columnCell++] = new StringCell(libraryInformation.getName());
+			if(libraryInformation != null) {
+				cells[columnCell++] = new StringCell(libraryInformation.getName());
+			} else {
+				cells[columnCell++] = new StringCell("");
+			}
 			DataRow dataRow = new DefaultRow(rowKey, cells);
 			bufferedDataContainer.addRowToTable(dataRow);
 			exec.checkCanceled();

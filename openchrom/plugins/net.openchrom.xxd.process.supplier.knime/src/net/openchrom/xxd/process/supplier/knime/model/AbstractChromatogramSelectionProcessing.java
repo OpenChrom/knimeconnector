@@ -15,28 +15,21 @@ import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.dialogfactory.property.ProperySettingsSerializable;
 
 public abstract class AbstractChromatogramSelectionProcessing<Settings, ChromatogramSelection extends IChromatogramSelection> implements IChromatogramSelectionProcessing<ChromatogramSelection> {
 
-	private final static ObjectMapper mapper;
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 6076099451477368555L;
-	static {
-		mapper = new ObjectMapper();
-		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-	}
 	private String id;
-	private String settings;
+	private ProperySettingsSerializable properySettings;
 
 	protected AbstractChromatogramSelectionProcessing() {
+
 	}
 
 	public AbstractChromatogramSelectionProcessing(String id) {
+
 		this();
 		if(id == null) {
 			throw new NullPointerException("Parameter ID cannot be null");
@@ -44,24 +37,28 @@ public abstract class AbstractChromatogramSelectionProcessing<Settings, Chromato
 		this.id = id;
 	}
 
-	public AbstractChromatogramSelectionProcessing(String id, Settings settings) throws JsonProcessingException {
+	public AbstractChromatogramSelectionProcessing(String id, PropertyProvider prov) throws Exception {
+
 		this(id);
-		if(settings == null) {
+		if(prov == null) {
 			throw new NullPointerException("Parameter Settings cannot be null");
 		}
-		this.settings = mapper.writeValueAsString(settings);
+		properySettings = new ProperySettingsSerializable(prov);
 	}
 
 	protected abstract Class<? extends Settings> getSettingsClass(String id) throws Exception;
 
+	protected abstract SettingObjectSupplier<? extends Settings> getSettingsClassSupplier();
+
 	@Override
 	public IProcessingInfo process(ChromatogramSelection chromatogramSelection, IProgressMonitor monitor) throws Exception {
 
-		if(settings == null) {
+		if(properySettings == null) {
 			return process(chromatogramSelection, id, monitor);
 		} else {
 			Class<? extends Settings> settingClass = getSettingsClass(id);
-			Settings settingsObject = mapper.readValue(settings, settingClass);
+			SettingObjectSupplier settingsClassSupplier = getSettingsClassSupplier();
+			Settings settingsObject = (Settings)settingsClassSupplier.createSettingsObject(settingClass, properySettings);
 			return process(chromatogramSelection, id, settingsObject, monitor);
 		}
 	}

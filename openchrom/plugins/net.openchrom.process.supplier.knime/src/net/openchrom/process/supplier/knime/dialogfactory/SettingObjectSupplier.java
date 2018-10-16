@@ -9,10 +9,10 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.process.supplier.knime.ui.dialogfactory;
+package net.openchrom.process.supplier.knime.dialogfactory;
 
-import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyCollector;
-import net.openchrom.process.supplier.knime.ui.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyCollector;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 
 public interface SettingObjectSupplier<SO> {
 

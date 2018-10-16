@@ -68,7 +68,7 @@ public class PeakDetectorsNodeModel extends DialogGenerationNodeModel<IPeakDetec
 		} else if(chromatogramSelectionCSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionCSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			logger.info("Add the peak detector");
 			IPeakDetectorCSDSettings settings = getSettingsObject();
-			chromatogramSelectionPortObject.addProcessings(PeakDetektorsSupport.getProcessingPeakDetectorCSD(id, settings));
+			chromatogramSelectionPortObject.addProcessings(PeakDetektorsSupport.getProcessingPeakDetectorCSD(id, getPropertyProvider()));
 		}
 		/*
 		 * Store applied chromatogram filter and it's settings

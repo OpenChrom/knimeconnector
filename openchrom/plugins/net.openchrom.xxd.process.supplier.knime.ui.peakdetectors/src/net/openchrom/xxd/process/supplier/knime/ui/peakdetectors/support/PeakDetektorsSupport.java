@@ -25,8 +25,7 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.ProccesingPeakDetectorCSD;
 import net.openchrom.xxd.process.supplier.knime.model.ProccesingPeakDetectorMSD;
@@ -93,18 +92,18 @@ public class PeakDetektorsSupport {
 		throw new NoPeakDetectorAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<IChromatogramSelectionMSD> getProcessingPeakDetectorMSD(String id, IPeakDetectorMSDSettings detectorMSDSettings) throws NoPeakDetectorAvailableException, JsonProcessingException {
+	public static IChromatogramSelectionProcessing<IChromatogramSelectionMSD> getProcessingPeakDetectorMSD(String id, PropertyProvider prov) throws Exception {
 
 		if(containsPeakDetectorMSD(id)) {
-			return new ProccesingPeakDetectorMSD(id, detectorMSDSettings);
+			return new ProccesingPeakDetectorMSD(id, prov);
 		}
 		throw new NoPeakDetectorAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<IChromatogramSelectionCSD> getProcessingPeakDetectorCSD(String id, org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings detectorCSDSettings) throws NoPeakDetectorAvailableException, JsonProcessingException {
+	public static IChromatogramSelectionProcessing<IChromatogramSelectionCSD> getProcessingPeakDetectorCSD(String id, PropertyProvider prov) throws Exception {
 
 		if(containsPeakDetectorMSD(id)) {
-			return new ProccesingPeakDetectorCSD(id, detectorCSDSettings);
+			return new ProccesingPeakDetectorCSD(id, prov);
 		}
 		throw new NoPeakDetectorAvailableException();
 	}

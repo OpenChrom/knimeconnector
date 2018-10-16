@@ -21,7 +21,9 @@ import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.SettingsModel;
 
-import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyCollector;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
 
@@ -131,6 +133,12 @@ public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory
 				for(SettingsModel sm : getPropertyAccess(settingsObjectClass).settingsModels.values()) {
 					sm.validateSettings(settings);
 				}
+			}
+
+			@Override
+			public PropertyProvider getPropertyProvider() {
+
+				return getPropertyAccess(settingsObjectClass);
 			}
 		};
 	}

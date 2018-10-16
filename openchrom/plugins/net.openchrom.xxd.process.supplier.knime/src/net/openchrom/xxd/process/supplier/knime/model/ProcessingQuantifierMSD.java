@@ -23,7 +23,9 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.xxd.process.supplier.knime.model.settingssupplier.IdentifierSettingsObjectSupplier;
 
 public class ProcessingQuantifierMSD extends AbstractChromatogramSelectionProcessing<IPeakQuantifierSettings, IChromatogramSelectionMSD> {
 
@@ -31,15 +33,16 @@ public class ProcessingQuantifierMSD extends AbstractChromatogramSelectionProces
 	 * 
 	 */
 	private static final long serialVersionUID = 5598830993160485997L;
+	private transient SettingObjectSupplier<? extends IPeakQuantifierSettings> settingsClassSupplier;
 
 	protected ProcessingQuantifierMSD() {
 
 		super();
 	}
 
-	public ProcessingQuantifierMSD(String id, IPeakQuantifierSettings settings) throws JsonProcessingException {
+	public ProcessingQuantifierMSD(String id, PropertyProvider prov) throws Exception {
 
-		super(id, settings);
+		super(id, prov);
 	}
 
 	public ProcessingQuantifierMSD(String id) {
@@ -97,5 +100,14 @@ public class ProcessingQuantifierMSD extends AbstractChromatogramSelectionProces
 			peakList.add(chromatogramPeak);
 		}
 		return PeakQuantifier.quantify(peakList, settings, id, monitor);
+	}
+
+	@Override
+	protected SettingObjectSupplier<? extends IPeakQuantifierSettings> getSettingsClassSupplier() {
+
+		if(settingsClassSupplier == null) {
+			settingsClassSupplier = new IdentifierSettingsObjectSupplier<>();
+		}
+		return settingsClassSupplier;
 	}
 }

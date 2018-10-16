@@ -74,7 +74,7 @@ public class ChromatogramFilterNodeModel extends DialogGenerationNodeModel<IChro
 		} else if(chromatogramSelectionCSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionCSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			logger.info("Add the filter");
 			IChromatogramFilterSettings settings = getSettingsObject();
-			chromatogramSelectionPortObject.addProcessings(FiltersSupport.getProcessingFilterChromatogramCSD(filterId, settings));
+			chromatogramSelectionPortObject.addProcessings(FiltersSupport.getProcessingFilterChromatogramCSD(filterId, getPropertyProvider()));
 		}
 		/*
 		 * Store applied chromatogram filter and it's settings

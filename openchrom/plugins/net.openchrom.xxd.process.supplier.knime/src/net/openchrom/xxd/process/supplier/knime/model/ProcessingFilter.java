@@ -18,7 +18,9 @@ import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 
 public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<IChromatogramFilterSettings, IChromatogramSelection> {
 
@@ -26,17 +28,21 @@ public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<IC
 	 *
 	 */
 	private static final long serialVersionUID = -6108017542495304306L;
+	private transient JacksonSettingObjectSupplier<? extends IChromatogramFilterSettings> jacksonSettingObjectSupplier;
 
 	protected ProcessingFilter() {
+
 		super();
 	}
 
 	public ProcessingFilter(String id) {
+
 		super(id);
 	}
 
-	public ProcessingFilter(String id, IChromatogramFilterSettings settings) throws JsonProcessingException {
-		super(id, settings);
+	public ProcessingFilter(String id, PropertyProvider prov) throws Exception {
+
+		super(id, prov);
 	}
 
 	@Override
@@ -75,5 +81,14 @@ public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<IC
 		} catch(NoChromatogramFilterSupplierAvailableException e) {
 		}
 		return null;
+	}
+
+	@Override
+	protected SettingObjectSupplier<? extends IChromatogramFilterSettings> getSettingsClassSupplier() {
+
+		if(jacksonSettingObjectSupplier == null) {
+			jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
+		}
+		return jacksonSettingObjectSupplier;
 	}
 }

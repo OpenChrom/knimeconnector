@@ -67,8 +67,7 @@ public class PeakIntegratorsNodeModel extends DialogGenerationNodeModel<IPeakInt
 			ProcessingInfoViewSupport.updateProcessingInfo(processingInfo, false);
 		} else if(chromatogramSelectionMSDPortObjectSpec.getProcessingMode().equals(ChromatogramSelectionMSDPortObjectSpec.MODE_POSTPONED_PROCESSING)) {
 			logger.info("Add the filter");
-			IPeakIntegrationSettings settings = getSettingsObject();
-			chromatogramSelectionPortObject.addProcessings(PeakIntegratorsSupport.getProcessingPeakIntegratoMSD(id, settings));
+			chromatogramSelectionPortObject.addProcessings(PeakIntegratorsSupport.getProcessingPeakIntegratoMSD(id, getPropertyProvider()));
 		}
 		/*
 		 * Store applied chromatogram filter and it's settings

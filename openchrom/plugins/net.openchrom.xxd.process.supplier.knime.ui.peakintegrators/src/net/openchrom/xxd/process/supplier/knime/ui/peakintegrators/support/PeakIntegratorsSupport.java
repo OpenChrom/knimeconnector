@@ -23,8 +23,7 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingPeakIntegrator;
 
@@ -44,10 +43,10 @@ public class PeakIntegratorsSupport {
 		return PeakIntegrator.getPeakIntegratorSupport().getAvailableIntegratorIds();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProcessingPeakIntegratoMSD(String id, IPeakIntegrationSettings detectorMSDSettings) throws NoIntegratorAvailableException, JsonProcessingException {
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProcessingPeakIntegratoMSD(String id, PropertyProvider prov) throws Exception {
 
 		if(conteinsIntegrators(id)) {
-			return new ProcessingPeakIntegrator(id, detectorMSDSettings);
+			return new ProcessingPeakIntegrator(id, prov);
 		}
 		throw new NoIntegratorAvailableException();
 	}
@@ -73,10 +72,10 @@ public class PeakIntegratorsSupport {
 		return PeakIntegrator.getPeakIntegratorSupport().getAvailableIntegratorIds();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingPeakIntegratoCSD(String id, IPeakIntegrationSettings detectorMSDSettings) throws NoIntegratorAvailableException, JsonProcessingException {
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingPeakIntegratoCSD(String id, PropertyProvider prov) throws Exception {
 
 		if(conteinsIntegrators(id)) {
-			return new ProcessingPeakIntegrator(id, detectorMSDSettings);
+			return new ProcessingPeakIntegrator(id, prov);
 		}
 		throw new NoIntegratorAvailableException();
 	}

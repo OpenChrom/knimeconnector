@@ -9,7 +9,7 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.process.supplier.knime.ui.dialogfactory.property;
+package net.openchrom.process.supplier.knime.dialogfactory;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -47,13 +47,15 @@ import com.fasterxml.jackson.databind.introspect.AnnotatedField;
 import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyCollector;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 
 public class JacksonSettingObjectSupplier<SO> implements SettingObjectSupplier<SO> {
 
 	private ObjectMapper mapper = new ObjectMapper();
 
 	public JacksonSettingObjectSupplier() {
+
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
 

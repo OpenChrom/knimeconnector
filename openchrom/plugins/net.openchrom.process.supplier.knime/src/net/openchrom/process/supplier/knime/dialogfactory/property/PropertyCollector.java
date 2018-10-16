@@ -10,7 +10,7 @@
  * Martin Horn - initial API and implementation
  * Jan Holy - implementation
  *******************************************************************************/
-package net.openchrom.process.supplier.knime.ui.dialogfactory.property;
+package net.openchrom.process.supplier.knime.dialogfactory.property;
 
 import java.util.Collection;
 import java.util.Map;

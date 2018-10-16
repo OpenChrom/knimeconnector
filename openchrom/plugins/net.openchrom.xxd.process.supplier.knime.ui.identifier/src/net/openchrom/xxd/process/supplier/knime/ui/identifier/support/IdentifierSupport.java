@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingPeakIdentifierCSD;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingPeakIdentifierMSD;
@@ -49,11 +50,11 @@ public class IdentifierSupport {
 		return PeakIdentifierMSD.getPeakIdentifierSupport().getAvailableIdentifierIds();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProceessingIdentifierMSD(String id, IPeakIdentifierSettingsMSD settings) throws NoIdentifierAvailableException {
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProceessingIdentifierMSD(String id, PropertyProvider prov) throws Exception {
 
 		if(containsIdentifierMSDId(id)) {
 			try {
-				return new ProcessingPeakIdentifierMSD(id, settings);
+				return new ProcessingPeakIdentifierMSD(id, prov);
 			} catch(JsonProcessingException e) {
 				throw new NoIdentifierAvailableException();
 			}
@@ -90,12 +91,12 @@ public class IdentifierSupport {
 		return PeakIdentifierCSD.getPeakIdentifierSupport().getAvailableIdentifierIds();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProceessingIdentifierCSD(String id, IPeakIdentifierSettingsCSD settings) throws NoIdentifierAvailableException {
+	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProceessingIdentifierCSD(String id, PropertyProvider prov) throws NoIdentifierAvailableException {
 
 		if(containsIdentifierCSDId(id)) {
 			try {
-				return new ProcessingPeakIdentifierCSD(id, settings);
-			} catch(JsonProcessingException e) {
+				return new ProcessingPeakIdentifierCSD(id, prov);
+			} catch(Exception e) {
 				throw new NoIdentifierAvailableException();
 			}
 		} else {

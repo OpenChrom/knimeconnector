@@ -18,7 +18,9 @@ import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 
 public class ProccesingPeakDetectorCSD extends AbstractChromatogramSelectionProcessing<IPeakDetectorCSDSettings, IChromatogramSelectionCSD> {
 
@@ -26,17 +28,22 @@ public class ProccesingPeakDetectorCSD extends AbstractChromatogramSelectionProc
 	 *
 	 */
 	private static final long serialVersionUID = 3880295500567259045L;
+	private transient JacksonSettingObjectSupplier<? extends IPeakDetectorCSDSettings> jacksonSettingObjectSupplier;
 
 	protected ProccesingPeakDetectorCSD() {
+
 		super();
+		jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
 	}
 
 	public ProccesingPeakDetectorCSD(String id) {
+
 		super(id);
 	}
 
-	public ProccesingPeakDetectorCSD(String id, IPeakDetectorCSDSettings settings) throws JsonProcessingException {
-		super(id, settings);
+	public ProccesingPeakDetectorCSD(String id, PropertyProvider prov) throws Exception {
+
+		super(id, prov);
 	}
 
 	@Override
@@ -75,5 +82,14 @@ public class ProccesingPeakDetectorCSD extends AbstractChromatogramSelectionProc
 		} catch(NoPeakDetectorAvailableException e) {
 		}
 		return null;
+	}
+
+	@Override
+	protected SettingObjectSupplier<? extends IPeakDetectorCSDSettings> getSettingsClassSupplier() {
+
+		if(jacksonSettingObjectSupplier == null) {
+			jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
+		}
+		return jacksonSettingObjectSupplier;
 	}
 }
