@@ -15,58 +15,62 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.io;
+package net.openchrom.nmr.process.supplier.knime.ui.reader2table;
 
+import org.knime.core.node.NodeDialogPane;
+import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
 /**
- * <code>NodeView</code> for the "MeasurementWriterNMR" Node.
+ * <code>NodeFactory</code> for the "MeasurementWriterNMR" Node.
  * This node writes chromatographic data.
  *
  * @author OpenChrom
  */
-public class MeasurementReader2TableNMRNodeView extends NodeView<MeasurementReader2TableNMRNodeModel> {
+public class Reader2TableNMRNodeFactory extends NodeFactory<Reader2TableNMRNodeModel> {
 
 	/**
-	 * Creates a new view.
-	 *
-	 * @param nodeModel
-	 *            The model (class: {@link MeasurementReader2TableNMRNodeModel})
+	 * {@inheritDoc}
 	 */
-	protected MeasurementReader2TableNMRNodeView(final MeasurementReader2TableNMRNodeModel nodeModel) {
-		super(nodeModel);
-		// TODO instantiate the components of the view here.
+	@Override
+	public NodeDialogPane createNodeDialogPane() {
+
+		return new Reader2TableNMRNodeDialog();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void modelChanged() {
+	public Reader2TableNMRNodeModel createNodeModel() {
 
-		// TODO retrieve the new model from your nodemodel and
-		// update the view.
-		MeasurementReader2TableNMRNodeModel nodeModel = getNodeModel();
-		assert nodeModel != null;
-		// be aware of a possibly not executed nodeModel! The data you retrieve
-		// from your nodemodel could be null, emtpy, or invalid in any kind.
+		return new Reader2TableNMRNodeModel();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void onClose() {
+	public NodeView<Reader2TableNMRNodeModel> createNodeView(final int viewIndex, final Reader2TableNMRNodeModel nodeModel) {
 
-		// TODO things to do when closing the view
+		return new Reader2TableNMRNodeView(nodeModel);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void onOpen() {
+	public int getNrNodeViews() {
 
-		// TODO things to do when opening the view
+		return 1;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasDialog() {
+
+		return true;
 	}
 }

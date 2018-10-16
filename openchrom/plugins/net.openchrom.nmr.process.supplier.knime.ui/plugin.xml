@@ -29,7 +29,7 @@
          point="org.knime.workbench.repository.nodes">
        <node
             category-path="/openchrom/nmr/io"
-            factory-class="net.openchrom.nmr.process.supplier.knime.ui.io.MeasurementReader2TableNMRNodeFactory">
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.reader2table.Reader2TableNMRNodeFactory">
       </node>
                          
    </extension>

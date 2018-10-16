@@ -15,7 +15,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.io;
+package net.openchrom.nmr.process.supplier.knime.ui.reader2table;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +46,7 @@ import net.openchrom.process.supplier.knime.support.TableTranslator;
  *
  * @author OpenChrom
  */
-public class MeasurementReader2TableNMRNodeModel extends NodeModel {
+public class Reader2TableNMRNodeModel extends NodeModel {
 
 	private static final String NMR_FILE_INPUT = "FileInput";
 	protected static final String RAW_DATA = "Raw Data";
@@ -54,7 +54,7 @@ public class MeasurementReader2TableNMRNodeModel extends NodeModel {
 	protected static final SettingsModelString SETTING_NMR_FILE_INPUT = new SettingsModelString(NMR_FILE_INPUT, "");
 	protected static final SettingsModelString SETTING_NMR_TABLE_OUTPUT = new SettingsModelString(CHEMCAL_SHIFT, "");
 	// the logger instance
-	private static final NodeLogger logger = NodeLogger.getLogger(MeasurementReader2TableNMRNodeModel.class);
+	private static final NodeLogger logger = NodeLogger.getLogger(Reader2TableNMRNodeModel.class);
 	// example value: the models count variable filled from the dialog
 	// and used in the models execution method. The default components of the
 	// dialog work with "SettingsModels".
@@ -63,7 +63,7 @@ public class MeasurementReader2TableNMRNodeModel extends NodeModel {
 	 * file
 	 * Constructor for the node model.
 	 */
-	protected MeasurementReader2TableNMRNodeModel() {
+	protected Reader2TableNMRNodeModel() {
 
 		// TODO one incoming port and one outgoing port is assumed
 		super(0, 2);

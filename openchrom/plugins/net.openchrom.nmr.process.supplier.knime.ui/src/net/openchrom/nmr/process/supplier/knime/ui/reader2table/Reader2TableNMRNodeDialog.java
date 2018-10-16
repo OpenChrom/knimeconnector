@@ -15,7 +15,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.io;
+package net.openchrom.nmr.process.supplier.knime.ui.reader2table;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -40,14 +40,14 @@ import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
  *
  * @author OpenChrom
  */
-public class MeasurementReader2TableNMRNodeDialog extends DefaultNodeSettingsPane {
+public class Reader2TableNMRNodeDialog extends DefaultNodeSettingsPane {
 
 	/**
 	 * New pane for configuring MeasurementWriterNMR node dialog.
 	 * This is just a suggestion to demonstrate possible default dialog
 	 * components.
 	 */
-	protected MeasurementReader2TableNMRNodeDialog() {
+	protected Reader2TableNMRNodeDialog() {
 		super();
 		// select defaul file
 		IScanConverterSupport converterSupport = ScanConverterNMR.getScanConverterSupport();
@@ -73,10 +73,10 @@ public class MeasurementReader2TableNMRNodeDialog extends DefaultNodeSettingsPan
 			validExtensions = new String[]{};
 		}
 		//
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(MeasurementReader2TableNMRNodeModel.SETTING_NMR_FILE_INPUT, "", validExtensions);
+		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(Reader2TableNMRNodeModel.SETTING_NMR_FILE_INPUT, "", validExtensions);
 		addDialogComponent(dialogComponentFileChooser);
 		// select table type
-		DialogComponentButtonGroup componentButtonGroup = new DialogComponentButtonGroup(MeasurementReader2TableNMRNodeModel.SETTING_NMR_TABLE_OUTPUT, true, "Table OUTPUT", MeasurementReader2TableNMRNodeModel.CHEMCAL_SHIFT, MeasurementReader2TableNMRNodeModel.RAW_DATA);
+		DialogComponentButtonGroup componentButtonGroup = new DialogComponentButtonGroup(Reader2TableNMRNodeModel.SETTING_NMR_TABLE_OUTPUT, true, "Table OUTPUT", Reader2TableNMRNodeModel.CHEMCAL_SHIFT, Reader2TableNMRNodeModel.RAW_DATA);
 		addDialogComponent(componentButtonGroup);
 	}
 }

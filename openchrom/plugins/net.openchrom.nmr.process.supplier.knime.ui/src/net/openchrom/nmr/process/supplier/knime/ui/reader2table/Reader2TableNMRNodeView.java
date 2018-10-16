@@ -15,62 +15,58 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.io;
+package net.openchrom.nmr.process.supplier.knime.ui.reader2table;
 
-import org.knime.core.node.NodeDialogPane;
-import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
 /**
- * <code>NodeFactory</code> for the "MeasurementWriterNMR" Node.
+ * <code>NodeView</code> for the "MeasurementWriterNMR" Node.
  * This node writes chromatographic data.
  *
  * @author OpenChrom
  */
-public class MeasurementReader2TableNMRNodeFactory extends NodeFactory<MeasurementReader2TableNMRNodeModel> {
+public class Reader2TableNMRNodeView extends NodeView<Reader2TableNMRNodeModel> {
 
 	/**
-	 * {@inheritDoc}
+	 * Creates a new view.
+	 *
+	 * @param nodeModel
+	 *            The model (class: {@link Reader2TableNMRNodeModel})
 	 */
-	@Override
-	public NodeDialogPane createNodeDialogPane() {
-
-		return new MeasurementReader2TableNMRNodeDialog();
+	protected Reader2TableNMRNodeView(final Reader2TableNMRNodeModel nodeModel) {
+		super(nodeModel);
+		// TODO instantiate the components of the view here.
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public MeasurementReader2TableNMRNodeModel createNodeModel() {
+	protected void modelChanged() {
 
-		return new MeasurementReader2TableNMRNodeModel();
+		// TODO retrieve the new model from your nodemodel and
+		// update the view.
+		Reader2TableNMRNodeModel nodeModel = getNodeModel();
+		assert nodeModel != null;
+		// be aware of a possibly not executed nodeModel! The data you retrieve
+		// from your nodemodel could be null, emtpy, or invalid in any kind.
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NodeView<MeasurementReader2TableNMRNodeModel> createNodeView(final int viewIndex, final MeasurementReader2TableNMRNodeModel nodeModel) {
+	protected void onClose() {
 
-		return new MeasurementReader2TableNMRNodeView(nodeModel);
+		// TODO things to do when closing the view
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int getNrNodeViews() {
+	protected void onOpen() {
 
-		return 1;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean hasDialog() {
-
-		return true;
+		// TODO things to do when opening the view
 	}
 }
