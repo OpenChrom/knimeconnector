@@ -10,7 +10,7 @@
  * Martin Horn - initial API and implementation
  * Jan Holy - implementation
  *******************************************************************************/
-package net.openchrom.process.supplier.knime.ui.dialogfactory;
+package net.openchrom.process.supplier.knime.ui.dialogfactory.property;
 
 import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyCollector;
