@@ -9,31 +9,30 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.process.supplier.knime.model;
 
 import java.io.File;
-import java.io.Serializable;
-import java.util.function.BiFunction;
 
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 
-public abstract class AbstractChromatogramOutput<ChromatogramSelection extends IChromatogramSelection> implements IChromatogramOutput<ChromatogramSelection> {
+public abstract class AbstractDataOutput<Data extends IMeasurementInfo> implements IDataOutput<Data> {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4171358163435953704L;
+	private static final long serialVersionUID = 6869432432403783917L;
 	private String id;
 	private String prefix;
 	private String postfix;
 	private File directory;
 	private String fileName;
-	private BiFunction<IChromatogramOutput, IChromatogramSelection, String> functionCreateFileName;
 
-	protected AbstractChromatogramOutput() {
+	protected AbstractDataOutput() {
+
 	}
 
-	public AbstractChromatogramOutput(String id, File directory) {
+	public AbstractDataOutput(String id, File directory) {
+
 		if(!directory.isDirectory()) {
 			throw new IllegalArgumentException("File has to be direcotry");
 		}
@@ -41,13 +40,12 @@ public abstract class AbstractChromatogramOutput<ChromatogramSelection extends I
 		this.directory = directory;
 		this.prefix = "";
 		this.postfix = "";
-		this.functionCreateFileName = IChromatogramOutput.USE_CHROMATOGAM_NAME;
 	}
 
-	public AbstractChromatogramOutput(String id, File directory, String fileName) {
+	public AbstractDataOutput(String id, File directory, String fileName) {
+
 		this(id, directory);
 		this.fileName = fileName;
-		this.functionCreateFileName = IChromatogramOutput.USE_NAME;
 	}
 
 	@Override
@@ -117,24 +115,17 @@ public abstract class AbstractChromatogramOutput<ChromatogramSelection extends I
 		return fileName;
 	}
 
-	@Override
-	public void setFunctionCreateFileName(BiFunction<IChromatogramOutput, IChromatogramSelection, String> functionCreateFileName) {
+	protected String generateFilePath(Data data) {
 
-		if(functionCreateFileName instanceof Serializable) {
-			this.functionCreateFileName = functionCreateFileName;
-		} else {
-			throw new IllegalArgumentException("Parameter has to implement Serializable interface");
-		}
+		return getDirectory().getAbsolutePath() + File.separator + getFileName(data);
 	}
 
-	@Override
-	public BiFunction<IChromatogramOutput, IChromatogramSelection, String> getFunctionCreateFileName() {
+	private String getFileName(Data data) {
 
-		return functionCreateFileName;
-	}
-
-	protected String generateFilePath(ChromatogramSelection chromatogramSelection) {
-
-		return getDirectory().getAbsolutePath() + File.separator + getFunctionCreateFileName().apply(this, chromatogramSelection);
+		StringBuilder sb = new StringBuilder();
+		sb.append(getPrefix());
+		sb.append(data.getDataName());
+		sb.append(getPostfix());
+		return sb.toString();
 	}
 }

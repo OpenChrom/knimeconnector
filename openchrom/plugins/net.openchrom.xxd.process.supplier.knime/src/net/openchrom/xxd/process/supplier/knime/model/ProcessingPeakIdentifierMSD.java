@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +28,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
-public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionProcessing<IPeakIdentifierSettingsMSD, IChromatogramSelectionMSD> {
+public class ProcessingPeakIdentifierMSD extends AbstractDataProcessing<IPeakIdentifierSettingsMSD, IChromatogramSelectionMSD> {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -1128763603573631815L;
-	private transient JacksonSettingObjectSupplier<? extends IPeakIdentifierSettingsMSD> jacksonSettingObjectSupplier;
+	private transient SettingObjectSupplier<? extends IPeakIdentifierSettingsMSD> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	protected ProcessingPeakIdentifierMSD() {
 
@@ -103,9 +106,12 @@ public class ProcessingPeakIdentifierMSD extends AbstractChromatogramSelectionPr
 	@Override
 	protected SettingObjectSupplier<? extends IPeakIdentifierSettingsMSD> getSettingsClassSupplier() {
 
-		if(jacksonSettingObjectSupplier == null) {
-			jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
-		}
-		return jacksonSettingObjectSupplier;
+		return settingsClassSupplier;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+		in.defaultReadObject();
+		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 	}
 }

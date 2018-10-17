@@ -10,9 +10,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.model,
  com.fasterxml.jackson.core.jackson-core;bundle-version="2.7.1",
  com.fasterxml.jackson.core.jackson-databind;bundle-version="2.7.1",
- org.eclipse.chemclipse.support
+ org.eclipse.chemclipse.support,
+ org.eclipse.chemclipse.processing
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: net.openchrom.process.supplier.knime.dialogfactory,
  net.openchrom.process.supplier.knime.dialogfactory.property,
+ net.openchrom.process.supplier.knime.model,
  net.openchrom.process.supplier.knime.support
 Bundle-ActivationPolicy: lazy

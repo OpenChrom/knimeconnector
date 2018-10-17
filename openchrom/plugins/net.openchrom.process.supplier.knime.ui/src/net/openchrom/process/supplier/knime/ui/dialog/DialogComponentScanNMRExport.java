@@ -19,15 +19,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
+import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObjectSpec;
 
-import net.openchrom.process.supplier.knime.model.DataReportSerialization;
-import net.openchrom.process.supplier.knime.ui.dialog.support.ChromatogramReportTable;
+import net.openchrom.process.supplier.knime.model.DataExportSerialization;
+import net.openchrom.process.supplier.knime.ui.dialog.support.ScanNMRExportTable;
 
 /**
  * A standard component allowing to choose a location(directory) and/or file
@@ -35,21 +35,21 @@ import net.openchrom.process.supplier.knime.ui.dialog.support.ChromatogramReport
  *
  * @author M. Berthold, University of Konstanz
  */
-public class DialogComponentChromatogramReport extends DialogComponent {
+public class DialogComponentScanNMRExport extends DialogComponent {
 
 	private final TitledBorder m_border;
-	private final ChromatogramReportTable chromatogramReportTable;
-	private DataReportSerialization<IChromatogram> chromatogramOutputSerialization;
+	private final ScanNMRExportTable scanNMRExportTable;
+	private DataExportSerialization<IScanNMR> scanOutputSerialization;
 
-	public DialogComponentChromatogramReport(SettingsModelString model, String title) {
+	public DialogComponentScanNMRExport(SettingsModelString model, String title) {
 
 		super(model);
-		chromatogramOutputSerialization = new DataReportSerialization<>();
+		scanOutputSerialization = new DataExportSerialization<>();
 		m_border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title);
-		chromatogramReportTable = new ChromatogramReportTable(chromatogramOutputSerialization.deserialize(model.getStringValue()));
+		scanNMRExportTable = new ScanNMRExportTable(scanOutputSerialization.deserialize(model.getStringValue()));
 		getComponentPanel().setBorder(m_border);
 		getComponentPanel().setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
-		getComponentPanel().add(chromatogramReportTable);
+		getComponentPanel().add(scanNMRExportTable);
 		getComponentPanel().add(Box.createHorizontalGlue());
 		getModel().addChangeListener(new ChangeListener() {
 
@@ -65,7 +65,7 @@ public class DialogComponentChromatogramReport extends DialogComponent {
 	protected void updateComponent() {
 
 		String value = ((SettingsModelString)getModel()).getStringValue();
-		chromatogramReportTable.updateComponent(chromatogramOutputSerialization.deserialize(value));
+		scanNMRExportTable.updateComponent(scanOutputSerialization.deserialize(value));
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class DialogComponentChromatogramReport extends DialogComponent {
 
 	private void updateModel() {
 
-		((SettingsModelString)getModel()).setStringValue(chromatogramOutputSerialization.serialize(chromatogramReportTable.getTableData()));
+		((SettingsModelString)getModel()).setStringValue(scanOutputSerialization.serialize(scanNMRExportTable.getTableData()));
 	}
 
 	@Override
@@ -87,12 +87,12 @@ public class DialogComponentChromatogramReport extends DialogComponent {
 	@Override
 	protected void setEnabledComponents(boolean enabled) {
 
-		chromatogramReportTable.setEnabled(enabled);
+		scanNMRExportTable.setEnabled(enabled);
 	}
 
 	@Override
 	public void setToolTipText(String text) {
 
-		chromatogramReportTable.setToolTipText(text);
+		scanNMRExportTable.setToolTipText(text);
 	}
 }

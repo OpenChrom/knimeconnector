@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
-import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
+import net.openchrom.process.supplier.knime.model.IDataProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingPeakIdentifierCSD;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingPeakIdentifierMSD;
 
@@ -50,7 +50,7 @@ public class IdentifierSupport {
 		return PeakIdentifierMSD.getPeakIdentifierSupport().getAvailableIdentifierIds();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProceessingIdentifierMSD(String id, PropertyProvider prov) throws Exception {
+	public static IDataProcessing<? super IChromatogramSelectionMSD> getProceessingIdentifierMSD(String id, PropertyProvider prov) throws Exception {
 
 		if(containsIdentifierMSDId(id)) {
 			try {
@@ -91,7 +91,7 @@ public class IdentifierSupport {
 		return PeakIdentifierCSD.getPeakIdentifierSupport().getAvailableIdentifierIds();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProceessingIdentifierCSD(String id, PropertyProvider prov) throws NoIdentifierAvailableException {
+	public static IDataProcessing<? super IChromatogramSelectionCSD> getProceessingIdentifierCSD(String id, PropertyProvider prov) throws NoIdentifierAvailableException {
 
 		if(containsIdentifierCSDId(id)) {
 			try {

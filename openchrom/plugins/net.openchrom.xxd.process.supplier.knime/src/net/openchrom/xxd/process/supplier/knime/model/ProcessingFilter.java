@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter;
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
@@ -21,14 +24,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
-public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<IChromatogramFilterSettings, IChromatogramSelection> {
+public class ProcessingFilter extends AbstractDataProcessing<IChromatogramFilterSettings, IChromatogramSelection> {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -6108017542495304306L;
-	private transient JacksonSettingObjectSupplier<? extends IChromatogramFilterSettings> jacksonSettingObjectSupplier;
+	private transient SettingObjectSupplier<? extends IChromatogramFilterSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	protected ProcessingFilter() {
 
@@ -86,9 +90,12 @@ public class ProcessingFilter extends AbstractChromatogramSelectionProcessing<IC
 	@Override
 	protected SettingObjectSupplier<? extends IChromatogramFilterSettings> getSettingsClassSupplier() {
 
-		if(jacksonSettingObjectSupplier == null) {
-			jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
-		}
-		return jacksonSettingObjectSupplier;
+		return settingsClassSupplier;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+		in.defaultReadObject();
+		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 	}
 }

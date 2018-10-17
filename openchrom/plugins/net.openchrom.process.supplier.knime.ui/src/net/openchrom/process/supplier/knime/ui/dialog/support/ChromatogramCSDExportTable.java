@@ -29,14 +29,15 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import org.eclipse.chemclipse.converter.chromatogram.ChromatogramConverterSupport;
+
 import org.eclipse.chemclipse.converter.core.ISupplier;
 import org.eclipse.chemclipse.csd.converter.chromatogram.ChromatogramConverterCSD;
+import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 
+import net.openchrom.process.supplier.knime.model.IDataExport;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramCSDExport;
-import net.openchrom.xxd.process.supplier.knime.model.IChromatogramCSDExport;
 
-public class ChromatogramCSDExportTable extends DialogTable<IChromatogramCSDExport> {
+public class ChromatogramCSDExportTable extends DialogTable<IDataExport<IChromatogramCSD>> {
 
 	/**
 	 * 
@@ -45,12 +46,13 @@ public class ChromatogramCSDExportTable extends DialogTable<IChromatogramCSDExpo
 	private final static String[] columnsName = new String[]{"Name", "Prefix", "Postfix", "Directory path"};
 	private final static int[] columnsWidth = new int[]{250, 100, 100, 350};
 
-	public ChromatogramCSDExportTable(Collection<IChromatogramCSDExport> init) {
+	public ChromatogramCSDExportTable(Collection<IDataExport<IChromatogramCSD>> init) {
+
 		super(columnsName, columnsWidth, init, 800, JLabel.LEFT);
 	}
 
 	@Override
-	protected Object getValue(IChromatogramCSDExport data, int columnIndex) {
+	protected Object getValue(IDataExport<IChromatogramCSD> data, int columnIndex) {
 
 		switch(columnIndex) {
 			case 0:
@@ -74,9 +76,9 @@ public class ChromatogramCSDExportTable extends DialogTable<IChromatogramCSDExpo
 	}
 
 	@Override
-	protected List<IChromatogramCSDExport> add() {
+	protected List<IDataExport<IChromatogramCSD>> add() {
 
-		List<IChromatogramCSDExport> chromatogramExports = new ArrayList<>();
+		List<IDataExport<IChromatogramCSD>> chromatogramExports = new ArrayList<>();
 		List<ISupplier> suppliers = ChromatogramConverterCSD.getChromatogramConverterSupport().getExportSupplier();
 		JComboBox<ISupplier> comboSupplier = new JComboBox<>(suppliers.toArray(new ISupplier[suppliers.size()]));
 		JFileChooser fc = new JFileChooser();
@@ -134,7 +136,7 @@ public class ChromatogramCSDExportTable extends DialogTable<IChromatogramCSDExpo
 			String id = supplier.getId();
 			File file = new File(folderPath.getText());
 			if(file.isDirectory()) {
-				IChromatogramCSDExport chromatogramExport = new ChromatogramCSDExport(id, file);
+				IDataExport<IChromatogramCSD> chromatogramExport = new ChromatogramCSDExport(id, file);
 				chromatogramExport.setPostfix(postfix.getText());
 				chromatogramExport.setPrefix(prefix.getText());
 				chromatogramExports.add(chromatogramExport);

@@ -26,7 +26,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
-import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
+import net.openchrom.process.supplier.knime.model.IDataProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.ProccesingPeakDetectorCSD;
 import net.openchrom.xxd.process.supplier.knime.model.ProccesingPeakDetectorMSD;
 
@@ -76,7 +76,7 @@ public class PeakDetektorsSupport {
 		return PeakDetectorCSD.getPeakDetectorSupport().getAvailablePeakDetectorIds();
 	}
 
-	public static IChromatogramSelectionProcessing<IChromatogramSelectionMSD> getProcessingPeakDetectorMSD(String id) throws NoPeakDetectorAvailableException {
+	public static IDataProcessing<IChromatogramSelectionMSD> getProcessingPeakDetectorMSD(String id) throws NoPeakDetectorAvailableException {
 
 		if(containsPeakDetectorMSD(id)) {
 			return new ProccesingPeakDetectorMSD(id);
@@ -84,7 +84,7 @@ public class PeakDetektorsSupport {
 		throw new NoPeakDetectorAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<IChromatogramSelectionCSD> getProcessingPeakDetectorCSD(String id) throws NoPeakDetectorAvailableException {
+	public static IDataProcessing<IChromatogramSelectionCSD> getProcessingPeakDetectorCSD(String id) throws NoPeakDetectorAvailableException {
 
 		if(containsPeakDetectorMSD(id)) {
 			return new ProccesingPeakDetectorCSD(id);
@@ -92,7 +92,7 @@ public class PeakDetektorsSupport {
 		throw new NoPeakDetectorAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<IChromatogramSelectionMSD> getProcessingPeakDetectorMSD(String id, PropertyProvider prov) throws Exception {
+	public static IDataProcessing<IChromatogramSelectionMSD> getProcessingPeakDetectorMSD(String id, PropertyProvider prov) throws Exception {
 
 		if(containsPeakDetectorMSD(id)) {
 			return new ProccesingPeakDetectorMSD(id, prov);
@@ -100,7 +100,7 @@ public class PeakDetektorsSupport {
 		throw new NoPeakDetectorAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<IChromatogramSelectionCSD> getProcessingPeakDetectorCSD(String id, PropertyProvider prov) throws Exception {
+	public static IDataProcessing<IChromatogramSelectionCSD> getProcessingPeakDetectorCSD(String id, PropertyProvider prov) throws Exception {
 
 		if(containsPeakDetectorMSD(id)) {
 			return new ProccesingPeakDetectorCSD(id, prov);

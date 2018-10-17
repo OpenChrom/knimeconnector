@@ -33,11 +33,12 @@ public class ScanNMRPortObject extends AbstractPortObject {
 
 	private static final String SCAN_NMR_DATA = "SCAN_NMR_DATA";
 	private static final IScanNMR EMPTY_SCAN_NMR = new ScanNMR();
+	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class);
+	public static final PortType TYPE_OPTIONAL = PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class, true);
 
 	public static final class Serializer extends AbstractPortObjectSerializer<ScanNMRPortObject> {
 	}
 
-	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class);
 	private ScanNMRPortObjectSpec portObjectSpec;
 	private IScanNMR scanNMR;
 
@@ -59,7 +60,7 @@ public class ScanNMRPortObject extends AbstractPortObject {
 	}
 
 	@Override
-	public PortObjectSpec getSpec() {
+	public ScanNMRPortObjectSpec getSpec() {
 
 		return portObjectSpec;
 	}

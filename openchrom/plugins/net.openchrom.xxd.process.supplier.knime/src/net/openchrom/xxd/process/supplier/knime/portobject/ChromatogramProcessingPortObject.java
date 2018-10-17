@@ -18,7 +18,7 @@ import org.eclipse.chemclipse.logging.core.Logger;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
+import net.openchrom.process.supplier.knime.model.IDataProcessing;
 
 public class ChromatogramProcessingPortObject {
 
@@ -26,10 +26,10 @@ public class ChromatogramProcessingPortObject {
 
 	public static void updateChromatogramSelection(ChromatogramSelectionMSDPortObject chromatogramSelectionMSDPortObject, IProgressMonitor monitor, boolean clear) throws Exception {
 
-		List<IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD>> processing = chromatogramSelectionMSDPortObject.processing;
+		List<IDataProcessing<? super IChromatogramSelectionMSD>> processing = chromatogramSelectionMSDPortObject.processing;
 		IChromatogramSelectionMSD chromatogramSelectionMSD = chromatogramSelectionMSDPortObject.extractChromatogramSelectionMSD();
 		for(int i = 0; i < processing.size(); i++) {
-			IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> p = processing.get(i);
+			IDataProcessing<? super IChromatogramSelectionMSD> p = processing.get(i);
 			try {
 				p.process(chromatogramSelectionMSD, monitor);
 			} catch(Exception e) {
@@ -44,10 +44,10 @@ public class ChromatogramProcessingPortObject {
 
 	public static void updateChromatogramSelection(ChromatogramSelectionCSDPortObject chromatogramSelectionCSDPortObject, IProgressMonitor monitor, boolean clear) throws Exception {
 
-		List<IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD>> processing = chromatogramSelectionCSDPortObject.processing;
+		List<IDataProcessing<? super IChromatogramSelectionCSD>> processing = chromatogramSelectionCSDPortObject.processing;
 		IChromatogramSelectionCSD chromatogramSelectionCSD = chromatogramSelectionCSDPortObject.extractChromatogramSelectionCSD();
 		for(int i = 0; i < processing.size(); i++) {
-			IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> p = processing.get(i);
+			IDataProcessing<? super IChromatogramSelectionCSD> p = processing.get(i);
 			try {
 				p.process(chromatogramSelectionCSD, monitor);
 			} catch(Exception e) {

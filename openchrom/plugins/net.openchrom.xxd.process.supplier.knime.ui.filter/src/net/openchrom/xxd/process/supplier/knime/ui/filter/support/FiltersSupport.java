@@ -27,7 +27,7 @@ import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
-import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
+import net.openchrom.process.supplier.knime.model.IDataProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilter;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilterCSD;
 import net.openchrom.xxd.process.supplier.knime.model.ProcessingFilterMSD;
@@ -80,7 +80,7 @@ public class FiltersSupport {
 		return ids;
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingFilterChromatogramCSD(String id) throws NoChromatogramFilterSupplierAvailableException {
+	public static IDataProcessing<? super IChromatogramSelectionCSD> getProcessingFilterChromatogramCSD(String id) throws NoChromatogramFilterSupplierAvailableException {
 
 		if(isFilter(id)) {
 			return new ProcessingFilter(id);
@@ -90,7 +90,7 @@ public class FiltersSupport {
 		throw new NoChromatogramFilterSupplierAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> getProcessingFilterChromatogramCSD(String id, PropertyProvider prov) throws Exception {
+	public static IDataProcessing<? super IChromatogramSelectionCSD> getProcessingFilterChromatogramCSD(String id, PropertyProvider prov) throws Exception {
 
 		if(isFilter(id)) {
 			return new ProcessingFilter(id, prov);
@@ -100,7 +100,7 @@ public class FiltersSupport {
 		throw new NoChromatogramFilterSupplierAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProcessingFilterChromatogramMSD(String id) throws NoChromatogramFilterSupplierAvailableException {
+	public static IDataProcessing<? super IChromatogramSelectionMSD> getProcessingFilterChromatogramMSD(String id) throws NoChromatogramFilterSupplierAvailableException {
 
 		if(isFilter(id)) {
 			return new ProcessingFilter(id);
@@ -110,7 +110,7 @@ public class FiltersSupport {
 		throw new NoChromatogramFilterSupplierAvailableException();
 	}
 
-	public static IChromatogramSelectionProcessing<? super IChromatogramSelectionMSD> getProcessingFilterChromatogramMSD(String id, PropertyProvider prov) throws Exception {
+	public static IDataProcessing<? super IChromatogramSelectionMSD> getProcessingFilterChromatogramMSD(String id, PropertyProvider prov) throws Exception {
 
 		if(isFilter(id)) {
 			return new ProcessingFilter(id, prov);

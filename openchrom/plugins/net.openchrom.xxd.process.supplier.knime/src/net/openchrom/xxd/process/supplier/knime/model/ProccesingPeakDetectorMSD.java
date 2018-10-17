@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
@@ -21,14 +24,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
-public class ProccesingPeakDetectorMSD extends AbstractChromatogramSelectionProcessing<IPeakDetectorMSDSettings, IChromatogramSelectionMSD> {
+public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetectorMSDSettings, IChromatogramSelectionMSD> {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 3849712472645916738L;
-	private JacksonSettingObjectSupplier<? extends IPeakDetectorMSDSettings> jacksonSettingObjectSupplier;
+	private transient SettingObjectSupplier<? extends IPeakDetectorMSDSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	protected ProccesingPeakDetectorMSD() {
 
@@ -86,9 +90,12 @@ public class ProccesingPeakDetectorMSD extends AbstractChromatogramSelectionProc
 	@Override
 	protected SettingObjectSupplier<? extends IPeakDetectorMSDSettings> getSettingsClassSupplier() {
 
-		if(jacksonSettingObjectSupplier == null) {
-			jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
-		}
-		return jacksonSettingObjectSupplier;
+		return settingsClassSupplier;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+		in.defaultReadObject();
+		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 	}
 }

@@ -15,14 +15,13 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.ui.exporter.csd;
+package net.openchrom.nmr.process.supplier.knime.ui.export;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
-import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
+import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -36,40 +35,31 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
-import org.knime.core.node.port.PortTypeRegistry;
 
+import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject;
 import net.openchrom.process.supplier.knime.model.DataExportSerialization;
-import net.openchrom.process.supplier.knime.model.DataReportSerialization;
 import net.openchrom.process.supplier.knime.model.IDataExport;
-import net.openchrom.process.supplier.knime.model.IDataReport;
-import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObject;
-import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObjectSpec;
 
 /**
  * This is the model implementation of ChromatogramWriterCSD.
  * This node writes chromatographic data.
  */
-public class ChromatogramExportNodeModel extends NodeModel {
+public class ScanExportNodeModel extends NodeModel {
 
 	//
-	private static final String CHROMATOGRAM_CSD_EXPORT = "ChromatgramCSDExport";
-	private static final String CHROMATOGRAM_REPORT = "ChromatgramCSDReport";
-	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramExportNodeModel.class);
-	private SettingsModelString chromatogramCSDExport;
-	private SettingsModelString chromatogramReport;
-	private DataExportSerialization<IChromatogramCSD> dataExporterSerialization;
-	private DataReportSerialization<IChromatogramCSD> dataReporterSerialization;
+	private static final String SCAN_NMR_EXPORT = "ScanExport";
+	private static final NodeLogger logger = NodeLogger.getLogger(ScanExportNodeModel.class);
+	private SettingsModelString scanExport;
+	private DataExportSerialization<IScanNMR> dataExporterSerialization;
 
 	/**
 	 * Constructor for the node model.
 	 */
-	protected ChromatogramExportNodeModel() {
+	protected ScanExportNodeModel() {
 
-		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionCSDPortObject.class)}, new PortType[]{});
-		chromatogramCSDExport = getSettingsModelChromatogramCSDExport();
-		chromatogramReport = getCreateSettingsModelReport();
+		super(new PortType[]{ScanNMRPortObject.TYPE}, new PortType[]{});
+		scanExport = getSettingsModelScanNMRExport();
 		dataExporterSerialization = new DataExportSerialization<>();
-		dataReporterSerialization = new DataReportSerialization<>();
 	}
 
 	@Override
@@ -82,18 +72,12 @@ public class ChromatogramExportNodeModel extends NodeModel {
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
 		logger.info("Extract chromatogram");
-		ChromatogramSelectionCSDPortObject chromatogramSelectionPortObject = (ChromatogramSelectionCSDPortObject)inObjects[0];
-		ChromatogramSelectionCSDPortObjectSpec chromatogramSelectionCSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
-		IChromatogramSelectionCSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionCSD();
-		logger.info("Export chromatogram");
-		List<IDataExport<IChromatogramCSD>> exporters = dataExporterSerialization.deserialize(chromatogramCSDExport.getStringValue());
-		for(IDataExport<IChromatogramCSD> exporter : exporters) {
-			exporter.process(chromatogramSelection.getChromatogramCSD(), new NullProgressMonitor());
-		}
-		logger.info("Create reports");
-		List<IDataReport<IChromatogramCSD>> retorters = dataReporterSerialization.deserialize(chromatogramReport.getStringValue());
-		for(IDataReport<IChromatogramCSD> reporter : retorters) {
-			reporter.process(chromatogramSelection.getChromatogramCSD(), new NullProgressMonitor());
+		ScanNMRPortObject scanNMRPortObject = (ScanNMRPortObject)inObjects[0];
+		IScanNMR scanNMR = scanNMRPortObject.getScanNMR();
+		logger.info("Export scans");
+		List<IDataExport<IScanNMR>> exporters = dataExporterSerialization.deserialize(scanExport.getStringValue());
+		for(IDataExport<IScanNMR> exporter : exporters) {
+			exporter.process(scanNMR, new NullProgressMonitor());
 		}
 		return new PortObject[]{};
 	}
@@ -112,8 +96,7 @@ public class ChromatogramExportNodeModel extends NodeModel {
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		chromatogramCSDExport.loadSettingsFrom(settings);
-		chromatogramReport.loadSettingsFrom(settings);
+		scanExport.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -138,8 +121,7 @@ public class ChromatogramExportNodeModel extends NodeModel {
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-		chromatogramCSDExport.saveSettingsTo(settings);
-		chromatogramReport.saveSettingsTo(settings);
+		scanExport.saveSettingsTo(settings);
 	}
 
 	/**
@@ -148,17 +130,11 @@ public class ChromatogramExportNodeModel extends NodeModel {
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-		chromatogramCSDExport.validateSettings(settings);
-		chromatogramReport.validateSettings(settings);
+		scanExport.validateSettings(settings);
 	}
 
-	static SettingsModelString getSettingsModelChromatogramCSDExport() {
+	static SettingsModelString getSettingsModelScanNMRExport() {
 
-		return new SettingsModelString(CHROMATOGRAM_CSD_EXPORT, "");
-	}
-
-	static SettingsModelString getCreateSettingsModelReport() {
-
-		return new SettingsModelString(CHROMATOGRAM_REPORT, "");
+		return new SettingsModelString(SCAN_NMR_EXPORT, "");
 	}
 }

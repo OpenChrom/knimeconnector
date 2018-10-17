@@ -9,9 +9,9 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.process.supplier.knime.model;
 
-import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
+import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 
-public interface IChromatogramCSDExport extends IChromatogramOutput<IChromatogramSelectionCSD> {
+public interface IDataExport<Data extends IMeasurementInfo> extends IDataOutput<Data> {
 }

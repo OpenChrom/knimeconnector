@@ -50,7 +50,7 @@ import org.knime.core.node.port.PortObjectZipOutputStream;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.xxd.process.supplier.knime.model.IChromatogramSelectionProcessing;
+import net.openchrom.process.supplier.knime.model.IDataProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.exceptions.InvalidDataException;
 
 public class ChromatogramSelectionCSDPortObject extends AbstractPortObject {
@@ -70,7 +70,7 @@ public class ChromatogramSelectionCSDPortObject extends AbstractPortObject {
 	private IChromatogramSelectionCSD chromatogramSelectionCSD;
 	private boolean chromatogramUpdate;
 	private ChromatogramSelectionCSDPortObjectSpec portObjectSpec;
-	List<IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD>> processing = new ArrayList<>();
+	List<IDataProcessing<? super IChromatogramSelectionCSD>> processing = new ArrayList<>();
 	private float startAbundance;
 	private int startRetentionTime;
 	private float stopAbundance;
@@ -78,16 +78,18 @@ public class ChromatogramSelectionCSDPortObject extends AbstractPortObject {
 	private File inputFile;
 
 	public ChromatogramSelectionCSDPortObject() throws IOException {
+
 		this(EMPTY_CHROMATOGRAM_SELECTION);
 	}
 
 	public ChromatogramSelectionCSDPortObject(IChromatogramSelectionCSD chromatogramSelectionCSD) throws IOException {
+
 		this.chromatogramSelectionCSD = chromatogramSelectionCSD;
 		this.portObjectSpec = new ChromatogramSelectionCSDPortObjectSpec();
 		this.inputFile = chromatogramSelectionCSD.getChromatogram().getFile();
 	}
 
-	public void addProcessings(IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD> chromatogramSelectionProcessing) {
+	public void addProcessings(IDataProcessing<? super IChromatogramSelectionCSD> chromatogramSelectionProcessing) {
 
 		processing.add(chromatogramSelectionProcessing);
 	}
@@ -206,7 +208,7 @@ public class ChromatogramSelectionCSDPortObject extends AbstractPortObject {
 		for(int i = 0; i < size; i++) {
 			try {
 				Object object = objectInputStream.readObject();
-				processing.add(((IChromatogramSelectionProcessing<? super IChromatogramSelectionCSD>)object));
+				processing.add(((IDataProcessing<? super IChromatogramSelectionCSD>)object));
 			} catch(ClassNotFoundException e) {
 				throw new IOException(e);
 			}

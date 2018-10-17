@@ -12,40 +12,53 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import org.eclipse.chemclipse.chromatogram.xxd.report.core.ChromatogramReports;
 import org.eclipse.chemclipse.chromatogram.xxd.report.exceptions.NoReportSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.xxd.report.settings.IChromatogramReportSettings;
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-public class ChromatogramReport extends AbstractChromatogramReport {
+import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
+import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.model.AbstractDataReport;
+
+public class ChromatogramReport extends AbstractDataReport<IChromatogramReportSettings, IChromatogram> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2897126156184922271L;
+	private transient SettingObjectSupplier<IChromatogramReportSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	public ChromatogramReport() {
+
 		super();
 	}
 
-	public ChromatogramReport(String id, File directory, IChromatogramReportSettings settings) throws JsonProcessingException {
-		super(id, directory, settings);
+	public ChromatogramReport(String id, File directory, PropertyProvider prov) throws JsonProcessingException {
+
+		super(id, directory, prov);
 	}
 
-	public ChromatogramReport(String id, File directory, String fileName, IChromatogramReportSettings settings) throws JsonProcessingException {
-		super(id, directory, fileName, settings);
+	public ChromatogramReport(String id, File directory, String fileName, PropertyProvider prov) throws JsonProcessingException {
+
+		super(id, directory, fileName);
 	}
 
 	public ChromatogramReport(String id, File directory, String fileName) {
+
 		super(id, directory, fileName);
 	}
 
 	public ChromatogramReport(String id, File directory) {
+
 		super(id, directory);
 	}
 
@@ -56,15 +69,15 @@ public class ChromatogramReport extends AbstractChromatogramReport {
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, File file, String id, boolean append, IProgressMonitor monitor) throws Exception {
+	protected IProcessingInfo process(IChromatogram chromatogram, File file, String id, boolean append, IProgressMonitor monitor) throws Exception {
 
-		return ChromatogramReports.generate(file, append, chromatogramSelection.getChromatogram(), id, monitor);
+		return ChromatogramReports.generate(file, append, chromatogram, id, monitor);
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelection chromatogramSelection, File file, String id, boolean append, IChromatogramReportSettings settings, IProgressMonitor monitor) throws Exception {
+	protected IProcessingInfo process(IChromatogram chromatogram, File file, String id, boolean append, IChromatogramReportSettings settings, IProgressMonitor monitor) throws Exception {
 
-		return ChromatogramReports.generate(file, append, chromatogramSelection.getChromatogram(), settings, id, monitor);
+		return ChromatogramReports.generate(file, append, chromatogram, settings, id, monitor);
 	}
 
 	@Override
@@ -85,5 +98,17 @@ public class ChromatogramReport extends AbstractChromatogramReport {
 		} catch(NoReportSupplierAvailableException e) {
 		}
 		return null;
+	}
+
+	@Override
+	protected SettingObjectSupplier<? extends IChromatogramReportSettings> getSettingsClassSupplier() {
+
+		return settingsClassSupplier;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+		in.defaultReadObject();
+		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 	}
 }

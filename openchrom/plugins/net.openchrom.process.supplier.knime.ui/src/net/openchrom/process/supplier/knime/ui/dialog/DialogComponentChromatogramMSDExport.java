@@ -19,14 +19,15 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObjectSpec;
 
+import net.openchrom.process.supplier.knime.model.DataExportSerialization;
 import net.openchrom.process.supplier.knime.ui.dialog.support.ChromatogramMSDExportTable;
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramMSDExportSerialization;
 
 /**
  * A standard component allowing to choose a location(directory) and/or file
@@ -38,11 +39,12 @@ public class DialogComponentChromatogramMSDExport extends DialogComponent {
 
 	private final TitledBorder m_border;
 	private final ChromatogramMSDExportTable chromatogramMSDExportTable;
-	private ChromatogramMSDExportSerialization chromatogramOutputSerialization;
+	private DataExportSerialization<IChromatogramMSD> chromatogramOutputSerialization;
 
 	public DialogComponentChromatogramMSDExport(SettingsModelString model, String title) {
+
 		super(model);
-		chromatogramOutputSerialization = new ChromatogramMSDExportSerialization();
+		chromatogramOutputSerialization = new DataExportSerialization<>();
 		m_border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title);
 		chromatogramMSDExportTable = new ChromatogramMSDExportTable(chromatogramOutputSerialization.deserialize(model.getStringValue()));
 		getComponentPanel().setBorder(m_border);

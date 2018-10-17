@@ -9,43 +9,43 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.nmr.process.supplier.knime.model;
 
 import java.io.File;
 
 import org.eclipse.chemclipse.converter.exceptions.NoConverterAvailableException;
-import org.eclipse.chemclipse.csd.converter.chromatogram.ChromatogramConverterCSD;
-import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
+import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
+import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.process.supplier.knime.model.AbstractDataExport;
 
-public class ChromatogramCSDExport extends AbstractDataExport<IChromatogramCSD> {
+public class ScanNMRExport extends AbstractDataExport<IScanNMR> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2218922389085563577L;
 
-	public ChromatogramCSDExport(String id, File directory) {
+	public ScanNMRExport(String id, File directory) {
 
 		super(id, directory);
 	}
 
 	@Override
-	public IProcessingInfo process(IChromatogramCSD chromatogramCSD, IProgressMonitor monitor) throws Exception {
+	public IProcessingInfo process(IScanNMR scanNmr, IProgressMonitor monitor) throws Exception {
 
-		String filePath = generateFilePath(chromatogramCSD);
-		return ChromatogramConverterCSD.convert(new File(filePath), chromatogramCSD, getId(), new NullProgressMonitor());
+		String filePath = generateFilePath(scanNmr);
+		return ScanConverterNMR.convert(new File(filePath), scanNmr, getId(), new NullProgressMonitor());
 	}
 
 	@Override
 	public String getName() {
 
 		try {
-			return ChromatogramConverterCSD.getChromatogramConverterSupport().getSupplier(getId()).getFilterName();
+			return ScanConverterNMR.getScanConverterSupport().getSupplier(getId()).getFilterName();
 		} catch(NoConverterAvailableException e) {
 		}
 		return null;
@@ -55,7 +55,7 @@ public class ChromatogramCSDExport extends AbstractDataExport<IChromatogramCSD> 
 	public String getDescription() {
 
 		try {
-			return ChromatogramConverterCSD.getChromatogramConverterSupport().getSupplier(getId()).getDescription();
+			return ScanConverterNMR.getScanConverterSupport().getSupplier(getId()).getDescription();
 		} catch(NoConverterAvailableException e) {
 		}
 		return null;

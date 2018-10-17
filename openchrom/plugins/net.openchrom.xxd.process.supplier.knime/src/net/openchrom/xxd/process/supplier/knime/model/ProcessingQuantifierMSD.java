@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,15 +27,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.settingssupplier.IdentifierSettingsObjectSupplier;
 
-public class ProcessingQuantifierMSD extends AbstractChromatogramSelectionProcessing<IPeakQuantifierSettings, IChromatogramSelectionMSD> {
+public class ProcessingQuantifierMSD extends AbstractDataProcessing<IPeakQuantifierSettings, IChromatogramSelectionMSD> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5598830993160485997L;
-	private transient SettingObjectSupplier<? extends IPeakQuantifierSettings> settingsClassSupplier;
+	private transient SettingObjectSupplier<? extends IPeakQuantifierSettings> settingsClassSupplier = new IdentifierSettingsObjectSupplier<>();
 
 	protected ProcessingQuantifierMSD() {
 
@@ -105,9 +108,12 @@ public class ProcessingQuantifierMSD extends AbstractChromatogramSelectionProces
 	@Override
 	protected SettingObjectSupplier<? extends IPeakQuantifierSettings> getSettingsClassSupplier() {
 
-		if(settingsClassSupplier == null) {
-			settingsClassSupplier = new IdentifierSettingsObjectSupplier<>();
-		}
 		return settingsClassSupplier;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+		in.defaultReadObject();
+		settingsClassSupplier = new IdentifierSettingsObjectSupplier<>();
 	}
 }

@@ -9,7 +9,7 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.process.supplier.knime.model;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,15 +20,17 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 import org.eclipse.chemclipse.support.util.IStringSerialization;
 
-public class ChromatogramMSDExportSerialization implements IStringSerialization<IChromatogramMSDExport> {
+public class DataReportSerialization<Data extends IMeasurementInfo> implements IStringSerialization<IDataReport<Data>> {
 
-	public ChromatogramMSDExportSerialization() {
+	public DataReportSerialization() {
+
 	}
 
 	@Override
-	public String serialize(List<IChromatogramMSDExport> data) {
+	public String serialize(List<IDataReport<Data>> data) {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos;
@@ -43,7 +45,7 @@ public class ChromatogramMSDExportSerialization implements IStringSerialization<
 	}
 
 	@Override
-	public List<IChromatogramMSDExport> deserialize(String data) {
+	public List<IDataReport<Data>> deserialize(String data) {
 
 		if(data != null && !data.isEmpty()) {
 			byte[] byteData = Base64.getDecoder().decode(data);
@@ -52,7 +54,7 @@ public class ChromatogramMSDExportSerialization implements IStringSerialization<
 				ois = new ObjectInputStream(new ByteArrayInputStream(byteData));
 				Object o = ois.readObject();
 				ois.close();
-				return (List<IChromatogramMSDExport>)o;
+				return (List<IDataReport<Data>>)o;
 			} catch(IOException | ClassNotFoundException e) {
 			}
 		}

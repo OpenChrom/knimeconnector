@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.PeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.exceptions.NoIntegratorAvailableException;
@@ -20,15 +23,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 import net.openchrom.xxd.process.supplier.knime.model.settingssupplier.IntegratorSettingsObjectSupplier;
 
-public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProcessing<IPeakIntegrationSettings, IChromatogramSelection> {
+public class ProcessingPeakIntegrator extends AbstractDataProcessing<IPeakIntegrationSettings, IChromatogramSelection> {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 6755275500252238458L;
-	private transient SettingObjectSupplier<? extends IPeakIntegrationSettings> settingsClassSupplier;
+	private transient SettingObjectSupplier<? extends IPeakIntegrationSettings> settingsClassSupplier = new IntegratorSettingsObjectSupplier<>();
 
 	protected ProcessingPeakIntegrator() {
 
@@ -88,9 +92,12 @@ public class ProcessingPeakIntegrator extends AbstractChromatogramSelectionProce
 	@Override
 	protected SettingObjectSupplier<? extends IPeakIntegrationSettings> getSettingsClassSupplier() {
 
-		if(settingsClassSupplier == null) {
-			settingsClassSupplier = new IntegratorSettingsObjectSupplier<>();
-		}
 		return settingsClassSupplier;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+		in.defaultReadObject();
+		settingsClassSupplier = new IntegratorSettingsObjectSupplier<>();
 	}
 }

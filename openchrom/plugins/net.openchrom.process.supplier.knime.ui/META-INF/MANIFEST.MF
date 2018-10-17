@@ -21,7 +21,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
  org.eclipse.chemclipse.support.ui,
- net.openchrom.process.supplier.knime
+ net.openchrom.process.supplier.knime,
+ org.eclipse.chemclipse.nmr.model,
+ net.openchrom.nmr.process.supplier.knime,
+ org.eclipse.chemclipse.nmr.converter
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.process.supplier.knime.ui.dialog,

@@ -9,9 +9,13 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.process.supplier.knime.model;
 
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
+import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 
-public interface IChromatogramMSDExport extends IChromatogramOutput<IChromatogramSelectionMSD> {
+public interface IDataReport<Data extends IMeasurementInfo> extends IDataOutput<Data> {
+
+	public boolean isAppend();
+
+	public void setAppend(boolean append);
 }

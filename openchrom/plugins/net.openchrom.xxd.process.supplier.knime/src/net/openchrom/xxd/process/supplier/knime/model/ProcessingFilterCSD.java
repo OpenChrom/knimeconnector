@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import org.eclipse.chemclipse.chromatogram.csd.filter.core.chromatogram.ChromatogramFilterCSD;
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
 import org.eclipse.chemclipse.chromatogram.filter.settings.IChromatogramFilterSettings;
@@ -21,14 +24,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
-public class ProcessingFilterCSD extends AbstractChromatogramSelectionProcessing<IChromatogramFilterSettings, IChromatogramSelectionCSD> {
+public class ProcessingFilterCSD extends AbstractDataProcessing<IChromatogramFilterSettings, IChromatogramSelectionCSD> {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 619949636114922425L;
-	private transient JacksonSettingObjectSupplier<? extends IChromatogramFilterSettings> jacksonSettingObjectSupplier;
+	private transient JacksonSettingObjectSupplier<? extends IChromatogramFilterSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();;
 
 	protected ProcessingFilterCSD() {
 
@@ -38,7 +42,6 @@ public class ProcessingFilterCSD extends AbstractChromatogramSelectionProcessing
 	public ProcessingFilterCSD(String id) {
 
 		super(id);
-		jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
 	}
 
 	public ProcessingFilterCSD(String id, PropertyProvider prov) throws Exception {
@@ -87,9 +90,12 @@ public class ProcessingFilterCSD extends AbstractChromatogramSelectionProcessing
 	@Override
 	protected SettingObjectSupplier<? extends IChromatogramFilterSettings> getSettingsClassSupplier() {
 
-		if(jacksonSettingObjectSupplier == null) {
-			jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
-		}
-		return jacksonSettingObjectSupplier;
+		return settingsClassSupplier;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+		in.defaultReadObject();
+		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 	}
 }

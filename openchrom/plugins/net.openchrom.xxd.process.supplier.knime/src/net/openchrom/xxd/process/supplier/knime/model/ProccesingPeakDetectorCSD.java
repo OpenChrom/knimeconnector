@@ -11,6 +11,9 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.PeakDetectorCSD;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
@@ -21,19 +24,19 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
+import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
-public class ProccesingPeakDetectorCSD extends AbstractChromatogramSelectionProcessing<IPeakDetectorCSDSettings, IChromatogramSelectionCSD> {
+public class ProccesingPeakDetectorCSD extends AbstractDataProcessing<IPeakDetectorCSDSettings, IChromatogramSelectionCSD> {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 3880295500567259045L;
-	private transient JacksonSettingObjectSupplier<? extends IPeakDetectorCSDSettings> jacksonSettingObjectSupplier;
+	private transient JacksonSettingObjectSupplier<? extends IPeakDetectorCSDSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	protected ProccesingPeakDetectorCSD() {
 
 		super();
-		jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
 	}
 
 	public ProccesingPeakDetectorCSD(String id) {
@@ -87,9 +90,12 @@ public class ProccesingPeakDetectorCSD extends AbstractChromatogramSelectionProc
 	@Override
 	protected SettingObjectSupplier<? extends IPeakDetectorCSDSettings> getSettingsClassSupplier() {
 
-		if(jacksonSettingObjectSupplier == null) {
-			jacksonSettingObjectSupplier = new JacksonSettingObjectSupplier<>();
-		}
-		return jacksonSettingObjectSupplier;
+		return settingsClassSupplier;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+
+		in.defaultReadObject();
+		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 	}
 }

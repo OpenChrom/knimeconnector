@@ -22,6 +22,7 @@ public class ScanNMRPortObjectSpec extends AbstractSimplePortObjectSpec {
 	}
 
 	public ScanNMRPortObjectSpec() {
+
 	}
 
 	@Override

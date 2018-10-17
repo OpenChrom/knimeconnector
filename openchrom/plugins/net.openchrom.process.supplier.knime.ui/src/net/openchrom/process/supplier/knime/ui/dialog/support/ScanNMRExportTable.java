@@ -31,13 +31,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.eclipse.chemclipse.converter.core.ISupplier;
-import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
+import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
+import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 
+import net.openchrom.nmr.process.supplier.knime.model.ScanNMRExport;
 import net.openchrom.process.supplier.knime.model.IDataExport;
-import net.openchrom.xxd.process.supplier.knime.model.ChromatogramMSDExport;
 
-public class ChromatogramMSDExportTable extends DialogTable<IDataExport<IChromatogramMSD>> {
+public class ScanNMRExportTable extends DialogTable<IDataExport<IScanNMR>> {
 
 	/**
 	 * 
@@ -46,13 +46,13 @@ public class ChromatogramMSDExportTable extends DialogTable<IDataExport<IChromat
 	private final static String[] columnsName = new String[]{"Name", "Prefix", "Postfix", "Directory path"};
 	private final static int[] columnsWidth = new int[]{250, 100, 100, 350};
 
-	public ChromatogramMSDExportTable(Collection<IDataExport<IChromatogramMSD>> init) {
+	public ScanNMRExportTable(Collection<IDataExport<IScanNMR>> init) {
 
 		super(columnsName, columnsWidth, init, 800, JLabel.LEFT);
 	}
 
 	@Override
-	protected Object getValue(IDataExport<IChromatogramMSD> data, int columnIndex) {
+	protected Object getValue(IDataExport<IScanNMR> data, int columnIndex) {
 
 		switch(columnIndex) {
 			case 0:
@@ -76,10 +76,10 @@ public class ChromatogramMSDExportTable extends DialogTable<IDataExport<IChromat
 	}
 
 	@Override
-	protected List<IDataExport<IChromatogramMSD>> add() {
+	protected List<IDataExport<IScanNMR>> add() {
 
-		List<IDataExport<IChromatogramMSD>> chromatogramExports = new ArrayList<>();
-		List<ISupplier> suppliers = ChromatogramConverterMSD.getChromatogramConverterSupport().getExportSupplier();
+		List<IDataExport<IScanNMR>> scanExports = new ArrayList<>();
+		List<ISupplier> suppliers = ScanConverterNMR.getScanConverterSupport().getExportSupplier();
 		JComboBox<ISupplier> comboSupplier = new JComboBox<>(suppliers.toArray(new ISupplier[suppliers.size()]));
 		JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -136,12 +136,12 @@ public class ChromatogramMSDExportTable extends DialogTable<IDataExport<IChromat
 			String id = supplier.getId();
 			File file = new File(folderPath.getText());
 			if(file.isDirectory()) {
-				IDataExport<IChromatogramMSD> chromatogramExport = new ChromatogramMSDExport(id, file);
+				IDataExport<IScanNMR> chromatogramExport = new ScanNMRExport(id, file);
 				chromatogramExport.setPostfix(postfix.getText());
 				chromatogramExport.setPrefix(prefix.getText());
-				chromatogramExports.add(chromatogramExport);
+				scanExports.add(chromatogramExport);
 			}
 		}
-		return chromatogramExports;
+		return scanExports;
 	}
 }

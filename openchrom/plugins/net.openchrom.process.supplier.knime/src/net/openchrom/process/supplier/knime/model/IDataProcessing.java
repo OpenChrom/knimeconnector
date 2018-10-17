@@ -9,17 +9,16 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.process.supplier.knime.model;
 
 import java.io.Serializable;
 
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public interface IChromatogramSelectionProcessing<ChromatogramSelection extends IChromatogramSelection> extends Serializable {
+public interface IDataProcessing<Data> extends Serializable {
 
-	IProcessingInfo process(ChromatogramSelection chromatogramSelection, IProgressMonitor monitor) throws Exception;
+	IProcessingInfo process(Data chromatogramSelection, IProgressMonitor monitor) throws Exception;
 
 	String getId();
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./export.png" type="Sink" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>Scan NMR Export</name>
+    <shortDescription>
+        This node is export NMR data.
+    </shortDescription>
+    <fullDescription>
+        <intro>This node is export NMR data</intro>
+    </fullDescription>
+    <ports>
+        <inPort index="0" name="In-Port name">Description of first input port...</inPort>
+    </ports>    
+</knimeNode>

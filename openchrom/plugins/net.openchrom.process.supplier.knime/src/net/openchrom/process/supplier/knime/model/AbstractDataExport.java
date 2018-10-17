@@ -9,19 +9,26 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.process.supplier.knime.model;
 
 import java.io.File;
 
-import org.eclipse.chemclipse.model.selection.IChromatogramSelection;
+import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 
-public abstract class AbstractChromatogramExport<ChromatogramSelection extends IChromatogramSelection> extends AbstractChromatogramOutput<ChromatogramSelection> implements IChromatogramExport<ChromatogramSelection> {
+public abstract class AbstractDataExport<Data extends IMeasurementInfo> extends AbstractDataOutput<Data> implements IDataExport<Data> {
 
-	public AbstractChromatogramExport(String id, File directory) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2581302980172298044L;
+
+	public AbstractDataExport(String id, File directory) {
+
 		super(id, directory);
 	}
 
-	public AbstractChromatogramExport() {
+	public AbstractDataExport() {
+
 		super();
 	}
 }

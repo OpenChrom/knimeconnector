@@ -9,8 +9,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.nmr.model,
  org.eclipse.chemclipse.model,
  org.knime.core,
- net.openchrom.process.supplier.knime
+ net.openchrom.process.supplier.knime,
+ org.eclipse.chemclipse.nmr.converter,
+ org.eclipse.chemclipse.processing,
+ org.eclipse.chemclipse.converter
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: net.openchrom.nmr.process.supplier.knime.portobject,
+Export-Package: net.openchrom.nmr.process.supplier.knime.model,
+ net.openchrom.nmr.process.supplier.knime.portobject,
  net.openchrom.nmr.process.supplier.knime.table

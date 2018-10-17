@@ -17,6 +17,13 @@
             path="/openchrom/nmr">
       </category>
       <category
+            level-id="processor"
+            name="Processor"
+            icon="icons/filter.png"
+            description="Process data"
+            path="/openchrom/nmr">
+      </category>
+      <category
             level-id="translator"
             name="Translator"
             icon="icons/translator.png"
@@ -31,6 +38,21 @@
             category-path="/openchrom/nmr/io"
             factory-class="net.openchrom.nmr.process.supplier.knime.ui.reader2table.Reader2TableNMRNodeFactory">
       </node>
-                         
+       <node
+            category-path="/openchrom/nmr/io"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.reader.ReaderNMRNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/nmr/io"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.export.ScanExportNodeFactory">
+      </node>
+       </extension>
+       <extension
+         point="org.knime.workbench.repository.nodesets">
+      <nodeset
+            default-category-icon="icons/filter.png"
+            deprecated="false"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.processor.ScanProcessorNodeSetFactory">
+      </nodeset>
    </extension>
 </plugin>

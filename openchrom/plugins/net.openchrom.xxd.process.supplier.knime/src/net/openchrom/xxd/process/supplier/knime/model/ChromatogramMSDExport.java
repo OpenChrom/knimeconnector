@@ -16,12 +16,13 @@ import java.io.File;
 import org.eclipse.chemclipse.converter.exceptions.NoConverterAvailableException;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
-import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-public class ChromatogramMSDExport extends AbstractChromatogramExport<IChromatogramSelectionMSD> implements IChromatogramMSDExport {
+import net.openchrom.process.supplier.knime.model.AbstractDataExport;
+
+public class ChromatogramMSDExport extends AbstractDataExport<IChromatogramMSD> {
 
 	/**
 	 * 
@@ -29,14 +30,14 @@ public class ChromatogramMSDExport extends AbstractChromatogramExport<IChromatog
 	private static final long serialVersionUID = -2218922389085563577L;
 
 	public ChromatogramMSDExport(String id, File directory) {
+
 		super(id, directory);
 	}
 
 	@Override
-	public IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, IProgressMonitor monitor) throws Exception {
+	public IProcessingInfo process(IChromatogramMSD chromatogramMSD, IProgressMonitor monitor) throws Exception {
 
-		IChromatogramMSD chromatogramMSD = chromatogramSelection.getChromatogramMSD();
-		String filePath = generateFilePath(chromatogramSelection);
+		String filePath = generateFilePath(chromatogramMSD);
 		return ChromatogramConverterMSD.convert(new File(filePath), chromatogramMSD, getId(), new NullProgressMonitor());
 	}
 
