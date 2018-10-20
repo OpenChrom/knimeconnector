@@ -12,11 +12,10 @@
 package net.openchrom.process.supplier.knime.model;
 
 import java.io.File;
-import java.io.Serializable;
 
 import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 
-public interface IDataOutput<Data extends IMeasurementInfo> extends Serializable, IDataProcessing<Data> {
+public interface IDataOutput<Data extends IMeasurementInfo> extends IDataProcessing<Data> {
 
 	void setPrefix(String prefix);
 

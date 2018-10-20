@@ -12,6 +12,7 @@
 package net.openchrom.process.supplier.knime.ui.dialog;
 
 import java.awt.Dimension;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,15 +20,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.eclipse.chemclipse.model.core.IChromatogram;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObjectSpec;
 
-import net.openchrom.process.supplier.knime.model.DataReportSerialization;
 import net.openchrom.process.supplier.knime.ui.dialog.support.ChromatogramReportTable;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramReport;
 
 /**
  * A standard component allowing to choose a location(directory) and/or file
@@ -39,14 +39,12 @@ public class DialogComponentChromatogramReport extends DialogComponent {
 
 	private final TitledBorder m_border;
 	private final ChromatogramReportTable chromatogramReportTable;
-	private DataReportSerialization<IChromatogram> chromatogramOutputSerialization;
 
 	public DialogComponentChromatogramReport(SettingsModelString model, String title) {
 
 		super(model);
-		chromatogramOutputSerialization = new DataReportSerialization<>();
 		m_border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title);
-		chromatogramReportTable = new ChromatogramReportTable(chromatogramOutputSerialization.deserialize(model.getStringValue()));
+		chromatogramReportTable = new ChromatogramReportTable();
 		getComponentPanel().setBorder(m_border);
 		getComponentPanel().setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
 		getComponentPanel().add(chromatogramReportTable);
@@ -65,7 +63,10 @@ public class DialogComponentChromatogramReport extends DialogComponent {
 	protected void updateComponent() {
 
 		String value = ((SettingsModelString)getModel()).getStringValue();
-		chromatogramReportTable.updateComponent(chromatogramOutputSerialization.deserialize(value));
+		try {
+			chromatogramReportTable.updateComponent(ChromatogramReport.readString(value));
+		} catch(ClassNotFoundException | IOException e) {
+		}
 	}
 
 	@Override
@@ -76,7 +77,10 @@ public class DialogComponentChromatogramReport extends DialogComponent {
 
 	private void updateModel() {
 
-		((SettingsModelString)getModel()).setStringValue(chromatogramOutputSerialization.serialize(chromatogramReportTable.getTableData()));
+		try {
+			((SettingsModelString)getModel()).setStringValue(ChromatogramReport.writeToString(chromatogramReportTable.getTableData()));
+		} catch(IOException e) {
+		}
 	}
 
 	@Override

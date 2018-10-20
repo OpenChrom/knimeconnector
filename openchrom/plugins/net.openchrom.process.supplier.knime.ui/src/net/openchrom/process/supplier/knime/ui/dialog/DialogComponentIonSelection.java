@@ -41,6 +41,7 @@ public class DialogComponentIonSelection extends DialogComponent {
 	private IonSettingUtil ionSettingUtil;
 
 	public DialogComponentIonSelection(SettingsModelString model, String title) {
+
 		super(model);
 		ionSettingUtil = new IonSettingUtil();
 		m_border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title);
@@ -58,6 +59,7 @@ public class DialogComponentIonSelection extends DialogComponent {
 				updateComponent();
 			}
 		});
+		updateComponent();
 	}
 
 	@Override

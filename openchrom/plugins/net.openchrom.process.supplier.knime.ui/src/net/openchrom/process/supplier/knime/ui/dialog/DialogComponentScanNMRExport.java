@@ -12,6 +12,8 @@
 package net.openchrom.process.supplier.knime.ui.dialog;
 
 import java.awt.Dimension;
+import java.io.IOException;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,14 +21,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObjectSpec;
 
-import net.openchrom.process.supplier.knime.model.DataExportSerialization;
+import net.openchrom.nmr.process.supplier.knime.model.ScanNMRExport;
 import net.openchrom.process.supplier.knime.ui.dialog.support.ScanNMRExportTable;
 
 /**
@@ -39,14 +40,12 @@ public class DialogComponentScanNMRExport extends DialogComponent {
 
 	private final TitledBorder m_border;
 	private final ScanNMRExportTable scanNMRExportTable;
-	private DataExportSerialization<IScanNMR> scanOutputSerialization;
 
 	public DialogComponentScanNMRExport(SettingsModelString model, String title) {
 
 		super(model);
-		scanOutputSerialization = new DataExportSerialization<>();
 		m_border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title);
-		scanNMRExportTable = new ScanNMRExportTable(scanOutputSerialization.deserialize(model.getStringValue()));
+		scanNMRExportTable = new ScanNMRExportTable();
 		getComponentPanel().setBorder(m_border);
 		getComponentPanel().setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
 		getComponentPanel().add(scanNMRExportTable);
@@ -59,13 +58,17 @@ public class DialogComponentScanNMRExport extends DialogComponent {
 				updateComponent();
 			}
 		});
+		updateComponent();
 	}
 
 	@Override
 	protected void updateComponent() {
 
 		String value = ((SettingsModelString)getModel()).getStringValue();
-		scanNMRExportTable.updateComponent(scanOutputSerialization.deserialize(value));
+		try {
+			scanNMRExportTable.updateComponent((List)ScanNMRExport.readString(value));
+		} catch(ClassNotFoundException | IOException e) {
+		}
 	}
 
 	@Override
@@ -76,7 +79,10 @@ public class DialogComponentScanNMRExport extends DialogComponent {
 
 	private void updateModel() {
 
-		((SettingsModelString)getModel()).setStringValue(scanOutputSerialization.serialize(scanNMRExportTable.getTableData()));
+		try {
+			((SettingsModelString)getModel()).setStringValue(ScanNMRExport.writeToString(scanNMRExportTable.getTableData()));
+		} catch(IOException e) {
+		}
 	}
 
 	@Override

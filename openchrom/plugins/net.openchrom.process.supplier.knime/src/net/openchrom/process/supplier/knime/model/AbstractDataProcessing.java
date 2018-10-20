@@ -11,6 +11,10 @@
  *******************************************************************************/
 package net.openchrom.process.supplier.knime.model;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -20,14 +24,11 @@ import net.openchrom.process.supplier.knime.dialogfactory.property.ProperySettin
 
 public abstract class AbstractDataProcessing<Settings, Data> implements IDataProcessing<Data> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6352759936523585244L;
-	private String id;
-	private ProperySettingsSerializable properySettings;
+	private static final int INTERNAL_VERSION_ID = 1;
+	private transient String id;
+	private transient ProperySettingsSerializable properySettings;
 
-	protected AbstractDataProcessing() {
+	public AbstractDataProcessing() {
 
 	}
 
@@ -64,6 +65,28 @@ public abstract class AbstractDataProcessing<Settings, Data> implements IDataPro
 			Settings settingsObject = (Settings)settingsClassSupplier.createSettingsObject(settingClass, properySettings);
 			return process(data, id, settingsObject, monitor);
 		}
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+
+		int version = in.readInt();
+		switch(version) {
+			case 1:
+				id = (String)in.readObject();
+				properySettings = (ProperySettingsSerializable)in.readObject();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		out.writeInt(INTERNAL_VERSION_ID);
+		out.writeObject(id);
+		out.writeObject(properySettings);
 	}
 
 	@Override

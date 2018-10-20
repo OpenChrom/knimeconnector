@@ -16,14 +16,11 @@
  * Dr. Philip Wenig - initial API and implementation
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.xxd.process.supplier.knime.model;
+package net.openchrom.xxd.process.supplier.knime.portobject;
 
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
-
-import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObject;
-import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObjectSpec;
 
 public class PortObjectSupport {
 

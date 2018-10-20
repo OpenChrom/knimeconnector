@@ -32,12 +32,10 @@ import javax.swing.JTextField;
 
 import org.eclipse.chemclipse.converter.core.ISupplier;
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 
 import net.openchrom.nmr.process.supplier.knime.model.ScanNMRExport;
-import net.openchrom.process.supplier.knime.model.IDataExport;
 
-public class ScanNMRExportTable extends DialogTable<IDataExport<IScanNMR>> {
+public class ScanNMRExportTable extends DialogTable<ScanNMRExport> {
 
 	/**
 	 * 
@@ -46,13 +44,18 @@ public class ScanNMRExportTable extends DialogTable<IDataExport<IScanNMR>> {
 	private final static String[] columnsName = new String[]{"Name", "Prefix", "Postfix", "Directory path"};
 	private final static int[] columnsWidth = new int[]{250, 100, 100, 350};
 
-	public ScanNMRExportTable(Collection<IDataExport<IScanNMR>> init) {
+	public ScanNMRExportTable(Collection<ScanNMRExport> init) {
 
 		super(columnsName, columnsWidth, init, 800, JLabel.LEFT);
 	}
 
+	public ScanNMRExportTable() {
+
+		super(columnsName, columnsWidth, 800, JLabel.LEFT);
+	}
+
 	@Override
-	protected Object getValue(IDataExport<IScanNMR> data, int columnIndex) {
+	protected Object getValue(ScanNMRExport data, int columnIndex) {
 
 		switch(columnIndex) {
 			case 0:
@@ -76,9 +79,9 @@ public class ScanNMRExportTable extends DialogTable<IDataExport<IScanNMR>> {
 	}
 
 	@Override
-	protected List<IDataExport<IScanNMR>> add() {
+	protected List<ScanNMRExport> add() {
 
-		List<IDataExport<IScanNMR>> scanExports = new ArrayList<>();
+		List<ScanNMRExport> scanExports = new ArrayList<>();
 		List<ISupplier> suppliers = ScanConverterNMR.getScanConverterSupport().getExportSupplier();
 		JComboBox<ISupplier> comboSupplier = new JComboBox<>(suppliers.toArray(new ISupplier[suppliers.size()]));
 		JFileChooser fc = new JFileChooser();
@@ -136,7 +139,7 @@ public class ScanNMRExportTable extends DialogTable<IDataExport<IScanNMR>> {
 			String id = supplier.getId();
 			File file = new File(folderPath.getText());
 			if(file.isDirectory()) {
-				IDataExport<IScanNMR> chromatogramExport = new ScanNMRExport(id, file);
+				ScanNMRExport chromatogramExport = new ScanNMRExport(id, file);
 				chromatogramExport.setPostfix(postfix.getText());
 				chromatogramExport.setPrefix(prefix.getText());
 				scanExports.add(chromatogramExport);

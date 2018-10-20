@@ -12,7 +12,8 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
@@ -28,10 +29,7 @@ import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
 public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetectorMSDSettings, IChromatogramSelectionMSD> {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 3849712472645916738L;
+	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<? extends IPeakDetectorMSDSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	protected ProccesingPeakDetectorMSD() {
@@ -93,9 +91,24 @@ public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetec
 		return settingsClassSupplier;
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 
-		in.defaultReadObject();
-		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+		super.readExternal(in);
+		int version = in.read();
+		switch(version) {
+			case 1:
+				settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		super.writeExternal(out);
+		out.writeInt(INTERNAL_VERSION_ID);
 	}
 }

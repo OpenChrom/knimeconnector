@@ -32,12 +32,10 @@ import javax.swing.JTextField;
 
 import org.eclipse.chemclipse.chromatogram.xxd.report.core.ChromatogramReports;
 import org.eclipse.chemclipse.chromatogram.xxd.report.core.IChromatogramReportSupplier;
-import org.eclipse.chemclipse.model.core.IChromatogram;
 
-import net.openchrom.process.supplier.knime.model.IDataReport;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramReport;
 
-public class ChromatogramReportTable extends DialogTable<IDataReport<IChromatogram>> {
+public class ChromatogramReportTable extends DialogTable<ChromatogramReport> {
 
 	/**
 	 * 
@@ -46,13 +44,18 @@ public class ChromatogramReportTable extends DialogTable<IDataReport<IChromatogr
 	private final static String[] columnsName = new String[]{"Name", "Prefix", "Postfix", "Directory path"};
 	private final static int[] columnsWidth = new int[]{250, 100, 100, 350};
 
-	public ChromatogramReportTable(Collection<IDataReport<IChromatogram>> init) {
+	public ChromatogramReportTable(Collection<ChromatogramReport> init) {
 
 		super(columnsName, columnsWidth, init, 800, JLabel.LEFT);
 	}
 
+	public ChromatogramReportTable() {
+
+		super(columnsName, columnsWidth, 800, JLabel.LEFT);
+	}
+
 	@Override
-	protected Object getValue(IDataReport<IChromatogram> data, int columnIndex) {
+	protected Object getValue(ChromatogramReport data, int columnIndex) {
 
 		switch(columnIndex) {
 			case 0:
@@ -76,9 +79,9 @@ public class ChromatogramReportTable extends DialogTable<IDataReport<IChromatogr
 	}
 
 	@Override
-	protected List<IDataReport<IChromatogram>> add() {
+	protected List<ChromatogramReport> add() {
 
-		List<IDataReport<IChromatogram>> chromatogramExports = new ArrayList<>();
+		List<ChromatogramReport> chromatogramExports = new ArrayList<>();
 		List<IChromatogramReportSupplier> suppliers = ChromatogramReports.getChromatogramReportSupplierSupport().getReportSupplier();
 		JComboBox<IChromatogramReportSupplier> comboSupplier = new JComboBox<>(suppliers.toArray(new IChromatogramReportSupplier[suppliers.size()]));
 		JFileChooser fc = new JFileChooser();
@@ -136,7 +139,7 @@ public class ChromatogramReportTable extends DialogTable<IDataReport<IChromatogr
 			String id = supplier.getId();
 			File file = new File(folderPath.getText());
 			if(file.isDirectory()) {
-				IDataReport<IChromatogram> chromatogramExport = new ChromatogramReport(id, file);
+				ChromatogramReport chromatogramExport = new ChromatogramReport(id, file);
 				chromatogramExport.setPostfix(postfix.getText());
 				chromatogramExport.setPrefix(prefix.getText());
 				chromatogramExports.add(chromatogramExport);

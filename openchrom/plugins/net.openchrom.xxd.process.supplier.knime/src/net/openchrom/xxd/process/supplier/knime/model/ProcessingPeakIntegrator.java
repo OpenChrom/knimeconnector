@@ -12,7 +12,8 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.peaks.PeakIntegrator;
 import org.eclipse.chemclipse.chromatogram.xxd.integrator.core.settings.peaks.IPeakIntegrationSettings;
@@ -28,10 +29,7 @@ import net.openchrom.xxd.process.supplier.knime.model.settingssupplier.Integrato
 
 public class ProcessingPeakIntegrator extends AbstractDataProcessing<IPeakIntegrationSettings, IChromatogramSelection> {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = 6755275500252238458L;
+	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<? extends IPeakIntegrationSettings> settingsClassSupplier = new IntegratorSettingsObjectSupplier<>();
 
 	protected ProcessingPeakIntegrator() {
@@ -95,9 +93,24 @@ public class ProcessingPeakIntegrator extends AbstractDataProcessing<IPeakIntegr
 		return settingsClassSupplier;
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 
-		in.defaultReadObject();
-		settingsClassSupplier = new IntegratorSettingsObjectSupplier<>();
+		super.readExternal(in);
+		int version = in.read();
+		switch(version) {
+			case 1:
+				settingsClassSupplier = new IntegratorSettingsObjectSupplier<>();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		super.writeExternal(out);
+		out.writeInt(INTERNAL_VERSION_ID);
 	}
 }

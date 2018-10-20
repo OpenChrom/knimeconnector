@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
@@ -38,10 +37,8 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.process.supplier.knime.model.DataExportSerialization;
-import net.openchrom.process.supplier.knime.model.DataReportSerialization;
-import net.openchrom.process.supplier.knime.model.IDataExport;
-import net.openchrom.process.supplier.knime.model.IDataReport;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramCSDExport;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramReport;
 import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObject;
 import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionCSDPortObjectSpec;
 
@@ -57,8 +54,6 @@ public class ChromatogramExportNodeModel extends NodeModel {
 	private static final NodeLogger logger = NodeLogger.getLogger(ChromatogramExportNodeModel.class);
 	private SettingsModelString chromatogramCSDExport;
 	private SettingsModelString chromatogramReport;
-	private DataExportSerialization<IChromatogramCSD> dataExporterSerialization;
-	private DataReportSerialization<IChromatogramCSD> dataReporterSerialization;
 
 	/**
 	 * Constructor for the node model.
@@ -68,8 +63,6 @@ public class ChromatogramExportNodeModel extends NodeModel {
 		super(new PortType[]{PortTypeRegistry.getInstance().getPortType(ChromatogramSelectionCSDPortObject.class)}, new PortType[]{});
 		chromatogramCSDExport = getSettingsModelChromatogramCSDExport();
 		chromatogramReport = getCreateSettingsModelReport();
-		dataExporterSerialization = new DataExportSerialization<>();
-		dataReporterSerialization = new DataReportSerialization<>();
 	}
 
 	@Override
@@ -86,13 +79,13 @@ public class ChromatogramExportNodeModel extends NodeModel {
 		ChromatogramSelectionCSDPortObjectSpec chromatogramSelectionCSDPortObjectSpec = chromatogramSelectionPortObject.getSpec();
 		IChromatogramSelectionCSD chromatogramSelection = chromatogramSelectionPortObject.getChromatogramSelectionCSD();
 		logger.info("Export chromatogram");
-		List<IDataExport<IChromatogramCSD>> exporters = dataExporterSerialization.deserialize(chromatogramCSDExport.getStringValue());
-		for(IDataExport<IChromatogramCSD> exporter : exporters) {
+		List<ChromatogramCSDExport> exporters = ChromatogramCSDExport.readString(chromatogramCSDExport.getStringValue());
+		for(ChromatogramCSDExport exporter : exporters) {
 			exporter.process(chromatogramSelection.getChromatogramCSD(), new NullProgressMonitor());
 		}
 		logger.info("Create reports");
-		List<IDataReport<IChromatogramCSD>> retorters = dataReporterSerialization.deserialize(chromatogramReport.getStringValue());
-		for(IDataReport<IChromatogramCSD> reporter : retorters) {
+		List<ChromatogramReport> retorters = ChromatogramReport.readString(chromatogramCSDExport.getStringValue());
+		for(ChromatogramReport reporter : retorters) {
 			reporter.process(chromatogramSelection.getChromatogramCSD(), new NullProgressMonitor());
 		}
 		return new PortObject[]{};

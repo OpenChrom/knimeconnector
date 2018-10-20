@@ -20,6 +20,7 @@ import javax.swing.JComponent;
 
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.core.ScanNMR;
+import org.eclipse.chemclipse.nmr.model.support.StreamObjectReader;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.port.AbstractPortObject;
@@ -88,7 +89,7 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		assert zipEntry.getName().equals(SCAN_NMR_DATA);
 		ObjectInputStream inputStream = new ObjectInputStream(in);
 		try {
-			scanNMR = (IScanNMR)inputStream.readObject();
+			scanNMR = StreamObjectReader.readObject(inputStream);
 		} catch(ClassNotFoundException e) {
 			throw new IOException(e);
 		}

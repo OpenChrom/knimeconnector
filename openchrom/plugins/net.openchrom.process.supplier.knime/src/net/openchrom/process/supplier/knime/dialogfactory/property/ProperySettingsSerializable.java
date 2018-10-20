@@ -49,7 +49,7 @@ public class ProperySettingsSerializable implements Serializable, PropertyProvid
 	@Override
 	public float getFloatProperty(String id) {
 
-		return (float)properties.get(id);
+		return (float)(double)properties.get(id);
 	}
 
 	@Override

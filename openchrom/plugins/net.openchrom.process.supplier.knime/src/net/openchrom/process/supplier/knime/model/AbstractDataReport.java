@@ -12,14 +12,15 @@
 package net.openchrom.process.supplier.knime.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
@@ -27,19 +28,12 @@ import net.openchrom.process.supplier.knime.dialogfactory.property.ProperySettin
 
 public abstract class AbstractDataReport<Settings, Data extends IMeasurementInfo> extends AbstractDataOutput<Data> implements IDataReport<Data> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1093123795858755804L;
-	private final static ObjectMapper mapper;
+	private static final int INTERNAL_VERSION_ID = 1;
+	//
 	private boolean append = false;
-	static {
-		mapper = new ObjectMapper();
-		mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-	}
 	private ProperySettingsSerializable properySettings;
 
-	protected AbstractDataReport() {
+	public AbstractDataReport() {
 
 		super();
 	}
@@ -80,6 +74,31 @@ public abstract class AbstractDataReport<Settings, Data extends IMeasurementInfo
 	public void setAppend(boolean append) {
 
 		this.append = append;
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+
+		super.readExternal(in);
+		int version = in.readInt();
+		in.readInt();
+		switch(version) {
+			case 1:
+				append = in.readBoolean();
+				properySettings = (ProperySettingsSerializable)in.readObject();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		super.writeExternal(out);
+		out.writeInt(INTERNAL_VERSION_ID);
+		out.writeBoolean(append);
+		out.writeObject(properySettings);
 	}
 
 	protected abstract Class<? extends Settings> getSettingsClass(String id) throws Exception;

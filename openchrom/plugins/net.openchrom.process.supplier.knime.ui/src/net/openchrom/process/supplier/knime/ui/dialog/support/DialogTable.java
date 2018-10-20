@@ -31,6 +31,11 @@ import javax.swing.table.TableRowSorter;
 
 public abstract class DialogTable<Data> extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2655941483606857740L;
+
 	private class DataModel extends AbstractTableModel {
 
 		/**
@@ -66,7 +71,6 @@ public abstract class DialogTable<Data> extends JPanel {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private JTable table;
 	private JButton addRangeButton;
 	private JButton removeSelectedRangesButton;
@@ -76,11 +80,25 @@ public abstract class DialogTable<Data> extends JPanel {
 	private String[] columnNames;
 
 	public DialogTable(String columnsName, Collection<Data> init, int width, int alignment) {
-		this(new String[]{columnsName}, null, init, width, alignment, JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+		this(new String[]{columnsName}, null, width, alignment, JTable.AUTO_RESIZE_ALL_COLUMNS);
+		updateComponent(init);
 	}
 
 	public DialogTable(String[] columnsName, int[] columnsWidth, Collection<Data> init, int width, int alignment) {
-		this(columnsName, columnsWidth, init, width, alignment, JTable.AUTO_RESIZE_OFF);
+
+		this(columnsName, columnsWidth, width, alignment, JTable.AUTO_RESIZE_OFF);
+		updateComponent(init);
+	}
+
+	public DialogTable(String columnsName, int width, int alignment) {
+
+		this(new String[]{columnsName}, null, width, alignment, JTable.AUTO_RESIZE_ALL_COLUMNS);
+	}
+
+	public DialogTable(String[] columnsName, int[] columnsWidth, int width, int alignment) {
+
+		this(columnsName, columnsWidth, width, alignment, JTable.AUTO_RESIZE_OFF);
 	}
 
 	/**
@@ -95,10 +113,10 @@ public abstract class DialogTable<Data> extends JPanel {
 	 * @param tableAutoSize
 	 *            set table JTable.AUTO_RESIZE_OFF - allow horizontal scrolling or JTable.AUTO_RESIZE_ALL_COLUMNS do not allow horizontal scrolling
 	 */
-	private DialogTable(String[] columnsName, int[] columnsWidth, Collection<Data> init, int width, int alignment, int tableAutoSize) {
+	private DialogTable(String[] columnsName, int[] columnsWidth, int width, int alignment, int tableAutoSize) {
+
 		super();
 		tableData = new ArrayList<>();
-		tableData.addAll(init);
 		columnNames = columnsName;
 		init(width, tableAutoSize);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -164,7 +182,7 @@ public abstract class DialogTable<Data> extends JPanel {
 
 	protected abstract List<Data> add();
 
-	public void updateComponent(List<Data> newData) {
+	public void updateComponent(Collection<Data> newData) {
 
 		tableData.clear();
 		for(Data data : newData) {

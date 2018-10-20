@@ -12,22 +12,23 @@
 package net.openchrom.process.supplier.knime.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 
 public abstract class AbstractDataOutput<Data extends IMeasurementInfo> implements IDataOutput<Data> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6869432432403783917L;
 	private String id;
 	private String prefix;
 	private String postfix;
 	private File directory;
 	private String fileName;
+	//
+	private static final int INTERNAL_VERSION_ID = 1;
 
-	protected AbstractDataOutput() {
+	public AbstractDataOutput() {
 
 	}
 
@@ -118,6 +119,34 @@ public abstract class AbstractDataOutput<Data extends IMeasurementInfo> implemen
 	protected String generateFilePath(Data data) {
 
 		return getDirectory().getAbsolutePath() + File.separator + getFileName(data);
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+
+		int version = in.readInt();
+		switch(version) {
+			case 1:
+				id = (String)in.readObject();
+				prefix = (String)in.readObject();
+				postfix = (String)in.readObject();
+				directory = (File)in.readObject();
+				fileName = (String)in.readObject();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		out.writeInt(INTERNAL_VERSION_ID);
+		out.writeObject(id);
+		out.writeObject(prefix);
+		out.writeObject(postfix);
+		out.writeObject(directory);
+		out.writeObject(fileName);
 	}
 
 	private String getFileName(Data data) {

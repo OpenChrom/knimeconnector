@@ -30,5 +30,8 @@ public interface PropertyProvider {
 
 	String getStringProperty(String id);
 
+	/*
+	 * as value object could be stored double, String, boolean or integer (float is save as double)
+	 */
 	Map<String, Object> values();
 }

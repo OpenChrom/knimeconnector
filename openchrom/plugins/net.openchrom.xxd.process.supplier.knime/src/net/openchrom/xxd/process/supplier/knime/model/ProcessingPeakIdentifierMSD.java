@@ -12,7 +12,8 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,16 +30,14 @@ import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSu
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
+import net.openchrom.xxd.process.supplier.knime.model.settingssupplier.IdentifierSettingsObjectSupplier;
 
 public class ProcessingPeakIdentifierMSD extends AbstractDataProcessing<IPeakIdentifierSettingsMSD, IChromatogramSelectionMSD> {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -1128763603573631815L;
+	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<? extends IPeakIdentifierSettingsMSD> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
-	protected ProcessingPeakIdentifierMSD() {
+	public ProcessingPeakIdentifierMSD() {
 
 		super();
 	}
@@ -109,9 +108,24 @@ public class ProcessingPeakIdentifierMSD extends AbstractDataProcessing<IPeakIde
 		return settingsClassSupplier;
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 
-		in.defaultReadObject();
-		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+		super.readExternal(in);
+		int version = in.read();
+		switch(version) {
+			case 1:
+				settingsClassSupplier = new IdentifierSettingsObjectSupplier<>();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		super.writeExternal(out);
+		out.writeInt(INTERNAL_VERSION_ID);
 	}
 }

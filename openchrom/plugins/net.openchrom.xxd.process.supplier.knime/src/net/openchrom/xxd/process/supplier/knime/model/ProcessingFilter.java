@@ -12,7 +12,8 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import org.eclipse.chemclipse.chromatogram.filter.core.chromatogram.ChromatogramFilter;
 import org.eclipse.chemclipse.chromatogram.filter.exceptions.NoChromatogramFilterSupplierAvailableException;
@@ -28,13 +29,10 @@ import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
 public class ProcessingFilter extends AbstractDataProcessing<IChromatogramFilterSettings, IChromatogramSelection> {
 
-	/**
-	 *
-	 */
-	private static final long serialVersionUID = -6108017542495304306L;
+	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<? extends IChromatogramFilterSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
-	protected ProcessingFilter() {
+	public ProcessingFilter() {
 
 		super();
 	}
@@ -93,9 +91,24 @@ public class ProcessingFilter extends AbstractDataProcessing<IChromatogramFilter
 		return settingsClassSupplier;
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 
-		in.defaultReadObject();
-		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+		super.readExternal(in);
+		int version = in.read();
+		switch(version) {
+			case 1:
+				settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		super.writeExternal(out);
+		out.writeInt(INTERNAL_VERSION_ID);
 	}
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.knime.core.PortType">
+      <portType
+            hidden="false"
+            name="Scan NMR"
+            objectClass="net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject"
+            objectSerializer="net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject$Serializer"
+            specClass="net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObjectSpec"
+            specSerializer="net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObjectSpec$Serializer">
+      </portType>
+      
+   </extension>
+</plugin>

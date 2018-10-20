@@ -11,12 +11,13 @@
  *******************************************************************************/
 package net.openchrom.process.supplier.knime.model;
 
+import java.io.Externalizable;
 import java.io.Serializable;
 
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-public interface IDataProcessing<Data> extends Serializable {
+public interface IDataProcessing<Data> extends Externalizable, Serializable {
 
 	IProcessingInfo process(Data chromatogramSelection, IProgressMonitor monitor) throws Exception;
 

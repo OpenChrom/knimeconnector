@@ -39,11 +39,11 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
-import net.openchrom.xxd.process.supplier.knime.model.PortObjectSupport;
 import net.openchrom.xxd.process.supplier.knime.model.table.msd.ChoromatogramMSDTableTranslatorTIC;
 import net.openchrom.xxd.process.supplier.knime.model.table.msd.ChoromatogramMSDTableTranslatorXIC;
 import net.openchrom.xxd.process.supplier.knime.model.table.msd.IChoromatogramMSDTableTranslator;
 import net.openchrom.xxd.process.supplier.knime.portobject.ChromatogramSelectionMSDPortObject;
+import net.openchrom.xxd.process.supplier.knime.portobject.PortObjectSupport;
 
 public class TableToChromatogramMSDNodeModel extends NodeModel {
 

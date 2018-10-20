@@ -12,6 +12,7 @@
 package net.openchrom.process.supplier.knime.ui.dialog;
 
 import java.awt.Dimension;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,15 +20,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.eclipse.chemclipse.csd.model.core.IChromatogramCSD;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NotConfigurableException;
 import org.knime.core.node.defaultnodesettings.DialogComponent;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObjectSpec;
 
-import net.openchrom.process.supplier.knime.model.DataExportSerialization;
 import net.openchrom.process.supplier.knime.ui.dialog.support.ChromatogramCSDExportTable;
+import net.openchrom.xxd.process.supplier.knime.model.ChromatogramCSDExport;
 
 /**
  * A standard component allowing to choose a location(directory) and/or file
@@ -39,14 +39,12 @@ public class DialogComponentChromatogramCSDExport extends DialogComponent {
 
 	private final TitledBorder m_border;
 	private final ChromatogramCSDExportTable chromatogramCSDExportTable;
-	private DataExportSerialization<IChromatogramCSD> chromatogramOutputSerialization;
 
 	public DialogComponentChromatogramCSDExport(SettingsModelString model, String title) {
 
 		super(model);
-		chromatogramOutputSerialization = new DataExportSerialization<>();
 		m_border = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title);
-		chromatogramCSDExportTable = new ChromatogramCSDExportTable(chromatogramOutputSerialization.deserialize(model.getStringValue()));
+		chromatogramCSDExportTable = new ChromatogramCSDExportTable();
 		getComponentPanel().setBorder(m_border);
 		getComponentPanel().setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
 		getComponentPanel().add(chromatogramCSDExportTable);
@@ -59,13 +57,17 @@ public class DialogComponentChromatogramCSDExport extends DialogComponent {
 				updateComponent();
 			}
 		});
+		updateComponent();
 	}
 
 	@Override
 	protected void updateComponent() {
 
 		String value = ((SettingsModelString)getModel()).getStringValue();
-		chromatogramCSDExportTable.updateComponent(chromatogramOutputSerialization.deserialize(value));
+		try {
+			chromatogramCSDExportTable.updateComponent(ChromatogramCSDExport.readString(value));
+		} catch(ClassNotFoundException | IOException e) {
+		}
 	}
 
 	@Override
@@ -76,7 +78,10 @@ public class DialogComponentChromatogramCSDExport extends DialogComponent {
 
 	private void updateModel() {
 
-		((SettingsModelString)getModel()).setStringValue(chromatogramOutputSerialization.serialize(chromatogramCSDExportTable.getTableData()));
+		try {
+			((SettingsModelString)getModel()).setStringValue(ChromatogramCSDExport.writeToString(chromatogramCSDExportTable.getTableData()));
+		} catch(IOException e) {
+		}
 	}
 
 	@Override

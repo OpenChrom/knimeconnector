@@ -36,9 +36,8 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
+import net.openchrom.nmr.process.supplier.knime.model.ScanNMRExport;
 import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject;
-import net.openchrom.process.supplier.knime.model.DataExportSerialization;
-import net.openchrom.process.supplier.knime.model.IDataExport;
 
 /**
  * This is the model implementation of ChromatogramWriterCSD.
@@ -50,7 +49,6 @@ public class ScanExportNodeModel extends NodeModel {
 	private static final String SCAN_NMR_EXPORT = "ScanExport";
 	private static final NodeLogger logger = NodeLogger.getLogger(ScanExportNodeModel.class);
 	private SettingsModelString scanExport;
-	private DataExportSerialization<IScanNMR> dataExporterSerialization;
 
 	/**
 	 * Constructor for the node model.
@@ -59,7 +57,6 @@ public class ScanExportNodeModel extends NodeModel {
 
 		super(new PortType[]{ScanNMRPortObject.TYPE}, new PortType[]{});
 		scanExport = getSettingsModelScanNMRExport();
-		dataExporterSerialization = new DataExportSerialization<>();
 	}
 
 	@Override
@@ -75,8 +72,8 @@ public class ScanExportNodeModel extends NodeModel {
 		ScanNMRPortObject scanNMRPortObject = (ScanNMRPortObject)inObjects[0];
 		IScanNMR scanNMR = scanNMRPortObject.getScanNMR();
 		logger.info("Export scans");
-		List<IDataExport<IScanNMR>> exporters = dataExporterSerialization.deserialize(scanExport.getStringValue());
-		for(IDataExport<IScanNMR> exporter : exporters) {
+		List<ScanNMRExport> exporters = ScanNMRExport.readString(SCAN_NMR_EXPORT);
+		for(ScanNMRExport exporter : exporters) {
 			exporter.process(scanNMR, new NullProgressMonitor());
 		}
 		return new PortObject[]{};

@@ -32,12 +32,10 @@ import javax.swing.JTextField;
 
 import org.eclipse.chemclipse.converter.core.ISupplier;
 import org.eclipse.chemclipse.msd.converter.chromatogram.ChromatogramConverterMSD;
-import org.eclipse.chemclipse.msd.model.core.IChromatogramMSD;
 
-import net.openchrom.process.supplier.knime.model.IDataExport;
 import net.openchrom.xxd.process.supplier.knime.model.ChromatogramMSDExport;
 
-public class ChromatogramMSDExportTable extends DialogTable<IDataExport<IChromatogramMSD>> {
+public class ChromatogramMSDExportTable extends DialogTable<ChromatogramMSDExport> {
 
 	/**
 	 * 
@@ -46,13 +44,18 @@ public class ChromatogramMSDExportTable extends DialogTable<IDataExport<IChromat
 	private final static String[] columnsName = new String[]{"Name", "Prefix", "Postfix", "Directory path"};
 	private final static int[] columnsWidth = new int[]{250, 100, 100, 350};
 
-	public ChromatogramMSDExportTable(Collection<IDataExport<IChromatogramMSD>> init) {
+	public ChromatogramMSDExportTable(Collection<ChromatogramMSDExport> init) {
 
 		super(columnsName, columnsWidth, init, 800, JLabel.LEFT);
 	}
 
+	public ChromatogramMSDExportTable() {
+
+		super(columnsName, columnsWidth, 800, JLabel.LEFT);
+	}
+
 	@Override
-	protected Object getValue(IDataExport<IChromatogramMSD> data, int columnIndex) {
+	protected Object getValue(ChromatogramMSDExport data, int columnIndex) {
 
 		switch(columnIndex) {
 			case 0:
@@ -76,9 +79,9 @@ public class ChromatogramMSDExportTable extends DialogTable<IDataExport<IChromat
 	}
 
 	@Override
-	protected List<IDataExport<IChromatogramMSD>> add() {
+	protected List<ChromatogramMSDExport> add() {
 
-		List<IDataExport<IChromatogramMSD>> chromatogramExports = new ArrayList<>();
+		List<ChromatogramMSDExport> chromatogramExports = new ArrayList<>();
 		List<ISupplier> suppliers = ChromatogramConverterMSD.getChromatogramConverterSupport().getExportSupplier();
 		JComboBox<ISupplier> comboSupplier = new JComboBox<>(suppliers.toArray(new ISupplier[suppliers.size()]));
 		JFileChooser fc = new JFileChooser();
@@ -136,7 +139,7 @@ public class ChromatogramMSDExportTable extends DialogTable<IDataExport<IChromat
 			String id = supplier.getId();
 			File file = new File(folderPath.getText());
 			if(file.isDirectory()) {
-				IDataExport<IChromatogramMSD> chromatogramExport = new ChromatogramMSDExport(id, file);
+				ChromatogramMSDExport chromatogramExport = new ChromatogramMSDExport(id, file);
 				chromatogramExport.setPostfix(postfix.getText());
 				chromatogramExport.setPrefix(prefix.getText());
 				chromatogramExports.add(chromatogramExport);

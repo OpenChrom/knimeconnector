@@ -12,15 +12,15 @@
 package net.openchrom.process.supplier.knime.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
 import org.eclipse.chemclipse.model.core.IMeasurementInfo;
 
 public abstract class AbstractDataExport<Data extends IMeasurementInfo> extends AbstractDataOutput<Data> implements IDataExport<Data> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2581302980172298044L;
+	private static final int INTERNAL_VERSION_ID = 1;
 
 	public AbstractDataExport(String id, File directory) {
 
@@ -30,5 +30,19 @@ public abstract class AbstractDataExport<Data extends IMeasurementInfo> extends 
 	public AbstractDataExport() {
 
 		super();
+	}
+
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+
+		super.readExternal(in);
+		int version = in.read();
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		super.writeExternal(out);
+		out.writeInt(INTERNAL_VERSION_ID);
 	}
 }

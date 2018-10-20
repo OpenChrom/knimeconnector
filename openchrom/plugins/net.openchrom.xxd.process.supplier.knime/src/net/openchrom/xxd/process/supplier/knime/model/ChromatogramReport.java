@@ -11,9 +11,17 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.xxd.report.core.ChromatogramReports;
 import org.eclipse.chemclipse.chromatogram.xxd.report.exceptions.NoReportSupplierAvailableException;
@@ -31,10 +39,7 @@ import net.openchrom.process.supplier.knime.model.AbstractDataReport;
 
 public class ChromatogramReport extends AbstractDataReport<IChromatogramReportSettings, IChromatogram> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2897126156184922271L;
+	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<IChromatogramReportSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	public ChromatogramReport() {
@@ -106,9 +111,50 @@ public class ChromatogramReport extends AbstractDataReport<IChromatogramReportSe
 		return settingsClassSupplier;
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 
-		in.defaultReadObject();
-		settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+		super.readExternal(in);
+		int version = in.read();
+		switch(version) {
+			case 1:
+				settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		super.writeExternal(out);
+		out.writeInt(INTERNAL_VERSION_ID);
+	}
+
+	public static List<ChromatogramReport> readString(String data) throws IOException, ClassNotFoundException {
+
+		List<ChromatogramReport> reports = new ArrayList<>();
+		byte[] byteData = Base64.getDecoder().decode(data);
+		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(byteData));
+		int size = ois.readInt();
+		for(int i = 0; i < size; i++) {
+			reports.add((ChromatogramReport)ois.readObject());
+		}
+		ois.close();
+		return reports;
+	}
+
+	public static String writeToString(List<ChromatogramReport> reports) throws IOException {
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos;
+		oos = new ObjectOutputStream(baos);
+		oos.writeInt(reports.size());
+		for(ChromatogramReport report : reports) {
+			oos.writeObject(report);
+		}
+		oos.close();
+		return Base64.getEncoder().encodeToString(baos.toByteArray());
 	}
 }

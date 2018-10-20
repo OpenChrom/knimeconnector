@@ -12,7 +12,8 @@
 package net.openchrom.xxd.process.supplier.knime.model;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import net.openchrom.process.supplier.knime.dialogfactory.JacksonSettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
@@ -32,10 +34,7 @@ import net.openchrom.xxd.process.supplier.knime.model.settingssupplier.Identifie
 
 public class ProcessingQuantifierMSD extends AbstractDataProcessing<IPeakQuantifierSettings, IChromatogramSelectionMSD> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5598830993160485997L;
+	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<? extends IPeakQuantifierSettings> settingsClassSupplier = new IdentifierSettingsObjectSupplier<>();
 
 	protected ProcessingQuantifierMSD() {
@@ -111,9 +110,24 @@ public class ProcessingQuantifierMSD extends AbstractDataProcessing<IPeakQuantif
 		return settingsClassSupplier;
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 
-		in.defaultReadObject();
-		settingsClassSupplier = new IdentifierSettingsObjectSupplier<>();
+		super.readExternal(in);
+		int version = in.read();
+		switch(version) {
+			case 1:
+				settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+
+		super.writeExternal(out);
+		out.writeInt(INTERNAL_VERSION_ID);
 	}
 }
