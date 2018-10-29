@@ -11,11 +11,8 @@
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model.table.msd;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
 import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
@@ -80,7 +77,7 @@ public class PeaksMSDTableTranslator implements IPeaksMSDTableTranslator {
 			IChromatogramPeakMSD peak = it.next();
 			IPeakModelMSD peakModel = peak.getPeakModel();
 			RowKey rowKey = new RowKey(Integer.toString(numPeak));
-			ILibraryInformation libraryInformation = getLibraryInformation(new ArrayList<>(peak.getTargets()));
+			ILibraryInformation libraryInformation = IIdentificationTarget.getBestLibraryInformation(peak.getTargets(), targetExtendedComparator);
 			int columnCell = 0;
 			DataCell[] cells = new DataCell[numberOfColumns];
 			cells[columnCell++] = new StringCell(Boolean.toString(peak.isActiveForAnalysis()));
@@ -111,16 +108,4 @@ public class PeaksMSDTableTranslator implements IPeaksMSDTableTranslator {
 		bufferedDataContainer.close();
 		return bufferedDataContainer.getTable();
 	}
-
-	private ILibraryInformation getLibraryInformation(List<IIdentificationTarget> targets) {
-
-		ILibraryInformation libraryInformation = null;
-		targets = new ArrayList<>(targets);
-		Collections.sort(targets, targetExtendedComparator);
-		if(targets.size() >= 1) {
-			libraryInformation = targets.get(0).getLibraryInformation();
-		}
-		return libraryInformation;
-	}
-	//
 }
