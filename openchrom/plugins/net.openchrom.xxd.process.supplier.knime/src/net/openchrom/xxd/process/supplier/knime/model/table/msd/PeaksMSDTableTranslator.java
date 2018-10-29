@@ -18,8 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.chemclipse.model.comparator.TargetExtendedComparator;
+import org.eclipse.chemclipse.model.identifier.IIdentificationTarget;
 import org.eclipse.chemclipse.model.identifier.ILibraryInformation;
-import org.eclipse.chemclipse.model.targets.IPeakTarget;
 import org.eclipse.chemclipse.msd.model.core.IChromatogramPeakMSD;
 import org.eclipse.chemclipse.msd.model.core.IPeakModelMSD;
 import org.eclipse.chemclipse.msd.model.exceptions.NoExtractedIonSignalStoredException;
@@ -45,7 +45,6 @@ public class PeaksMSDTableTranslator implements IPeaksMSDTableTranslator {
 	private TargetExtendedComparator targetExtendedComparator;
 
 	public PeaksMSDTableTranslator() {
-
 		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
 		targetExtendedComparator = new TargetExtendedComparator(SortOrder.DESC);
 	}
@@ -113,7 +112,7 @@ public class PeaksMSDTableTranslator implements IPeaksMSDTableTranslator {
 		return bufferedDataContainer.getTable();
 	}
 
-	private ILibraryInformation getLibraryInformation(List<IPeakTarget> targets) {
+	private ILibraryInformation getLibraryInformation(List<IIdentificationTarget> targets) {
 
 		ILibraryInformation libraryInformation = null;
 		targets = new ArrayList<>(targets);
