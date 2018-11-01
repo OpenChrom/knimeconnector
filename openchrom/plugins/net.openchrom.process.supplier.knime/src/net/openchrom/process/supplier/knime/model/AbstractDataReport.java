@@ -81,7 +81,6 @@ public abstract class AbstractDataReport<Settings, Data extends IMeasurementInfo
 
 		super.readExternal(in);
 		int version = in.readInt();
-		in.readInt();
 		switch(version) {
 			case 1:
 				append = in.readBoolean();
