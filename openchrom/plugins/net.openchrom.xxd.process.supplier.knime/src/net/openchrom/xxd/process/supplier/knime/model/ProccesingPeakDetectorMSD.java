@@ -32,7 +32,7 @@ public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetec
 	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<? extends IPeakDetectorMSDSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
-	protected ProccesingPeakDetectorMSD() {
+	public ProccesingPeakDetectorMSD() {
 
 		super();
 	}

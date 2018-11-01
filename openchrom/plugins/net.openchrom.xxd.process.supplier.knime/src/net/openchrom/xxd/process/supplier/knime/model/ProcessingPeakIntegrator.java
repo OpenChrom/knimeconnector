@@ -32,7 +32,7 @@ public class ProcessingPeakIntegrator extends AbstractDataProcessing<IPeakIntegr
 	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<? extends IPeakIntegrationSettings> settingsClassSupplier = new IntegratorSettingsObjectSupplier<>();
 
-	protected ProcessingPeakIntegrator() {
+	public ProcessingPeakIntegrator() {
 
 		super();
 	}

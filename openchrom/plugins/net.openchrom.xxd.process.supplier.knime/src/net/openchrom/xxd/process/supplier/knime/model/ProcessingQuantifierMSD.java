@@ -37,7 +37,7 @@ public class ProcessingQuantifierMSD extends AbstractDataProcessing<IPeakQuantif
 	private static final int INTERNAL_VERSION_ID = 1;
 	private transient SettingObjectSupplier<? extends IPeakQuantifierSettings> settingsClassSupplier = new IdentifierSettingsObjectSupplier<>();
 
-	protected ProcessingQuantifierMSD() {
+	public ProcessingQuantifierMSD() {
 
 		super();
 	}
