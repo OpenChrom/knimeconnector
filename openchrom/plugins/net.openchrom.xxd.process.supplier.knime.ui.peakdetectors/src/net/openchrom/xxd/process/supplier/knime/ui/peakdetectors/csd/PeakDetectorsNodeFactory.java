@@ -13,7 +13,7 @@ package net.openchrom.xxd.process.supplier.knime.ui.peakdetectors.csd;
 
 import java.util.Map.Entry;
 
-import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.peak.detector.core.IPeakDetectorSupplier;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.knime.core.node.InvalidSettingsException;
@@ -37,7 +37,7 @@ import net.openchrom.process.supplier.knime.ui.dialogfactory.property.JacksonPro
 import net.openchrom.process.supplier.knime.ui.dialoggeneration.DialogGenerationDynamicNodeFactory;
 import net.openchrom.xxd.process.supplier.knime.ui.peakdetectors.support.PeakDetektorsSupport;
 
-public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory<PeakDetectorsNodeModel, IPeakDetectorCSDSettings> {
+public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory<PeakDetectorsNodeModel, IPeakDetectorSettingsCSD> {
 
 	private String id;
 
@@ -77,7 +77,7 @@ public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory
 	}
 
 	@Override
-	public PeakDetectorsNodeModel createNodeModel(SettingsObjectWrapper<IPeakDetectorCSDSettings> settingsObjectWrapper) {
+	public PeakDetectorsNodeModel createNodeModel(SettingsObjectWrapper<IPeakDetectorSettingsCSD> settingsObjectWrapper) {
 
 		return new PeakDetectorsNodeModel(id, settingsObjectWrapper);
 	}
@@ -89,10 +89,10 @@ public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory
 	}
 
 	@Override
-	protected SettingsDialogFactory<IPeakDetectorCSDSettings> createSettingsDialogFactory() {
+	protected SettingsDialogFactory<IPeakDetectorSettingsCSD> createSettingsDialogFactory() {
 
-		JacksonPropertyDialogFactory<IPeakDetectorCSDSettings> factory = new JacksonPropertyDialogFactory<>();
-		Class<? extends IPeakDetectorCSDSettings> settingsClass;
+		JacksonPropertyDialogFactory<IPeakDetectorSettingsCSD> factory = new JacksonPropertyDialogFactory<>();
+		Class<? extends IPeakDetectorSettingsCSD> settingsClass;
 		try {
 			settingsClass = PeakDetektorsSupport.getSupplierCSD(id).getPeakDetectorSettingsClass();
 			if(settingsClass == null) {

@@ -16,7 +16,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.PeakDetectorCSD;
-import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -27,10 +27,10 @@ import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
-public class ProccesingPeakDetectorCSD extends AbstractDataProcessing<IPeakDetectorCSDSettings, IChromatogramSelectionCSD> {
+public class ProccesingPeakDetectorCSD extends AbstractDataProcessing<IPeakDetectorSettingsCSD, IChromatogramSelectionCSD> {
 
 	private static final int INTERNAL_VERSION_ID = 1;
-	private transient SettingObjectSupplier<? extends IPeakDetectorCSDSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+	private transient SettingObjectSupplier<? extends IPeakDetectorSettingsCSD> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	public ProccesingPeakDetectorCSD() {
 
@@ -48,13 +48,13 @@ public class ProccesingPeakDetectorCSD extends AbstractDataProcessing<IPeakDetec
 	}
 
 	@Override
-	protected Class<? extends IPeakDetectorCSDSettings> getSettingsClass(String id) throws NoPeakDetectorAvailableException {
+	protected Class<? extends IPeakDetectorSettingsCSD> getSettingsClass(String id) throws NoPeakDetectorAvailableException {
 
 		return PeakDetectorCSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getPeakDetectorSettingsClass();
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionCSD chromatogramSelection, String id, IPeakDetectorCSDSettings settings, IProgressMonitor monitor) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionCSD chromatogramSelection, String id, IPeakDetectorSettingsCSD settings, IProgressMonitor monitor) throws Exception {
 
 		return PeakDetectorCSD.detect(chromatogramSelection, settings, id, monitor);
 	}
@@ -86,7 +86,7 @@ public class ProccesingPeakDetectorCSD extends AbstractDataProcessing<IPeakDetec
 	}
 
 	@Override
-	protected SettingObjectSupplier<? extends IPeakDetectorCSDSettings> getSettingsClassSupplier() {
+	protected SettingObjectSupplier<? extends IPeakDetectorSettingsCSD> getSettingsClassSupplier() {
 
 		return settingsClassSupplier;
 	}

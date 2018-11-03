@@ -15,10 +15,10 @@ import java.util.List;
 
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.IPeakDetectorCSDSupplier;
 import org.eclipse.chemclipse.chromatogram.csd.peak.detector.core.PeakDetectorCSD;
-import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.IPeakDetectorMSDSupplier;
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMSD;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
+import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.eclipse.chemclipse.csd.model.core.selection.IChromatogramSelectionCSD;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
@@ -50,7 +50,7 @@ public class PeakDetektorsSupport {
 		}
 	}
 
-	public static IProcessingInfo detectMSD(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorMSDSettings peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
+	public static IProcessingInfo detectMSD(IChromatogramSelectionMSD chromatogramSelection, IPeakDetectorSettingsMSD peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
 
 		if(containsPeakDetectorMSD(peakDetectorId)) {
 			return PeakDetectorMSD.detect(chromatogramSelection, peakDetectorSettings, peakDetectorId, monitor);
@@ -58,7 +58,7 @@ public class PeakDetektorsSupport {
 		throw new NoPeakDetectorAvailableException();
 	}
 
-	public static IProcessingInfo detectCSD(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorCSDSettings peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
+	public static IProcessingInfo detectCSD(IChromatogramSelectionCSD chromatogramSelection, IPeakDetectorSettingsCSD peakDetectorSettings, String peakDetectorId, IProgressMonitor monitor) throws NoPeakDetectorAvailableException {
 
 		if(containsPeakDetectorCSD(peakDetectorId)) {
 			return PeakDetectorCSD.detect(chromatogramSelection, peakDetectorSettings, peakDetectorId, monitor);

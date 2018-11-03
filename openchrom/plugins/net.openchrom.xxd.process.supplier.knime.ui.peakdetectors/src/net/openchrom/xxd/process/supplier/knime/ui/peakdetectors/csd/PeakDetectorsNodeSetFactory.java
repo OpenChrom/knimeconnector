@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorCSDSettings;
+import org.eclipse.chemclipse.chromatogram.csd.peak.detector.settings.IPeakDetectorSettingsCSD;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeLogger;
@@ -39,7 +39,7 @@ public class PeakDetectorsNodeSetFactory implements NodeSetFactory {
 		try {
 			ids.addAll(PeakDetektorsSupport.getIDsPeakDectorsCSD().stream().filter(f -> {
 				try {
-					Class<? extends IPeakDetectorCSDSettings> settings = PeakDetektorsSupport.getSupplierCSD(f).getPeakDetectorSettingsClass();
+					Class<? extends IPeakDetectorSettingsCSD> settings = PeakDetektorsSupport.getSupplierCSD(f).getPeakDetectorSettingsClass();
 					if(settings == null) {
 						LOGGER.warn("Peak detectors settings class for detecter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;

@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.eclipse.chemclipse.converter.chromatogram.ChromatogramConverterSupport;
+import org.eclipse.chemclipse.converter.chromatogram.IChromatogramConverterSupport;
 import org.eclipse.chemclipse.converter.core.ISupplier;
 import org.eclipse.chemclipse.csd.converter.chromatogram.ChromatogramConverterCSD;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
@@ -33,7 +33,7 @@ public class ChromatogramReaderNodeDialog extends DefaultNodeSettingsPane {
 	protected ChromatogramReaderNodeDialog() {
 		super();
 		//
-		ChromatogramConverterSupport chromatogramConverterSupport = ChromatogramConverterCSD.getChromatogramConverterSupport();
+		IChromatogramConverterSupport chromatogramConverterSupport = ChromatogramConverterCSD.getChromatogramConverterSupport();
 		Set<String> extensions = new HashSet<String>();
 		for(ISupplier supplier : chromatogramConverterSupport.getSupplier()) {
 			if(supplier.isImportable()) {

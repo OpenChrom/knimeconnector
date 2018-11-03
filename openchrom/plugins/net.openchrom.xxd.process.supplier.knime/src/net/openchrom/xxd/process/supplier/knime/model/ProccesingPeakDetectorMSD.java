@@ -16,7 +16,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 import org.eclipse.chemclipse.chromatogram.msd.peak.detector.core.PeakDetectorMSD;
-import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorMSDSettings;
+import org.eclipse.chemclipse.chromatogram.msd.peak.detector.settings.IPeakDetectorSettingsMSD;
 import org.eclipse.chemclipse.chromatogram.peak.detector.exceptions.NoPeakDetectorAvailableException;
 import org.eclipse.chemclipse.msd.model.core.selection.IChromatogramSelectionMSD;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
@@ -27,10 +27,10 @@ import net.openchrom.process.supplier.knime.dialogfactory.SettingObjectSupplier;
 import net.openchrom.process.supplier.knime.dialogfactory.property.PropertyProvider;
 import net.openchrom.process.supplier.knime.model.AbstractDataProcessing;
 
-public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetectorMSDSettings, IChromatogramSelectionMSD> {
+public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetectorSettingsMSD, IChromatogramSelectionMSD> {
 
 	private static final int INTERNAL_VERSION_ID = 1;
-	private transient SettingObjectSupplier<? extends IPeakDetectorMSDSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
+	private transient SettingObjectSupplier<? extends IPeakDetectorSettingsMSD> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	public ProccesingPeakDetectorMSD() {
 
@@ -48,13 +48,13 @@ public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetec
 	}
 
 	@Override
-	protected Class<? extends IPeakDetectorMSDSettings> getSettingsClass(String id) throws Exception {
+	protected Class<? extends IPeakDetectorSettingsMSD> getSettingsClass(String id) throws Exception {
 
 		return PeakDetectorMSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getPeakDetectorSettingsClass();
 	}
 
 	@Override
-	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakDetectorMSDSettings settings, IProgressMonitor monitor) throws Exception {
+	protected IProcessingInfo process(IChromatogramSelectionMSD chromatogramSelection, String id, IPeakDetectorSettingsMSD settings, IProgressMonitor monitor) throws Exception {
 
 		return PeakDetectorMSD.detect(chromatogramSelection, settings, id, monitor);
 	}
@@ -86,7 +86,7 @@ public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetec
 	}
 
 	@Override
-	protected SettingObjectSupplier<? extends IPeakDetectorMSDSettings> getSettingsClassSupplier() {
+	protected SettingObjectSupplier<? extends IPeakDetectorSettingsMSD> getSettingsClassSupplier() {
 
 		return settingsClassSupplier;
 	}
