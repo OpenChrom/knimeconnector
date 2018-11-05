@@ -90,7 +90,7 @@ public class PeakIndetifierNodeFactory extends DialogGenerationDynamicNodeFactor
 		IdentifierPropertyDialogFactory<IPeakIdentifierSettingsMSD> factory = new IdentifierPropertyDialogFactory<>();
 		Class<? extends IPeakIdentifierSettingsMSD> setingClass;
 		try {
-			setingClass = IdentifierSupport.getSupplierMSD(indetifierId).getIdentifierSettingsClass();
+			setingClass = IdentifierSupport.getSupplierMSD(indetifierId).getSettingsClass();
 			if(setingClass == null) {
 				throw new IllegalStateException("Peak integrator settings class for filter id '" + indetifierId + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}

@@ -40,7 +40,7 @@ public class PeakIndetifierNodeSetFactory implements NodeSetFactory {
 		try {
 			ids.addAll(IdentifierSupport.getIDsPeakIdentifierCSD().stream().filter(f -> {
 				try {
-					Class<? extends IPeakIdentifierSettingsCSD> peakSettingsClass = IdentifierSupport.getSupplierCSD(f).getIdentifierSettingsClass();
+					Class<? extends IPeakIdentifierSettingsCSD> peakSettingsClass = IdentifierSupport.getSupplierCSD(f).getSettingsClass();
 					if(peakSettingsClass == null) {
 						LOGGER.warn("Peak settings class for peak id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;

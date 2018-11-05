@@ -55,7 +55,7 @@ public class ProcessingPeakIdentifierMSD extends AbstractDataProcessing<IPeakIde
 	@Override
 	protected Class<? extends IPeakIdentifierSettingsMSD> getSettingsClass(String id) throws Exception {
 
-		return PeakIdentifierMSD.getPeakIdentifierSupport().getIdentifierSupplier(id).getIdentifierSettingsClass();
+		return PeakIdentifierMSD.getPeakIdentifierSupport().getIdentifierSupplier(id).getSettingsClass();
 	}
 
 	@Override
