@@ -33,24 +33,21 @@ public class ProccesingPeakDetectorMSD extends AbstractDataProcessing<IPeakDetec
 	private transient SettingObjectSupplier<? extends IPeakDetectorSettingsMSD> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	public ProccesingPeakDetectorMSD() {
-
 		super();
 	}
 
 	public ProccesingPeakDetectorMSD(String id) {
-
 		super(id);
 	}
 
 	public ProccesingPeakDetectorMSD(String id, PropertyProvider prov) throws Exception {
-
 		super(id, prov);
 	}
 
 	@Override
 	protected Class<? extends IPeakDetectorSettingsMSD> getSettingsClass(String id) throws Exception {
 
-		return PeakDetectorMSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getPeakDetectorSettingsClass();
+		return PeakDetectorMSD.getPeakDetectorSupport().getPeakDetectorSupplier(id).getSettingsClass();
 	}
 
 	@Override

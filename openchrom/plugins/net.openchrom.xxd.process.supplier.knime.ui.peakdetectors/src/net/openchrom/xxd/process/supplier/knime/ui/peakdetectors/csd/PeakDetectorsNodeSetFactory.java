@@ -39,7 +39,7 @@ public class PeakDetectorsNodeSetFactory implements NodeSetFactory {
 		try {
 			ids.addAll(PeakDetektorsSupport.getIDsPeakDectorsCSD().stream().filter(f -> {
 				try {
-					Class<? extends IPeakDetectorSettingsCSD> settings = PeakDetektorsSupport.getSupplierCSD(f).getPeakDetectorSettingsClass();
+					Class<? extends IPeakDetectorSettingsCSD> settings = PeakDetektorsSupport.getSupplierCSD(f).getSettingsClass();
 					if(settings == null) {
 						LOGGER.warn("Peak detectors settings class for detecter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;

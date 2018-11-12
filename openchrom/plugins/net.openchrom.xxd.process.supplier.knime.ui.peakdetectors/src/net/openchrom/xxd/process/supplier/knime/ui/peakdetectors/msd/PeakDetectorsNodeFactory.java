@@ -94,7 +94,7 @@ public class PeakDetectorsNodeFactory extends DialogGenerationDynamicNodeFactory
 		JacksonPropertyDialogFactory<IPeakDetectorSettingsMSD> factory = new JacksonPropertyDialogFactory<>();
 		Class<? extends IPeakDetectorSettingsMSD> settingsClass;
 		try {
-			settingsClass = PeakDetektorsSupport.getSupplierMSD(id).getPeakDetectorSettingsClass();
+			settingsClass = PeakDetektorsSupport.getSupplierMSD(id).getSettingsClass();
 			if(settingsClass == null) {
 				throw new IllegalStateException("Peak detectors settings class for detector id '" + id + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}

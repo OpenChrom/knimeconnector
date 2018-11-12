@@ -35,12 +35,11 @@ public class PeakDetectorsNodeSetFactory implements NodeSetFactory {
 	private List<String> ids;
 
 	public PeakDetectorsNodeSetFactory() {
-
 		ids = new ArrayList<>();
 		try {
 			ids.addAll(PeakDetektorsSupport.getIDsPeakDectorsMSD().stream().filter(f -> {
 				try {
-					Class<? extends IPeakDetectorSettingsMSD> settings = PeakDetektorsSupport.getSupplierMSD(f).getPeakDetectorSettingsClass();
+					Class<? extends IPeakDetectorSettingsMSD> settings = PeakDetektorsSupport.getSupplierMSD(f).getSettingsClass();
 					if(settings == null) {
 						LOGGER.warn("Peak detectors settings class for detecter id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;
