@@ -94,7 +94,7 @@ public class PeakQuantifiersNodeFactory extends DialogGenerationDynamicNodeFacto
 		JacksonPropertyDialogFactory<IPeakQuantifierSettings> factory = new JacksonPropertyDialogFactory<>();
 		Class<? extends IPeakQuantifierSettings> quantifierSettingsClass;
 		try {
-			quantifierSettingsClass = PeakQuantifiersSupport.getSupplierMSD(id).getQuantifierSettingsClass();
+			quantifierSettingsClass = PeakQuantifiersSupport.getSupplierMSD(id).getSettingsClass();
 			if(quantifierSettingsClass == null) {
 				throw new IllegalStateException("Quantifier settings class for filter id '" + id + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 			}

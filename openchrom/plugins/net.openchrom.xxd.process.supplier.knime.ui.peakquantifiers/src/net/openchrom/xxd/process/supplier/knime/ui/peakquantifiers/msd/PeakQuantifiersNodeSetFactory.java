@@ -40,7 +40,7 @@ public class PeakQuantifiersNodeSetFactory implements NodeSetFactory {
 			ids = new ArrayList<>();
 			ids.addAll(PeakQuantifiersSupport.getIdsPeakQuantifiersMSD().stream().filter(f -> {
 				try {
-					Class<? extends IPeakQuantifierSettings> settingClass = PeakQuantifiersSupport.getSupplierMSD(f).getQuantifierSettingsClass();
+					Class<? extends IPeakQuantifierSettings> settingClass = PeakQuantifiersSupport.getSupplierMSD(f).getSettingsClass();
 					if(settingClass == null) {
 						LOGGER.warn("Peak quantifier settings class for quantifier id '" + f + "' cannot be resolved. Class migt not be provided by the respective extension point.");
 						return false;

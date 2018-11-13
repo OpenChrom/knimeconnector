@@ -76,7 +76,7 @@ public class ProcessingQuantifierMSD extends AbstractDataProcessing<IPeakQuantif
 	protected Class<? extends IPeakQuantifierSettings> getSettingsClass(String id) throws Exception {
 
 		try {
-			return PeakQuantifier.getPeakQuantifierSupport().getPeakQuantifierSupplier(getId()).getQuantifierSettingsClass();
+			return PeakQuantifier.getPeakQuantifierSupport().getPeakQuantifierSupplier(getId()).getSettingsClass();
 		} catch(NoPeakQuantifierAvailableException e) {
 		}
 		return null;
