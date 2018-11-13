@@ -43,34 +43,29 @@ public class ChromatogramReport extends AbstractDataReport<IChromatogramReportSe
 	private transient SettingObjectSupplier<IChromatogramReportSettings> settingsClassSupplier = new JacksonSettingObjectSupplier<>();
 
 	public ChromatogramReport() {
-
 		super();
 	}
 
 	public ChromatogramReport(String id, File directory, PropertyProvider prov) throws JsonProcessingException {
-
 		super(id, directory, prov);
 	}
 
 	public ChromatogramReport(String id, File directory, String fileName, PropertyProvider prov) throws JsonProcessingException {
-
 		super(id, directory, fileName);
 	}
 
 	public ChromatogramReport(String id, File directory, String fileName) {
-
 		super(id, directory, fileName);
 	}
 
 	public ChromatogramReport(String id, File directory) {
-
 		super(id, directory);
 	}
 
 	@Override
 	protected Class<? extends IChromatogramReportSettings> getSettingsClass(String id) throws Exception {
 
-		return ChromatogramReports.getChromatogramReportSupplierSupport().getReportSupplier(id).getChromatogramReportSettingsClass();
+		return ChromatogramReports.getChromatogramReportSupplierSupport().getReportSupplier(id).getSettingsClass();
 	}
 
 	@Override
