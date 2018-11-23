@@ -36,8 +36,7 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
-import net.openchrom.nmr.process.supplier.knime.table.ScanNmrTableTranslator;
-import net.openchrom.nmr.process.supplier.knime.table.ScanNmrTableTranslatorRawData;
+import net.openchrom.nmr.process.supplier.knime.table.DataTableTranslator;
 import net.openchrom.process.supplier.knime.support.TableTranslator;
 
 /**
@@ -96,9 +95,9 @@ public class Reader2TableNMRNodeModel extends NodeModel {
 			IScanNMR scanNMR = (IScanNMR)processingInfo.getProcessingResult();
 			BufferedDataTable bufferedDataTable;
 			if(SETTING_NMR_TABLE_OUTPUT.getStringValue().equals(CHEMCAL_SHIFT)) {
-				bufferedDataTable = new ScanNmrTableTranslator().getBufferedDataTable(scanNMR, exec);
+				bufferedDataTable = DataTableTranslator.getBufferedDataTableNMR(scanNMR, exec);
 			} else {
-				bufferedDataTable = new ScanNmrTableTranslatorRawData().getBufferedDataTable(scanNMR, exec);
+				bufferedDataTable = DataTableTranslator.getBufferedDataTableFID(scanNMR, exec);
 			}
 			BufferedDataTable bufferedDataTableHeaders = TableTranslator.headerTranslator(scanNMR, exec);
 			return new BufferedDataTable[]{bufferedDataTable, bufferedDataTableHeaders};

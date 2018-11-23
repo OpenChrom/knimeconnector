@@ -16,7 +16,20 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-public interface IScanNmrTableTranslator {
+import net.openchrom.process.supplier.knime.support.TableTranslator;
 
-	BufferedDataTable getBufferedDataTable(IScanNMR scanNMR, final ExecutionContext exec) throws CanceledExecutionException;
+public class DataTableTranslator {
+
+	private static final String SCAN_NMR_COLUMN_X = "Chemical Shift";
+	private static final String SCAN_NMR_COLUMN_Y = "Intensity";
+
+	public static BufferedDataTable getBufferedDataTableNMR(IScanNMR scanNMR, ExecutionContext exec) throws CanceledExecutionException {
+
+		return TableTranslator.scanToTable(scanNMR.getSignalsNMR(), SCAN_NMR_COLUMN_X, SCAN_NMR_COLUMN_Y, exec);
+	}
+
+	public static BufferedDataTable getBufferedDataTableFID(IScanNMR scanNMR, ExecutionContext exec) throws CanceledExecutionException {
+
+		return TableTranslator.scanToTable(scanNMR.getSignalsFID(), SCAN_NMR_COLUMN_X, SCAN_NMR_COLUMN_Y, exec);
+	}
 }

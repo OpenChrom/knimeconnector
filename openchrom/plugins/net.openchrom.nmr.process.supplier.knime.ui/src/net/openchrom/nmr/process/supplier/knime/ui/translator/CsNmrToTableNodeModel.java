@@ -39,8 +39,7 @@ import org.knime.core.node.port.PortTypeRegistry;
 
 import net.openchrom.nmr.process.supplier.knime.portobject.PortObjectSupport;
 import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject;
-import net.openchrom.nmr.process.supplier.knime.table.ScanNmrTableTranslator;
-import net.openchrom.nmr.process.supplier.knime.table.ScanNmrTableTranslatorRawData;
+import net.openchrom.nmr.process.supplier.knime.table.DataTableTranslator;
 
 public class CsNmrToTableNodeModel extends NodeModel {
 
@@ -74,9 +73,9 @@ public class CsNmrToTableNodeModel extends NodeModel {
 			IScanNMR scan = scanNMRPortObject.getScanNMR();
 			BufferedDataTable bufferedDataTable = null;
 			if(settingsModelUseTic.getBooleanValue()) {
-				bufferedDataTable = new ScanNmrTableTranslatorRawData().getBufferedDataTable(scan, exec);
+				bufferedDataTable = DataTableTranslator.getBufferedDataTableNMR(scan, exec);
 			} else {
-				bufferedDataTable = new ScanNmrTableTranslator().getBufferedDataTable(scan, exec);
+				bufferedDataTable = DataTableTranslator.getBufferedDataTableFID(scan, exec);
 			}
 			//
 			return new PortObject[]{bufferedDataTable};
