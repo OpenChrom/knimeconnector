@@ -14,57 +14,43 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.translator;
+package net.openchrom.process.supplier.knime.filesportobject;
 
-import org.knime.core.node.NodeDialogPane;
-import org.knime.core.node.NodeFactory;
-import org.knime.core.node.NodeView;
+import org.knime.core.node.BufferedDataTable;
+import org.knime.core.node.port.PortObject;
+import org.knime.core.node.port.PortObjectSpec;
 
-public class CsNmrToTableNodeFactory extends NodeFactory<CsNmrToTableNodeModel> {
+public class PortObjectSupport {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public NodeDialogPane createNodeDialogPane() {
+	public static BufferedDataTable getBufferedDataTable(PortObject[] inObjects) {
 
-		return new CsNmrToTableNodeDialog();
+		for(Object object : inObjects) {
+			if(object instanceof BufferedDataTable) {
+				return (BufferedDataTable)object;
+			}
+		}
+		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public CsNmrToTableNodeModel createNodeModel() {
+	public static FilePortObjectSpec getScanNMRPortObjectSpec(PortObjectSpec[] inObjects) {
 
-		return new CsNmrToTableNodeModel();
+		for(PortObjectSpec portObjectSpec : inObjects) {
+			if(portObjectSpec instanceof FilePortObjectSpec) {
+				return (FilePortObjectSpec)portObjectSpec;
+			}
+		}
+		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public NodeView<CsNmrToTableNodeModel> createNodeView(final int viewIndex, final CsNmrToTableNodeModel nodeModel) {
+	public static FilePortObject getScanNMRPortObject(PortObject[] inObjects) {
 
-		return new CsNmrToTableNodeView(nodeModel);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int getNrNodeViews() {
-
-		return 1;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean hasDialog() {
-
-		return true;
+		for(Object object : inObjects) {
+			if(object instanceof FilePortObject) {
+				return (FilePortObject)object;
+			}
+		}
+		return null;
 	}
 }

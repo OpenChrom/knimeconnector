@@ -47,6 +47,8 @@ public interface PropertyCollector {
 
 	void addStringProperty(String id, String name, String defaultValue, String description, Collection<String> list, Map<String, String> ids);
 
+	void addStringProperty(String id, String name, String defaultValue, String description, Map<String, String> ids);
+
 	void addStringProperty(String id, String name, String defaultValue, String description, ButtonGroupEnumInterface[] list);
 
 	void addIonSelectionProperty(String id, String name, String defaultValue, String description);

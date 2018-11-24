@@ -15,45 +15,56 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.translator;
+package net.openchrom.nmr.process.supplier.knime.ui.tablefidtranslator;
 
+import org.knime.core.node.NodeDialogPane;
+import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
-public class CsNmrToTableNodeView extends NodeView<CsNmrToTableNodeModel> {
+public class CsFidToTableNodeFactory extends NodeFactory<CsFidToTableNodeModel> {
 
 	/**
-	 * Creates a new view.
-	 *
-	 * @param nodeModel
-	 *            The model (class: {@link CsNmrToTableNodeModel})
+	 * {@inheritDoc}
 	 */
-	protected CsNmrToTableNodeView(final CsNmrToTableNodeModel nodeModel) {
-		super(nodeModel);
+	@Override
+	public NodeDialogPane createNodeDialogPane() {
+
+		return null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void modelChanged() {
+	public CsFidToTableNodeModel createNodeModel() {
 
-		CsNmrToTableNodeModel nodeModel = getNodeModel();
-		assert nodeModel != null;
+		return new CsFidToTableNodeModel();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void onClose() {
+	public NodeView<CsFidToTableNodeModel> createNodeView(final int viewIndex, final CsFidToTableNodeModel nodeModel) {
 
+		return null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void onOpen() {
+	public int getNrNodeViews() {
 
+		return 0;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasDialog() {
+
+		return false;
 	}
 }

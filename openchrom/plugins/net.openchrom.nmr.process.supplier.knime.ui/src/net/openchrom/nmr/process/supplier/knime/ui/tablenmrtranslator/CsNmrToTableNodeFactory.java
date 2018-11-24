@@ -15,58 +15,56 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.reader2table;
+package net.openchrom.nmr.process.supplier.knime.ui.tablenmrtranslator;
 
+import org.knime.core.node.NodeDialogPane;
+import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
-/**
- * <code>NodeView</code> for the "MeasurementWriterNMR" Node.
- * This node writes chromatographic data.
- *
- * @author OpenChrom
- */
-public class Reader2TableNMRNodeView extends NodeView<Reader2TableNMRNodeModel> {
+public class CsNmrToTableNodeFactory extends NodeFactory<CsNmrToTableNodeModel> {
 
 	/**
-	 * Creates a new view.
-	 *
-	 * @param nodeModel
-	 *            The model (class: {@link Reader2TableNMRNodeModel})
+	 * {@inheritDoc}
 	 */
-	protected Reader2TableNMRNodeView(final Reader2TableNMRNodeModel nodeModel) {
-		super(nodeModel);
-		// TODO instantiate the components of the view here.
+	@Override
+	public NodeDialogPane createNodeDialogPane() {
+
+		return null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void modelChanged() {
+	public CsNmrToTableNodeModel createNodeModel() {
 
-		// TODO retrieve the new model from your nodemodel and
-		// update the view.
-		Reader2TableNMRNodeModel nodeModel = getNodeModel();
-		assert nodeModel != null;
-		// be aware of a possibly not executed nodeModel! The data you retrieve
-		// from your nodemodel could be null, emtpy, or invalid in any kind.
+		return new CsNmrToTableNodeModel();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void onClose() {
+	public NodeView<CsNmrToTableNodeModel> createNodeView(final int viewIndex, final CsNmrToTableNodeModel nodeModel) {
 
-		// TODO things to do when closing the view
+		return null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void onOpen() {
+	public int getNrNodeViews() {
 
-		// TODO things to do when opening the view
+		return 0;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasDialog() {
+
+		return false;
 	}
 }

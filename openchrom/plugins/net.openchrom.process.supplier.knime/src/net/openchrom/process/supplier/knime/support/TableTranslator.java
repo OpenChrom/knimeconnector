@@ -11,6 +11,8 @@
  *******************************************************************************/
 package net.openchrom.process.supplier.knime.support;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -67,7 +69,7 @@ public class TableTranslator {
 		bufferedDataContainer.addRowToTable(dataRow);
 	}
 
-	public static BufferedDataTable headerTranslator(IMeasurementInfo measurmentInfo, ExecutionContext exec) throws CanceledExecutionException {
+	public static DataTableSpec headerTranslatorTableSpec() {
 
 		int numberOfColumns = 2; // Column x, column y
 		//
@@ -75,8 +77,17 @@ public class TableTranslator {
 		DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator("Name", StringCell.TYPE).createSpec();
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator("Value", StringCell.TYPE).createSpec();
-		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
+		return new DataTableSpec(dataColumnSpec);
+	}
+
+	public static BufferedDataTable headerTranslator(IMeasurementInfo measurmentInfo, DataTableSpec dataTableSpec, ExecutionContext exec) throws CanceledExecutionException {
+
+		int numberOfColumns = dataTableSpec.getNumColumns();
 		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
+		if(numberOfColumns != 2) {
+			bufferedDataContainer.close();
+			return bufferedDataContainer.getTable();
+		}
 		//
 		int numRow = 0;
 		createRow("Operator", measurmentInfo.getOperator(), numRow++, bufferedDataContainer);
@@ -125,7 +136,7 @@ public class TableTranslator {
 		return bufferedDataContainer.getTable();
 	}
 
-	public static BufferedDataTable scanToTable(Collection<? extends ISignal> scan, String columnX, String columnY, ExecutionContext exec) throws CanceledExecutionException {
+	public static DataTableSpec scanToDataTabSpac(String columnX, String columnY) {
 
 		int numberOfColumns = 2; // Column x, column y
 		//
@@ -134,7 +145,17 @@ public class TableTranslator {
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(columnX, DoubleCell.TYPE).createSpec();
 		dataColumnSpec[columnSpec++] = new DataColumnSpecCreator(columnY, DoubleCell.TYPE).createSpec();
 		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
+		return dataTableSpec;
+	}
+
+	public static BufferedDataTable scanToTable(Collection<? extends ISignal> scan, DataTableSpec dataTableSpec, ExecutionContext exec) throws CanceledExecutionException {
+
+		int numberOfColumns = dataTableSpec.getNumColumns();
 		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
+		if(numberOfColumns != 2) {
+			bufferedDataContainer.close();
+			return bufferedDataContainer.getTable();
+		}
 		//
 		int totalNumSignals = scan.size();
 		int numSingnal = 0;
@@ -152,6 +173,31 @@ public class TableTranslator {
 			exec.setProgress(numSingnal / totalNumSignals, "Adding Signal: " + ++numSingnal);
 		}
 		//
+		bufferedDataContainer.close();
+		return bufferedDataContainer.getTable();
+	}
+
+	public static BufferedDataTable filesToTable(Collection<File> files, ExecutionContext exec) {
+
+		DataColumnSpec[] dcs = new DataColumnSpec[3];
+		dcs[0] = new DataColumnSpecCreator("Location", StringCell.TYPE).createSpec();
+		dcs[1] = new DataColumnSpecCreator("URL", StringCell.TYPE).createSpec();
+		dcs[2] = new DataColumnSpecCreator("File Name", StringCell.TYPE).createSpec();
+		DataTableSpec dataTableSpec = new DataTableSpec(dcs);
+		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
+		int rowNumber = 1;
+		for(File file : files) {
+			DataCell[] row = new DataCell[3];
+			row[0] = new StringCell(file.getAbsolutePath());
+			try {
+				row[1] = new StringCell(file.getAbsoluteFile().toURI().toURL().toString());
+			} catch(MalformedURLException e) {
+				row[1] = new StringCell("");
+			}
+			row[2] = new StringCell(file.getName());
+			bufferedDataContainer.addRowToTable(new DefaultRow("Row " + rowNumber, row));
+			rowNumber++;
+		}
 		bufferedDataContainer.close();
 		return bufferedDataContainer.getTable();
 	}

@@ -9,18 +9,20 @@
  * Contributors:
  * Jan Holy - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.portobject;
+package net.openchrom.process.supplier.knime.filesportobject;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
-import org.eclipse.chemclipse.nmr.model.core.ScanNMR;
-import org.eclipse.chemclipse.nmr.model.support.StreamObjectReader;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.port.AbstractPortObject;
@@ -30,38 +32,31 @@ import org.knime.core.node.port.PortObjectZipOutputStream;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
-public class ScanNMRPortObject extends AbstractPortObject {
+public class FilePortObject extends AbstractPortObject {
 
 	private static final String SCAN_NMR_DATA = "SCAN_NMR_DATA";
-	private static final IScanNMR EMPTY_SCAN_NMR = new ScanNMR();
-	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class);
-	public static final PortType TYPE_OPTIONAL = PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class, true);
+	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(FilePortObject.class);
+	public static final PortType TYPE_OPTIONAL = PortTypeRegistry.getInstance().getPortType(FilePortObject.class, true);
+	private List<File> files;
 
-	public static final class Serializer extends AbstractPortObjectSerializer<ScanNMRPortObject> {
+	public static final class Serializer extends AbstractPortObjectSerializer<FilePortObject> {
 	}
 
-	private ScanNMRPortObjectSpec portObjectSpec;
-	private IScanNMR scanNMR;
+	private FilePortObjectSpec portObjectSpec;
 
-	public ScanNMRPortObject() {
+	public FilePortObject() {
 
-		this(EMPTY_SCAN_NMR);
-	}
-
-	public ScanNMRPortObject(IScanNMR scanNMR) {
-
-		this.scanNMR = scanNMR;
-		portObjectSpec = new ScanNMRPortObjectSpec();
+		files = new ArrayList<>();
 	}
 
 	@Override
 	public String getSummary() {
 
-		return "Scan NMR";
+		return "Files";
 	}
 
 	@Override
-	public ScanNMRPortObjectSpec getSpec() {
+	public FilePortObjectSpec getSpec() {
 
 		return portObjectSpec;
 	}
@@ -78,7 +73,10 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		ZipEntry zipEntry = new ZipEntry(SCAN_NMR_DATA);
 		out.putNextEntry(zipEntry);
 		ObjectOutputStream outputStream = new ObjectOutputStream(out);
-		outputStream.writeObject(scanNMR);
+		outputStream.writeInt(files.size());
+		for(File file : files) {
+			outputStream.writeObject(file);
+		}
 		outputStream.close();
 	}
 
@@ -89,14 +87,36 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		assert zipEntry.getName().equals(SCAN_NMR_DATA);
 		ObjectInputStream inputStream = new ObjectInputStream(in);
 		try {
-			scanNMR = StreamObjectReader.readObject(inputStream);
+			int size = inputStream.readInt();
+			for(int i = 0; i < size; i++) {
+				files.add((File)inputStream.readObject());
+			}
 		} catch(ClassNotFoundException e) {
 			throw new IOException(e);
 		}
 	}
 
-	public IScanNMR getScanNMR() {
+	public List<File> getFiles() {
 
-		return scanNMR;
+		return Collections.unmodifiableList(files);
+	}
+
+	public void addFiles(File... files) {
+
+		for(File file : files) {
+			this.files.add(file);
+		}
+	}
+
+	public void addFiles(Collection<File> files) {
+
+		for(File file : files) {
+			this.files.add(file);
+		}
+	}
+
+	void clearFile() {
+
+		files.clear();
 	}
 }

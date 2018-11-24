@@ -15,48 +15,32 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.reader2table;
+package net.openchrom.process.supplier.knime.ui.nodedialog;
 
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.chemclipse.converter.core.IConverterSupport;
 import org.eclipse.chemclipse.converter.core.ISupplier;
-import org.eclipse.chemclipse.converter.scan.IScanConverterSupport;
-import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
-import org.knime.core.node.defaultnodesettings.DialogComponentButtonGroup;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
-/**
- * <code>NodeDialog</code> for the "MeasurementWriterNMR" Node.
- * This node writes chromatographic data.
- *
- * This node dialog derives from {@link DefaultNodeSettingsPane} which allows
- * creation of a simple dialog with standard components. If you need a more
- * complex dialog please derive directly from
- * {@link org.knime.core.node.NodeDialogPane}.
- *
- * @author OpenChrom
- */
-public class Reader2TableNMRNodeDialog extends DefaultNodeSettingsPane {
+public class ReaderNodeDialog extends DefaultNodeSettingsPane {
 
-	/**
-	 * New pane for configuring MeasurementWriterNMR node dialog.
-	 * This is just a suggestion to demonstrate possible default dialog
-	 * components.
-	 */
-	protected Reader2TableNMRNodeDialog() {
+	protected ReaderNodeDialog(IConverterSupport converterSupport, SettingsModelString inputFiles) {
+
 		super();
-		// select defaul file
-		IScanConverterSupport converterSupport = ScanConverterNMR.getScanConverterSupport();
+		//
 		Set<String> extensions = new HashSet<String>();
 		for(ISupplier supplier : converterSupport.getSupplier()) {
 			if(supplier.isImportable()) {
 				extensions.add(supplier.getFileExtension());
 			}
 		}
+		//
 		String[] validExtensions;
 		if(extensions.size() > 0) {
 			validExtensions = extensions.toArray(new String[extensions.size() + 1]);
@@ -73,10 +57,7 @@ public class Reader2TableNMRNodeDialog extends DefaultNodeSettingsPane {
 			validExtensions = new String[]{};
 		}
 		//
-		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(Reader2TableNMRNodeModel.SETTING_NMR_FILE_INPUT, "", validExtensions);
+		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(inputFiles, "", validExtensions);
 		addDialogComponent(dialogComponentFileChooser);
-		// select table type
-		DialogComponentButtonGroup componentButtonGroup = new DialogComponentButtonGroup(Reader2TableNMRNodeModel.SETTING_NMR_TABLE_OUTPUT, true, "Table OUTPUT", Reader2TableNMRNodeModel.CHEMCAL_SHIFT, Reader2TableNMRNodeModel.RAW_DATA);
-		addDialogComponent(componentButtonGroup);
 	}
 }

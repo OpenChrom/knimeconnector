@@ -104,7 +104,7 @@ public class MeasurementReader2TableXIRNodeModel extends NodeModel {
 			} else {
 				bufferedDataTable = new ScanXirTableTranslatorBackgroundSignals().getBufferedDataTable(scanXIR, exec);
 			}
-			BufferedDataTable bufferedDataTableHeaders = TableTranslator.headerTranslator(scanXIR, exec);
+			BufferedDataTable bufferedDataTableHeaders = TableTranslator.headerTranslator(scanXIR, null, exec);
 			return new BufferedDataTable[]{bufferedDataTable, bufferedDataTableHeaders};
 		} catch(Exception e) {
 			logger.error(e.getLocalizedMessage(), e);

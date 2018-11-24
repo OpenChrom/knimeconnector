@@ -35,19 +35,36 @@
    <extension
          point="org.knime.workbench.repository.nodes">
        <node
-            category-path="/openchrom/nmr/io"
-            factory-class="net.openchrom.nmr.process.supplier.knime.ui.reader2table.Reader2TableNMRNodeFactory">
+            category-path="/openchrom/nmr/translator"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.header2table.Header2TableNMRNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/nmr/translator"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.tablefidtranslator.CsFidToTableNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/nmr/translator"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.tablenmrtranslator.CsNmrToTableNodeFactory">
       </node>
        <node
             category-path="/openchrom/nmr/io"
             factory-class="net.openchrom.nmr.process.supplier.knime.ui.reader.ReaderNMRNodeFactory">
       </node>
+      
       <node
             category-path="/openchrom/nmr/io"
             factory-class="net.openchrom.nmr.process.supplier.knime.ui.export.ScanExportNodeFactory">
       </node>
-       </extension>
-       <extension
+       <node
+            category-path="/openchrom/nmr/io"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.listfiles.ListFilesReaderNMRNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/nmr/io"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.listfilesfolder.ListFilesFolderReaderNMRNodeFactory">
+      </node>
+   </extension>
+   <extension
          point="org.knime.workbench.repository.nodesets">
       <nodeset
             default-category-icon="icons/filter.png"

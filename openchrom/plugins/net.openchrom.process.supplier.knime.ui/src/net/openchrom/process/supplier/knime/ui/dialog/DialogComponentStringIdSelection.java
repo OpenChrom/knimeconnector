@@ -50,6 +50,7 @@ import java.awt.event.ItemListener;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -82,6 +83,11 @@ public final class DialogComponentStringIdSelection extends DialogComponent {
 	private final JLabel m_label;
 	private Map<String, String> ids;
 
+	public DialogComponentStringIdSelection(final SettingsModelString stringModel, final String label, Map<String, String> ids, final boolean editable) {
+
+		this(stringModel, label, ids.entrySet().stream().map(e -> e.getKey()).collect(Collectors.toList()), ids, editable);
+	}
+
 	/**
 	 * Constructor that puts label and combobox into panel. It expects the user
 	 * to make a selection, thus, at least one item in the list of selectable
@@ -106,6 +112,7 @@ public final class DialogComponentStringIdSelection extends DialogComponent {
 	 *             if the list is empty or null.
 	 */
 	public DialogComponentStringIdSelection(final SettingsModelString stringModel, final String label, final Collection<String> list, Map<String, String> ids, final boolean editable) {
+
 		this(stringModel, label, DefaultStringIconOption.createOptionArray(list), ids);
 		m_combobox.setEditable(editable);
 		if(editable) {
@@ -174,6 +181,7 @@ public final class DialogComponentStringIdSelection extends DialogComponent {
 	 *             if the list is empty or null.
 	 */
 	public DialogComponentStringIdSelection(final SettingsModelString stringModel, final String label, final StringIconOption[] list, Map<String, String> ids) {
+
 		super(stringModel);
 		if((list == null) || (list.length == 0)) {
 			throw new IllegalArgumentException("Selection list of options " + "shouldn't be null or empty");

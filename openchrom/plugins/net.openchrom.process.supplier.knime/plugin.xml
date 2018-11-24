@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.knime.core.PortType">
+      <portType
+            hidden="false"
+            name="Selected Files"
+            objectClass="net.openchrom.process.supplier.knime.filesportobject.FilePortObject"
+            objectSerializer="net.openchrom.process.supplier.knime.filesportobject.FilePortObject$Serializer"
+            specClass="net.openchrom.process.supplier.knime.filesportobject.FilePortObjectSpec"
+            specSerializer="net.openchrom.process.supplier.knime.filesportobject.FilePortObjectSpec$Serializer">
+      </portType>
+   </extension>
+</plugin>

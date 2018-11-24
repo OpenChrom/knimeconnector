@@ -193,6 +193,14 @@ public class PropertyAccess implements PropertyCollector, PropertyProvider {
 	}
 
 	@Override
+	public void addStringProperty(String id, String name, String defaultValue, String description, Map<String, String> ids) {
+
+		addPropertyDescriptions(name, description);
+		addComponent(id, new DialogComponentStringIdSelection(new SettingsModelString(id, defaultValue), name, ids, false));
+		settingsModels.put(id, new SettingsModelString(id, defaultValue));
+	}
+
+	@Override
 	public void addFileProperty(String id, String name, String defaultValue, String description, String idHistory, DialogType dialogType, boolean directoryOnly, String[] extension) {
 
 		addPropertyDescriptions(name, description);

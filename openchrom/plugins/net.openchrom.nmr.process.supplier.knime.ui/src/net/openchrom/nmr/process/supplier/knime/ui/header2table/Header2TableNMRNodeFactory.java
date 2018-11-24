@@ -15,7 +15,7 @@
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.reader2table;
+package net.openchrom.nmr.process.supplier.knime.ui.header2table;
 
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
@@ -27,7 +27,7 @@ import org.knime.core.node.NodeView;
  *
  * @author OpenChrom
  */
-public class Reader2TableNMRNodeFactory extends NodeFactory<Reader2TableNMRNodeModel> {
+public class Header2TableNMRNodeFactory extends NodeFactory<Header2TableNMRNodeModel> {
 
 	/**
 	 * {@inheritDoc}
@@ -35,25 +35,25 @@ public class Reader2TableNMRNodeFactory extends NodeFactory<Reader2TableNMRNodeM
 	@Override
 	public NodeDialogPane createNodeDialogPane() {
 
-		return new Reader2TableNMRNodeDialog();
+		return null;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Reader2TableNMRNodeModel createNodeModel() {
+	public Header2TableNMRNodeModel createNodeModel() {
 
-		return new Reader2TableNMRNodeModel();
+		return new Header2TableNMRNodeModel();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public NodeView<Reader2TableNMRNodeModel> createNodeView(final int viewIndex, final Reader2TableNMRNodeModel nodeModel) {
+	public NodeView<Header2TableNMRNodeModel> createNodeView(final int viewIndex, final Header2TableNMRNodeModel nodeModel) {
 
-		return new Reader2TableNMRNodeView(nodeModel);
+		return null;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Reader2TableNMRNodeFactory extends NodeFactory<Reader2TableNMRNodeM
 	@Override
 	public int getNrNodeViews() {
 
-		return 1;
+		return 0;
 	}
 
 	/**
@@ -71,6 +71,6 @@ public class Reader2TableNMRNodeFactory extends NodeFactory<Reader2TableNMRNodeM
 	@Override
 	public boolean hasDialog() {
 
-		return true;
+		return false;
 	}
 }

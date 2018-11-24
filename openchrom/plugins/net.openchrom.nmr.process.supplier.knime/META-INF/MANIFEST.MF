@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.process.supplier.knime,
  org.eclipse.chemclipse.nmr.converter,
  org.eclipse.chemclipse.processing,
- org.eclipse.chemclipse.converter
+ org.eclipse.chemclipse.converter,
+ org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math;bundle-version="3.5.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: net.openchrom.nmr.process.supplier.knime.model,

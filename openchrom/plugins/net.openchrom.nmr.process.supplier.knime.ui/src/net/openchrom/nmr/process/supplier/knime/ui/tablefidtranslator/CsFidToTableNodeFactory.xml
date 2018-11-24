@@ -2,9 +2,9 @@
 <knimeNode icon="./translator.png" type="Unknown"
 	xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
-	<name>Scan NMR To Table Translator</name>
+	<name>Signals FID To Table Translator</name>
 	<shortDescription>
-		The scan NMR will be translated to a buffered data table.
+		Signals FID will be translated to a buffered data table.
 	</shortDescription>
 	<fullDescription>
 		<intro>The scan NMR will be translated to a buffered data table.</intro>

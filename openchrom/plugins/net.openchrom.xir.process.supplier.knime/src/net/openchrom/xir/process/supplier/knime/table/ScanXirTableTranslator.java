@@ -16,8 +16,6 @@ import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 
-import net.openchrom.process.supplier.knime.support.TableTranslator;
-
 public class ScanXirTableTranslator implements IScanXirTableTranslator {
 
 	private final String scanColumnX = "Wavelength";
@@ -30,6 +28,6 @@ public class ScanXirTableTranslator implements IScanXirTableTranslator {
 	@Override
 	public BufferedDataTable getBufferedDataTable(IScanXIR scanXIR, ExecutionContext exec) throws CanceledExecutionException {
 
-		return TableTranslator.scanToTable(scanXIR.getProcessedSignals(), scanColumnX, scanColumnY, exec);
+		return null;
 	}
 }
