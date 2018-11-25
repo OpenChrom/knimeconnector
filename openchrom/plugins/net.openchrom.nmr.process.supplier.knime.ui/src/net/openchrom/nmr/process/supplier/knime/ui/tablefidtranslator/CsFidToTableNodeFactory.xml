@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
 	<name>Signals FID To Table Translator</name>
 	<shortDescription>
-		Signals FID will be translated to a buffered data table.
+		Signals FIDwill be translated to a buffered data table.
 	</shortDescription>
 	<fullDescription>
 		<intro>The scan NMR will be translated to a buffered data table.</intro>
