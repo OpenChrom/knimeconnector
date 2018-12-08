@@ -21,7 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -70,11 +70,11 @@ public class ScanExportNodeModel extends NodeModel {
 
 		logger.info("Extract chromatogram");
 		ScanNMRPortObject scanNMRPortObject = (ScanNMRPortObject)inObjects[0];
-		IScanNMR scanNMR = scanNMRPortObject.getScanNMR();
+		IDataNMRSelection scanNMR = scanNMRPortObject.getScanNMR();
 		logger.info("Export scans");
 		List<ScanNMRExport> exporters = ScanNMRExport.readString(SCAN_NMR_EXPORT);
 		for(ScanNMRExport exporter : exporters) {
-			exporter.process(scanNMR, new NullProgressMonitor());
+			exporter.process(scanNMR.getMeasurmentNMR(), new NullProgressMonitor());
 		}
 		return new PortObject[]{};
 	}

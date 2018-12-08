@@ -25,14 +25,14 @@ import java.util.List;
 
 import org.eclipse.chemclipse.converter.exceptions.NoConverterAvailableException;
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 
 import net.openchrom.process.supplier.knime.model.AbstractDataExport;
 
-public class ScanNMRExport extends AbstractDataExport<IScanNMR> {
+public class ScanNMRExport extends AbstractDataExport<IMeasurementNMR> {
 
 	private static final int INTERNAL_VERSION_ID = 1;
 
@@ -42,7 +42,7 @@ public class ScanNMRExport extends AbstractDataExport<IScanNMR> {
 	}
 
 	@Override
-	public IProcessingInfo process(IScanNMR scanNmr, IProgressMonitor monitor) throws Exception {
+	public IProcessingInfo process(IMeasurementNMR scanNmr, IProgressMonitor monitor) throws Exception {
 
 		String filePath = generateFilePath(scanNmr);
 		return ScanConverterNMR.convert(new File(filePath), scanNmr, getId(), new NullProgressMonitor());

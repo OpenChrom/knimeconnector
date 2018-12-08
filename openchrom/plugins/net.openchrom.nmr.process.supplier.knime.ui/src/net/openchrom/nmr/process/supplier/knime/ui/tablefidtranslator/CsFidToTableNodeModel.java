@@ -21,7 +21,7 @@ package net.openchrom.nmr.process.supplier.knime.ui.tablefidtranslator;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
@@ -66,8 +66,8 @@ public class CsFidToTableNodeModel extends NodeModel {
 		 * Convert the selection to table.
 		 */
 		logger.info("Convert NMR scan to table.");
-		IScanNMR scan = scanNMRPortObject.getScanNMR();
-		BufferedDataTable bufferedDataTable = DataTableTranslator.getBufferedDataTableFID(scan, dataTableSpecFID, exec);
+		IDataNMRSelection scan = scanNMRPortObject.getScanNMR();
+		BufferedDataTable bufferedDataTable = DataTableTranslator.getBufferedDataTableFID(scan.getMeasurmentNMR().getScanFID(), dataTableSpecFID, exec);
 		//
 		return new PortObject[]{bufferedDataTable};
 	}

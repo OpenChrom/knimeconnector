@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
@@ -60,7 +60,7 @@ public class ProcessControllerStartNodeModel extends NodeModel implements LoopSt
 		File file = files.get(interation);
 		interation++;
 		IProcessingInfo progressInfo = ScanConverterNMR.convert(file, new NullProgressMonitor());
-		IScanNMR scanNMR = progressInfo.getProcessingResult(IScanNMR.class);
+		IDataNMRSelection scanNMR = progressInfo.getProcessingResult(IDataNMRSelection.class);
 		return new PortObject[]{new ScanNMRPortObject(scanNMR)};
 	}
 

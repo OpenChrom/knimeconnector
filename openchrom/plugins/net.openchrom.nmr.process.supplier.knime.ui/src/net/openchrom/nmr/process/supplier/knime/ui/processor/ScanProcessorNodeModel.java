@@ -14,7 +14,7 @@ package net.openchrom.nmr.process.supplier.knime.ui.processor;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.processor.core.ScanProcessorNMR;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -60,7 +60,7 @@ public class ScanProcessorNodeModel extends DialogGenerationNodeModel<IProcessor
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
 		ScanNMRPortObject scanNMRPortObject = (ScanNMRPortObject)inObjects[0];
-		IScanNMR scanNMR = scanNMRPortObject.getScanNMR();
+		IDataNMRSelection scanNMR = scanNMRPortObject.getScanNMR();
 		/*
 		 * Apply the filter if a chromatogram selection is given at port 0.
 		 */

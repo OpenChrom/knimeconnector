@@ -21,7 +21,7 @@ package net.openchrom.nmr.process.supplier.knime.ui.tablenmrtranslator;
 import java.io.File;
 import java.io.IOException;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
@@ -68,8 +68,8 @@ public class CsNmrToTableNodeModel extends NodeModel {
 		 * Convert the selection to table.
 		 */
 		logger.info("Convert NMR scan to table.");
-		IScanNMR scan = scanNMRPortObject.getScanNMR();
-		BufferedDataTable bufferedDataTable = DataTableTranslator.getBufferedDataTableNMR(scan, dataTableSpecNMR, exec);
+		IDataNMRSelection scan = scanNMRPortObject.getScanNMR();
+		BufferedDataTable bufferedDataTable = DataTableTranslator.getBufferedDataTableNMR(scan.getMeasurmentNMR().getScanMNR(), dataTableSpecNMR, exec);
 		//
 		return new PortObject[]{bufferedDataTable};
 	}

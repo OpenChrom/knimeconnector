@@ -18,8 +18,8 @@ import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
-import org.eclipse.chemclipse.nmr.model.core.ScanNMR;
+import org.eclipse.chemclipse.nmr.model.selection.DataNMRSelection;
+import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.StreamObjectReader;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
@@ -33,7 +33,7 @@ import org.knime.core.node.port.PortTypeRegistry;
 public class ScanNMRPortObject extends AbstractPortObject {
 
 	private static final String SCAN_NMR_DATA = "SCAN_NMR_DATA";
-	private static final IScanNMR EMPTY_SCAN_NMR = new ScanNMR();
+	private static final IDataNMRSelection EMPTY_SCAN_NMR = new DataNMRSelection();
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class);
 	public static final PortType TYPE_OPTIONAL = PortTypeRegistry.getInstance().getPortType(ScanNMRPortObject.class, true);
 
@@ -41,14 +41,14 @@ public class ScanNMRPortObject extends AbstractPortObject {
 	}
 
 	private ScanNMRPortObjectSpec portObjectSpec;
-	private IScanNMR scanNMR;
+	private IDataNMRSelection scanNMR;
 
 	public ScanNMRPortObject() {
 
 		this(EMPTY_SCAN_NMR);
 	}
 
-	public ScanNMRPortObject(IScanNMR scanNMR) {
+	public ScanNMRPortObject(IDataNMRSelection scanNMR) {
 
 		this.scanNMR = scanNMR;
 		portObjectSpec = new ScanNMRPortObjectSpec();
@@ -95,7 +95,7 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		}
 	}
 
-	public IScanNMR getScanNMR() {
+	public IDataNMRSelection getScanNMR() {
 
 		return scanNMR;
 	}

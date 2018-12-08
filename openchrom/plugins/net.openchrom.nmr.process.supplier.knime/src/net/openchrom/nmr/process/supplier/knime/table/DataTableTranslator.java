@@ -14,6 +14,7 @@ package net.openchrom.nmr.process.supplier.knime.table;
 import java.util.Iterator;
 
 import org.apache.commons.math3.complex.Complex;
+import org.eclipse.chemclipse.nmr.model.core.IScanFID;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.core.ISignalFID;
 import org.knime.core.data.DataCell;
@@ -62,7 +63,7 @@ public class DataTableTranslator {
 		return dataTableSpec;
 	}
 
-	public static BufferedDataTable getBufferedDataTableFID(IScanNMR scanNMR, DataTableSpec dataTableSpec, ExecutionContext exec) throws CanceledExecutionException {
+	public static BufferedDataTable getBufferedDataTableFID(IScanFID scanFID, DataTableSpec dataTableSpec, ExecutionContext exec) throws CanceledExecutionException {
 
 		int numberOfColumns = dataTableSpec.getNumColumns();
 		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
@@ -71,9 +72,9 @@ public class DataTableTranslator {
 			return bufferedDataContainer.getTable();
 		}
 		//
-		int totalNumSignals = scanNMR.getSignalsFID().size();
+		int totalNumSignals = scanFID.getSignalsFID().size();
 		int numSingnal = 0;
-		Iterator<ISignalFID> it = scanNMR.getSignalsFID().iterator();
+		Iterator<ISignalFID> it = scanFID.getSignalsFID().iterator();
 		while(it.hasNext()) {
 			int columnCell = 0;
 			ISignalFID signal = it.next();
