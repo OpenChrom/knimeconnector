@@ -36,6 +36,7 @@ USA
 
    <requires>
       <import feature="org.knime.features.base" version="3.3.1.v201612192115"/>
+      <import feature="org.eclipse.swtchart.feature" version="0.7.0.qualifier"/>
    </requires>
 
    <plugin
@@ -47,13 +48,6 @@ USA
 
    <plugin
          id="net.openchrom.xxd.process.supplier.knime.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.swtchart.extensions"
          download-size="0"
          install-size="0"
          version="0.0.0"

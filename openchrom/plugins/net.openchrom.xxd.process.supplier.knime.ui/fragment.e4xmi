@@ -3,7 +3,7 @@
   <fragments xsi:type="fragment:StringModelFragment" xmi:id="_xo0hIP__EeaaZdPVutwD3g" featurename="sharedElements" parentElementId="org.eclipse.chemclipse.rcp.app.ui.trimmedwindow.main">
     <elements xsi:type="basic:Part" xmi:id="_VLFDQAABEeeaZdPVutwD3g" elementId="net.openchrom.xxd.process.supplier.knime.ui.part.xyseries" contributionURI="bundleclass://net.openchrom.xxd.process.supplier.knime.ui/net.openchrom.xxd.process.supplier.knime.ui.parts.XYSeriesPart" label="XY Series" iconURI="platform:/plugin/org.eclipse.debug.ui/icons/full/eview16/variable_view.png"/>
   </fragments>
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_joEb0AACEeeaZdPVutwD3g" featurename="children" parentElementId="org.eclipse.eavp.service.swtchart.partstack.0">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_joEb0AACEeeaZdPVutwD3g" featurename="children" parentElementId="org.eclipse.swtchart.partstack.0">
     <elements xsi:type="advanced:Placeholder" xmi:id="_R7pn8AADEeeaZdPVutwD3g" elementId="net.openchrom.xxd.process.supplier.knime.ui.placeholder.0" ref="_VLFDQAABEeeaZdPVutwD3g"/>
   </fragments>
 </fragment:ModelFragments>
