@@ -50,14 +50,14 @@ public class ChromatogramMSDExport extends AbstractDataExport<IChromatogramMSD> 
 	public IProcessingInfo process(IChromatogramMSD chromatogramMSD, IProgressMonitor monitor) throws Exception {
 
 		String filePath = generateFilePath(chromatogramMSD);
-		return ChromatogramConverterMSD.convert(new File(filePath), chromatogramMSD, getId(), new NullProgressMonitor());
+		return ChromatogramConverterMSD.getInstance().convert(new File(filePath), chromatogramMSD, getId(), new NullProgressMonitor());
 	}
 
 	@Override
 	public String getName() {
 
 		try {
-			return ChromatogramConverterMSD.getChromatogramConverterSupport().getSupplier(getId()).getFilterName();
+			return ChromatogramConverterMSD.getInstance().getChromatogramConverterSupport().getSupplier(getId()).getFilterName();
 		} catch(NoConverterAvailableException e) {
 		}
 		return null;
@@ -67,7 +67,7 @@ public class ChromatogramMSDExport extends AbstractDataExport<IChromatogramMSD> 
 	public String getDescription() {
 
 		try {
-			return ChromatogramConverterMSD.getChromatogramConverterSupport().getSupplier(getId()).getDescription();
+			return ChromatogramConverterMSD.getInstance().getChromatogramConverterSupport().getSupplier(getId()).getDescription();
 		} catch(NoConverterAvailableException e) {
 		}
 		return null;

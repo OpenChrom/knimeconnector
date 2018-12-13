@@ -82,7 +82,7 @@ public class ChromatogramMSDExportTable extends DialogTable<ChromatogramMSDExpor
 	protected List<ChromatogramMSDExport> add() {
 
 		List<ChromatogramMSDExport> chromatogramExports = new ArrayList<>();
-		List<ISupplier> suppliers = ChromatogramConverterMSD.getChromatogramConverterSupport().getExportSupplier();
+		List<ISupplier> suppliers = ChromatogramConverterMSD.getInstance().getChromatogramConverterSupport().getExportSupplier();
 		JComboBox<ISupplier> comboSupplier = new JComboBox<>(suppliers.toArray(new ISupplier[suppliers.size()]));
 		JFileChooser fc = new JFileChooser();
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

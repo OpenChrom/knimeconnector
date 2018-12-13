@@ -75,7 +75,7 @@ public class ChromatogramReaderNodeModel extends NodeModel {
 
 	private IChromatogramCSD loadChromatogram(File file) {
 
-		IProcessingInfo processingInfo = ChromatogramConverterCSD.convert(file, new NullProgressMonitor());
+		IProcessingInfo processingInfo = ChromatogramConverterCSD.getInstance().convert(file, new NullProgressMonitor());
 		IChromatogramCSD chromatogramCSD = processingInfo.getProcessingResult(IChromatogramCSD.class);
 		chromatogramCSD.setFile(file);
 		return chromatogramCSD;

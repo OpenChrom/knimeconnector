@@ -33,7 +33,7 @@ public class ChromatogramReaderNodeDialog extends DefaultNodeSettingsPane {
 	protected ChromatogramReaderNodeDialog() {
 		super();
 		//
-		IChromatogramConverterSupport chromatogramConverterSupport = ChromatogramConverterCSD.getChromatogramConverterSupport();
+		IChromatogramConverterSupport chromatogramConverterSupport = ChromatogramConverterCSD.getInstance().getChromatogramConverterSupport();
 		Set<String> extensions = new HashSet<String>();
 		for(ISupplier supplier : chromatogramConverterSupport.getSupplier()) {
 			if(supplier.isImportable()) {
