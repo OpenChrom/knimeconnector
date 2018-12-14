@@ -81,7 +81,7 @@ public class DataTableTranslator {
 			RowKey rowKey = new RowKey(Integer.toString(numSingnal));
 			DataCell[] cells = new DataCell[numberOfColumns];
 			cells[columnCell++] = new DoubleCell(signal.getX());
-			Complex complex = signal.getIntensity();
+			Complex complex = signal.getIntensityProcessedFID();
 			cells[columnCell++] = new DoubleCell(complex.getReal());
 			cells[columnCell++] = new DoubleCell(complex.getImaginary());
 			DataRow dataRow = new DefaultRow(rowKey, cells);
