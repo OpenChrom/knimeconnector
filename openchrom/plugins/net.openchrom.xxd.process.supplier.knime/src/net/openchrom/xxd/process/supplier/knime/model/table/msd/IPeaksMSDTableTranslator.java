@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * jan - initial API and implementation
+ * Jan Holy - initial API and implementation
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.model.table.msd;
 
