@@ -9,7 +9,7 @@
   </parent>
   
   <artifactId>net.openchrom.xxd.process.supplier.knime.updateSite</artifactId>
-  <packaging>eclipse-update-site</packaging>
+  <packaging>eclipse-repository</packaging>
   <version>1.4.0-SNAPSHOT</version>
   
 </project>
