@@ -21,7 +21,8 @@ import java.io.File;
 import java.io.IOException;
 
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
-import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
+import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
+import org.eclipse.chemclipse.nmr.model.selection.DataNMRSelection;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.knime.core.node.CanceledExecutionException;
@@ -84,8 +85,8 @@ public class ReaderNMRNodeModel extends NodeModel {
 		File file = new File(settingsFileInput.getStringValue());
 		try {
 			IProcessingInfo processingInfo = ScanConverterNMR.convert(file, new NullProgressMonitor());
-			IDataNMRSelection scanNMR = (IDataNMRSelection)processingInfo.getProcessingResult();
-			return new PortObject[]{new ScanNMRPortObject(scanNMR)};
+			MeasurementNMR scanNMR = (MeasurementNMR)processingInfo.getProcessingResult();
+			return new PortObject[]{new ScanNMRPortObject(new DataNMRSelection(scanNMR))};
 		} catch(Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
 			throw e;
