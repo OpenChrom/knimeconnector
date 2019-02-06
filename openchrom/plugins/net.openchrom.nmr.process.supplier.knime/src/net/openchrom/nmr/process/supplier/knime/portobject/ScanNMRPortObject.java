@@ -18,6 +18,7 @@ import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
+import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.selection.DataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.selection.IDataNMRSelection;
 import org.eclipse.chemclipse.nmr.model.support.StreamObjectReader;
@@ -78,7 +79,7 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		ZipEntry zipEntry = new ZipEntry(SCAN_NMR_DATA);
 		out.putNextEntry(zipEntry);
 		ObjectOutputStream outputStream = new ObjectOutputStream(out);
-		outputStream.writeObject(scanNMR);
+		outputStream.writeObject(scanNMR.getMeasurmentNMR());
 		outputStream.close();
 	}
 
@@ -89,7 +90,8 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		assert zipEntry.getName().equals(SCAN_NMR_DATA);
 		ObjectInputStream inputStream = new ObjectInputStream(in);
 		try {
-			scanNMR = StreamObjectReader.readObject(inputStream);
+			IMeasurementNMR measurementNMR = StreamObjectReader.readObject(inputStream);
+			scanNMR = new DataNMRSelection(measurementNMR);
 		} catch(ClassNotFoundException e) {
 			throw new IOException(e);
 		}
