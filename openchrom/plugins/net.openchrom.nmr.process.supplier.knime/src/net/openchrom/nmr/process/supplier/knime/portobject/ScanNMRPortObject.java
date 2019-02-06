@@ -90,7 +90,7 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		assert zipEntry.getName().equals(SCAN_NMR_DATA);
 		ObjectInputStream inputStream = new ObjectInputStream(in);
 		try {
-			IMeasurementNMR measurementNMR = StreamObjectReader.readObject(inputStream);
+			IMeasurementNMR measurementNMR = (IMeasurementNMR)StreamObjectReader.readObject(inputStream);
 			scanNMR = new DataNMRSelection(measurementNMR);
 		} catch(ClassNotFoundException e) {
 			throw new IOException(e);
