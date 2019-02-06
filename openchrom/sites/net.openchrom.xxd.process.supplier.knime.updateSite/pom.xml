@@ -39,6 +39,7 @@
 							this adds repository references to the update site's content.xml
 							<associateSites>
 								<site>https://update.openchrom.net/repositories/community/latest/compilation/</site>
+								<site>https://update.knime.org/analytics-platform/nightly/</site>
 							</associateSites>
 						</configuration>
 					</execution>
