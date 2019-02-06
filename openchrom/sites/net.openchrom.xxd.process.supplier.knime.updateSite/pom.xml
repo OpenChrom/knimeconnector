@@ -36,9 +36,9 @@
 							<goal>generate-repository-facade</goal>
 						</goals>
 						<configuration>
-							<!-- this adds repository references to the update site's content.xml -->
+							this adds repository references to the update site's content.xml
 							<associateSites>
-								<site>http://https://update.openchrom.net/repositories/community/latest/compilation/</site>
+								<site>https://update.openchrom.net/repositories/community/latest/compilation/</site>
 							</associateSites>
 						</configuration>
 					</execution>

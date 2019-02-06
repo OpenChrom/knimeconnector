@@ -4,5 +4,5 @@
       <category name="org.eclipse.chemclipse.xxd.process.supplier,knime"/>
    </feature>
    <category-def name="org.eclipse.chemclipse.xxd.process.supplier,knime" label="OpenChrom KNIME Connectors"/>
-   <repository-reference location="http://https://update.openchrom.net/repositories/community/latest/compilation" enabled="true" />
+   <repository-reference location="https://update.openchrom.net/repositories/community/latest/compilation" enabled="true" />
 </site>
