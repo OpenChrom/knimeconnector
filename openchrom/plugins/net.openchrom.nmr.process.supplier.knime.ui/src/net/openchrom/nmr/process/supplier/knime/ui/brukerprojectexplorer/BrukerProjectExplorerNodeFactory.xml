@@ -7,9 +7,9 @@
     </shortDescription>
     
     <fullDescription>
-        <intro>This node selects  all Bruker project in folder and subfolder,
+        <intro>This node selects  all Bruker project in folder and subfolders,
         it is selected just lowest number of measurement in project.</intro>
-       <option name="Folder">Main folder</option>
+       <option name="Folder">Main folder where are stored bruker projects</option>
        <option name="Load Raw File">If is check it will be selected fid data from project otherwise it will be selected processed spectrum.</option>
     </fullDescription>
     

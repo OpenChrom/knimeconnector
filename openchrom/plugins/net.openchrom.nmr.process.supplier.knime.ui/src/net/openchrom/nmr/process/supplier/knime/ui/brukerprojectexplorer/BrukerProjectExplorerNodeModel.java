@@ -102,20 +102,27 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 			} else {
 				supplier = suplier1r;
 			}
-			for(File fileFid : filesFid) {
-				File parantFileFid = fileFid.getParentFile();
-				File projectFile = parantFileFid.getParentFile();
-				if(projectFile != null) {
-					projectFiles.add(projectFile);
-				} else {
-					List<File> fileData = selectFile(supplier, new File[]{parantFileFid}, exec);
-					outPutFiles.addAll(fileData);
+			if(filesFid.isEmpty() && supplier.getId().equals(suplier1r.getId())) {
+				List<File> files1r = new ArrayList<>();
+				findProject(file, files1r, supplier, exec);
+				outPutFiles.addAll(files1r);
+			} else {
+				for(File fileFid : filesFid) {
+					File parantFileFid = fileFid.getParentFile();
+					File projectFile = parantFileFid.getParentFile();
+					if(projectFile == null || file.equals(parantFileFid)) {
+						List<File> dataFiles = new ArrayList<>();
+						findProject(parantFileFid, dataFiles, supplier, exec);
+						outPutFiles.addAll(dataFiles);
+					} else {
+						projectFiles.add(projectFile);
+					}
 				}
-			}
-			for(File projectFile : projectFiles) {
-				File[] childrenFiles = projectFile.listFiles();
-				List<File> selectedDataFiles = selectFile(supplier, childrenFiles, exec);
-				outPutFiles.addAll(selectedDataFiles);
+				for(File projectFile : projectFiles) {
+					File[] childrenFiles = projectFile.listFiles();
+					List<File> selectedDataFiles = selectFile(supplier, childrenFiles, exec);
+					outPutFiles.addAll(selectedDataFiles);
+				}
 			}
 			/*
 			 * find all project which
@@ -158,6 +165,9 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	private void findProject(File parentFolder, List<File> files, ISupplier suplier, ExecutionContext exec) {
 
 		File[] childrenFiles = parentFolder.listFiles();
+		if(childrenFiles == null) {
+			return;
+		}
 		for(File file : childrenFiles) {
 			if(suplier.isMatchMagicNumber(file)) {
 				files.add(file);
