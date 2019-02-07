@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./reader.png" type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>Bruker Project Explorer</name>
+    
+    <shortDescription>
+        Find all Bruker project in folder and subfolder.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro>This node selects  all Bruker project in folder and subfolder,
+        it is selected just lowest number of measurement in project.</intro>
+       <option name="Folder">Main folder</option>
+       <option name="Load Raw File">If is check it will be selected fid data from project otherwise it will be selected processed spectrum.</option>
+    </fullDescription>
+    
+    <ports>
+        <outPort index="0" name="List Files">List Bruker files</outPort>
+        <!-- possibly more output ports here-->
+    </ports>
+</knimeNode>

@@ -12,7 +12,6 @@
 package net.openchrom.process.supplier.knime.support;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -177,24 +176,21 @@ public class TableTranslator {
 		return bufferedDataContainer.getTable();
 	}
 
-	public static BufferedDataTable filesToTable(Collection<File> files, ExecutionContext exec) {
+	public static DataTableSpec fileTableSpecific() {
 
-		DataColumnSpec[] dcs = new DataColumnSpec[3];
+		DataColumnSpec[] dcs = new DataColumnSpec[1];
 		dcs[0] = new DataColumnSpecCreator("Location", StringCell.TYPE).createSpec();
-		dcs[1] = new DataColumnSpecCreator("URL", StringCell.TYPE).createSpec();
-		dcs[2] = new DataColumnSpecCreator("File Name", StringCell.TYPE).createSpec();
 		DataTableSpec dataTableSpec = new DataTableSpec(dcs);
+		return dataTableSpec;
+	}
+
+	public static BufferedDataTable filesToTable(Collection<File> files, DataTableSpec dataTableSpec, ExecutionContext exec) {
+
 		BufferedDataContainer bufferedDataContainer = exec.createDataContainer(dataTableSpec);
 		int rowNumber = 1;
 		for(File file : files) {
-			DataCell[] row = new DataCell[3];
+			DataCell[] row = new DataCell[1];
 			row[0] = new StringCell(file.getAbsolutePath());
-			try {
-				row[1] = new StringCell(file.getAbsoluteFile().toURI().toURL().toString());
-			} catch(MalformedURLException e) {
-				row[1] = new StringCell("");
-			}
-			row[2] = new StringCell(file.getName());
 			bufferedDataContainer.addRowToTable(new DefaultRow("Row " + rowNumber, row));
 			rowNumber++;
 		}

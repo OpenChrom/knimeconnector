@@ -17,6 +17,13 @@
             path="/openchrom/nmr">
       </category>
       <category
+            level-id="file_explorer"
+            name="File Explorer"
+            icon="icons/io.png"
+            description="Select file for processing"
+            path="/openchrom/nmr">
+      </category>
+      <category
             level-id="processor"
             name="Processor"
             icon="icons/filter.png"
@@ -56,12 +63,20 @@
             factory-class="net.openchrom.nmr.process.supplier.knime.ui.export.ScanExportNodeFactory">
       </node>
        <node
-            category-path="/openchrom/nmr/io"
+            category-path="/openchrom/nmr/file_explorer"
             factory-class="net.openchrom.nmr.process.supplier.knime.ui.listfiles.ListFilesReaderNMRNodeFactory">
       </node>
+       <node
+            category-path="/openchrom/nmr/file_explorer"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.brukerprojectexplorer.BrukerProjectExplorerNodeFactory">
+      </node>
       <node
-            category-path="/openchrom/nmr/io"
+            category-path="/openchrom/nmr/file_explorer"
             factory-class="net.openchrom.nmr.process.supplier.knime.ui.listfilesfolder.ListFilesFolderReaderNMRNodeFactory">
+      </node>
+      <node
+            category-path="/openchrom/nmr/processor"
+            factory-class="net.openchrom.nmr.process.supplier.knime.ui.alignment.AlignmentNodeFactory">
       </node>
    </extension>
    <extension

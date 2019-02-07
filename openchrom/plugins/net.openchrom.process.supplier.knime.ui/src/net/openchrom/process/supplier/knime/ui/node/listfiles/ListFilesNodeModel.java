@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.chemclipse.support.util.FileSettingUtil;
+import org.knime.core.data.DataTableSpec;
+import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -24,10 +26,8 @@ import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
-import org.knime.core.node.port.PortObject;
-import org.knime.core.node.port.PortType;
 
-import net.openchrom.process.supplier.knime.filesportobject.FilePortObject;
+import net.openchrom.process.supplier.knime.support.TableTranslator;
 
 public class ListFilesNodeModel extends NodeModel {
 
@@ -37,7 +37,7 @@ public class ListFilesNodeModel extends NodeModel {
 
 	public ListFilesNodeModel() {
 
-		super(new PortType[0], new PortType[]{FilePortObject.TYPE});
+		super(0, 1);
 		settingFilesInput = getSettingsChromatogamFileInput();
 	}
 
@@ -47,12 +47,17 @@ public class ListFilesNodeModel extends NodeModel {
 	}
 
 	@Override
-	protected PortObject[] execute(PortObject[] inData, ExecutionContext exec) throws Exception {
+	protected DataTableSpec[] configure(DataTableSpec[] inSpecs) throws InvalidSettingsException {
+
+		return new DataTableSpec[]{TableTranslator.fileTableSpecific()};
+	}
+
+	@Override
+	protected BufferedDataTable[] execute(BufferedDataTable[] inData, ExecutionContext exec) throws Exception {
 
 		List<File> files = fileSettingUtil.deserialize(settingFilesInput.getStringValue());
-		FilePortObject filePortObject = new FilePortObject();
-		filePortObject.addFiles(files);
-		return new PortObject[]{filePortObject};
+		BufferedDataTable table = TableTranslator.filesToTable(files, TableTranslator.fileTableSpecific(), exec);
+		return new BufferedDataTable[]{table};
 	}
 
 	@Override

@@ -11,7 +11,6 @@
  *******************************************************************************/
 package net.openchrom.nmr.process.supplier.knime.ui.listfilesfolder;
 
-import org.eclipse.chemclipse.converter.core.IConverterSupport;
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
 
 import net.openchrom.process.supplier.knime.ui.node.listfilesfolder.ListFilesFolderFactory;
@@ -20,12 +19,6 @@ public class ListFilesFolderReaderNMRNodeFactory extends ListFilesFolderFactory 
 
 	public ListFilesFolderReaderNMRNodeFactory() {
 
-		super();
-	}
-
-	@Override
-	protected IConverterSupport getConverterSupport() {
-
-		return ScanConverterNMR.getScanConverterSupport();
+		super(ScanConverterNMR.getScanConverterSupport());
 	}
 }

@@ -69,12 +69,12 @@ public class ScanProcessorNodeFactory extends DialogGenerationDynamicNodeFactory
 			Ports ports = node.addNewPorts();
 			InPort inPort1 = ports.addNewInPort();
 			inPort1.setIndex(0);
-			inPort1.setName("Scan NMR");
-			inPort1.newCursor().setTextValue("Use this input if you'd like to develop a method (chromatogram is persisted - slow)");
+			inPort1.setName("NMR Data");
+			inPort1.newCursor().setTextValue("NMR Data");
 			OutPort outPort1 = ports.addNewOutPort();
 			outPort1.setIndex(0);
-			outPort1.setName("Scan NMR");
-			outPort1.newCursor().setTextValue("Use this output if you'd like to develop a method (chromatogram is persisted - slow)");
+			outPort1.setName("NMR Data");
+			outPort1.newCursor().setTextValue("NMR Data");
 		} catch(NoProcessorAvailableException e) {
 			// TODO
 			throw new RuntimeException(e);

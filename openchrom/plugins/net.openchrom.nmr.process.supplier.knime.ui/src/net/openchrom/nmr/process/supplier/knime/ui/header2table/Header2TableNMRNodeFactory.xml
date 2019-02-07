@@ -3,16 +3,16 @@
     <name>Measurement Header (NMR) to table</name>
     
     <shortDescription>
-        This node is reads NMR and translates it to table.
+        This node transforms NMR header data to table.
     </shortDescription>
     
     <fullDescription>
-        <intro>Insert long description here...</intro>
+        <intro> This node transforms NMR header data to table.</intro>
         
     </fullDescription>
     
     <ports>
-        <inPort index="0" name="Scan NMR">Chromatogram Selection</inPort>
+        <inPort index="0" name="NMR Data">NMR data</inPort>
 		<outPort index="0" name="Table">Table</outPort>
     </ports>    
   
