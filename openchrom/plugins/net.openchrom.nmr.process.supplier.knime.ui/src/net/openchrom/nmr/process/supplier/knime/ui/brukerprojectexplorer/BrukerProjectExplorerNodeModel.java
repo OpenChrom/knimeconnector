@@ -203,7 +203,7 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
 		settingsFolderInput.saveSettingsTo(settings);
-		settingsFolderInput.saveSettingsTo(settings);
+		settingsLoadRawFile.saveSettingsTo(settings);
 	}
 
 	@Override
