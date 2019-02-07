@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017 Martin Horn.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,15 +7,22 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Jan Holy - initial API and implementation
+ * Martin Horn - initial API and implementation
+ * Jan Holy
  *******************************************************************************/
-package net.openchrom.nmr.process.supplier.knime.ui.process.start;
+package net.openchrom.nmr.process.supplier.knime.ui.alignment;
 
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
-public class ProcessControllerStartNodeFactory extends NodeFactory<ProcessControllerStartNodeModel> {
+/**
+ * Node factory for the "Apply Filters"-node.
+ *
+ * @author Martin Horn, University of Konstanz
+ *
+ */
+public class AlignmentNodeFactory extends NodeFactory<AlignmentNodeModel> {
 
 	@Override
 	protected NodeDialogPane createNodeDialogPane() {
@@ -24,13 +31,13 @@ public class ProcessControllerStartNodeFactory extends NodeFactory<ProcessContro
 	}
 
 	@Override
-	public ProcessControllerStartNodeModel createNodeModel() {
+	public AlignmentNodeModel createNodeModel() {
 
-		return new ProcessControllerStartNodeModel();
+		return new AlignmentNodeModel();
 	}
 
 	@Override
-	public NodeView<ProcessControllerStartNodeModel> createNodeView(int viewIndex, ProcessControllerStartNodeModel nodeModel) {
+	public NodeView<AlignmentNodeModel> createNodeView(int viewIndex, AlignmentNodeModel nodeModel) {
 
 		return null;
 	}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="./aligment.png" type="LoopEnd" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>Alignment NMR measurements</name>
+    <shortDescription>
+        Alignment real part of NMR processed signal  
+    </shortDescription>
+    <fullDescription>
+        <intro>Alignment real part of NMR processed signal.</intro>
+    </fullDescription>
+    <ports>
+    <inPort index="0" name="NMR data">NMR data</inPort>
+    <outPort index="0" name="NMR data table">Alignment mnr data in table, each measurement is in one column</outPort>
+    </ports>
+</knimeNode>

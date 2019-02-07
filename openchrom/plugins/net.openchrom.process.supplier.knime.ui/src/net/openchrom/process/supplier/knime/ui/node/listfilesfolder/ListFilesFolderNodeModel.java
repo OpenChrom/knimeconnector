@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.chemclipse.converter.core.ISupplier;
+import org.knime.core.data.DataTableSpec;
+import org.knime.core.node.BufferedDataTable;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -27,10 +29,8 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
-import org.knime.core.node.port.PortObject;
-import org.knime.core.node.port.PortType;
 
-import net.openchrom.process.supplier.knime.filesportobject.FilePortObject;
+import net.openchrom.process.supplier.knime.support.TableTranslator;
 
 public class ListFilesFolderNodeModel extends NodeModel {
 
@@ -59,7 +59,7 @@ public class ListFilesFolderNodeModel extends NodeModel {
 
 	public ListFilesFolderNodeModel(List<ISupplier> suppliers) {
 
-		super(new PortType[0], new PortType[]{FilePortObject.TYPE});
+		super(0, 1);
 		this.suppliers = suppliers;
 		this.folder = getSettingInputFolder();
 		this.supplierID = getSettingSupplierID();
@@ -72,17 +72,22 @@ public class ListFilesFolderNodeModel extends NodeModel {
 	}
 
 	@Override
-	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+	protected DataTableSpec[] configure(DataTableSpec[] inSpecs) throws InvalidSettingsException {
 
-		Optional<ISupplier> supplier = suppliers.stream().filter(s -> s.getId().equals(supplierID)).findAny();
+		return new DataTableSpec[]{TableTranslator.fileTableSpecific()};
+	}
+
+	@Override
+	protected BufferedDataTable[] execute(BufferedDataTable[] inData, ExecutionContext exec) throws Exception {
+
+		Optional<ISupplier> supplier = suppliers.stream().filter(s -> s.getId().equals(supplierID.getStringValue())).findAny();
 		List<File> files = new ArrayList<>();
 		File parentFile = new File(folder.getStringValue());
 		if(supplier.isPresent() && parentFile.isDirectory() && recursive.getBooleanValue()) {
 			findFiles(parentFile, files, supplier.get(), exec);
 		}
-		FilePortObject filePortObject = new FilePortObject();
-		filePortObject.addFiles(files);
-		return new PortObject[]{filePortObject};
+		BufferedDataTable table = TableTranslator.filesToTable(files, TableTranslator.fileTableSpecific(), exec);
+		return new BufferedDataTable[]{table};
 	}
 
 	private void findFiles(File parentFolder, List<File> files, ISupplier suplier, ExecutionContext exec) {

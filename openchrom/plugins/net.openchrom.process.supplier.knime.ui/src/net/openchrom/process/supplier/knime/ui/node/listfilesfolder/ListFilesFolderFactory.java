@@ -16,10 +16,13 @@ import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
-public abstract class ListFilesFolderFactory extends NodeFactory<ListFilesFolderNodeModel> {
+public class ListFilesFolderFactory extends NodeFactory<ListFilesFolderNodeModel> {
 
-	public ListFilesFolderFactory() {
+	private IConverterSupport converterSupport;
 
+	public ListFilesFolderFactory(IConverterSupport converterSupport) {
+
+		this.converterSupport = converterSupport;
 	}
 
 	@Override
@@ -37,7 +40,7 @@ public abstract class ListFilesFolderFactory extends NodeFactory<ListFilesFolder
 	@Override
 	protected NodeDialogPane createNodeDialogPane() {
 
-		return new ListFilesFolderNodeDialog(getConverterSupport().getSupplier());
+		return new ListFilesFolderNodeDialog(converterSupport.getSupplier());
 	}
 
 	@Override
@@ -46,11 +49,9 @@ public abstract class ListFilesFolderFactory extends NodeFactory<ListFilesFolder
 		return null;
 	}
 
-	protected abstract IConverterSupport getConverterSupport();
-
 	@Override
 	public ListFilesFolderNodeModel createNodeModel() {
 
-		return new ListFilesFolderNodeModel(getConverterSupport().getSupplier());
+		return new ListFilesFolderNodeModel(converterSupport.getSupplier());
 	}
 }

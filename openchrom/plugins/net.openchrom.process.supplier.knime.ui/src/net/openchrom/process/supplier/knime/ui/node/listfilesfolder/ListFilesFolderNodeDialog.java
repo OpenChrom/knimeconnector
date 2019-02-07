@@ -31,7 +31,7 @@ public class ListFilesFolderNodeDialog extends DefaultNodeSettingsPane {
 		super();
 		DialogComponentFileChooser directoryChooser = new DialogComponentFileChooser(ListFilesFolderNodeModel.getSettingInputFolder(), ListFilesFolderNodeDialog.class.getName(), JFileChooser.OPEN_DIALOG, true);
 		addDialogComponent(directoryChooser);
-		DialogComponentBoolean recursive = new DialogComponentBoolean(ListFilesFolderNodeModel.getSettingRecursive(), "Recursive");
+		DialogComponentBoolean recursive = new DialogComponentBoolean(ListFilesFolderNodeModel.getSettingRecursive(), "Include Subfolder");
 		addDialogComponent(recursive);
 		Map<String, String> ids = new LinkedHashMap<>();
 		for(ISupplier supplier : suppliers) {
