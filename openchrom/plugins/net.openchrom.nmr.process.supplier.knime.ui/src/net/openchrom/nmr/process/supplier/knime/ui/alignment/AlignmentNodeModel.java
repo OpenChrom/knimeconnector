@@ -100,7 +100,7 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 		List<double[]> fourierTransformations = new ArrayList<>(numberOfColumns);
 		for(int i = 0; i < measurements.size(); i++) {
 			String columnName = Integer.toString(i);
-			fourierTransformations.add(new SignalExtractor(measurements.get(i)).extractFourierTransformedDataRealPart());
+			fourierTransformations.add(new SignalExtractor(measurements.get(i)).extractSignalIntesity());
 			dataColumnSpec[i] = new DataColumnSpecCreator(columnName, DoubleCell.TYPE).createSpec();
 		}
 		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
