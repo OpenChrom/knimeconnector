@@ -85,6 +85,9 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 
 		logger.info("Read the scans nmr data.");
 		File file = new File(settingsFolderInput.getStringValue());
+		if(!file.isDirectory()) {
+			throw new IllegalArgumentException("Directory expected on input but got " + file);
+		}
 		try {
 			/*
 			 * find all project
@@ -164,9 +167,6 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 
 	private void findProject(File parentFolder, List<File> files, ISupplier suplier, ExecutionContext exec) {
 
-		if(!parentFolder.isDirectory()) {
-			throw new IllegalArgumentException("Directory expected but got " + parentFolder);
-		}
 		File[] childrenFiles = parentFolder.listFiles();
 		if(childrenFiles == null) {
 			return;
