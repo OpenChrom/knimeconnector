@@ -113,7 +113,7 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 				for(int j = 0; j < numberOfColumns; j++) {
 					IScanNMR scans = measurements.get(j).getScanMNR();
 					int scanSize = scans.getNumberOfFourierPoints();
-					if(scanSize <= maxRow.getAsInt()) {
+					if(i < scanSize) {
 						double cellNumber = fourierTransformations.get(j)[i];
 						cells[j] = new DoubleCell(cellNumber);
 					} else {
