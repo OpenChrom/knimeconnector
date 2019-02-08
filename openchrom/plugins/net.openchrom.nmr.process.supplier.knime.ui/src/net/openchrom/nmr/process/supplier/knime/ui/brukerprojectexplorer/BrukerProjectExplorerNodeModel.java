@@ -164,11 +164,9 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 
 	private void findProject(File parentFolder, List<File> files, ISupplier suplier, ExecutionContext exec) {
 
-		if(!parentFolder.isDirectory()) {
-			throw new IllegalArgumentException("Directory expected but got " + parentFolder);
-		}
 		File[] childrenFiles = parentFolder.listFiles();
 		if(childrenFiles == null) {
+			// skip files
 			return;
 		}
 		for(File file : childrenFiles) {
