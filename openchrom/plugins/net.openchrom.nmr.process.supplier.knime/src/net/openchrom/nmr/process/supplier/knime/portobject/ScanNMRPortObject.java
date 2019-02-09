@@ -80,7 +80,9 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		out.putNextEntry(zipEntry);
 		ObjectOutputStream outputStream = new ObjectOutputStream(out);
 		outputStream.writeObject(scanNMR.getMeasurmentNMR());
+		outputStream.flush();
 		outputStream.close();
+		out.closeEntry();
 	}
 
 	@Override
@@ -90,7 +92,7 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		assert zipEntry.getName().equals(SCAN_NMR_DATA);
 		ObjectInputStream inputStream = new ObjectInputStream(in);
 		try {
-			IMeasurementNMR measurementNMR = (IMeasurementNMR)StreamObjectReader.readObject(inputStream);
+			IMeasurementNMR measurementNMR = StreamObjectReader.readObject(inputStream);
 			scanNMR = new DataNMRSelection(measurementNMR);
 		} catch(ClassNotFoundException e) {
 			throw new IOException(e);
