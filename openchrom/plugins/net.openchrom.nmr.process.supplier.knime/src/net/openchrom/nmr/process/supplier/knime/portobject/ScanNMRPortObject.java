@@ -81,7 +81,6 @@ public class ScanNMRPortObject extends AbstractPortObject {
 		ObjectOutputStream outputStream = new ObjectOutputStream(out);
 		outputStream.writeObject(scanNMR.getMeasurmentNMR());
 		outputStream.flush();
-		outputStream.close();
 		out.closeEntry();
 	}
 
