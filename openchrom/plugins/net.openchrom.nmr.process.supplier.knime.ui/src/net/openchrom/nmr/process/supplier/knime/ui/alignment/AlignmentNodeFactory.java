@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Martin Horn.
+ * Copyright (c) 2017 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -7,8 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- * Martin Horn - initial API and implementation
- * Jan Holy
+ * Jan Holy - initial API and implementation
  *******************************************************************************/
 package net.openchrom.nmr.process.supplier.knime.ui.alignment;
 
@@ -27,7 +26,7 @@ public class AlignmentNodeFactory extends NodeFactory<AlignmentNodeModel> {
 	@Override
 	protected NodeDialogPane createNodeDialogPane() {
 
-		return null;
+		return new AligmentNodeDialog();
 	}
 
 	@Override
@@ -51,6 +50,6 @@ public class AlignmentNodeFactory extends NodeFactory<AlignmentNodeModel> {
 	@Override
 	protected boolean hasDialog() {
 
-		return false;
+		return true;
 	}
 }
