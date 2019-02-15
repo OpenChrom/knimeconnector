@@ -18,8 +18,6 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.xxd.process.supplier.knime,
  net.openchrom.process.supplier.knime.ui,
  net.openchrom.nmr.processing.supplier.base.ui,
- net.openchrom.nmr.converter.supplier.bruker.ui;bundle-version="1.4.0",
- net.openchrom.nmr.processing.supplier.base,
- org.eclipse.chemclipse.thirdpartylibraries.ejml
+ net.openchrom.nmr.converter.supplier.bruker.ui;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
