@@ -14,10 +14,11 @@
  *
  * Contributors:
  * Dr. Martin Horn - initial API and implementation
+ * Alexander Kerner - fix type hierarchy
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.sandbox.viz;
 
-import org.knime.core.node.AbstractNodeView;
+import org.knime.core.node.NodeView;
 
 import net.openchrom.xxd.process.supplier.knime.notifier.XYSeriesNotifier;
 
@@ -28,16 +29,10 @@ import net.openchrom.xxd.process.supplier.knime.notifier.XYSeriesNotifier;
  * or http://www.eclipsezone.com/eclipse/forums/m91978575.html)
  *
  */
-public class XYSeriesViewNodeView extends AbstractNodeView<XYSeriesViewNodeModel> {
+public class XYSeriesViewNodeView extends NodeView<XYSeriesViewNodeModel> {
 
 	protected XYSeriesViewNodeView(XYSeriesViewNodeModel nodeModel) {
 		super(nodeModel);
-	}
-
-	@Override
-	protected void callCloseView() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -51,6 +46,18 @@ public class XYSeriesViewNodeView extends AbstractNodeView<XYSeriesViewNodeModel
 
 	@Override
 	protected void modelChanged() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void onClose() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void onOpen() {
 		// TODO Auto-generated method stub
 
 	}
