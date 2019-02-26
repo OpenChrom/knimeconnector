@@ -31,3 +31,6 @@ After the target platform has been resolved (this can take some time), there sho
 ![alt text](images/loaded-tp.png  "alt text")
 
 
+## Some More Details
+
+The projects, that have been imported into the workspace are examples of OpenChrom plug-ins, that can be used as KNIME nodes as well. Due to licensing issues, OpenChrom plug-ins cannot implement KNIME extension points per default. To populate an OpenChrom plug-in as a KNIME node, it is therefore necessary to create a wrapper plug-in, that will register some other OpenChrom plug-in's functionality on the KNIME node extension points.
