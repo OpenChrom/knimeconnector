@@ -22,7 +22,12 @@ Select all projects and press "Finish".
 
 A minimum setup would include just the `knimeconnector.targetplatform.knime` project.
 
++ Open The `KNIME-AP-OpenChrom.target` and click on *Set as active Target Platoform*.
 
+![alt text](images/select-tp.png  "alt text")
 
+After the target platform has been resolved (this can take some time), there should be no errors left in the workspace and you are ready to go! 
+
+![alt text](images/loaded-tp.png  "alt text")
 
 
