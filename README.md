@@ -2,6 +2,8 @@
 
 The tools provided in this repository will help you to create KNIME nodes from OpenChrom Plug-ins. 
 
+Please make sure you are familiar with with a [basic KNIME development setup](https://github.com/knime/knime-sdk-setup).
+
 ## Setting up an OpenChrom - KNIME Connector Development Environment
 
 + Clone this project: `git clone git@github.com:OpenChrom/knimeconnector.git`
