@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <knimeNode icon="./reader.png" type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
-    <name>Measurement Reader (NMR)</name>
+    <name>NMR File Reader</name>
     
     <shortDescription>
-        This node is reads NMR file.
+        This node reads NMR files.
     </shortDescription>
     
     <fullDescription>
-        <intro>This node is reads NMR file.</intro>
-        <option name="Selected File">File to read</option>
+        <intro>This node reads a single NMR file and makes the data
+        available for further processing steps. Supported formats are
+        either raw data (fid) or processed data (1r).</intro>
+        <option name="File to read">A single NMR file either as raw
+        data (fid) or processed data (1r)</option>
     </fullDescription>
     
     <ports>
