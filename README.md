@@ -26,9 +26,15 @@ A minimum setup would include just the `knimeconnector.targetplatform.knime` pro
 
 ![alt text](images/select-tp.png  "alt text")
 
-After the target platform has been resolved (this can take some time), there should be no errors left in the workspace and you are ready to go! 
+After the target platform has been resolved (this can take some time), there should be no errors left in the workspace and you are ready to go.
 
 ![alt text](images/loaded-tp.png  "alt text")
+
+### Starting
+
+To start KNIME, right-click on *KNIME Analytics Platform.launch* and select *Run As* or *Debug As*  *KNIME Analytics Platform*.
+
+![alt text](images/start-knime.png  "alt text")
 
 
 ## Some More Details
