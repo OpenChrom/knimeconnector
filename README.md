@@ -41,9 +41,15 @@ To start KNIME, right-click on *KNIME Analytics Platform.launch* and select *Run
 
 The projects, that have been imported into the workspace, are examples of OpenChrom plug-ins, that can be used as KNIME nodes as well. Due to licensing issues, OpenChrom plug-ins cannot implement KNIME extension points per default. To populate an OpenChrom plug-in as a KNIME node, it is therefore necessary to create a wrapper plug-in, that will register some other OpenChrom plug-in's functionality on the KNIME node extension points.
 
+## Working on NMR-OpenChrom-KNIME-Nodes
+
 For example, plug-ins following the naming convention  *.nmr.process.supplier.knime.* are wrapper plug-ins for the OpenChrom low-level, NMR data processing plug-ins (*.openchrom.nmr.processing.*).
 
 To work on those plug-ins as well as their corresponding KNIME-node-wrappers, you need to import additionally the OpenChrom plug-ins, that are wrapped.
 To do so, check out all existing projects from [OpenChrom NMR processing](https://github.com/OpenChrom/processornmrbase/tree/develop) and import them into your workspace.
+
+`git clone git@github.com:OpenChrom/processornmrbase.git`
+
+`git checkout develop`
 
 ![alt text](images/openchrom-nmr.png  "alt text")
