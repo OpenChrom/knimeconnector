@@ -83,6 +83,16 @@ public final class DialogComponentStringIdSelection extends DialogComponent {
 	private final JLabel m_label;
 	private Map<String, String> ids;
 
+	private static Map<String, String> getIds(Class<? extends Enum<?>> enumClass) {
+
+		return Arrays.stream(enumClass.getEnumConstants()).collect(Collectors.toMap(Enum::toString, Enum::name));
+	}
+
+	public DialogComponentStringIdSelection(final SettingsModelString stringModel, final String label, Class<? extends Enum<?>> enumClass, final boolean editable) {
+
+		this(stringModel, label, getIds(enumClass), editable);
+	}
+
 	public DialogComponentStringIdSelection(final SettingsModelString stringModel, final String label, Map<String, String> ids, final boolean editable) {
 
 		this(stringModel, label, ids.entrySet().stream().map(e -> e.getKey()).collect(Collectors.toList()), ids, editable);
