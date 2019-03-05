@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2018, 2019 Lablicate GmbH.
  *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -14,6 +14,7 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Jan Holy - implentation
  *******************************************************************************/
 package net.openchrom.nmr.process.supplier.knime.ui.brukerprojectexplorer;
 
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.chemclipse.converter.core.ISupplier;
+import org.eclipse.chemclipse.converter.exceptions.NoConverterAvailableException;
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
 import org.knime.core.data.DataTableSpec;
 import org.knime.core.node.BufferedDataTable;
@@ -39,6 +41,7 @@ import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
+import net.openchrom.nmr.process.supplier.knime.ui.supports.BrukerFileType;
 import net.openchrom.process.supplier.knime.support.TableTranslator;
 
 /**
@@ -59,16 +62,19 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	 */
 	private static final NodeLogger logger = NodeLogger.getLogger(BrukerProjectExplorerNodeModel.class);
 	private static final String NMR_FILE_INPUT = "FileInput";
-	private static final String LOAD_RAW_FILE = "LoadRawFile";
+	private static final String FILE_TYPE_IMPORT = "FileTypeImport";
+	private static final String SELECT_MEASUREMENT_LOWEST_NUMBER = "SelectMeasurementLowestNumber";
 	private SettingsModelString settingsFolderInput;
-	private SettingsModelBoolean settingsLoadRawFile;
+	private SettingsModelString settingsFileTypeImport;
+	private SettingsModelBoolean settingsSelectOnlyLowestMeasumentNumber;
 
 	protected BrukerProjectExplorerNodeModel() {
 
 		// TODO one incoming port and one outgoing port is assumed
 		super(0, 1);
 		settingsFolderInput = getSettingsFileInput();
-		settingsLoadRawFile = getSettingsLoadRawFile();
+		settingsFileTypeImport = getSettingsFileTypeImport();
+		settingsSelectOnlyLowestMeasumentNumber = getSettingsMeasurementsLowestNumber();
 	}
 
 	@Override
@@ -89,51 +95,80 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 			throw new IllegalArgumentException("Directory expected on input but got " + file);
 		}
 		try {
-			/*
-			 * find all project
-			 */
-			List<File> outPutFiles = new ArrayList<>();
-			Set<File> projectFiles = new HashSet<>();
-			//
-			List<File> filesFid = new ArrayList<>();
-			ISupplier suplierFid = ScanConverterNMR.getScanConverterSupport().getSupplier("net.openchrom.nmr.converter.supplier.bruker.raw.fid");
-			ISupplier suplier1r = ScanConverterNMR.getScanConverterSupport().getSupplier("net.openchrom.nmr.converter.supplier.bruker.raw.1r");
-			findProject(file, filesFid, suplierFid, exec);
-			ISupplier supplier;
-			if(settingsLoadRawFile.getBooleanValue()) {
-				supplier = suplierFid;
+			List<File> fileToImport;
+			if(settingsSelectOnlyLowestMeasumentNumber.getBooleanValue()) {
+				/*
+				 * find all measurement
+				 */
+				fileToImport = filteringFiles(file, exec);
 			} else {
-				supplier = suplier1r;
+				/*
+				 * find measurement with lowest number
+				 */
+				fileToImport = allFiles(file, exec);
 			}
-			if(filesFid.isEmpty() && supplier.getId().equals(suplier1r.getId())) {
-				List<File> files1r = new ArrayList<>();
-				findProject(file, files1r, supplier, exec);
-				outPutFiles.addAll(files1r);
-			} else {
-				for(File fileFid : filesFid) {
-					File parantFileFid = fileFid.getParentFile();
-					File projectFile = parantFileFid.getParentFile();
-					if(projectFile == null || file.equals(parantFileFid)) {
-						List<File> dataFiles = new ArrayList<>();
-						findProject(parantFileFid, dataFiles, supplier, exec);
-						outPutFiles.addAll(dataFiles);
-					} else {
-						projectFiles.add(projectFile);
-					}
-				}
-				for(File projectFile : projectFiles) {
-					File[] childrenFiles = projectFile.listFiles();
-					List<File> selectedDataFiles = selectFile(supplier, childrenFiles, exec);
-					outPutFiles.addAll(selectedDataFiles);
-				}
-			}
-			/*
-			 * find all project which
-			 */
-			return new BufferedDataTable[]{TableTranslator.filesToTable(outPutFiles, TableTranslator.fileTableSpecific(), exec)};
+			return new BufferedDataTable[]{TableTranslator.filesToTable(fileToImport, TableTranslator.fileTableSpecific(), exec)};
 		} catch(Exception e) {
 			logger.error(e.getLocalizedMessage(), e);
 			throw e;
+		}
+	}
+
+	private List<File> allFiles(File file, ExecutionContext exec) throws NoConverterAvailableException {
+
+		List<File> outPutFiles = new ArrayList<>();
+		ISupplier supplier = getSupplier();
+		findProject(file, outPutFiles, supplier, exec);
+		return outPutFiles;
+	}
+
+	private List<File> filteringFiles(File file, ExecutionContext exec) throws NoConverterAvailableException {
+
+		List<File> outPutFiles = new ArrayList<>();
+		Set<File> projectFiles = new HashSet<>();
+		//
+		List<File> filesFid = new ArrayList<>();
+		ISupplier suplierFid = ScanConverterNMR.getScanConverterSupport().getSupplier("net.openchrom.nmr.converter.supplier.bruker.raw.fid");
+		ISupplier suplier1r = ScanConverterNMR.getScanConverterSupport().getSupplier("net.openchrom.nmr.converter.supplier.bruker.raw.1r");
+		findProject(file, filesFid, suplierFid, exec);
+		ISupplier supplier;
+		supplier = getSupplier();
+		if(filesFid.isEmpty() && supplier.getId().equals(suplier1r.getId())) {
+			List<File> files1r = new ArrayList<>();
+			findProject(file, files1r, supplier, exec);
+			outPutFiles.addAll(files1r);
+		} else {
+			for(File fileFid : filesFid) {
+				File parantFileFid = fileFid.getParentFile();
+				File projectFile = parantFileFid.getParentFile();
+				if(projectFile == null || file.equals(parantFileFid)) {
+					List<File> dataFiles = new ArrayList<>();
+					findProject(parantFileFid, dataFiles, supplier, exec);
+					outPutFiles.addAll(dataFiles);
+				} else {
+					projectFiles.add(projectFile);
+				}
+			}
+			for(File projectFile : projectFiles) {
+				File[] childrenFiles = projectFile.listFiles();
+				List<File> selectedDataFiles = selectFile(supplier, childrenFiles, exec);
+				outPutFiles.addAll(selectedDataFiles);
+			}
+		}
+		return outPutFiles;
+	}
+
+	private ISupplier getSupplier() throws NoConverterAvailableException {
+
+		ISupplier supplier;
+		BrukerFileType fileType = BrukerFileType.valueOf(settingsFileTypeImport.getStringValue());
+		switch(fileType) {
+			case FILE_1R:
+				return ScanConverterNMR.getScanConverterSupport().getSupplier("net.openchrom.nmr.converter.supplier.bruker.raw.1r");
+			case FILE_FID:
+				return ScanConverterNMR.getScanConverterSupport().getSupplier("net.openchrom.nmr.converter.supplier.bruker.raw.fid");
+			default:
+				throw new IllegalArgumentException(fileType.toString() + " is not supported");
 		}
 	}
 
@@ -199,7 +234,8 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
 		settingsFolderInput.loadSettingsFrom(settings);
-		settingsLoadRawFile.loadSettingsFrom(settings);
+		settingsFileTypeImport.loadSettingsFrom(settings);
+		settingsSelectOnlyLowestMeasumentNumber.loadSettingsFrom(settings);
 	}
 
 	/**
@@ -217,7 +253,8 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
 		settingsFolderInput.saveSettingsTo(settings);
-		settingsLoadRawFile.saveSettingsTo(settings);
+		settingsFileTypeImport.saveSettingsTo(settings);
+		settingsSelectOnlyLowestMeasumentNumber.saveSettingsTo(settings);
 	}
 
 	@Override
@@ -229,7 +266,8 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
 		settingsFolderInput.validateSettings(settings);
-		settingsLoadRawFile.validateSettings(settings);
+		settingsFileTypeImport.validateSettings(settings);
+		settingsSelectOnlyLowestMeasumentNumber.validateSettings(settings);
 	}
 
 	static SettingsModelString getSettingsFileInput() {
@@ -237,8 +275,13 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 		return new SettingsModelString(NMR_FILE_INPUT, "");
 	}
 
-	static SettingsModelBoolean getSettingsLoadRawFile() {
+	static SettingsModelString getSettingsFileTypeImport() {
 
-		return new SettingsModelBoolean(LOAD_RAW_FILE, false);
+		return new SettingsModelString(FILE_TYPE_IMPORT, BrukerFileType.FILE_1R.name());
+	}
+
+	static SettingsModelBoolean getSettingsMeasurementsLowestNumber() {
+
+		return new SettingsModelBoolean(SELECT_MEASUREMENT_LOWEST_NUMBER, true);
 	}
 }

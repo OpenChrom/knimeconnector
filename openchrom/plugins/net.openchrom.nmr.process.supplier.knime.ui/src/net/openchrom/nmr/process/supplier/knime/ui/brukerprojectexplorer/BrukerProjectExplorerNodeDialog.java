@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2018, 2019 Lablicate GmbH.
  *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -23,6 +23,8 @@ import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
 import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 
+import net.openchrom.nmr.process.supplier.knime.ui.supports.BrukerFileType;
+import net.openchrom.process.supplier.knime.ui.dialog.DialogComponentStringIdSelection;
 import net.openchrom.process.supplier.knime.ui.node.listfilesfolder.ListFilesFolderNodeDialog;
 
 /**
@@ -43,7 +45,11 @@ public class BrukerProjectExplorerNodeDialog extends DefaultNodeSettingsPane {
 		super();
 		DialogComponentFileChooser directoryChooser = new DialogComponentFileChooser(BrukerProjectExplorerNodeModel.getSettingsFileInput(), ListFilesFolderNodeDialog.class.getName(), JFileChooser.OPEN_DIALOG, true);
 		addDialogComponent(directoryChooser);
-		DialogComponentBoolean loadRawFile = new DialogComponentBoolean(BrukerProjectExplorerNodeModel.getSettingsLoadRawFile(), "Load raw File");
+		//
+		DialogComponentStringIdSelection selectFileType = new DialogComponentStringIdSelection(BrukerProjectExplorerNodeModel.getSettingsFileTypeImport(), "Select File Type", BrukerFileType.class, false);
+		addDialogComponent(selectFileType);
+		//
+		DialogComponentBoolean loadRawFile = new DialogComponentBoolean(BrukerProjectExplorerNodeModel.getSettingsMeasurementsLowestNumber(), "Load measurement with lowest number only");
 		addDialogComponent(loadRawFile);
 	}
 }
