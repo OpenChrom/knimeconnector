@@ -14,7 +14,6 @@ package net.openchrom.process.supplier.knime.ui.dialogfactory.property;
 import java.util.Map;
 
 import org.knime.core.node.InvalidSettingsException;
-import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
@@ -53,7 +52,7 @@ public abstract class PropertyDialogFactory<SO> implements SettingsDialogFactory
 	}
 
 	@Override
-	public NodeDialogPane createDialog() {
+	public DefaultNodeSettingsPane createDialog() {
 
 		DefaultNodeSettingsPane defaultNodeSettingsPane = new DefaultNodeSettingsPane();
 		builtDialogPane(defaultNodeSettingsPane);

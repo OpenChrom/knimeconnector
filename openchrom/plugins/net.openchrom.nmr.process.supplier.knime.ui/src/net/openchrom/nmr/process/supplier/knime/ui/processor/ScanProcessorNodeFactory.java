@@ -17,12 +17,19 @@ import org.eclipse.chemclipse.nmr.processor.core.IScanProcessorSupplier;
 import org.eclipse.chemclipse.nmr.processor.core.ScanProcessorNMR;
 import org.eclipse.chemclipse.nmr.processor.exceptions.NoProcessorAvailableException;
 import org.eclipse.chemclipse.nmr.processor.settings.IProcessorSettings;
+import org.knime.base.node.viz.plotter.line.LinePlotter;
+import org.knime.base.node.viz.plotter.node.DefaultVisualizationNodeView;
 import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeDescription;
 import org.knime.core.node.NodeDescription27Proxy;
+import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeView;
 import org.knime.core.node.config.ConfigRO;
 import org.knime.core.node.config.ConfigWO;
+import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
+import org.knime.core.node.defaultnodesettings.DialogComponentButtonGroup;
+import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
 import org.knime.node2012.FullDescriptionDocument.FullDescription;
 import org.knime.node2012.InPortDocument.InPort;
 import org.knime.node2012.KnimeNodeDocument;
@@ -31,6 +38,8 @@ import org.knime.node2012.OptionDocument.Option;
 import org.knime.node2012.OutPortDocument.OutPort;
 import org.knime.node2012.PortsDocument.Ports;
 import org.knime.node2012.TabDocument.Tab;
+import org.knime.node2012.ViewDocument.View;
+import org.knime.node2012.ViewsDocument.Views;
 
 import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsDialogFactory;
 import net.openchrom.process.supplier.knime.ui.dialogfactory.SettingsObjectWrapper;
@@ -66,6 +75,10 @@ public class ScanProcessorNodeFactory extends DialogGenerationDynamicNodeFactory
 				newOption.setName(optionDesc.getKey());
 				newOption.newCursor().setTextValue(optionDesc.getValue());
 			}
+			Views views = node.addNewViews();
+			View view = views.addNewView();
+			view.setIndex(0);
+			view.setName("Display FID Signal/NMR Spectrum");
 			Ports ports = node.addNewPorts();
 			InPort inPort1 = ports.addNewInPort();
 			inPort1.setIndex(0);
@@ -91,7 +104,7 @@ public class ScanProcessorNodeFactory extends DialogGenerationDynamicNodeFactory
 	@Override
 	public NodeView<ScanProcessorNodeModel> createNodeView(int viewIndex, ScanProcessorNodeModel nodeModel) {
 
-		return null;
+		return new DefaultVisualizationNodeView<ScanProcessorNodeModel>(nodeModel, new LinePlotter());
 	}
 
 	@Override
@@ -113,9 +126,21 @@ public class ScanProcessorNodeFactory extends DialogGenerationDynamicNodeFactory
 	}
 
 	@Override
+	protected NodeDialogPane createNodeDialogPane() {
+
+		DefaultNodeSettingsPane dialogPane = (DefaultNodeSettingsPane)super.createNodeDialogPane();
+		dialogPane.createNewTab("Debuging");
+		dialogPane.addDialogComponent(new DialogComponentBoolean(ScanProcessorNodeModel.getSettingsDebuggingMode(), "Activate debuging mode"));
+		dialogPane.addDialogComponent(new DialogComponentNumber(ScanProcessorNodeModel.getSettingsMaxNumberOfPoints(), "Maximum Numeber of points", 100));
+		dialogPane.addDialogComponent(new DialogComponentButtonGroup(ScanProcessorNodeModel.getSettingsDisplaySignalType(), true, "Select signal type", //
+				ScanProcessorNodeModel.DISPLAY_FID_SIGNAL, ScanProcessorNodeModel.DISPLAY_NMR_SPECTRUM));
+		return dialogPane;
+	}
+
+	@Override
 	protected int getNrNodeViews() {
 
-		return 0;
+		return 1;
 	}
 
 	@Override
