@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018, 2019 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -20,6 +20,8 @@ package net.openchrom.nmr.process.supplier.knime.ui.brukerprojectexplorer;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +42,7 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
+import org.knime.core.util.FileUtil;
 
 import net.openchrom.nmr.process.supplier.knime.ui.supports.BrukerFileType;
 import net.openchrom.process.supplier.knime.support.TableTranslator;
@@ -89,11 +92,8 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	@Override
 	protected BufferedDataTable[] execute(BufferedDataTable[] dataIn, ExecutionContext exec) throws Exception {
 
-		logger.info("Read the scans nmr data.");
-		File file = new File(settingsFolderInput.getStringValue());
-		if(!file.isDirectory()) {
-			throw new IllegalArgumentException("Directory expected on input but got " + file);
-		}
+		Path path = FileUtil.resolveToPath(new URL(settingsFolderInput.getStringValue()));
+		File file = path.toFile();
 		try {
 			List<File> fileToImport;
 			if(settingsSelectOnlyLowestMeasumentNumber.getBooleanValue()) {

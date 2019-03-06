@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -13,6 +13,7 @@ package net.openchrom.process.supplier.knime.ui.node.listfilesfolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
 import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
+import org.knime.core.util.FileUtil;
 
 import net.openchrom.process.supplier.knime.support.TableTranslator;
 
@@ -82,7 +84,7 @@ public class ListFilesFolderNodeModel extends NodeModel {
 
 		Optional<ISupplier> supplier = suppliers.stream().filter(s -> s.getId().equals(supplierID.getStringValue())).findAny();
 		List<File> files = new ArrayList<>();
-		File parentFile = new File(folder.getStringValue());
+		File parentFile = FileUtil.resolveToPath(new URL(folder.getStringValue())).toFile();
 		if(supplier.isPresent() && parentFile.isDirectory() && recursive.getBooleanValue()) {
 			findFiles(parentFile, files, supplier.get(), exec);
 		}
@@ -90,10 +92,11 @@ public class ListFilesFolderNodeModel extends NodeModel {
 		return new BufferedDataTable[]{table};
 	}
 
-	private void findFiles(File parentFolder, List<File> files, ISupplier suplier, ExecutionContext exec) {
+	private void findFiles(File parentFolder, List<File> files, ISupplier suplier, ExecutionContext exec) throws CanceledExecutionException {
 
 		File[] childrenFiles = parentFolder.listFiles();
 		for(File file : childrenFiles) {
+			exec.checkCanceled();
 			if(suplier.isMatchMagicNumber(file)) {
 				files.add(file);
 			} else if(file.isDirectory()) {

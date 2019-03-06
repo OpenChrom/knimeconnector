@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -14,11 +14,13 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Jan Holy - implementation
  *******************************************************************************/
 package net.openchrom.nmr.process.supplier.knime.ui.reader;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
 import org.eclipse.chemclipse.nmr.model.core.MeasurementNMR;
@@ -38,6 +40,7 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
+import org.knime.core.util.FileUtil;
 
 import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject;
 import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObjectSpec;
@@ -82,7 +85,7 @@ public class ReaderNMRNodeModel extends NodeModel {
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
 		logger.info("Read the scans nmr data.");
-		File file = new File(settingsFileInput.getStringValue());
+		File file = FileUtil.resolveToPath(new URL(settingsFileInput.getStringValue())).toFile();
 		try {
 			IProcessingInfo processingInfo = ScanConverterNMR.convert(file, new NullProgressMonitor());
 			MeasurementNMR scanNMR = (MeasurementNMR)processingInfo.getProcessingResult();
