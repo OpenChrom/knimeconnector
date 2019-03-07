@@ -18,5 +18,11 @@
         <!-- possibly more input ports here-->
         <outPort index="0" name="NMR Data">NMR Data</outPort>
         <!-- possibly more output ports here-->
-    </ports>    
+    </ports>
+    
+    <views>
+    	<view index="0" name="FID Signal">
+    		Display FID signal
+    	</view>
+    </views>	    
 </knimeNode>
