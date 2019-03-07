@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -14,6 +14,7 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Jan Holy - implementation
  *******************************************************************************/
 package net.openchrom.nmr.process.supplier.knime.ui.reader;
 
@@ -53,7 +54,7 @@ public class ReaderNMRNodeFactory extends NodeFactory<ReaderNMRNodeModel> {
 	@Override
 	public NodeView<ReaderNMRNodeModel> createNodeView(final int viewIndex, final ReaderNMRNodeModel nodeModel) {
 
-		return new ReaderNMRNodeView(nodeModel);
+		return null;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class ReaderNMRNodeFactory extends NodeFactory<ReaderNMRNodeModel> {
 	@Override
 	public int getNrNodeViews() {
 
-		return 1;
+		return 0;
 	}
 
 	/**
