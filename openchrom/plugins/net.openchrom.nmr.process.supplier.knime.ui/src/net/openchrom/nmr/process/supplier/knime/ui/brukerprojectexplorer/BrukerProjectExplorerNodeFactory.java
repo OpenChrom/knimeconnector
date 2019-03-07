@@ -53,7 +53,7 @@ public class BrukerProjectExplorerNodeFactory extends NodeFactory<BrukerProjectE
 	@Override
 	public NodeView<BrukerProjectExplorerNodeModel> createNodeView(final int viewIndex, final BrukerProjectExplorerNodeModel nodeModel) {
 
-		return new BrukerProjectExplorerNodeView(nodeModel);
+		return null;
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class BrukerProjectExplorerNodeFactory extends NodeFactory<BrukerProjectE
 	@Override
 	public int getNrNodeViews() {
 
-		return 1;
+		return 0;
 	}
 
 	/**
