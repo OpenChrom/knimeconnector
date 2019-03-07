@@ -92,10 +92,13 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	protected BufferedDataTable[] execute(BufferedDataTable[] dataIn, ExecutionContext exec) throws Exception {
 
 		File file = new File(settingsFolderInput.getStringValue());
-		if(!file.isDirectory()) {
-			file = FileUtil.resolveToPath(new URL(settingsFolderInput.getStringValue())).toFile();
-		}
 		try {
+			if(!file.isDirectory()) {
+				file = FileUtil.getFileFromURL(new URL(settingsFolderInput.getStringValue()));
+			}
+			if(!file.isDirectory()) {
+				throw new IllegalArgumentException("File has to be directory");
+			}
 			List<File> fileToImport;
 			if(settingsSelectOnlyLowestMeasumentNumber.getBooleanValue()) {
 				/*

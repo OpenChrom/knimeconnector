@@ -85,11 +85,12 @@ public class ReaderNMRNodeModel extends NodeModel {
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
 		logger.info("Read the scans nmr data.");
-		File file = new File(settingsFileInput.getStringValue());
-		if(!file.isFile()) {
-			file = FileUtil.resolveToPath(new URL(settingsFileInput.getStringValue())).toFile();
-		}
 		try {
+			File file = new File(settingsFileInput.getStringValue());
+			if(!file.isFile()) {
+				URL url = new URL(settingsFileInput.getStringValue());
+				file = FileUtil.getFileFromURL(url);
+			}
 			IProcessingInfo processingInfo = ScanConverterNMR.convert(file, new NullProgressMonitor());
 			MeasurementNMR scanNMR = (MeasurementNMR)processingInfo.getProcessingResult();
 			return new PortObject[]{new ScanNMRPortObject(new DataNMRSelection(scanNMR))};
