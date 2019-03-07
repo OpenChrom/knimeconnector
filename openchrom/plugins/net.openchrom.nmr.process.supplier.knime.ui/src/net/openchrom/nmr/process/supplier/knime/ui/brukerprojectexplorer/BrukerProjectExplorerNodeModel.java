@@ -21,7 +21,6 @@ package net.openchrom.nmr.process.supplier.knime.ui.brukerprojectexplorer;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -92,8 +91,10 @@ public class BrukerProjectExplorerNodeModel extends NodeModel {
 	@Override
 	protected BufferedDataTable[] execute(BufferedDataTable[] dataIn, ExecutionContext exec) throws Exception {
 
-		Path path = FileUtil.resolveToPath(new URL(settingsFolderInput.getStringValue()));
-		File file = path.toFile();
+		File file = new File(settingsFolderInput.getStringValue());
+		if(!file.isDirectory()) {
+			file = FileUtil.resolveToPath(new URL(settingsFolderInput.getStringValue())).toFile();
+		}
 		try {
 			List<File> fileToImport;
 			if(settingsSelectOnlyLowestMeasumentNumber.getBooleanValue()) {

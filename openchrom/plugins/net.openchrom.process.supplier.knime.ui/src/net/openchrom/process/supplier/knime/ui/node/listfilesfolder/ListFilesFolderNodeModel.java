@@ -84,7 +84,10 @@ public class ListFilesFolderNodeModel extends NodeModel {
 
 		Optional<ISupplier> supplier = suppliers.stream().filter(s -> s.getId().equals(supplierID.getStringValue())).findAny();
 		List<File> files = new ArrayList<>();
-		File parentFile = FileUtil.resolveToPath(new URL(folder.getStringValue())).toFile();
+		File parentFile = new File(folder.getStringValue());
+		if(!parentFile.isDirectory()) {
+			parentFile = FileUtil.resolveToPath(new URL(folder.getStringValue())).toFile();
+		}
 		if(supplier.isPresent() && parentFile.isDirectory() && recursive.getBooleanValue()) {
 			findFiles(parentFile, files, supplier.get(), exec);
 		}
