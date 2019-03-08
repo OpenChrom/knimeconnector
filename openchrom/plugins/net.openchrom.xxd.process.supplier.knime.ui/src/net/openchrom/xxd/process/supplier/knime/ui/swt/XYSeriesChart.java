@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -77,7 +77,7 @@ public class XYSeriesChart extends LineChart implements IXYSeriesListener {
 		ISeriesData seriesData = new SeriesData(ySeries, id);
 		//
 		ILineSeriesData lineSeriesData = new LineSeriesData(seriesData);
-		ILineSeriesSettings lineSerieSettings = lineSeriesData.getLineSeriesSettings();
+		ILineSeriesSettings lineSerieSettings = lineSeriesData.getSettings();
 		lineSerieSettings.setEnableArea(false);
 		lineSeriesDataList.add(lineSeriesData);
 		//
