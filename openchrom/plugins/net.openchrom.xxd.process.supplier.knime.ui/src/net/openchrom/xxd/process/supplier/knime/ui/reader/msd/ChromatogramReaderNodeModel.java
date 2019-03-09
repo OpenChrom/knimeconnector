@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2018, 2019 Lablicate GmbH.
  *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -14,6 +14,7 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Alexander Kerner - generics
  *******************************************************************************/
 package net.openchrom.xxd.process.supplier.knime.ui.reader.msd;
 
@@ -75,8 +76,8 @@ public class ChromatogramReaderNodeModel extends NodeModel {
 
 	private IChromatogramMSD loadChromatogram(File file) {
 
-		IProcessingInfo processingInfo = ChromatogramConverterMSD.getInstance().convert(file, new NullProgressMonitor());
-		IChromatogramMSD chromatogramMSD = processingInfo.getProcessingResult(IChromatogramMSD.class);
+		IProcessingInfo<IChromatogramMSD> processingInfo = ChromatogramConverterMSD.getInstance().convert(file, new NullProgressMonitor());
+		IChromatogramMSD chromatogramMSD = processingInfo.getProcessingResult();
 		chromatogramMSD.setFile(file);
 		return chromatogramMSD;
 	}
