@@ -18,6 +18,8 @@
  *******************************************************************************/
 package net.openchrom.nmr.process.supplier.knime.ui.reader;
 
+import org.knime.base.node.viz.plotter.line.LinePlotter;
+import org.knime.base.node.viz.plotter.node.DefaultVisualizationNodeView;
 import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
@@ -54,7 +56,7 @@ public class ReaderNMRNodeFactory extends NodeFactory<ReaderNMRNodeModel> {
 	@Override
 	public NodeView<ReaderNMRNodeModel> createNodeView(final int viewIndex, final ReaderNMRNodeModel nodeModel) {
 
-		return null;
+		return new DefaultVisualizationNodeView<ReaderNMRNodeModel>(nodeModel, new LinePlotter());
 	}
 
 	/**
@@ -63,7 +65,7 @@ public class ReaderNMRNodeFactory extends NodeFactory<ReaderNMRNodeModel> {
 	@Override
 	public int getNrNodeViews() {
 
-		return 0;
+		return 1;
 	}
 
 	/**

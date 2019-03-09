@@ -25,6 +25,7 @@ import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
+import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
@@ -35,6 +36,8 @@ import org.knime.core.util.FileUtil;
 import net.openchrom.process.supplier.knime.support.TableTranslator;
 
 public class ListFilesFolderNodeModel extends NodeModel {
+
+	private static final NodeLogger logger = NodeLogger.getLogger(ListFilesFolderNodeModel.class);
 
 	static SettingsModelBoolean getSettingRecursive() {
 
@@ -82,14 +85,21 @@ public class ListFilesFolderNodeModel extends NodeModel {
 	@Override
 	protected BufferedDataTable[] execute(BufferedDataTable[] inData, ExecutionContext exec) throws Exception {
 
-		Optional<ISupplier> supplier = suppliers.stream().filter(s -> s.getId().equals(supplierID.getStringValue())).findAny();
 		List<File> files = new ArrayList<>();
-		File parentFile = new File(folder.getStringValue());
-		if(!parentFile.isDirectory()) {
-			parentFile = FileUtil.resolveToPath(new URL(folder.getStringValue())).toFile();
-		}
-		if(supplier.isPresent() && parentFile.isDirectory() && recursive.getBooleanValue()) {
-			findFiles(parentFile, files, supplier.get(), exec);
+		try {
+			Optional<ISupplier> supplier = suppliers.stream().filter(s -> s.getId().equals(supplierID.getStringValue())).findAny();
+			File file = new File(folder.getStringValue());
+			if(!file.isDirectory()) {
+				file = FileUtil.getFileFromURL(new URL(folder.getStringValue()));
+			}
+			if(!file.isDirectory()) {
+				throw new IllegalArgumentException("File has to be directory");
+			}
+			if(supplier.isPresent() && file.isDirectory() && recursive.getBooleanValue()) {
+				findFiles(file, files, supplier.get(), exec);
+			}
+		} catch(Exception e) {
+			logger.error(e.getLocalizedMessage(), e);
 		}
 		BufferedDataTable table = TableTranslator.filesToTable(files, TableTranslator.fileTableSpecific(), exec);
 		return new BufferedDataTable[]{table};

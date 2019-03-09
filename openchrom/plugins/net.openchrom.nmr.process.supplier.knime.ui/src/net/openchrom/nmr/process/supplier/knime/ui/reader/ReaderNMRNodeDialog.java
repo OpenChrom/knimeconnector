@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017, 2018 Lablicate GmbH.
+ * Copyright (c) 2017, 2019 Lablicate GmbH.
  *
  * This library is free
  * software; you can redistribute it and/or modify it under the terms of the GNU
@@ -14,6 +14,7 @@
  *
  * Contributors:
  * Dr. Philip Wenig - initial API and implementation
+ * Jan Holy - implementation
  *******************************************************************************/
 package net.openchrom.nmr.process.supplier.knime.ui.reader;
 
@@ -26,7 +27,9 @@ import org.eclipse.chemclipse.converter.core.ISupplier;
 import org.eclipse.chemclipse.converter.scan.IScanConverterSupport;
 import org.eclipse.chemclipse.nmr.converter.core.ScanConverterNMR;
 import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentBoolean;
 import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+import org.knime.core.node.defaultnodesettings.DialogComponentNumber;
 
 /**
  * <code>NodeDialog</code> for the "MeasurementReaderNMR" Node.
@@ -69,5 +72,8 @@ public class ReaderNMRNodeDialog extends DefaultNodeSettingsPane {
 		//
 		DialogComponentFileChooser dialogComponentFileChooser = new DialogComponentFileChooser(ReaderNMRNodeModel.getSettingsFileInput(), "", validExtensions);
 		addDialogComponent(dialogComponentFileChooser);
+		createNewTab("Debuging");
+		addDialogComponent(new DialogComponentBoolean(ReaderNMRNodeModel.getSettingsDebuggingMode(), "Activate debuging mode"));
+		addDialogComponent(new DialogComponentNumber(ReaderNMRNodeModel.getSettingsMaxNumberOfPoints(), "Maximum Numeber of points", 100));
 	}
 }
