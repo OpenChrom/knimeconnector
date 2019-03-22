@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017 Martin Horn.
+ * Copyright (c) 2017, 2019 Martin Horn, Lablicate GmbH
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,6 +8,7 @@
  *
  * Contributors:
  * Martin Horn - initial API and implementation
+ * Jan Holy - implementation
  *******************************************************************************/
 package net.openchrom.nmr.process.supplier.knime.ui.alignment;
 
@@ -20,6 +21,7 @@ import java.util.OptionalInt;
 import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
 import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
+import org.ejml.simple.SimpleMatrix;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
 import org.knime.core.data.DataColumnSpecCreator;
@@ -37,6 +39,11 @@ import org.knime.core.node.InvalidSettingsException;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
+import org.knime.core.node.defaultnodesettings.SettingsModelBoolean;
+import org.knime.core.node.defaultnodesettings.SettingsModelDouble;
+import org.knime.core.node.defaultnodesettings.SettingsModelDoubleRange;
+import org.knime.core.node.defaultnodesettings.SettingsModelInteger;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
@@ -46,6 +53,12 @@ import org.knime.core.node.workflow.LoopStartNodeTerminator;
 
 import net.openchrom.nmr.process.supplier.knime.portobject.PortObjectSupport;
 import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject;
+import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment;
+import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.AlignmentType;
+import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.GapFillingType;
+import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.ShiftCorrectionType;
+import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.TargetCalculationSelection;
+import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignmentSettings;
 
 /**
  * Node model for the "Apply Filters"-node.
@@ -55,11 +68,85 @@ import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject;
  */
 public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 
+	//
+	private static final String TARGET_CALCULATION_SELECTION = "TARGET_CALCULATION_SELECTION";
+	private static final String GAP_FILLING_TYPE = "GAP_FILLING_TYPE";
+	private static final String ALIGNMENT_TYPE = "ALIGNMENT_TYPE";
+	private static final String SINGLE_PEAK_BORDER = "SINGLE_PEAK_LOWER_BORDER";
+	private static final String NUMBER_OF_INTERVALS = "NUMBER_OF_INTERVALS";
+	private static final String SHIFT_CORRECTION_TYPE = "SHIFT_CORRECTION_TYPE";
+	private static final String SHIFT_CORRECTION_TYPE_VALUE = "SHIFT_CORRECTION_TYPE_VALUE";
+	private static final String INTERVAL_LENGHT = "INTERVAL_LENGHT";
+	private static final String PRELIMITER_COSHIFITINGS = "PRELIMITER_COSHIFITINGS";
+	//
 	private List<IMeasurementNMR> measurements = new ArrayList<>();
+	private SettingsModelString settingsTargetCalcutaltionSelection;
+	private SettingsModelString settingsGapFillingType;
+	private SettingsModelString settingsAligmentType;
+	private SettingsModelDoubleRange settingsSinglePeakBorder;
+	private SettingsModelInteger settingsNumberOfIntervals;
+	private SettingsModelString settingsShiftCorrectionType;
+	private SettingsModelInteger settingsShiftCorrectionTypeValue;
+	private SettingsModelDouble settingsIntervalLenght;
+	private SettingsModelBoolean settingsPrelimiterCoShifting;
+
+	static SettingsModelString getSettingsTargetCalcutaltionSelection() {
+
+		return new SettingsModelString(TARGET_CALCULATION_SELECTION, TargetCalculationSelection.MEAN.name());
+	}
+
+	static SettingsModelString getSettingsGapFillingType() {
+
+		return new SettingsModelString(GAP_FILLING_TYPE, GapFillingType.MARGIN.name());
+	}
+
+	static SettingsModelString getSettingsAligmentType() {
+
+		return new SettingsModelString(ALIGNMENT_TYPE, AlignmentType.WHOLE_SPECTRUM.name());
+	}
+
+	static SettingsModelDoubleRange getSettingsSinglePeakBorder() {
+
+		return new SettingsModelDoubleRange(SINGLE_PEAK_BORDER, 0, 10);
+	}
+
+	static SettingsModelInteger getSettingsNumberOfIntervals() {
+
+		return new SettingsModelInteger(NUMBER_OF_INTERVALS, 20);
+	}
+
+	static SettingsModelString getSettingsShiftCorrectionType() {
+
+		return new SettingsModelString(SHIFT_CORRECTION_TYPE, ShiftCorrectionType.FAST.name());
+	}
+
+	static SettingsModelDouble getSettingsIntervalLength() {
+
+		return new SettingsModelDouble(INTERVAL_LENGHT, 20);
+	}
+
+	static SettingsModelInteger getSettingsShiftCorrectionTypeValue() {
+
+		return new SettingsModelInteger(SHIFT_CORRECTION_TYPE_VALUE, 10);
+	}
+
+	static SettingsModelBoolean getSettingsPrelimiterCoShifting() {
+
+		return new SettingsModelBoolean(PRELIMITER_COSHIFITINGS, false);
+	}
 
 	protected AlignmentNodeModel() {
 
 		super(new PortType[]{ScanNMRPortObject.TYPE}, new PortType[]{BufferedDataTable.TYPE});
+		settingsTargetCalcutaltionSelection = getSettingsTargetCalcutaltionSelection();
+		settingsGapFillingType = getSettingsGapFillingType();
+		settingsAligmentType = getSettingsAligmentType();
+		settingsSinglePeakBorder = getSettingsSinglePeakBorder();
+		settingsNumberOfIntervals = getSettingsNumberOfIntervals();
+		settingsShiftCorrectionType = getSettingsShiftCorrectionType();
+		settingsShiftCorrectionTypeValue = getSettingsShiftCorrectionTypeValue();
+		settingsIntervalLenght = getSettingsIntervalLength();
+		settingsPrelimiterCoShifting = getSettingsPrelimiterCoShifting();
 	}
 
 	@Override
@@ -84,45 +171,53 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 			super.continueLoop();
 			return null;
 		} else {
-			BufferedDataTable bufferDataTable = extractMultipleSpectra(measurements, exec);
+			SimpleMatrix data = dataAlignment(measurements);
+			BufferedDataTable bufferDataTable = extractMultipleSpectra(data, exec);
 			return new PortObject[]{bufferDataTable};
 		}
 	}
 
-	public BufferedDataTable extractMultipleSpectra(List<IMeasurementNMR> measurements, ExecutionContext exec) {
+	private SimpleMatrix dataAlignment(List<IMeasurementNMR> measurements) {
+
+		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
+		IcoShiftAlignmentSettings settings = new IcoShiftAlignmentSettings();
+		settings.setAligmentType(AlignmentType.valueOf(settingsAligmentType.getStringValue()));
+		settings.setGapFillingType(GapFillingType.valueOf(settingsGapFillingType.getStringValue()));
+		settings.setIntervalLength(settingsIntervalLenght.getDoubleValue());
+		settings.setNumberOfIntervals(settingsNumberOfIntervals.getIntValue());
+		settings.setShiftCorrectionType(ShiftCorrectionType.valueOf(settingsShiftCorrectionType.getStringValue()));
+		settings.setShiftCorrectionTypeValue(settingsShiftCorrectionTypeValue.getIntValue());
+		settings.setTargetCalculationSelection(TargetCalculationSelection.valueOf(settingsTargetCalcutaltionSelection.getStringValue()));
+		settings.setSinglePeakLowerBorder(settingsSinglePeakBorder.getMinRange());
+		settings.setSinglePeakHigherBorder(settingsSinglePeakBorder.getMaxRange());
+		return icoShiftAlignment.process(measurements, settings);
+	}
+
+	private BufferedDataTable extractMultipleSpectra(SimpleMatrix data, ExecutionContext exec) {
 
 		// List<Object> experimentalDatasetsList = new ArrayList<Object>();
 		// experimentalDatasetsList = importMultipleDatasets(experimentalDatasets);
 		//
 		//
-		int numberOfColumns = measurements.size();
+		int numberOfColumns = data.numRows();
 		DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
 		List<double[]> fourierTransformations = new ArrayList<>(numberOfColumns);
-		for(int i = 0; i < measurements.size(); i++) {
+		for(int i = 0; i < numberOfColumns; i++) {
 			String columnName = Integer.toString(i);
 			fourierTransformations.add(new SignalExtractor(measurements.get(i)).extractSignalIntesity());
 			dataColumnSpec[i] = new DataColumnSpecCreator(columnName, DoubleCell.TYPE).createSpec();
 		}
 		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
 		BufferedDataContainer bufferConteiner = exec.createDataContainer(dataTableSpec);
-		OptionalInt maxRow = measurements.stream().mapToInt(m -> m.getScanMNR().getNumberOfFourierPoints()).max();
-		if(maxRow.isPresent()) {
-			for(int i = 0; i < maxRow.getAsInt(); i++) {
-				RowKey rowKey = new RowKey(Integer.toString(i));
-				DataCell[] cells = new DataCell[numberOfColumns];
-				for(int j = 0; j < numberOfColumns; j++) {
-					IScanNMR scans = measurements.get(j).getScanMNR();
-					int scanSize = scans.getNumberOfFourierPoints();
-					if(i < scanSize) {
-						double cellNumber = fourierTransformations.get(j)[i];
-						cells[j] = new DoubleCell(cellNumber);
-					} else {
-						cells[j] = new DoubleCell(0.0);
-					}
-				}
-				DataRow dataRow = new DefaultRow(rowKey, cells);
-				bufferConteiner.addRowToTable(dataRow);
+		int numberOfRow = data.numCols();
+		for(int i = 0; i < numberOfRow; i++) {
+			RowKey rowKey = new RowKey(Integer.toString(i));
+			DataCell[] cells = new DataCell[numberOfColumns];
+			for(int j = 0; j < numberOfColumns; j++) {
+				cells[j] = new DoubleCell(data.get(j, i));
 			}
+			DataRow dataRow = new DefaultRow(rowKey, cells);
+			bufferConteiner.addRowToTable(dataRow);
 		}
 		bufferConteiner.close();
 		return bufferConteiner.getTable();
@@ -136,6 +231,15 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 	@Override
 	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
 
+		settingsTargetCalcutaltionSelection.loadSettingsFrom(settings);
+		settingsGapFillingType.loadSettingsFrom(settings);
+		settingsAligmentType.loadSettingsFrom(settings);
+		settingsSinglePeakBorder.loadSettingsFrom(settings);
+		settingsNumberOfIntervals.loadSettingsFrom(settings);
+		settingsShiftCorrectionType.loadSettingsFrom(settings);
+		settingsShiftCorrectionTypeValue.loadSettingsFrom(settings);
+		settingsIntervalLenght.loadSettingsFrom(settings);
+		settingsPrelimiterCoShifting.loadSettingsFrom(settings);
 	}
 
 	@Override
@@ -152,10 +256,28 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 	@Override
 	protected void saveSettingsTo(NodeSettingsWO settings) {
 
+		settingsTargetCalcutaltionSelection.saveSettingsTo(settings);
+		settingsGapFillingType.saveSettingsTo(settings);
+		settingsAligmentType.saveSettingsTo(settings);
+		settingsSinglePeakBorder.saveSettingsTo(settings);
+		settingsNumberOfIntervals.saveSettingsTo(settings);
+		settingsShiftCorrectionType.saveSettingsTo(settings);
+		settingsShiftCorrectionTypeValue.saveSettingsTo(settings);
+		settingsIntervalLenght.saveSettingsTo(settings);
+		settingsPrelimiterCoShifting.saveSettingsTo(settings);
 	}
 
 	@Override
 	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
 
+		settingsTargetCalcutaltionSelection.validateSettings(settings);
+		settingsGapFillingType.validateSettings(settings);
+		settingsAligmentType.validateSettings(settings);
+		settingsSinglePeakBorder.validateSettings(settings);
+		settingsNumberOfIntervals.validateSettings(settings);
+		settingsShiftCorrectionType.validateSettings(settings);
+		settingsShiftCorrectionTypeValue.validateSettings(settings);
+		settingsIntervalLenght.validateSettings(settings);
+		settingsPrelimiterCoShifting.validateSettings(settings);
 	}
 }
