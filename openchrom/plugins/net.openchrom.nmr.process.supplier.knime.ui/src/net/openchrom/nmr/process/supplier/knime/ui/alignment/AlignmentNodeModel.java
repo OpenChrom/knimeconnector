@@ -16,10 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalInt;
 
 import org.eclipse.chemclipse.nmr.model.core.IMeasurementNMR;
-import org.eclipse.chemclipse.nmr.model.core.IScanNMR;
 import org.eclipse.chemclipse.nmr.model.support.SignalExtractor;
 import org.ejml.simple.SimpleMatrix;
 import org.knime.core.data.DataCell;
@@ -54,11 +52,7 @@ import org.knime.core.node.workflow.LoopStartNodeTerminator;
 import net.openchrom.nmr.process.supplier.knime.portobject.PortObjectSupport;
 import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject;
 import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.AlignmentType;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.GapFillingType;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.ShiftCorrectionType;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment.TargetCalculationSelection;
-import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignmentSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
 
 /**
  * Node model for the "Apply Filters"-node.
@@ -79,16 +73,16 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 	private static final String INTERVAL_LENGHT = "INTERVAL_LENGHT";
 	private static final String PRELIMITER_COSHIFITINGS = "PRELIMITER_COSHIFITINGS";
 	//
-	private List<IMeasurementNMR> measurements = new ArrayList<>();
-	private SettingsModelString settingsTargetCalcutaltionSelection;
-	private SettingsModelString settingsGapFillingType;
-	private SettingsModelString settingsAligmentType;
-	private SettingsModelDoubleRange settingsSinglePeakBorder;
-	private SettingsModelInteger settingsNumberOfIntervals;
-	private SettingsModelString settingsShiftCorrectionType;
-	private SettingsModelInteger settingsShiftCorrectionTypeValue;
-	private SettingsModelDouble settingsIntervalLenght;
-	private SettingsModelBoolean settingsPrelimiterCoShifting;
+	private final List<IMeasurementNMR> measurements = new ArrayList<>();
+	private final SettingsModelString settingsTargetCalcutaltionSelection;
+	private final SettingsModelString settingsGapFillingType;
+	private final SettingsModelString settingsAligmentType;
+	private final SettingsModelDoubleRange settingsSinglePeakBorder;
+	private final SettingsModelInteger settingsNumberOfIntervals;
+	private final SettingsModelString settingsShiftCorrectionType;
+	private final SettingsModelInteger settingsShiftCorrectionTypeValue;
+	private final SettingsModelDouble settingsIntervalLenght;
+	private final SettingsModelBoolean settingsPrelimiterCoShifting;
 
 	static SettingsModelString getSettingsTargetCalcutaltionSelection() {
 
@@ -137,7 +131,7 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 
 	protected AlignmentNodeModel() {
 
-		super(new PortType[]{ScanNMRPortObject.TYPE}, new PortType[]{BufferedDataTable.TYPE});
+		super(new PortType[] { ScanNMRPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
 		settingsTargetCalcutaltionSelection = getSettingsTargetCalcutaltionSelection();
 		settingsGapFillingType = getSettingsGapFillingType();
 		settingsAligmentType = getSettingsAligmentType();
@@ -150,73 +144,73 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 	}
 
 	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
+	protected PortObjectSpec[] configure(final PortObjectSpec[] inSpecs) throws InvalidSettingsException {
 
 		return null;
 	}
 
 	@Override
-	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+	protected PortObject[] execute(final PortObject[] inObjects, final ExecutionContext exec) throws Exception {
 
-		ScanNMRPortObject scanNMRPortObject = PortObjectSupport.getScanNMRPortObject(inObjects);
-		IMeasurementNMR measurement = scanNMRPortObject.getScanNMR().getMeasurmentNMR();
+		final ScanNMRPortObject scanNMRPortObject = PortObjectSupport.getScanNMRPortObject(inObjects);
+		final IMeasurementNMR measurement = scanNMRPortObject.getScanNMR().getMeasurmentNMR();
 		measurements.add(measurement);
-		LoopStartNode loopStart = getLoopStartNode();
-		if(!(getLoopStartNode() instanceof LoopStartNodeTerminator)) {
+		final LoopStartNode loopStart = getLoopStartNode();
+		if (!(getLoopStartNode() instanceof LoopStartNodeTerminator))
 			throw new IllegalStateException("End node without correct start slice loop node!");
-		}
-		LoopStartNodeTerminator loopStartNodeTerminator = (LoopStartNodeTerminator)loopStart;
-		boolean terminate = loopStartNodeTerminator.terminateLoop();
-		if(!terminate) {
+		final LoopStartNodeTerminator loopStartNodeTerminator = (LoopStartNodeTerminator) loopStart;
+		final boolean terminate = loopStartNodeTerminator.terminateLoop();
+		if (!terminate) {
 			super.continueLoop();
 			return null;
 		} else {
-			SimpleMatrix data = dataAlignment(measurements);
-			BufferedDataTable bufferDataTable = extractMultipleSpectra(data, exec);
-			return new PortObject[]{bufferDataTable};
+			final SimpleMatrix data = dataAlignment(measurements);
+			final BufferedDataTable bufferDataTable = extractMultipleSpectra(data, exec);
+			return new PortObject[] { bufferDataTable };
 		}
 	}
 
-	private SimpleMatrix dataAlignment(List<IMeasurementNMR> measurements) {
+	private SimpleMatrix dataAlignment(final List<IMeasurementNMR> measurements) {
 
-		IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
-		IcoShiftAlignmentSettings settings = new IcoShiftAlignmentSettings();
+		final IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
+		final IcoShiftAlignmentSettings settings = new IcoShiftAlignmentSettings();
 		settings.setAligmentType(AlignmentType.valueOf(settingsAligmentType.getStringValue()));
 		settings.setGapFillingType(GapFillingType.valueOf(settingsGapFillingType.getStringValue()));
 		settings.setIntervalLength(settingsIntervalLenght.getDoubleValue());
 		settings.setNumberOfIntervals(settingsNumberOfIntervals.getIntValue());
 		settings.setShiftCorrectionType(ShiftCorrectionType.valueOf(settingsShiftCorrectionType.getStringValue()));
 		settings.setShiftCorrectionTypeValue(settingsShiftCorrectionTypeValue.getIntValue());
-		settings.setTargetCalculationSelection(TargetCalculationSelection.valueOf(settingsTargetCalcutaltionSelection.getStringValue()));
+		settings.setTargetCalculationSelection(
+				TargetCalculationSelection.valueOf(settingsTargetCalcutaltionSelection.getStringValue()));
 		settings.setSinglePeakLowerBorder(settingsSinglePeakBorder.getMinRange());
 		settings.setSinglePeakHigherBorder(settingsSinglePeakBorder.getMaxRange());
 		return icoShiftAlignment.process(measurements, settings);
 	}
 
-	private BufferedDataTable extractMultipleSpectra(SimpleMatrix data, ExecutionContext exec) {
+	private BufferedDataTable extractMultipleSpectra(final SimpleMatrix data, final ExecutionContext exec) {
 
 		// List<Object> experimentalDatasetsList = new ArrayList<Object>();
 		// experimentalDatasetsList = importMultipleDatasets(experimentalDatasets);
 		//
 		//
-		int numberOfColumns = data.numRows();
-		DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
-		List<double[]> fourierTransformations = new ArrayList<>(numberOfColumns);
-		for(int i = 0; i < numberOfColumns; i++) {
-			String columnName = Integer.toString(i);
+		final int numberOfColumns = data.numRows();
+		final DataColumnSpec[] dataColumnSpec = new DataColumnSpec[numberOfColumns];
+		final List<double[]> fourierTransformations = new ArrayList<>(numberOfColumns);
+		for (int i = 0; i < numberOfColumns; i++) {
+			final String columnName = Integer.toString(i);
 			fourierTransformations.add(new SignalExtractor(measurements.get(i)).extractSignalIntesity());
 			dataColumnSpec[i] = new DataColumnSpecCreator(columnName, DoubleCell.TYPE).createSpec();
 		}
-		DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
-		BufferedDataContainer bufferConteiner = exec.createDataContainer(dataTableSpec);
-		int numberOfRow = data.numCols();
-		for(int i = 0; i < numberOfRow; i++) {
-			RowKey rowKey = new RowKey(Integer.toString(i));
-			DataCell[] cells = new DataCell[numberOfColumns];
-			for(int j = 0; j < numberOfColumns; j++) {
+		final DataTableSpec dataTableSpec = new DataTableSpec(dataColumnSpec);
+		final BufferedDataContainer bufferConteiner = exec.createDataContainer(dataTableSpec);
+		final int numberOfRow = data.numCols();
+		for (int i = 0; i < numberOfRow; i++) {
+			final RowKey rowKey = new RowKey(Integer.toString(i));
+			final DataCell[] cells = new DataCell[numberOfColumns];
+			for (int j = 0; j < numberOfColumns; j++) {
 				cells[j] = new DoubleCell(data.get(j, i));
 			}
-			DataRow dataRow = new DefaultRow(rowKey, cells);
+			final DataRow dataRow = new DefaultRow(rowKey, cells);
 			bufferConteiner.addRowToTable(dataRow);
 		}
 		bufferConteiner.close();
@@ -224,12 +218,13 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 	}
 
 	@Override
-	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
+			throws IOException, CanceledExecutionException {
 
 	}
 
 	@Override
-	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
+	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
 		settingsTargetCalcutaltionSelection.loadSettingsFrom(settings);
 		settingsGapFillingType.loadSettingsFrom(settings);
@@ -249,12 +244,13 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 	}
 
 	@Override
-	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
+			throws IOException, CanceledExecutionException {
 
 	}
 
 	@Override
-	protected void saveSettingsTo(NodeSettingsWO settings) {
+	protected void saveSettingsTo(final NodeSettingsWO settings) {
 
 		settingsTargetCalcutaltionSelection.saveSettingsTo(settings);
 		settingsGapFillingType.saveSettingsTo(settings);
@@ -268,7 +264,7 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 	}
 
 	@Override
-	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
+	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
 		settingsTargetCalcutaltionSelection.validateSettings(settings);
 		settingsGapFillingType.validateSettings(settings);
