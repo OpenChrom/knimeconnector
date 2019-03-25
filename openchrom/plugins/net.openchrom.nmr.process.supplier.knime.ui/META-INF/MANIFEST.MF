@@ -22,3 +22,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.knime.base
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Import-Package: net.openchrom.nmr.processing.supplier.base.core,
+ net.openchrom.nmr.processing.supplier.base.settings,
+ net.openchrom.nmr.processing.supplier.base.settings.support,
+ org.ejml.simple

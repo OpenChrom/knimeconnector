@@ -53,6 +53,10 @@ import net.openchrom.nmr.process.supplier.knime.portobject.PortObjectSupport;
 import net.openchrom.nmr.process.supplier.knime.portobject.ScanNMRPortObject;
 import net.openchrom.nmr.processing.supplier.base.core.IcoShiftAlignment;
 import net.openchrom.nmr.processing.supplier.base.settings.IcoShiftAlignmentSettings;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentGapFillingType;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentShiftCorrectionType;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentTargetCalculationSelection;
+import net.openchrom.nmr.processing.supplier.base.settings.support.IcoShiftAlignmentType;
 
 /**
  * Node model for the "Apply Filters"-node.
@@ -86,17 +90,18 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 
 	static SettingsModelString getSettingsTargetCalcutaltionSelection() {
 
-		return new SettingsModelString(TARGET_CALCULATION_SELECTION, TargetCalculationSelection.MEAN.name());
+		return new SettingsModelString(TARGET_CALCULATION_SELECTION,
+				IcoShiftAlignmentTargetCalculationSelection.MEAN.name());
 	}
 
 	static SettingsModelString getSettingsGapFillingType() {
 
-		return new SettingsModelString(GAP_FILLING_TYPE, GapFillingType.MARGIN.name());
+		return new SettingsModelString(GAP_FILLING_TYPE, IcoShiftAlignmentGapFillingType.MARGIN.name());
 	}
 
 	static SettingsModelString getSettingsAligmentType() {
 
-		return new SettingsModelString(ALIGNMENT_TYPE, AlignmentType.WHOLE_SPECTRUM.name());
+		return new SettingsModelString(ALIGNMENT_TYPE, IcoShiftAlignmentType.WHOLE_SPECTRUM.name());
 	}
 
 	static SettingsModelDoubleRange getSettingsSinglePeakBorder() {
@@ -111,7 +116,7 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 
 	static SettingsModelString getSettingsShiftCorrectionType() {
 
-		return new SettingsModelString(SHIFT_CORRECTION_TYPE, ShiftCorrectionType.FAST.name());
+		return new SettingsModelString(SHIFT_CORRECTION_TYPE, IcoShiftAlignmentShiftCorrectionType.FAST.name());
 	}
 
 	static SettingsModelDouble getSettingsIntervalLength() {
@@ -174,14 +179,16 @@ public class AlignmentNodeModel extends NodeModel implements LoopEndNode {
 
 		final IcoShiftAlignment icoShiftAlignment = new IcoShiftAlignment();
 		final IcoShiftAlignmentSettings settings = new IcoShiftAlignmentSettings();
-		settings.setAligmentType(AlignmentType.valueOf(settingsAligmentType.getStringValue()));
-		settings.setGapFillingType(GapFillingType.valueOf(settingsGapFillingType.getStringValue()));
-		settings.setIntervalLength(settingsIntervalLenght.getDoubleValue());
+		settings.setAlignmentType(IcoShiftAlignmentType.valueOf(settingsAligmentType.getStringValue()));
+		settings.setGapFillingType(IcoShiftAlignmentGapFillingType.valueOf(settingsGapFillingType.getStringValue()));
+		// TODO: change settings type to int
+		settings.setIntervalLength((int) settingsIntervalLenght.getDoubleValue());
 		settings.setNumberOfIntervals(settingsNumberOfIntervals.getIntValue());
-		settings.setShiftCorrectionType(ShiftCorrectionType.valueOf(settingsShiftCorrectionType.getStringValue()));
+		settings.setShiftCorrectionType(
+				IcoShiftAlignmentShiftCorrectionType.valueOf(settingsShiftCorrectionType.getStringValue()));
 		settings.setShiftCorrectionTypeValue(settingsShiftCorrectionTypeValue.getIntValue());
-		settings.setTargetCalculationSelection(
-				TargetCalculationSelection.valueOf(settingsTargetCalcutaltionSelection.getStringValue()));
+		settings.setTargetCalculationSelection(IcoShiftAlignmentTargetCalculationSelection
+				.valueOf(settingsTargetCalcutaltionSelection.getStringValue()));
 		settings.setSinglePeakLowerBorder(settingsSinglePeakBorder.getMinRange());
 		settings.setSinglePeakHigherBorder(settingsSinglePeakBorder.getMaxRange());
 		return icoShiftAlignment.process(measurements, settings);
