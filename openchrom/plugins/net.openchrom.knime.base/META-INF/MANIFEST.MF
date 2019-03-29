@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: OpenChrom KNIME Base
+Bundle-SymbolicName: net.openchrom.knime.base;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.openchrom.knime.base.Activator
+Bundle-Vendor: Lablicate GmbH
+Require-Bundle: org.eclipse.ui,
+  org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: net.openchrom.knime.base
+Bundle-ActivationPolicy: lazy
