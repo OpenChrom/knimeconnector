@@ -17,4 +17,24 @@
             path="/openchrom">
       </category>      
 </extension> 
+ <extension
+         point="org.knime.workbench.repository.categories">
+   <category
+            level-id="util"
+            name="Util"
+            description="OpenChrom utility nodes."
+            path="/openchrom">
+    </category>
+</extension>   
+<extension
+         point="org.knime.core.PortType">
+      <portType
+            hidden="false"
+            name="FID Measurement"
+            objectClass="net.openchrom.knime.base.portobject.FIDMeasurementPortObject"
+            objectSerializer="net.openchrom.knime.base.portobject.FIDMeasurementPortObject$Serializer"
+            specClass="net.openchrom.knime.base.portobject.FIDMeasurementPortObjectSpec"
+            specSerializer="net.openchrom.knime.base.portobject.FIDMeasurementPortObjectSpec$Serializer">
+      </portType>
+   </extension>
 </plugin>
