@@ -51,6 +51,7 @@
   <modules>
   	<module>../../plugins/net.openchrom.process.supplier.knime</module>
   	<module>../../plugins/net.openchrom.process.supplier.knime.ui</module>
+    <module>../../plugins/net.openchrom.knime.base</module>
     <module>../../plugins/net.openchrom.xxd.process.supplier.knime</module>
     <module>../../plugins/net.openchrom.xxd.process.supplier.knime.ui</module>
     <module>../../plugins/net.openchrom.xxd.process.supplier.knime.ui.filter</module>
