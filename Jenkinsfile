@@ -22,8 +22,8 @@ pipeline {
     	}
 		stage('build') {
 			steps {
-				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/knimeconnector.targetplatform/pom.xml install'
-				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml install'
+				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/knimeconnector.targetplatform/pom.xml clean install'
+				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml clean install'
 			}
 		}
 		stage('deploy') {
