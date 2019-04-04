@@ -21,7 +21,7 @@
   --> 
   <name>OpenChrom KNIME Connector</name>
   <description>
-	The connector is a bridge to KNIME. It extends the functionality of the OpenChrom Rich Client Platform (RCP).
+	The connector is a bridge to KNIME.
   </description>
   <!--
 	LICENSES
@@ -64,7 +64,7 @@
     <module>../../plugins/net.openchrom.xir.process.supplier.knime</module>
     <module>../../plugins/net.openchrom.xir.process.supplier.knime.ui</module>
     <module>../../features/net.openchrom.xxd.process.supplier.knime.platform.feature</module>   
-    <module>../../features/net.openchrom.xxd.process.supplier.knime.feature</module>
+    <module>../../features/net.openchrom.knimeconnector.feature</module>
     <!--<module>../../plugins/net.openchrom.xxd.process.supplier.knime.fragment.test</module>-->
     <!-- Problems to resolve bundles??? Why, it worked before without problems. -->
 	<!--<module>../../sites/net.openchrom.xxd.process.supplier.knime.platform.updateSite</module>-->

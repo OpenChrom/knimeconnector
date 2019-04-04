@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="net.openchrom.xxd.process.supplier.knime.feature"
-      label="KNIME Connector"
-      version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      id="net.openchrom.knimeconnector.feature"
+      label="OpenChrom KNIME nodes"
+      version="1.0.0.qualifier"
+      provider-name="Lablicate GmbH">
 
    <description url="https://openchrom.net">
-      This is the KNIME integration feature.
+      OpenChrom KNIME nodes.
    </description>
 
    <copyright url="https://lablicate.com">
@@ -31,12 +31,11 @@ along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
    </license>
 
    <requires>
-      <import feature="org.knime.features.base" version="3.3.1.v201612192115"/>
-      <import feature="org.eclipse.swtchart.feature" version="0.7.0.qualifier"/>
+      <import feature="org.knime.base" version="3.0.0" match="compatible"/>
    </requires>
 
    <plugin
-         id="net.openchrom.knime.base"
+         id="net.openchrom.knimeconnector.base"
          download-size="0"
          install-size="0"
          version="0.0.0"
