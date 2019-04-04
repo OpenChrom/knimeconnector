@@ -1,59 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <modelVersion>4.0.0</modelVersion>
-  <!--
-	PARENT
-  -->
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>master</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
-  <!--
-	ARTIFACT
-  -->
-  <groupId>net.openchrom</groupId>
-  <artifactId>parent</artifactId>
-  <packaging>pom</packaging>
-  <!--
-	DESCRIPTION
-  --> 
-  <name>OpenChrom KNIME Connector</name>
-  <description>
+	<modelVersion>4.0.0</modelVersion>
+	<!-- PARENT -->
+	<parent>
+		<groupId>net.openchrom</groupId>
+		<artifactId>master</artifactId>
+		<version>BUILD-VERSION</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+	<!-- ARTIFACT -->
+	<groupId>net.openchrom</groupId>
+	<artifactId>parent</artifactId>
+	<packaging>pom</packaging>
+	<!-- DESCRIPTION -->
+	<name>OpenChrom KNIME Connector</name>
+	<description>
 	The connector is a bridge to KNIME.
   </description>
-  <!--
-	LICENSES
-  -->
-  <licenses>
-    <license>
-      <name>GPL Version 3</name>
-    </license> 
-  </licenses>
-  <!--
-	DEVELOPERS
-  -->
-  <developers>
-    <developer>
-      <id>eselmeister</id>
-      <name>Philip Wenig</name>
-      <email>philip.wenig [at] openchrom.net</email>
-      <timezone>+1</timezone>
-      <roles>
-        <role>Developer</role>
-      </roles>
-    </developer>
-  </developers>
-  <!--
-	MODULES
-  -->
-  <modules>
-    <module>../../plugins/net.openchrom.knimeconnector.base</module>
-    <module>../../features/net.openchrom.knimeconnector.feature</module>
- <!--
-    <module>../../sites/net.openchrom.xxd.process.supplier.knime.updateSite</module>
-  -->
-    <module>../../sites/net.openchrom.knimeconnector.updateSite</module>
-  </modules>
+	<!-- LICENSES -->
+	<licenses>
+		<license>
+			<name>GPL Version 3</name>
+		</license>
+	</licenses>
+	<!-- DEVELOPERS -->
+	<developers>
+		<developer>
+			<id>eselmeister</id>
+			<name>Philip Wenig</name>
+			<email>philip.wenig [at] openchrom.net</email>
+			<timezone>+1</timezone>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	<!-- MODULES -->
+	<modules>
+		<module>../../plugins</module>
+		<module>../../features</module>
+		<module>../../sites</module>
+	</modules>
 </project>
