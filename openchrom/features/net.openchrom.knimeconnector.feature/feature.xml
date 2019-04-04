@@ -31,7 +31,7 @@ along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
    </license>
 
    <requires>
-      <import feature="org.knime.base" version="3.0.0" match="compatible"/>
+      <import feature="org.knime.features.base.feature.group" version="0.0.0"/>
    </requires>
 
    <plugin
