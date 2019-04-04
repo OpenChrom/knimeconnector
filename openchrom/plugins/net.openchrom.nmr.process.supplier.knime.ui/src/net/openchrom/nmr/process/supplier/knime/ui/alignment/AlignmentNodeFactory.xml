@@ -5,7 +5,11 @@
         Alignment real part of NMR processed signal  
     </shortDescription>
     <fullDescription>
-        <intro>Alignment real part of NMR processed signal.</intro>
+        <intro>
+			This node includes an algorithm that is based on correlation shifting
+			of spectral intervals. It employs an FFT engine that aligns all spectra
+			simultaneously.
+		</intro>
     </fullDescription>
     <ports>
     <inPort index="0" name="NMR data">NMR data</inPort>

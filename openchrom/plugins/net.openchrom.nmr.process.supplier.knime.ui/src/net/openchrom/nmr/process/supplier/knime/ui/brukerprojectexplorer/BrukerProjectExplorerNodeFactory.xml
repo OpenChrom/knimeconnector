@@ -7,10 +7,15 @@
     </shortDescription>
     
     <fullDescription>
-        <intro>This node selects  all Bruker project in folder and subfolders,
-        it is selected just lowest number of measurement in project.</intro>
-       <option name="Folder">Main folder where are stored bruker projects</option>
-       <option name="Load Raw File">If is check it will be selected fid data from project otherwise it will be selected processed spectrum.</option>
+        <intro>This node selects all Bruker 1H-1D-NMR-experiments contained in the
+				selected folder and its subfolders. Only the experiment with the lowest
+				experiment number per subfolder will be selected (excluding e.g. pulse
+				optimizing and 2D-experiments).</intro>
+       <option name="Selected Directory">Location of the main folder which includes all data sets in different subfolders.</option>
+       <option name="Select File Type">FIDs or 1r can be selected and loaded. If is selected Fid, it will be loaded raw unprocessed signal.
+       								 if is selected 1r it will be loaded processed NMR spectrum</option>
+       <option name="Load measurement with lowest number">If it is checked, it will be loaded only measurement which has the 
+       												   lowest number from project.</option>
     </fullDescription>
     
     <ports>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/net.openchrom.xxd.process.supplier.knime.feature_1.4.0.qualifier.jar" id="net.openchrom.xxd.process.supplier.knime.feature" version="1.4.0.qualifier">
+      <category name="net.openchrom.xxd.process.supplier.knime.knime"/>
+   </feature>
+   <category-def name="org.openchrom.knimeconnector" label="OpenChrom KNIME Connectors"/>
+   <repository-reference location="https://update.openchrom.net/repositories/knimeconnector/repository" enabled="true" />
+</site>

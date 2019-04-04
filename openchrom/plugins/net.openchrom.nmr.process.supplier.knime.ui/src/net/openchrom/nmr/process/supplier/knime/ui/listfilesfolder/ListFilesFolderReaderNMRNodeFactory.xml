@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <knimeNode icon="./reader.png" type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
-    <name>Folder Explorer</name>
+     <name>Folder Explorer</name>
     
     <shortDescription>
         Explorer folder and select all NMR file.
     </shortDescription>
     
     <fullDescription>
-        <intro>Explorer folder and select all NMR file.</intro>
-        
+    	<intro>Explorer folder and select all NMR file.</intro>
         <option name="Directory">Select folder to be scanned</option>
         <option name="Include subfolder">If enabled the content of the sub folders will be included as well. If disabled sub folders will be ignored.</option>
         <option name="Importer">Select file type, which will be imported</option>
-        
     </fullDescription>
     
-     <ports>
-        <outPort index="0"> name="File list</outPort>
+    <ports>
+        <!-- possibly more input ports here-->
+        	 <outPort index="0" name="List Files">List files</outPort>
         <!-- possibly more output ports here-->
-    </ports> 
+    </ports>    
 </knimeNode>
