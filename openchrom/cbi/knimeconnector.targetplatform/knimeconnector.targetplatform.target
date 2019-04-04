@@ -72,11 +72,7 @@
 <unit id="org.knime.features.base.pmml.feature.group" version="0.0.0"/>
 <unit id="org.knime.features.jpmml.feature.group" version="0.0.0"/>
 <unit id="org.knime.product.desktop.feature.group" version="0.0.0"/>
-<repository location="http://update.knime.org/analytics-platform/3.3/"/>
-</location>
-<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="net.openchrom.rcp.compilation.community.feature.feature.group" version="0.0.0"/>
-<repository location="https://update.openchrom.net/repositories/community/latest/compilation"/>
+<repository location="http://update.knime.org/analytics-platform/3.7/"/>
 </location>
 </locations>
 </target>
