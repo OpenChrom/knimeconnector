@@ -29,9 +29,9 @@ pipeline {
 		stage('deploy') {
 			when { branch 'develop' }
 		    steps {
-		        withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
+		      /*  withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
 					sh 'scp -r knimeconnector/openchrom/sites/net.openchrom.xxd.process.supplier.knime.updateSite/target/repository/* '+"${DEPLOY_HOST}knime/3.3.2/repository"
-				}
+				}*/
 			 withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
 					sh 'scp -r knimeconnector/openchrom/sites/net.openchrom.knimeconnector.updateSite/target/repository/* '+"${DEPLOY_HOST}knimeconnector/repository"
 				}
