@@ -36,63 +36,21 @@ along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
    </requires>
 
    <plugin
-         id="net.openchrom.xxd.process.supplier.knime"
+         id="net.openchrom.knime.base"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.xxd.process.supplier.knime.ui"
+         id="net.openchrom.knime.nmr.io.bruker"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.xxd.process.supplier.knime.ui.filter"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.xxd.process.supplier.knime.ui.identifier"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.xxd.process.supplier.knime.ui.peakdetectors"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.xxd.process.supplier.knime.ui.peakintegrators"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.xxd.process.supplier.knime.ui.peakquantifiers"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.process.supplier.knime.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="net.openchrom.process.supplier.knime"
+         id="net.openchrom.nmr.converter.supplier.bruker"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -106,21 +64,28 @@ along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.nmr.process.supplier.knime.ui"
+         id="net.openchrom.nmr.processing.supplier.base"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.xir.process.supplier.knime"
+         id="org.eclipse.chemclipse.nmr.converter"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.xir.process.supplier.knime.ui"
+         id="org.eclipse.chemclipse.nmr.model"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.chemclipse.nmr.processor"
          download-size="0"
          install-size="0"
          version="0.0.0"
