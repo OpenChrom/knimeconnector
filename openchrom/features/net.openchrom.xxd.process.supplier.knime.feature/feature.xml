@@ -43,13 +43,6 @@ along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
          unpack="false"/>
 
    <plugin
-         id="net.openchrom.knime.nmr.io.bruker"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="net.openchrom.nmr.converter.supplier.bruker"
          download-size="0"
          install-size="0"
