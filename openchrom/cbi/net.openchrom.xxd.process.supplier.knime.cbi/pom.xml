@@ -69,5 +69,6 @@
     <!-- Problems to resolve bundles??? Why, it worked before without problems. -->
 	<!--<module>../../sites/net.openchrom.xxd.process.supplier.knime.platform.updateSite</module>-->
     <module>../../sites/net.openchrom.xxd.process.supplier.knime.updateSite</module>
+<module>../../sites/net.openchrom.knimeconnector.updateSite</module>
   </modules>
 </project>
