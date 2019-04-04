@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="KNIME Analytics Platform 3.7 and OpenChrom KNIME-Connector" sequenceNumber="1512743967">
+<?pde version="3.8"?><target name="KNIME Analytics Platform 3.7" sequenceNumber="1512743964">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="net.openchrom.xxd.process.supplier.knime.feature.feature.group" version="0.0.0"/>
-<repository location="https://update.openchrom.net/repositories/knimeconnector/repository"/>
+<repository location="https://update.openchrom.net/repositories/knime/3.3.2/repository"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.knime.features.ext.chromium.feature.group" version="0.0.0"/>

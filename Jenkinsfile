@@ -22,18 +22,15 @@ pipeline {
     	}
 		stage('build') {
 			steps {
-				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/knimeconnector.targetplatform/pom.xml clean install'
-				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml clean install'
+				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/knimeconnector.targetplatform/pom.xml install'
+				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml install'
 			}
 		}
 		stage('deploy') {
 			when { branch 'develop' }
 		    steps {
-		      //  withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
-			//		sh 'scp -r knimeconnector/openchrom/sites/net.openchrom.xxd.process.supplier.knime.updateSite/target/repository/* '+"${DEPLOY_HOST}knime/3.3.2/repository"
-			//	}
-			 withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
-					sh 'scp -r knimeconnector/openchrom/sites/net.openchrom.knimeconnector.updateSite/target/repository/* '+"${DEPLOY_HOST}knimeconnector/repository"
+		        withCredentials([string(credentialsId: 'DEPLOY_HOST', variable: 'DEPLOY_HOST')]) {
+					sh 'scp -r knimeconnector/openchrom/sites/net.openchrom.xxd.process.supplier.knime.updateSite/target/repository/* '+"${DEPLOY_HOST}knime/3.3.2/repository"
 				}
 		    }
 		}
