@@ -49,7 +49,7 @@
 	MODULES
   -->
   <modules>
-    <module>../../plugins/net.openchrom.knime.base</module>
+    <module>../../plugins/net.openchrom.knime.node.base</module>
     <module>../../features/net.openchrom.knime.node.feature</module>   
     <module>../../sites/net.openchrom.xxd.process.supplier.knime.updateSite</module>
   </modules>
