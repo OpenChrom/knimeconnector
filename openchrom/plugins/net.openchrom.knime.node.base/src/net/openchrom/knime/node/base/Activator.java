@@ -1,4 +1,4 @@
-package net.openchrom.knime.base;
+package net.openchrom.knime.node.base;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
