@@ -7,11 +7,8 @@ Bundle-Activator: net.openchrom.nmr.process.supplier.knime.ui.Activator
 Bundle-Vendor: Openchrom
 Require-Bundle: org.eclipse.core.runtime,
  org.knime.core,
- org.eclipse.chemclipse.converter,
  org.eclipse.chemclipse.nmr.converter,
- org.eclipse.chemclipse.processing,
  org.eclipse.chemclipse.nmr.model,
- org.eclipse.chemclipse.model,
  net.openchrom.nmr.process.supplier.knime,
  net.openchrom.process.supplier.knime,
  org.eclipse.chemclipse.nmr.processor,
