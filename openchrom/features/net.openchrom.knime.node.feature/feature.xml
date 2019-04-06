@@ -30,6 +30,14 @@ You should have received a copy of the GNU General Public License
 along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
    </license>
 
+   <includes
+         id="net.openchrom.nmr.processing.supplier.base.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="net.openchrom.nmr.converter.supplier.bruker.feature"
+         version="0.0.0"/>
+
    <plugin
          id="net.openchrom.knime.node.base"
          download-size="0"
