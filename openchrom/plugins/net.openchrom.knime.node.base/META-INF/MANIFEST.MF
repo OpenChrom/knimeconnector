@@ -12,4 +12,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: net.openchrom.knime.base
 Bundle-ActivationPolicy: lazy
 Import-Package: org.knime.core.node.port
-Export-Package: net.openchrom.knime.base.portobject
+Export-Package: net.openchrom.knime.base.portobject,
+ net.openchrom.knime.node.base.progress
