@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="net.openchrom.knime.node.feature"
+      id="net.openchrom.xxd.process.supplier.knime.feature"
       label="KNIME Connector"
       version="1.4.0.qualifier"
       provider-name="OpenChrom">
 
    <description url="https://openchrom.net">
-      OpenChrom KNIME nodes.
+      This is the KNIME integration feature.
    </description>
 
    <copyright url="https://lablicate.com">
@@ -30,16 +30,92 @@ You should have received a copy of the GNU General Public License
 along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
    </license>
 
-   <includes
-         id="net.openchrom.nmr.processing.supplier.base.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="net.openchrom.nmr.converter.supplier.bruker.feature"
-         version="0.0.0"/>
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
-         id="net.openchrom.knime.node.base"
+         id="net.openchrom.xxd.process.supplier.knime.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.filter"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.identifier"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.peakdetectors"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.peakintegrators"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xxd.process.supplier.knime.ui.peakquantifiers"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.process.supplier.knime.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.process.supplier.knime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.nmr.process.supplier.knime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.nmr.process.supplier.knime.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xir.process.supplier.knime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.openchrom.xir.process.supplier.knime.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

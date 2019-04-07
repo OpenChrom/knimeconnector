@@ -8,7 +8,7 @@
     <version>BUILD-VERSION</version>
   </parent>
 
-  <artifactId>net.openchrom.knime.node.feature</artifactId>
+  <artifactId>net.openchrom.xxd.process.supplier.knime.feature</artifactId>
   <packaging>eclipse-feature</packaging>
   <version>1.4.0-SNAPSHOT</version>
     

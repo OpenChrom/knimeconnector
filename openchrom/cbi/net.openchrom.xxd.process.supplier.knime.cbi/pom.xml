@@ -49,8 +49,25 @@
 	MODULES
   -->
   <modules>
-    <module>../../plugins/net.openchrom.knime.node.base</module>
-    <module>../../features/net.openchrom.knime.node.feature</module>   
+  	<module>../../plugins/net.openchrom.process.supplier.knime</module>
+  	<module>../../plugins/net.openchrom.process.supplier.knime.ui</module>
+    <module>../../plugins/net.openchrom.knime.base</module>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.knime</module>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.knime.ui</module>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.knime.ui.filter</module>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.knime.ui.identifier</module>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.knime.ui.peakdetectors</module>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.knime.ui.peakintegrators</module>
+    <module>../../plugins/net.openchrom.xxd.process.supplier.knime.ui.peakquantifiers</module>
+    <module>../../plugins/net.openchrom.nmr.process.supplier.knime</module>
+    <module>../../plugins/net.openchrom.nmr.process.supplier.knime.ui</module>
+    <module>../../plugins/net.openchrom.xir.process.supplier.knime</module>
+    <module>../../plugins/net.openchrom.xir.process.supplier.knime.ui</module>
+    <module>../../features/net.openchrom.xxd.process.supplier.knime.platform.feature</module>   
+    <module>../../features/net.openchrom.xxd.process.supplier.knime.feature</module>
+    <!--<module>../../plugins/net.openchrom.xxd.process.supplier.knime.fragment.test</module>-->
+    <!-- Problems to resolve bundles??? Why, it worked before without problems. -->
+	<!--<module>../../sites/net.openchrom.xxd.process.supplier.knime.platform.updateSite</module>-->
     <module>../../sites/net.openchrom.xxd.process.supplier.knime.updateSite</module>
   </modules>
 </project>
