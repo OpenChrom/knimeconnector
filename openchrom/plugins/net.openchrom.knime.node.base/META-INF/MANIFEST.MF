@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: OpenChrom KNIME nodes base
+Bundle-Name: OpenChrom KNIME node base
 Bundle-SymbolicName: net.openchrom.knime.node.base;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: net.openchrom.knime.node.base.Activator
