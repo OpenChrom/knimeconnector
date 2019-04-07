@@ -30,11 +30,6 @@ You should have received a copy of the GNU General Public License
 along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
    </license>
 
-   <requires>
-      <import feature="org.knime.features.base" version="3.3.1.v201612192115"/>
-      <import feature="org.eclipse.swtchart.feature" version="0.7.0.qualifier"/>
-   </requires>
-
    <plugin
          id="net.openchrom.xxd.process.supplier.knime"
          download-size="0"
