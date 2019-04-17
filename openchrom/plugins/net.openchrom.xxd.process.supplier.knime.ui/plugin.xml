@@ -10,6 +10,13 @@
    <extension
          point="org.knime.workbench.repository.categories">
       <category
+            level-id="openchrom"
+            name="OpenChrom"
+            icon="icons/openchrom.png"
+            description="OpenChrom I/O and visualization nodes."
+            path="/">
+      </category>
+      <category
             level-id="msd"
             name="MSD"
             icon="icons/msd.png"
@@ -151,6 +158,13 @@
       		description="Report"
       		path="/openchrom/msd">
       </category>
+      <category
+            level-id="nmr"
+            name="NMR"
+            icon="icons/msd.png"
+            description="Nuclear Magnetic Resonance Spectroscopy"
+            path="/openchrom">
+      </category>      
       <category
             level-id="io"
             name="I/O"
