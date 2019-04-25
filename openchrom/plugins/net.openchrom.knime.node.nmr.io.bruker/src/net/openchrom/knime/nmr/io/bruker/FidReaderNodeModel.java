@@ -69,20 +69,22 @@ public class FidReaderNodeModel extends NodeModel {
 
 	@Override
 	protected PortObjectSpec[] configure(final PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-		try {
-			inputDir = FileUtil.getFileFromURL(FileUtil.toURL(valueIn.getStringValue())).toPath();
-		} catch (final Exception e) {
-			throw new InvalidSettingsException("Cannot read directory " + inputDir, e);
+		if (valueIn.getStringValue() != null) {
+			try {
+				inputDir = FileUtil.getFileFromURL(FileUtil.toURL(valueIn.getStringValue())).toPath();
+			} catch (final Exception e) {
+				throw new InvalidSettingsException("Cannot read directory " + inputDir, e);
+			}
+			if (inputDir != null && Files.isDirectory(inputDir) && Files.isReadable(inputDir)) {
+				// ok
+			}
+			logger.info(this.getClass().getSimpleName() + ": Input specs: " + Arrays.asList(inSpecs) + ", input dir: "
+					+ inputDir);
+			final FIDMeasurementPortObjectSpec portOne = new FIDMeasurementPortObjectSpec();
+			final DataTableSpec portTwo = getFIDTableSpec();
+			return new PortObjectSpec[] { portOne, portTwo };
 		}
-		if (inputDir != null && Files.isDirectory(inputDir) && Files.isReadable(inputDir)) {
-			// ok
-		} else
-			throw new InvalidSettingsException("Cannot read directory " + inputDir);
-		logger.info(this.getClass().getSimpleName() + ": Input specs: " + Arrays.asList(inSpecs) + ", input dir: "
-				+ inputDir);
-		final FIDMeasurementPortObjectSpec portOne = new FIDMeasurementPortObjectSpec();
-		final DataTableSpec portTwo = getFIDTableSpec();
-		return new PortObjectSpec[] { portOne, portTwo };
+		throw new InvalidSettingsException("Cannot read directory " + inputDir);
 	}
 
 	@Deprecated
