@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="OpenChrom CE KNIME 3.4" sequenceNumber="14">
+<?pde version="3.8"?><target name="OpenChrom CE KNIME" sequenceNumber="14">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="net.openchrom.wsd.processor.supplier.openfluor.feature.feature.group" version="0.0.0"/>
