@@ -34,3 +34,4 @@ Export-Package: net.openchrom.process.supplier.knime.ui.dialog,
  net.openchrom.process.supplier.knime.ui.dialoggeneration,
  net.openchrom.process.supplier.knime.ui.node.listfiles,
  net.openchrom.process.supplier.knime.ui.node.listfilesfolder
+Automatic-Module-Name: net.openchrom.process.supplier.knime.ui

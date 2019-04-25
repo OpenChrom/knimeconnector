@@ -67,66 +67,6 @@ USA
          version="0.0.0"/>
 
    <includes
-         id="com.knime.features.reporting.designer"
-         version="0.0.0"/>
-
-   <includes
-         id="com.knime.features.reporting.runtime"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.activelearning"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.arima"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.base.pmml"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.base.pmml.translation"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.chem.types"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.core.streaming"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.datageneration"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.distmatrix"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.birt"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.chem.cdk"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.chem.tools"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.dsread"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.exttool"
-         version="0.0.0"/>
-
-   <includes
          id="org.knime.features.ext.itemset"
          version="0.0.0"/>
 
@@ -135,83 +75,7 @@ USA
          version="0.0.0"/>
 
    <includes
-         id="org.knime.features.ext.jfreechart"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.libsvm"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.lucene"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.md"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.osm"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.parso"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.perl"
-         version="0.0.0"/>
-
-   <includes
          id="org.knime.features.ext.poi"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.r"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.r.bin"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.socialmedia"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.spotfire"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.textprocessing"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.webservice.client"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.webservice.client.ppilot"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.weka"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.weka_3.6"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.weka_3.7"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.exttool"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.jpmml"
          version="0.0.0"/>
 
    <includes
@@ -219,43 +83,7 @@ USA
          version="0.0.0"/>
 
    <includes
-         id="org.knime.features.js.views"
-         version="0.0.0"/>
-
-   <includes
          id="org.knime.features.json"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.neighborgram"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.network"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.network.distmatrix"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.optimization"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.quickform.legacy"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.r"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.rengine.r2"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.stats2"
          version="0.0.0"/>
 
    <includes
@@ -263,23 +91,7 @@ USA
          version="0.0.0"/>
 
    <includes
-         id="org.knime.features.webanalytics"
-         version="0.0.0"/>
-
-   <includes
          id="org.knime.features.xml"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.mongodb"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.ext.jython"
-         version="0.0.0"/>
-
-   <includes
-         id="org.knime.features.python"
          version="0.0.0"/>
 
    <includes
@@ -501,24 +313,11 @@ USA
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.birt.report.designer.ui.ide"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="com.jayway.jsonpath.json-path"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.apache.cxf"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
    <plugin
          id="org.apache.commons.net"
@@ -528,21 +327,7 @@ USA
          unpack="false"/>
 
    <plugin
-         id="com.google.protobuf"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.birt.report.model"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.designer.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -631,13 +416,6 @@ USA
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.birt.report.designer.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.jsch.ui"
          download-size="0"
          install-size="0"
@@ -646,13 +424,6 @@ USA
 
    <plugin
          id="org.eclipse.birt.core.script.function"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.designer.ui.lib"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -680,35 +451,7 @@ USA
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.birt.report.designer.ui.editors"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="com.github.fge.jackson-coreutils"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.designer.ui.views"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.designer.ui.editors.schematic"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.designer.ui.lib.explorer"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -967,108 +710,10 @@ USA
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.datatools.connectivity.oda.design.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.knime.ext.jfreechart"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.datatools.connectivity.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.datatools.help"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.knime.ext.r.type"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.datatools.connectivity.sqm.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.datatools.modelbase.sql"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.datatools.modelbase.dbdefinition"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.datatools.connectivity.oda.design"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.designer.ui.data"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.model.adapter.oda"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jongo"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.orbit.mongodb"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.mongodb.mongo-java-driver"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="de.undercouch.bson4jackson"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.knime.workbench.core"
@@ -1097,42 +742,7 @@ USA
          version="0.0.0"/>
 
    <plugin
-         id="org.hamcrest.library"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.h2"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.tika.app"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="say.swing.jfontchooser"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.rometools.rome"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.jdom.2"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -1182,6 +792,53 @@ USA
 
    <plugin
          id="com.google.guava"
+         download-size="0"
+         install-size="0"
+         version="19.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.compress"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.knime.core.util"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.toedter.jcalendar"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.knime.ext.js"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.knime.ext.svg"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="gov.nist.math.jama"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.knime.distmatrix"
          download-size="0"
          install-size="0"
          version="0.0.0"

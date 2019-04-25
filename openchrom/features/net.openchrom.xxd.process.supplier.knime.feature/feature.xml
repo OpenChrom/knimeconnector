@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="net.openchrom.xxd.process.supplier.knime.feature"
-      label="KNIME Connector"
+      label="OpenChrom KNIME Integration (deprecated)"
       version="1.4.0.qualifier"
-      provider-name="OpenChrom">
+      provider-name="Lablicate GmbH">
 
    <description url="https://openchrom.net">
       This is the KNIME integration feature.

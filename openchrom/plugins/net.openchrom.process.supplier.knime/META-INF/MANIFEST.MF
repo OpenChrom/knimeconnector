@@ -18,3 +18,4 @@ Export-Package: net.openchrom.process.supplier.knime.dialogfactory,
  net.openchrom.process.supplier.knime.model,
  net.openchrom.process.supplier.knime.support
 Bundle-ActivationPolicy: lazy
+Automatic-Module-Name: net.openchrom.process.supplier.knime

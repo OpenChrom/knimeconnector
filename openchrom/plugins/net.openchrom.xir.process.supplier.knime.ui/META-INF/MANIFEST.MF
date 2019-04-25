@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.core.runtime,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Openchrom
+Automatic-Module-Name: net.openchrom.xir.process.supplier.knime.ui

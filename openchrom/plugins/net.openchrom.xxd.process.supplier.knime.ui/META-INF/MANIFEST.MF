@@ -43,3 +43,4 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: javax.annotation;version="1.2.0"
+Automatic-Module-Name: net.openchrom.xxd.process.supplier.knime.ui

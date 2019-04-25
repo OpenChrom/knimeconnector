@@ -23,3 +23,4 @@ Require-Bundle: org.knime.workbench.core;bundle-version="3.3.0",
  net.openchrom.process.supplier.knime
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: net.openchrom.xxd.process.supplier.knime.ui.peakintegrators.Activator
+Automatic-Module-Name: net.openchrom.xxd.process.supplier.knime.ui.peakintegrators

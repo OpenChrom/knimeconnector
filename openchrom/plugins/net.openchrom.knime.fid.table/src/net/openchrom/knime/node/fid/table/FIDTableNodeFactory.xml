@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>FID Table</name>
+    
+    <shortDescription>
+       Displays an OpenChrom FID measurement as a table.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro></intro>
+        
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="OpenChrom FID data">OpenChrom FID data</inPort>
+        <outPort index="0" name="FID data Table">FID data Table</outPort>      
+    </ports>    
+    
+    
+  
+</knimeNode>

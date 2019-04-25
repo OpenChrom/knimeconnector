@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knimeNode icon="icons/filter.png" type="Source" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+    <name>FID Apodization</name>
+    
+    <shortDescription>
+       Applies an Apodization function on the FID data.
+    </shortDescription>
+    
+    <fullDescription>
+        <intro></intro>
+        
+    </fullDescription>
+    
+    <ports>
+        <inPort index="0" name="OpenChrom FID data">OpenChrom FID data</inPort>
+        <outPort index="0" name="OpenChrom FID data">OpenChrom FID data</outPort>      
+    </ports>    
+    
+    
+  
+</knimeNode>
