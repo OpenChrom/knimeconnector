@@ -66,6 +66,8 @@
     <module>../../plugins/net.openchrom.knime.node.base</module>
     <module>../../plugins/net.openchrom.knime.node.fid.base</module>
     <module>../../plugins/net.openchrom.knime.node.nmr.io.bruker</module>
+    <module>../../plugins/net.openchrom.knime.node.nmr.digitalfilter</module>
+    <module>../../plugins/net.openchrom.knime.node.fid.table</module>
     <module>../../features/net.openchrom.xxd.process.supplier.knime.platform.feature</module>   
     <module>../../features/net.openchrom.xxd.process.supplier.knime.feature</module>
     <module>../../features/net.openchrom.knime.node.nmr.feature</module>
