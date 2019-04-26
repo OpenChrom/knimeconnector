@@ -3,18 +3,18 @@
     <name>Bruker FID Reader</name>
     
     <shortDescription>
-       Reads Bruker FID data
+       Reads Bruker FID data.
     </shortDescription>
     
     <fullDescription>
-        <intro></intro>
-        
+         <intro>Reads one Bruker FID file.</intro>
+        <option name="File Chooser">Choose a directory containing Bruker NMR/FID data.</option>        
     </fullDescription>
     
     <ports>
       
-        <outPort index="0" name="OpenChrom FID data">OpenChrom FID data</outPort>
-        <outPort index="1" name="Table of FID data">Table of FID data</outPort>
+        <outPort index="0" name="OpenChrom FID data">OpenChrom FID data.</outPort>
+        <outPort index="1" name="Table of FID data">Table of FID data.</outPort>
       
     </ports>    
     
