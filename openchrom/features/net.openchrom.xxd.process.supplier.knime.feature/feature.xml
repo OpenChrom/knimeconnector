@@ -6,7 +6,7 @@
       provider-name="Lablicate GmbH">
 
    <description url="https://openchrom.net">
-      This is the KNIME integration feature.
+      Integrates KNIME into OpenChrom.
    </description>
 
    <copyright url="https://lablicate.com">
