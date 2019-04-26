@@ -79,17 +79,17 @@ public class NMRTableNodeModel extends NodeModel {
 		for (final IComplexSignalMeasurement<?> measurement : measurements) {
 			exec.checkCanceled();
 			if (measurement instanceof SpectrumMeasurement) {
-			long signalCnt = 0;
+				long signalCnt = 0;
 				for (final SpectrumSignal signal : ((SpectrumMeasurement) measurement).getSignals()) {
-				exec.checkCanceled();
+					exec.checkCanceled();
 					// skip a few signals
 					if (signalCnt % 5 == 0) {
-				container.addRowToTable(
-							buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
+						container.addRowToTable(
+								buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
 					}
-				signalCnt++;
-				globalRowCnt++;
-			}
+					signalCnt++;
+					globalRowCnt++;
+				}
 				exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
 			}
 			measurementCnt++;

@@ -14,7 +14,6 @@
     <ports>
       
         <outPort index="0" name="OpenChrom FID data">OpenChrom FID data.</outPort>
-        <outPort index="1" name="Table of FID data">Table of FID data.</outPort>
       
     </ports>    
     

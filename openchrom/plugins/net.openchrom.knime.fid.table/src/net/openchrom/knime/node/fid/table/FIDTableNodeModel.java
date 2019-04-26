@@ -79,14 +79,14 @@ public class FIDTableNodeModel extends NodeModel {
 		for (final IComplexSignalMeasurement<?> measurement : measurements) {
 			exec.checkCanceled();
 			if (measurement instanceof FIDMeasurement) {
-			long signalCnt = 0;
+				long signalCnt = 0;
 				for (final FIDSignal fidSignal : ((FIDMeasurement) measurement).getSignals()) {
-				exec.checkCanceled();
-				container.addRowToTable(
-						buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, fidSignal));
-				signalCnt++;
-				globalRowCnt++;
-			}
+					exec.checkCanceled();
+					container.addRowToTable(
+							buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, fidSignal));
+					signalCnt++;
+					globalRowCnt++;
+				}
 				exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
 			}
 			measurementCnt++;

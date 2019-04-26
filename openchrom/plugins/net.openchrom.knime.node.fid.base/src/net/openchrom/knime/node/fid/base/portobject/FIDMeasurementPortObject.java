@@ -98,7 +98,8 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 		final ObjectInputStream objectInputStream = new ObjectInputStream(in);
 		for (int i = 0; i < numMeasurements; i++) {
 			try {
-				final IComplexSignalMeasurement<?> m = (IComplexSignalMeasurement<?>) objectInputStream.readObject();
+				Object o = objectInputStream.readObject();
+				final IComplexSignalMeasurement<?> m = (IComplexSignalMeasurement<?>) o;
 				measurements.add(m);
 			} catch (final ClassNotFoundException e) {
 				throw new IOException(e);
