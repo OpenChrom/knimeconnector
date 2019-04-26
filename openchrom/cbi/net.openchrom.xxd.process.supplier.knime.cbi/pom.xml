@@ -64,6 +64,7 @@
     <module>../../plugins/net.openchrom.xir.process.supplier.knime.ui</module>
     <module>../../plugins/net.openchrom.knime.base</module>
     <module>../../plugins/net.openchrom.knime.node.base</module>
+    <module>../../plugins/net.openchrom.knime.fid.base</module>
     <module>../../plugins/net.openchrom.knime.node.nmr.io.bruker</module>
     <module>../../features/net.openchrom.xxd.process.supplier.knime.platform.feature</module>   
     <module>../../features/net.openchrom.xxd.process.supplier.knime.feature</module>
