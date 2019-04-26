@@ -6,14 +6,14 @@
       <category
             level-id="openchrom"
             name="OpenChrom"
-            icon="icons/openchrom.png"
+            icon="/icons/openchrom.png"
             description="OpenChrom nodes."
             path="/">
       </category>
        <category
             level-id="nmr"
             name="NMR"
-            icon="icons/nmr.png"
+            icon="/icons/nmr.png"
             description="OpenChrom NMR (Nuclear Magnetic Resonance Spectroscopy) nodes."
             path="/openchrom">
       </category>      
