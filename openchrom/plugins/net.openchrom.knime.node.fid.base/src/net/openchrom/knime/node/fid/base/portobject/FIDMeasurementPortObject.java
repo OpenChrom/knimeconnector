@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.openchrom.knime.node.fid.base.portobject;
 
 import java.io.IOException;
@@ -93,6 +104,7 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 		// specs currently not needed
 		@SuppressWarnings("unused")
 		final FIDMeasurementPortObjectSpec fidSpec = (FIDMeasurementPortObjectSpec) spec;
+		@SuppressWarnings("unused")
 		final ZipEntry zipEntry = in.getNextEntry();
 		final int numMeasurements = in.read();
 		final ObjectInputStream objectInputStream = new ObjectInputStream(in);

@@ -1,36 +1,47 @@
+/*******************************************************************************
+ * Copyright (c) 2019 Lablicate GmbH.
+ *
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *Alexander Kerner - initial API and implementation
+ *******************************************************************************/
 package net.openchrom.knime.node.nmr.ft;
 
-import org.knime.core.node.NodeDialogPane;
-import org.knime.core.node.NodeFactory;
-import org.knime.core.node.NodeView;
+ import org.knime.core.node.NodeDialogPane;
+ import org.knime.core.node.NodeFactory;
+ import org.knime.core.node.NodeView;
 
-public class FTNodeFactory extends NodeFactory<FTNodeModel> {
+ public class FTNodeFactory extends NodeFactory<FTNodeModel> {
 
-	@Override
-	public FTNodeModel createNodeModel() {
-		return new FTNodeModel();
-	}
+	 @Override
+	 public FTNodeModel createNodeModel() {
+		 return new FTNodeModel();
+	 }
 
-	@Override
-	protected int getNrNodeViews() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	 @Override
+	 protected int getNrNodeViews() {
+		 // TODO Auto-generated method stub
+		 return 0;
+	 }
 
-	@Override
-	public NodeView<FTNodeModel> createNodeView(final int viewIndex, final FTNodeModel nodeModel) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	 @Override
+	 public NodeView<FTNodeModel> createNodeView(final int viewIndex, final FTNodeModel nodeModel) {
+		 // TODO Auto-generated method stub
+		 return null;
+	 }
 
-	@Override
-	protected boolean hasDialog() {
-		return false;
-	}
+	 @Override
+	 protected boolean hasDialog() {
+		 return false;
+	 }
 
-	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-		return null;
-	}
+	 @Override
+	 protected NodeDialogPane createNodeDialogPane() {
+		 return null;
+	 }
 
-}
+ }

@@ -1,21 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<knimeNode type="Source" icon="/icons/scan-fid.png" xmlns="http://knime.org/node/v2.8" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
-    <name>FID Table</name>
-    
-    <shortDescription>
-       Displays an OpenChrom FID measurement as a table.
-    </shortDescription>
-    
-    <fullDescription>
-        <intro></intro>
-        
-    </fullDescription>
-    
-    <ports>
-        <inPort index="0" name="OpenChrom FID data">OpenChrom FID data</inPort>
-        <outPort index="0" name="FID data Table">FID data Table</outPort>      
-    </ports>    
-    
-    
-  
+
+<!--
+  Copyright (c) 2019 Lablicate GmbH.
+ 
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License v1.0
+  which accompanies this distribution, and is available at
+  http://www.eclipse.org/legal/epl-v10.html
+ 
+  Contributors:
+ Alexander Kerner - initial API and implementation
+-->
+
+<knimeNode type="Source" icon="/icons/scan-fid.png"
+	xmlns="http://knime.org/node/v2.8"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
+	<name>FID Table</name>
+
+	<shortDescription>
+		Displays an OpenChrom FID measurement as a table.
+	</shortDescription>
+
+	<fullDescription>
+
+		<intro>Displays an OpenChrom FID measurement as a table.</intro>
+
+	</fullDescription>
+
+	<ports>
+		<inPort index="0" name="OpenChrom FID data">OpenChrom FID data</inPort>
+		<outPort index="0" name="FID data Table">FID data Table</outPort>
+	</ports>
+
+
+
 </knimeNode>
