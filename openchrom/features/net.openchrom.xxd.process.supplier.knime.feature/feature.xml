@@ -128,4 +128,11 @@ along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="net.openchrom.knime.node.nmr.ft"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
