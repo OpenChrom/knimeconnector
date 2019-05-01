@@ -70,7 +70,7 @@
     <module>../../plugins/net.openchrom.knime.node.fid.table</module>
     <module>../../plugins/net.openchrom.knime.node.nmr.table</module>
     <module>../../plugins/net.openchrom.knime.node.nmr.phasecorrection</module>
-    <module>../../plugins/net.openchrom.knime.node.nmr.ft.base</module>
+    <module>../../plugins/net.openchrom.knime.node.nmr.ft</module>
     <module>../../features/net.openchrom.xxd.process.supplier.knime.platform.feature</module>   
     <module>../../features/net.openchrom.xxd.process.supplier.knime.feature</module>
     <module>../../features/net.openchrom.knime.node.nmr.feature</module>
