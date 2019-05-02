@@ -21,7 +21,7 @@
   --> 
   <name>OpenChrom KNIME Connector</name>
   <description>
-	The connector is a bridge to KNIME. It extends the functionality of the OpenChrom Rich Client Platform (RCP).
+	The connector is a bridge to KNIME.
   </description>
   <!--
 	LICENSES
