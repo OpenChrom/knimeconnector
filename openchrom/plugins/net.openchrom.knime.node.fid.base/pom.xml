@@ -10,6 +10,6 @@
 
   <artifactId>net.openchrom.knime.node.fid.base</artifactId>
   <packaging>eclipse-plugin</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   
 </project>
