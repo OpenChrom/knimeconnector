@@ -12,6 +12,7 @@ Automatic-Module-Name: net.openchrom.knime.node.nmr.phasecorrection
 Bundle-ActivationPolicy: lazy
 Import-Package: net.openchrom.knime.node.nmr.ft.portobject,
  net.openchrom.nmr.processing,
+ net.openchrom.nmr.processing.phasecorrection,
  net.openchrom.nmr.processing.supplier.base.core,
  org.eclipse.chemclipse.model.core,
  org.eclipse.chemclipse.model.filter;version="[1.0.0,2.0.0)",
