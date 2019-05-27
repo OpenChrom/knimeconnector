@@ -35,7 +35,7 @@ package net.openchrom.knime.node.nmr.ft;
  import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObject;
  import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObjectSpec;
  import net.openchrom.nmr.processing.FilterUtils;
- import net.openchrom.nmr.processing.ft.FourierTransformationProcessor;
+import net.openchrom.nmr.processing.supplier.base.core.FourierTransformationProcessor;
 
  public class FTNodeModel extends NodeModel {
 

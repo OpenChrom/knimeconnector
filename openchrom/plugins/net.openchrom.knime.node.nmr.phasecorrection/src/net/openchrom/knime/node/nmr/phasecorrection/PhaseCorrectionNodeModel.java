@@ -34,7 +34,7 @@ package net.openchrom.knime.node.nmr.phasecorrection;
  import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObject;
  import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObjectSpec;
  import net.openchrom.nmr.processing.FilterUtils;
- import net.openchrom.nmr.processing.phasecorrection.PhaseCorrectionProcessor;
+import net.openchrom.nmr.processing.supplier.base.core.PhaseCorrectionProcessor;
 
  public class PhaseCorrectionNodeModel extends NodeModel {
 
