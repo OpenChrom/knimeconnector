@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Lablicate GmbH.
+ * Copyright (c) 2018, 2019 Lablicate GmbH.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -28,7 +28,6 @@ import org.eclipse.chemclipse.support.settings.FloatSettingsProperty;
 import org.eclipse.chemclipse.support.settings.IDynamicSettingProperty;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty;
 import org.eclipse.chemclipse.support.settings.IntSettingsProperty.Validation;
-import org.eclipse.chemclipse.support.settings.IonsSelectionSettingProperty;
 import org.eclipse.chemclipse.support.settings.LabelSettingsProperty;
 import org.eclipse.chemclipse.support.settings.MultiFileSettingProperty;
 import org.eclipse.chemclipse.support.settings.PreferenceProperty;
@@ -55,7 +54,6 @@ public class JacksonSettingObjectSupplier<SO> implements SettingObjectSupplier<S
 	private ObjectMapper mapper = new ObjectMapper();
 
 	public JacksonSettingObjectSupplier() {
-
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
 
@@ -231,11 +229,7 @@ public class JacksonSettingObjectSupplier<SO> implements SettingObjectSupplier<S
 							coll.addStringProperty(id, name, defVal, desc, Arrays.asList(labels), mapIds);
 							continue;
 						}
-						IonsSelectionSettingProperty ionSelectionSettingProperty = (IonsSelectionSettingProperty)getAnnotation.apply(IonsSelectionSettingProperty.class);
-						if(ionSelectionSettingProperty != null) {
-							coll.addIonSelectionProperty(id, name, defVal, desc);
-							continue;
-						}
+						//
 						StringSelectionRadioButtonsSettingProperty stringSelectionRadioButtonsSettingProperty = (StringSelectionRadioButtonsSettingProperty)getAnnotation.apply(StringSelectionRadioButtonsSettingProperty.class);
 						if(stringSelectionRadioButtonsSettingProperty != null) {
 							final String[] labels = stringSelectionRadioButtonsSettingProperty.labels();
