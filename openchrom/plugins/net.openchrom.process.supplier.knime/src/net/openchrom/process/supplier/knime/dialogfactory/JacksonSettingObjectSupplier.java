@@ -31,7 +31,6 @@ import org.eclipse.chemclipse.support.settings.IntSettingsProperty.Validation;
 import org.eclipse.chemclipse.support.settings.LabelSettingsProperty;
 import org.eclipse.chemclipse.support.settings.MultiFileSettingProperty;
 import org.eclipse.chemclipse.support.settings.PreferenceProperty;
-import org.eclipse.chemclipse.support.settings.RetentionTimeMinutesProperty;
 import org.eclipse.chemclipse.support.settings.StringSelectionRadioButtonsSettingProperty;
 import org.eclipse.chemclipse.support.settings.StringSelectionSettingProperty;
 import org.eclipse.chemclipse.support.settings.StringSettingsProperty;
@@ -159,14 +158,7 @@ public class JacksonSettingObjectSupplier<SO> implements SettingObjectSupplier<S
 									continue;
 							}
 						}
-						RetentionTimeMinutesProperty retentionTimeMinutesProperty = (RetentionTimeMinutesProperty)getAnnotation.apply(RetentionTimeMinutesProperty.class);
-						if(retentionTimeMinutesProperty != null) {
-							min = retentionTimeMinutesProperty.minValue();
-							max = retentionTimeMinutesProperty.maxValue();
-							step = retentionTimeMinutesProperty.step();
-							coll.addRetentionTimeMinutesProperty(id, name, defVal, desc, step, min, max);
-							continue;
-						}
+						//
 						coll.addIntProperty(id, name, defVal, desc, step, min, max);
 						continue;
 					}
