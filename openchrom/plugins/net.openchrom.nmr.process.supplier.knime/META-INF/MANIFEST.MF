@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.chemclipse.nmr.converter,
  org.eclipse.chemclipse.processing,
  org.eclipse.chemclipse.converter,
- org.eclipse.chemclipse.thirdpartylibraries.apache.commons.math;bundle-version="3.5.0",
+ org.apache.commons.math3;bundle-version="3.5.0",
  net.openchrom.nmr.processing.supplier.base,
  net.openchrom.nmr.converter.supplier.bruker;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

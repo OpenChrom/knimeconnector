@@ -14,7 +14,7 @@
    </copyright>
 
    <license url="http://www.gnu.org/licenses/lgpl-2.1.html">
-      Copyright (c) 2017, 2018 Lablicate GmbH.
+      Copyright (c) 2017, 2019 Lablicate GmbH.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public
@@ -843,5 +843,138 @@ USA
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+
+   <plugin
+         id="javax.xml.bind"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.i18n"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.batik.constants"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.xmlgraphics"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.apache.commons.math3"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="org.apache.commons.csv"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="org.apache.pdfbox"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.apache.pdfbox.fontbox"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.apache.pdfbox.preflight"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.apache.pdfbox.xmpbox"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.ejml.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.ejml.dense64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.ejml.denseC64"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.ejml.equation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.ejml.experimental"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/> 
+
+   <plugin
+         id="org.ejml.simple"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="org.bouncycastle.bcpg"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>  
+
+   <plugin
+         id="org.bouncycastle.bcpkix"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>  
+
+   <plugin
+         id="org.bouncycastle.bcprov"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>                 
 
 </feature>
