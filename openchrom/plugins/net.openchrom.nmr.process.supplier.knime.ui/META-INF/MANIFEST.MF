@@ -19,10 +19,10 @@ Require-Bundle: org.eclipse.core.runtime,
  net.openchrom.process.supplier.knime.ui,
  net.openchrom.nmr.processing.supplier.base.ui,
  net.openchrom.nmr.converter.supplier.bruker.ui;bundle-version="1.4.0",
- org.knime.base
+ org.knime.base,
+ org.eclipse.chemclipse.orbitdeps;bundle-version="0.8.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: net.openchrom.nmr.processing.supplier.base.core,
  net.openchrom.nmr.processing.supplier.base.settings,
- net.openchrom.nmr.processing.supplier.base.settings.support,
- org.ejml.simple
+ net.openchrom.nmr.processing.supplier.base.settings.support
