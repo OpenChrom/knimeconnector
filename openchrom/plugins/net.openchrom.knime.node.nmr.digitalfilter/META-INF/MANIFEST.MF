@@ -5,7 +5,7 @@ Bundle-SymbolicName: net.openchrom.knime.node.nmr.digitalfilter;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.0.0,4.0.0)",
- org.knime.base;bundle-version="[3.0.0,4.0.0)"
+ org.knime.base;bundle-version="[3.0.0,5.0.0)"
 Automatic-Module-Name: net.openchrom.knime.node.nmr.digitalfilter
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: net.openchrom.knime.node.fid.base.portobject,
