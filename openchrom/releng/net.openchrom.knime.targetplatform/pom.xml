@@ -9,6 +9,6 @@
 		<groupId>net.openchrom.knime</groupId>
 		<artifactId>master</artifactId>
 		<version>3.5.0-SNAPSHOT</version>
-		<relativePath>../../pom.xml</relativePath>
+		<relativePath>../../../pom.xml</relativePath>
 	</parent>
 </project>
