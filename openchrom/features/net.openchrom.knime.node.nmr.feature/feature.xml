@@ -2,7 +2,7 @@
 <feature
       id="net.openchrom.knime.node.nmr.feature"
       label="OpenChrom KNIME NMR nodes"
-      version="1.2.1.qualifier"
+      version="3.5.0.qualifier"
       provider-name="Lablicate GmbH">
 
    <description url="http://www.example.com/description">
