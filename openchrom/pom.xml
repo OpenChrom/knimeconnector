@@ -17,7 +17,7 @@
 		<groupId>net.openchrom</groupId>
 		<artifactId>master</artifactId>
 		<version>1.4.0-SNAPSHOT</version>
-		<relativePath>../../openchrom/openchrom/pom.xml</relativePath>
+		<relativePath>../../../openchrom/openchrom/pom.xml</relativePath>
 	</parent>
 	<properties>
 		<tycho.target.groupId>net.openchrom.knime</tycho.target.groupId>
