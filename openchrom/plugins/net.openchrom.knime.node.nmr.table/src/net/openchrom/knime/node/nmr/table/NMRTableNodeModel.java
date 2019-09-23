@@ -42,6 +42,7 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
+import net.openchrom.knime.node.nmr.ft.portobject.KNIMENMRMeasurement;
 import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObject;
 
 public class NMRTableNodeModel extends NodeModel {
@@ -85,7 +86,7 @@ public class NMRTableNodeModel extends NodeModel {
 		long measurementCnt = 0;
 
 		NMRMeasurementPortObject fidObject = (NMRMeasurementPortObject) inObjects[0];
-		Collection<IComplexSignalMeasurement<?>> measurements = fidObject.getMeasurements();
+		Collection<KNIMENMRMeasurement> measurements = fidObject.getMeasurements();
 		exec.getProgressMonitor().setProgress(0);
 		for (final IComplexSignalMeasurement<?> measurement : measurements) {
 			exec.checkCanceled();

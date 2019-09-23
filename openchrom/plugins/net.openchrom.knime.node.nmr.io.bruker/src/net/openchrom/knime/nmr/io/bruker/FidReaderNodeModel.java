@@ -101,15 +101,14 @@ public class FidReaderNodeModel extends NodeModel {
 
 		if (processingInfo == null || processingInfo.getProcessingResult() == null
 				|| processingInfo.getProcessingResult().isEmpty())
-			throw new Exception("Failed to read any NMR data");
+			throw new Exception("Failed to read NMR data");
 
-		final Collection<IComplexSignalMeasurement<?>> measurements = processingInfo.getProcessingResult();
-		final List<FIDMeasurement> fidMeasurements = measurements.stream().filter(e -> e instanceof FIDMeasurement)
-				.map(e -> (FIDMeasurement) e).collect(Collectors.toList());
+		final List<FIDMeasurement> fidMeasurements = processingInfo.getProcessingResult().stream()
+				.filter(e -> e instanceof FIDMeasurement).map(e -> (FIDMeasurement) e).collect(Collectors.toList());
 
 		logger.info(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
 
-		final FIDMeasurementPortObject portOneOut = new FIDMeasurementPortObject(measurements);
+		final FIDMeasurementPortObject portOneOut = new FIDMeasurementPortObject(fidMeasurements);
 		return new PortObject[] { portOneOut };
 	}
 

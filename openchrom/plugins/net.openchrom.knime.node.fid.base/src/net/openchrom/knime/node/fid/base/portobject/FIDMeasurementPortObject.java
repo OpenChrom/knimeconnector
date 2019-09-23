@@ -16,12 +16,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.port.AbstractPortObject;
@@ -42,15 +44,15 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 
 	private final FIDMeasurementPortObjectSpec portObjectSpec;
 
-	private final Collection<IComplexSignalMeasurement<?>> measurements;
+	private final List<KNIMEFIDMeasurement> measurements;
 
-	public FIDMeasurementPortObject(final Collection<IComplexSignalMeasurement<?>> measurements,
+	public FIDMeasurementPortObject(final Collection<? extends FIDMeasurement> measurements,
 			final FIDMeasurementPortObjectSpec portObjectSpec) {
-		this.measurements = measurements;
+		this.measurements = KNIMEFIDMeasurement.buld(measurements);
 		this.portObjectSpec = Objects.requireNonNull(portObjectSpec);
 	}
 
-	public FIDMeasurementPortObject(final Collection<IComplexSignalMeasurement<?>> measurements) {
+	public FIDMeasurementPortObject(final Collection<? extends FIDMeasurement> measurements) {
 		this(measurements, new FIDMeasurementPortObjectSpec());
 	}
 
@@ -58,7 +60,7 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 		this(new ArrayList<>(0), new FIDMeasurementPortObjectSpec());
 	}
 
-	public Collection<IComplexSignalMeasurement<?>> getMeasurements() {
+	public List<KNIMEFIDMeasurement> getMeasurements() {
 		return measurements;
 	}
 
@@ -111,12 +113,11 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 		for (int i = 0; i < numMeasurements; i++) {
 			try {
 				Object o = objectInputStream.readObject();
-				final IComplexSignalMeasurement<?> m = (IComplexSignalMeasurement<?>) o;
+				final KNIMEFIDMeasurement m = (KNIMEFIDMeasurement) o;
 				measurements.add(m);
 			} catch (final ClassNotFoundException e) {
 				throw new IOException(e);
 			}
 		}
 	}
-
 }

@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -30,6 +29,7 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
+import net.openchrom.knime.node.nmr.ft.portobject.KNIMENMRMeasurement;
 import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObject;
 import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObjectSpec;
 
@@ -51,8 +51,8 @@ public class PhaseCorrectionNodeModel extends NodeModel {
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 		logger.info(this.getClass().getSimpleName() + ": InObjects: " + Arrays.asList(inObjects));
 		NMRMeasurementPortObject nmrObject = (NMRMeasurementPortObject) inObjects[0];
-		Collection<IComplexSignalMeasurement<?>> measurements = nmrObject.getMeasurements();
-		Collection<IComplexSignalMeasurement<?>> measurementsFiltered = new ArrayList<>();
+		Collection<KNIMENMRMeasurement> measurements = nmrObject.getMeasurements();
+		Collection<KNIMENMRMeasurement> measurementsFiltered = new ArrayList<>();
 		// PhaseCorrectionProcessor filter = new PhaseCorrectionProcessor();
 		// exec.getProgressMonitor().setProgress(0);
 		// long cnt = 0;
