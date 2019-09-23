@@ -29,7 +29,7 @@ pipeline {
 				    sh 'wget https://raw.githubusercontent.com/OpenChrom/openchrom/develop/openchrom/pom.xml'
 				}
 				dir('knimeconnector') {
-					sh 'mvn -B -Dmaven.repo.local=.repository -f openchrom/releng/net.openchrom.knime.aggregator/pom.xml install'
+					sh 'mvn -B -Dmaven.repo.local=.repository -Dtycho.localArtifacts=ignore -f openchrom/releng/net.openchrom.knime.aggregator/pom.xml install'
 				}
 			}
 		}
