@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="__nvvkP_-EeazN56YgZ6ynw">
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_xo0hIP__EeaaZdPVutwD3g" featurename="sharedElements" parentElementId="org.eclipse.chemclipse.rcp.app.ui.trimmedwindow.main">
-    <elements xsi:type="basic:Part" xmi:id="_VLFDQAABEeeaZdPVutwD3g" elementId="net.openchrom.xxd.process.supplier.knime.ui.part.xyseries" contributionURI="bundleclass://net.openchrom.xxd.process.supplier.knime.ui/net.openchrom.xxd.process.supplier.knime.ui.parts.XYSeriesPart" label="XY Series" iconURI="platform:/plugin/org.eclipse.debug.ui/icons/full/eview16/variable_view.png"/>
-  </fragments>
-  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_joEb0AACEeeaZdPVutwD3g" featurename="children" parentElementId="org.eclipse.swtchart.partstack.0">
-    <elements xsi:type="advanced:Placeholder" xmi:id="_R7pn8AADEeeaZdPVutwD3g" elementId="net.openchrom.xxd.process.supplier.knime.ui.placeholder.0" ref="_VLFDQAABEeeaZdPVutwD3g"/>
-  </fragments>
-</fragment:ModelFragments>
