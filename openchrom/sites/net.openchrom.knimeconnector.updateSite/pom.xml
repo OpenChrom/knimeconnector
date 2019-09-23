@@ -3,9 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>net.openchrom</groupId>
-		<artifactId>net.openchrom.sites.parent</artifactId>
-		<version>BUILD-VERSION</version>
+		<groupId>net.openchrom.knime</groupId>
+		<artifactId>net.openchrom.knime.sites.parent</artifactId>
+		<version>3.5.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>net.openchrom.knimeconnector.updateSite</artifactId>

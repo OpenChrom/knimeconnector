@@ -14,7 +14,6 @@
 		<module>../net.openchrom.knime.targetplatform</module>
 		<module>../../plugins</module>
 		<module>../../features</module>
-		<module>../../sites/net.openchrom.xxd.process.supplier.knime.updateSite</module>
-		<module>../../products</module>
+		<module>../../sites/net.openchrom.knimeconnector.updateSite</module>
 	</modules>
 </project>

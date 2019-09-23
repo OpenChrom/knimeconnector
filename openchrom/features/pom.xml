@@ -12,8 +12,6 @@
 	<packaging>pom</packaging>
 	<name>features</name>
 	<modules>
-		<module>net.openchrom.xxd.process.supplier.knime.platform.feature</module>
-		<module>net.openchrom.xxd.process.supplier.knime.feature</module>
 		<module>net.openchrom.knime.node.nmr.feature</module>
 	</modules>
 </project>

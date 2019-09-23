@@ -2,14 +2,15 @@
 <project>
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>parent</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml</relativePath>
-  </parent>
+ 	<parent>
+		<groupId>net.openchrom.knime</groupId>
+		<artifactId>master</artifactId>
+		<version>3.5.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
 
-  <artifactId>net.openchrom.sites.parent</artifactId>
+  <groupId>net.openchrom.knime</groupId>
+  <artifactId>net.openchrom.knime.sites.parent</artifactId>
   <packaging>pom</packaging>
   <name>updateSites</name>
 
