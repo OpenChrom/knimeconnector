@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>parent</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml</relativePath>
-  </parent>
+	<parent>
+		<groupId>net.openchrom.knime</groupId>
+		<artifactId>master</artifactId>
+		<version>3.5.0-SNAPSHOT</version>
+	</parent>
 
-  <artifactId>net.openchrom.features.parent</artifactId>
-  <packaging>pom</packaging>
-  <name>features</name>
-
+	<artifactId>net.openchrom.knime.features.parent</artifactId>
+	<packaging>pom</packaging>
+	<name>features</name>
+	<modules>
+		<module>net.openchrom.xxd.process.supplier.knime.platform.feature</module>
+		<module>net.openchrom.xxd.process.supplier.knime.feature</module>
+		<module>net.openchrom.knime.node.nmr.feature</module>
+	</modules>
 </project>

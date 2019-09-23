@@ -1,16 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>net.openchrom</groupId>
-    <artifactId>parent</artifactId>
-    <version>BUILD-VERSION</version>
-    <relativePath>../cbi/net.openchrom.xxd.process.supplier.knime.cbi/pom.xml</relativePath>
-  </parent>
+	<parent>
+		<groupId>net.openchrom.knime</groupId>
+		<artifactId>master</artifactId>
+		<version>3.5.0-SNAPSHOT</version>
+	</parent>
 
-  <artifactId>net.openchrom.plugins.parent</artifactId>
-  <packaging>pom</packaging>
-  <name>plugins</name>
+	<artifactId>net.openchrom.knime.plugins.parent</artifactId>
+	<packaging>pom</packaging>
+	<name>plugins</name>
+
+	<modules>
+		<module>net.openchrom.process.supplier.knime</module>
+		<module>net.openchrom.process.supplier.knime.ui</module>
+		<module>net.openchrom.xxd.process.supplier.knime</module>
+		<module>net.openchrom.xxd.process.supplier.knime.ui</module>
+		<module>net.openchrom.xxd.process.supplier.knime.ui.filter</module>
+		<module>net.openchrom.xxd.process.supplier.knime.ui.identifier</module>
+		<module>net.openchrom.xxd.process.supplier.knime.ui.peakdetectors</module>
+		<module>net.openchrom.xxd.process.supplier.knime.ui.peakintegrators</module>
+		<module>net.openchrom.xxd.process.supplier.knime.ui.peakquantifiers</module>
+		<module>net.openchrom.nmr.process.supplier.knime</module>
+		<module>net.openchrom.nmr.process.supplier.knime.ui</module>
+		<module>net.openchrom.xir.process.supplier.knime</module>
+		<module>net.openchrom.xir.process.supplier.knime.ui</module>
+		<module>net.openchrom.knime.base</module>
+		<module>net.openchrom.knime.node.base</module>
+		<module>net.openchrom.knime.node.fid.base</module>
+		<module>net.openchrom.knime.node.nmr.io.bruker</module>
+		<module>net.openchrom.knime.node.nmr.digitalfilter</module>
+		<module>net.openchrom.knime.node.fid.table</module>
+		<module>net.openchrom.knime.node.nmr.table</module>
+		<module>net.openchrom.knime.node.nmr.phasecorrection</module>
+		<module>net.openchrom.knime.node.nmr.apodization</module>
+		<module>net.openchrom.knime.node.nmr.ft</module>
+	</modules>
 
 </project>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>knimeconnector.launch</name>
+	<name>net.openchrom.knime.product</name>
 	<comment></comment>
 	<projects>
 	</projects>
