@@ -16,8 +16,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.function.Function;
 
-import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
+import org.eclipse.chemclipse.processing.core.MessageConsumer;
+import org.eclipse.chemclipse.processing.core.MessageType;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
@@ -30,9 +32,13 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
+import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
 import net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObject;
+import net.openchrom.knime.node.fid.base.portobject.KNIMEFIDMeasurement;
+import net.openchrom.knime.node.nmr.ft.portobject.KNIMENMRMeasurement;
 import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObject;
 import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObjectSpec;
+import net.openchrom.nmr.processing.ft.FourierTransformationProcessor;
 
 public class FTNodeModel extends NodeModel {
 
@@ -53,9 +59,19 @@ public class FTNodeModel extends NodeModel {
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 		logger.info(this.getClass().getSimpleName() + ": InObjects: " + Arrays.asList(inObjects));
 		FIDMeasurementPortObject fidObject = (FIDMeasurementPortObject) inObjects[0];
-		Collection<IComplexSignalMeasurement<?>> measurements = fidObject.getMeasurements();
-		Collection<IComplexSignalMeasurement<?>> measurementsFiltered = new ArrayList<>();
-		// FourierTransformationProcessor filter = null;
+		Collection<KNIMEFIDMeasurement> measurements = fidObject.getMeasurements();
+		Collection<KNIMENMRMeasurement> measurementsFiltered = new ArrayList<>();
+
+		FourierTransformationProcessor filter = new FourierTransformationProcessor();
+		filter.filterIMeasurements(measurements, null, Function.identity(), new MessageConsumer() {
+
+			@Override
+			public void addMessage(String description, String message, Throwable t, MessageType type) {
+				System.err.println(description + " " + message + " " + t);
+
+			}
+		}, new KnimeProgressMonitor(exec));
+
 		// exec.getProgressMonitor().setProgress(0);
 		// long cnt = 0;
 		// for (IComplexSignalMeasurement<?> measurement : measurements) {
