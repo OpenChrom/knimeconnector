@@ -22,7 +22,15 @@ pipeline {
     	}
 		stage('build') {
 			steps {
-				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/releng/net.openchrom.knime.aggregator/pom.xml install'
+				dir('chemclipse/chemclipse'){
+				    sh 'wget https://raw.githubusercontent.com/eclipse/chemclipse/develop/chemclipse/pom.xml'
+				}
+				dir('openchrom/openchrom'){
+				    sh 'wget https://raw.githubusercontent.com/OpenChrom/openchrom/develop/openchrom/pom.xml'
+				}
+				dir('knimeconnector') {
+					sh 'mvn -B -Dmaven.repo.local=.repository -f openchrom/releng/net.openchrom.knime.aggregator/pom.xml install'
+				}
 			}
 		}
 		stage('deploy') {
