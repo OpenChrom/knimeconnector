@@ -37,9 +37,7 @@ public class KnimeProgressMonitor implements IProgressMonitor {
 
 	@Override
 	public void done() {
-		if (logger.isDebugEnabled()) {
-			logger.debug("Progress 'done', no way to propagate to delegate");
-		}
+		worked(totalWork);
 	}
 
 	@Override
