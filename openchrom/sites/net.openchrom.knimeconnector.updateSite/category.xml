@@ -4,5 +4,4 @@
       <category name="net.openchrom.knime.node.nmr"/>
    </feature>
    <category-def name="net.openchrom.knime.node.nmr.feature" label="OpenChrom NMR KNIME nodes"/>
-   <repository-reference location="https://update.openchrom.net/repositories/knimeconnector/repository" enabled="true" />
 </site>
