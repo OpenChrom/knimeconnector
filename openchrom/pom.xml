@@ -21,7 +21,7 @@
 	</parent>
 	<properties>
 		<tycho.target.groupId>net.openchrom.knime</tycho.target.groupId>
-		<tycho.target.artifactId>knimeconnector.targetplatform</tycho.target.artifactId>
-		<tycho.target.version>${project.version}</tycho.target.version>
+		<tycho.target.artifactId>net.openchrom.knime.targetplatform</tycho.target.artifactId>
+		<tycho.target.version>3.5.0-SNAPSHOT</tycho.target.version>
 	</properties>
 </project>
