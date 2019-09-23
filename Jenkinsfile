@@ -22,7 +22,7 @@ pipeline {
     	}
 		stage('build') {
 			steps {
-				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/releng/knimeconnector.targetplatform/pom.xml install'
+				sh 'mvn -B -Dmaven.repo.local=.repository -f knimeconnector/openchrom/releng/net.openchrom.knime.targetplatform/pom.xml install'
 			}
 		}
 		stage('deploy') {
