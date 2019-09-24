@@ -30,6 +30,10 @@ You should have received a copy of the GNU General Public License
 along with this library.  If not, see &lt;https://www.gnu.org/licenses/&gt;.
    </license>
 
+   <requires>
+      <import feature="net.openchrom.platform.feature" version="0.0.0"/>
+   </requires>
+
    <plugin
          id="net.openchrom.knime.base"
          download-size="0"
