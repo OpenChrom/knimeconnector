@@ -87,7 +87,14 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.chemclipse.xxd.process"
+         id="org.eclipse.chemclipse.progress"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.chemclipse.orbitdeps"
          download-size="0"
          install-size="0"
          version="0.0.0"
