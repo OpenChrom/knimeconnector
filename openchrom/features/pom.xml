@@ -16,5 +16,6 @@
 		<module>net.openchrom.knime.deps</module>
 		<module>net.openchrom.knime.deps.svg</module>
 		<module>net.openchrom.knime.node.deps</module>
+		<module>com.lablicate.converter.bruker.headless</module>
 	</modules>
 </project>
