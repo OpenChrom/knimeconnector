@@ -17,12 +17,12 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
-import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
@@ -48,7 +48,7 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 
 	public FIDMeasurementPortObject(final Collection<? extends FIDMeasurement> measurements,
 			final FIDMeasurementPortObjectSpec portObjectSpec) {
-		this.measurements = KNIMEFIDMeasurement.buld(measurements);
+		this.measurements = KNIMEFIDMeasurement.build(measurements);
 		this.portObjectSpec = Objects.requireNonNull(portObjectSpec);
 	}
 
@@ -88,8 +88,9 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 		if (measurements != null) {
 			out.write(measurements.size());
 			final ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-			for (final IComplexSignalMeasurement<?> m : measurements) {
+			for (final KNIMEFIDMeasurement m : measurements) {
 				objectOutputStream.writeObject(m);
+				objectOutputStream.writeObject(m.getHeaderDataMap());
 			}
 			objectOutputStream.flush();
 		} else {
@@ -114,6 +115,8 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 			try {
 				Object o = objectInputStream.readObject();
 				final KNIMEFIDMeasurement m = (KNIMEFIDMeasurement) o;
+				Map<String, String> h = (Map<String, String>) objectInputStream.readObject();
+				m.setHeaderDataMap(h);
 				measurements.add(m);
 			} catch (final ClassNotFoundException e) {
 				throw new IOException(e);
