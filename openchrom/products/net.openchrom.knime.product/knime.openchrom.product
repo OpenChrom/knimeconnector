@@ -39,30 +39,11 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.emf.ecore"/>
-      <feature id="org.eclipse.equinox.p2.user.ui"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.feature"/>
-      <feature id="org.eclipse.help"/>
-      <feature id="org.eclipse.pde"/>
-      <feature id="org.eclipse.ecf.filetransfer.httpclient4.ssl.feature"/>
-      <feature id="org.eclipse.equinox.p2.extras.feature"/>
-      <feature id="org.eclipse.jdt"/>
-      <feature id="org.eclipse.rcp"/>
-      <feature id="org.eclipse.emf.common"/>
-      <feature id="org.eclipse.equinox.p2.core.feature"/>
-      <feature id="org.eclipse.ecf.core.feature"/>
-      <feature id="org.eclipse.equinox.p2.rcp.feature"/>
-      <feature id="org.eclipse.ecf.filetransfer.feature"/>
-      <feature id="org.eclipse.ecf.core.ssl.feature"/>
-      <feature id="org.eclipse.platform"/>
-      <feature id="org.eclipse.ecf.filetransfer.ssl.feature"/>
-      <feature id="org.eclipse.gef"/>
-      <feature id="org.eclipse.draw2d"/>
-      <feature id="org.eclipse.e4.rcp"/>
-      <feature id="org.knime.features.sdk" version="3.5.2.v201806111433"/>
-      <feature id="org.knime.features.wizard"/>
+      <feature id="net.openchrom.knime.deps"/>
+      <feature id="net.openchrom.platform.feature"/>
+      <feature id="com.lablicate.openchrom.community.converter.feature"/>
       <feature id="org.knime.features.base"/>
-      <feature id="net.openchrom.xxd.process.supplier.knime.feature" version="1.4.0.qualifier"/>
+      <feature id="net.openchrom.knime.deps.svg"/>
    </features>
 
 
