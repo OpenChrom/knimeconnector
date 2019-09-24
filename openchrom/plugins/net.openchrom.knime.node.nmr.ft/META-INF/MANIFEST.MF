@@ -10,7 +10,8 @@ Bundle-Activator: net.openchrom.knime.node.nmr.ft.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: net.openchrom.knime.node.nmr.ft
 Bundle-ActivationPolicy: lazy
-Import-Package: net.openchrom.knime.node.base.progress,
+Import-Package: net.openchrom.knime.node.base,
+ net.openchrom.knime.node.base.progress,
  net.openchrom.knime.node.fid.base.portobject,
  net.openchrom.nmr.converter.supplier.bruker.core;resolution:=optional,
  net.openchrom.nmr.processing,

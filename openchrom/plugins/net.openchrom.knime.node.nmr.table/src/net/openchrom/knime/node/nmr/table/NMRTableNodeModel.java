@@ -91,6 +91,7 @@ public class NMRTableNodeModel extends NodeModel {
 		for (final IComplexSignalMeasurement<?> measurement : measurements) {
 			exec.checkCanceled();
 			if (measurement instanceof SpectrumMeasurement) {
+
 				long signalCnt = 0;
 				for (final SpectrumSignal signal : ((SpectrumMeasurement) measurement).getSignals()) {
 					exec.checkCanceled();

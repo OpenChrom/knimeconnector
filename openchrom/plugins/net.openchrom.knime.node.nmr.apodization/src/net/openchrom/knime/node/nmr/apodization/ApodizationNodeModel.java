@@ -29,9 +29,11 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
+import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObject;
 import net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObjectSpec;
 import net.openchrom.knime.node.fid.base.portobject.KNIMEFIDMeasurement;
+import net.openchrom.nmr.processing.apodization.ExponentialApodizationFunctionProcessor;
 
 public class ApodizationNodeModel extends NodeModel {
 
@@ -54,6 +56,8 @@ public class ApodizationNodeModel extends NodeModel {
 		FIDMeasurementPortObject fidObject = (FIDMeasurementPortObject) inObjects[0];
 		Collection<KNIMEFIDMeasurement> measurements = fidObject.getMeasurements();
 		Collection<KNIMEFIDMeasurement> measurementsFiltered = new ArrayList<>();
+		ExponentialApodizationFunctionProcessor filter = new ExponentialApodizationFunctionProcessor();
+		measurementsFiltered.addAll(ProcessorAdapter.adapt(filter, measurements, exec));
 		// ExponentialApodizationFunctionProcessor filter = new
 		// ExponentialApodizationFunctionProcessor();
 		// exec.getProgressMonitor().setProgress(0);
