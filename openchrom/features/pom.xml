@@ -15,5 +15,6 @@
 		<module>net.openchrom.knime.node.nmr.feature</module>
 		<module>net.openchrom.knime.deps</module>
 		<module>net.openchrom.knime.deps.svg</module>
+		<module>net.openchrom.knime.node.deps</module>
 	</modules>
 </project>
