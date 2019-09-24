@@ -61,16 +61,16 @@ public class FTNodeModel extends NodeModel {
 		FIDMeasurementPortObject fidObject = (FIDMeasurementPortObject) inObjects[0];
 		Collection<KNIMEFIDMeasurement> measurements = fidObject.getMeasurements();
 		Collection<KNIMENMRMeasurement> measurementsFiltered = new ArrayList<>();
-
 		FourierTransformationProcessor filter = new FourierTransformationProcessor();
-		filter.filterIMeasurements(measurements, null, Function.identity(), new MessageConsumer() {
+		measurementsFiltered.addAll((Collection<? extends KNIMENMRMeasurement>) filter.filterIMeasurements(measurements,
+				null, Function.identity(), new MessageConsumer() {
 
-			@Override
-			public void addMessage(String description, String message, Throwable t, MessageType type) {
-				System.err.println(description + " " + message + " " + t);
+					@Override
+					public void addMessage(String description, String message, Throwable t, MessageType type) {
+						System.err.println(description + " " + message + " " + t);
 
-			}
-		}, new KnimeProgressMonitor(exec));
+					}
+				}, new KnimeProgressMonitor(exec)));
 
 		// exec.getProgressMonitor().setProgress(0);
 		// long cnt = 0;
@@ -88,7 +88,6 @@ public class FTNodeModel extends NodeModel {
 		// measurement));
 		// exec.getProgressMonitor().setProgress(cnt++ / measurements.size());
 		// }
-
 		final NMRMeasurementPortObject portOneOut = new NMRMeasurementPortObject(measurementsFiltered);
 		return new PortObject[] { portOneOut };
 	}
