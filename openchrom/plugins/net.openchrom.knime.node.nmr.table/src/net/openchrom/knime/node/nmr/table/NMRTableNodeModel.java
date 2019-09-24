@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
-import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -35,6 +33,7 @@ import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
+import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
@@ -42,10 +41,14 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.nmr.ft.portobject.KNIMENMRMeasurement;
-import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObject;
+import net.openchrom.knime.node.base.GenericPortObject;
+import net.openchrom.knime.node.base.KNIMEMeasurement;
+import net.openchrom.knime.node.base.KNIMENMRMeasurement;
+import net.openchrom.knime.node.base.KNIMENMRSignal;
 
 public class NMRTableNodeModel extends NodeModel {
+
+	private static final NodeLogger logger = NodeLogger.getLogger(NMRTableNodeModel.class);
 
 	static DataTableSpec getFIDTableSpec() {
 		return new DataTableSpec(
@@ -69,7 +72,7 @@ public class NMRTableNodeModel extends NodeModel {
 	}
 
 	public NMRTableNodeModel() {
-		super(new PortType[] { NMRMeasurementPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
+		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
 	}
 
 	@Override
@@ -85,15 +88,15 @@ public class NMRTableNodeModel extends NodeModel {
 		long globalRowCnt = 0;
 		long measurementCnt = 0;
 
-		NMRMeasurementPortObject fidObject = (NMRMeasurementPortObject) inObjects[0];
-		Collection<KNIMENMRMeasurement> measurements = fidObject.getMeasurements();
+		GenericPortObject fidObject = (GenericPortObject) inObjects[0];
+		Collection<KNIMEMeasurement> measurements = fidObject.getMeasurements();
 		exec.getProgressMonitor().setProgress(0);
-		for (final IComplexSignalMeasurement<?> measurement : measurements) {
+		for (final KNIMEMeasurement measurement : measurements) {
 			exec.checkCanceled();
-			if (measurement instanceof SpectrumMeasurement) {
+			if (measurement instanceof KNIMENMRMeasurement) {
 
 				long signalCnt = 0;
-				for (final SpectrumSignal signal : ((SpectrumMeasurement) measurement).getSignals()) {
+				for (final KNIMENMRSignal signal : ((KNIMENMRMeasurement) measurement).getSignals()) {
 					exec.checkCanceled();
 					// skip a few signals
 					if (signalCnt % 5 == 0) {
@@ -104,10 +107,14 @@ public class NMRTableNodeModel extends NodeModel {
 					globalRowCnt++;
 				}
 				exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
+
+			} else {
+				logger.error("Unexpected type " + measurement);
 			}
 			measurementCnt++;
 		}
 		container.close();
+
 		final BufferedDataTable portOut = container.getTable();
 		return new PortObject[] { portOut };
 	}

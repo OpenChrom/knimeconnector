@@ -47,7 +47,7 @@ public class DigitalFilterNodeModel extends NodeModel {
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		return ProcessorAdapter.adapt(new DigitalFilterRemoval(), inObjects, exec);
+		return ProcessorAdapter.adaptFID(new DigitalFilterRemoval(), inObjects, exec);
 	}
 
 	@Override

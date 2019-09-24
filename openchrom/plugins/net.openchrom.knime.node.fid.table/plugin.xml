@@ -2,17 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
 <extension
-         point="org.knime.core.PortType">
-      <portType
-            hidden="false"
-            name="FID Measurement"
-            objectClass="net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObject"
-            objectSerializer="net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObject$Serializer"
-            specClass="net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObjectSpec"
-            specSerializer="net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObjectSpec$Serializer">
-      </portType>
-   </extension>
-<extension
          point="org.knime.workbench.repository.nodes">
       <node
             category-path="openchrom/nmr"

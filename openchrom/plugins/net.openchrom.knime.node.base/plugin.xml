@@ -26,5 +26,16 @@
             description="OpenChrom utility nodes."
             path="/openchrom">
     </category>
-</extension>   
+</extension>
+<extension
+         point="org.knime.core.PortType">
+      <portType
+            hidden="false"
+            name="OpenChrom Measurement"
+            objectClass="net.openchrom.knime.node.base.GenericPortObject"
+            objectSerializer="net.openchrom.knime.node.base.GenericPortObject$Serializer"
+            specClass="net.openchrom.knime.node.base.GenericPortObjectSpec"
+            specSerializer="net.openchrom.knime.node.base.GenericPortObjectSpec$Serializer">
+      </portType>
+   </extension>
 </plugin>

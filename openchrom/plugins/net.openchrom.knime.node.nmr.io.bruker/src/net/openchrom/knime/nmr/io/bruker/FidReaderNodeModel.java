@@ -46,8 +46,8 @@ import org.knime.core.util.FileUtil;
 
 import net.openchrom.knime.node.base.GenericPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
+import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
 import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
-import net.openchrom.knime.node.fid.base.portobject.KNIMEFIDMeasurement;
 import net.openchrom.nmr.converter.supplier.bruker.core.ScanImportConverterFid;
 
 public class FidReaderNodeModel extends NodeModel {

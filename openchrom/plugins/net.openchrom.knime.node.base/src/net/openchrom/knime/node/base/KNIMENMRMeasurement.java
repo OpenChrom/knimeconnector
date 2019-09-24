@@ -1,17 +1,21 @@
-package net.openchrom.knime.node.nmr.ft.portobject;
+package net.openchrom.knime.node.base;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.chemclipse.model.core.AbstractMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 
-import net.openchrom.knime.node.fid.base.portobject.KNIMEFIDMeasurement;
+public class KNIMENMRMeasurement extends AbstractMeasurement implements KNIMEMeasurement, SpectrumMeasurement {
 
-public class KNIMENMRMeasurement extends AbstractMeasurement implements SpectrumMeasurement {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6737316171841818539L;
 
 	public static List<KNIMENMRMeasurement> build(Collection<? extends SpectrumMeasurement> measurements) {
 		List<KNIMENMRMeasurement> result = new ArrayList<>();
@@ -45,6 +49,11 @@ public class KNIMENMRMeasurement extends AbstractMeasurement implements Spectrum
 	@Override
 	public List<KNIMENMRSignal> getSignals() {
 		return signals;
+	}
+
+	@Override
+	public void setHeaderDataMap(Map<String, String> map) {
+		super.setHeaderDataMap(map);
 	}
 
 }

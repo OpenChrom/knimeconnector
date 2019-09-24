@@ -1,4 +1,4 @@
-package net.openchrom.knime.node.nmr.ft.portobject;
+package net.openchrom.knime.node.base;
 
 import java.io.Serializable;
 import java.math.BigDecimal;

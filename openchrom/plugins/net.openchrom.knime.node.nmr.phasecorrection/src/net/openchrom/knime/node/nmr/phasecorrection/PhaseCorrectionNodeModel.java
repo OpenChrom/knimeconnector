@@ -13,9 +13,6 @@ package net.openchrom.knime.node.nmr.phasecorrection;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -29,45 +26,28 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.nmr.ft.portobject.KNIMENMRMeasurement;
-import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObject;
-import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObjectSpec;
+import net.openchrom.knime.node.base.GenericPortObject;
+import net.openchrom.knime.node.base.GenericPortObjectSpec;
+import net.openchrom.knime.node.base.ProcessorAdapter;
+import net.openchrom.nmr.processing.phasecorrection.PhaseCorrectionProcessor;
 
 public class PhaseCorrectionNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(PhaseCorrectionNodeModel.class);
 
 	public PhaseCorrectionNodeModel() {
-		super(new PortType[] { NMRMeasurementPortObject.TYPE }, new PortType[] { NMRMeasurementPortObject.TYPE });
+		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { GenericPortObject.TYPE });
 	}
 
 	@Override
 	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-		final NMRMeasurementPortObjectSpec portOne = new NMRMeasurementPortObjectSpec();
+		final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
 		return new PortObjectSpec[] { portOne };
 	}
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		logger.info(this.getClass().getSimpleName() + ": InObjects: " + Arrays.asList(inObjects));
-		NMRMeasurementPortObject nmrObject = (NMRMeasurementPortObject) inObjects[0];
-		Collection<KNIMENMRMeasurement> measurements = nmrObject.getMeasurements();
-		Collection<KNIMENMRMeasurement> measurementsFiltered = new ArrayList<>();
-		// PhaseCorrectionProcessor filter = new PhaseCorrectionProcessor();
-		// exec.getProgressMonitor().setProgress(0);
-		// long cnt = 0;
-		// for (IComplexSignalMeasurement<?> measurement : measurements) {
-		// exec.checkCanceled();
-		// if (measurement instanceof SpectrumMeasurement)
-		// measurementsFiltered.addAll(
-		// // TODO: this should not be necessary, improve generics
-		// (Collection<IComplexSignalMeasurement<?>>) FilterUtils.applyFilter(filter,
-		// measurement));
-		// exec.getProgressMonitor().setProgress(cnt++ / measurements.size());
-		// }
-
-		final NMRMeasurementPortObject portOneOut = new NMRMeasurementPortObject(measurementsFiltered);
-		return new PortObject[] { portOneOut };
+		return ProcessorAdapter.adaptNMR(new PhaseCorrectionProcessor(), inObjects, exec);
 	}
 
 	@Override

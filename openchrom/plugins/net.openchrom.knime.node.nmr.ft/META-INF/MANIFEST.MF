@@ -24,4 +24,3 @@ Import-Package: net.openchrom.knime.node.base,
  org.eclipse.chemclipse.model.filter;version="[1.0.0,2.0.0)",
  org.eclipse.chemclipse.nmr.model.core,
  org.eclipse.chemclipse.processing.core
-Export-Package: net.openchrom.knime.node.nmr.ft.portobject

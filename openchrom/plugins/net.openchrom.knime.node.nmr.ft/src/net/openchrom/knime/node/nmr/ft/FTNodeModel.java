@@ -27,8 +27,8 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
 import net.openchrom.knime.node.base.GenericPortObject;
+import net.openchrom.knime.node.base.GenericPortObjectSpec;
 import net.openchrom.knime.node.base.ProcessorAdapter;
-import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObjectSpec;
 import net.openchrom.nmr.processing.ft.FourierTransformationProcessor;
 
 public class FTNodeModel extends NodeModel {
@@ -41,13 +41,13 @@ public class FTNodeModel extends NodeModel {
 
 	@Override
 	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-		final NMRMeasurementPortObjectSpec portOne = new NMRMeasurementPortObjectSpec();
+		final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
 		return new PortObjectSpec[] { portOne };
 	}
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		return ProcessorAdapter.adapt(new FourierTransformationProcessor(), inObjects, exec);
+		return ProcessorAdapter.adaptNMR(new FourierTransformationProcessor(), inObjects, exec);
 	}
 
 	@Override

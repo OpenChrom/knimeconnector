@@ -1,4 +1,4 @@
-package net.openchrom.knime.node.fid.base.portobject;
+package net.openchrom.knime.node.base;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -12,8 +12,6 @@ import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.DataDimension;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
-
-import net.openchrom.knime.node.base.KNIMEMeasurement;
 
 public class KNIMEFIDMeasurement extends AbstractMeasurement
 		implements FIDMeasurement, KNIMEMeasurement, AcquisitionParameter, Serializable {
