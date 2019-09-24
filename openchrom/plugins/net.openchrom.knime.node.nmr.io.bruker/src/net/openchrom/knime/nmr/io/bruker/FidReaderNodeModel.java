@@ -44,9 +44,10 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.util.FileUtil;
 
+import net.openchrom.knime.node.base.GenericPortObject;
+import net.openchrom.knime.node.base.GenericPortObjectSpec;
 import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
-import net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObject;
-import net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObjectSpec;
+import net.openchrom.knime.node.fid.base.portobject.KNIMEFIDMeasurement;
 import net.openchrom.nmr.converter.supplier.bruker.core.ScanImportConverterFid;
 
 public class FidReaderNodeModel extends NodeModel {
@@ -67,7 +68,7 @@ public class FidReaderNodeModel extends NodeModel {
 
 	public FidReaderNodeModel() {
 		// zero input ports, one FID-port-object and one table as output
-		super(new PortType[] {}, new PortType[] { FIDMeasurementPortObject.TYPE });
+		super(new PortType[] {}, new PortType[] { GenericPortObject.TYPE });
 		valueIn = createSettingsModelValueIn();
 	}
 
@@ -84,7 +85,7 @@ public class FidReaderNodeModel extends NodeModel {
 			}
 			logger.info(this.getClass().getSimpleName() + ": Input specs: " + Arrays.asList(inSpecs) + ", input dir: "
 					+ inputDir);
-			final FIDMeasurementPortObjectSpec portOne = new FIDMeasurementPortObjectSpec();
+			final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
 			return new PortObjectSpec[] { portOne };
 		}
 		throw new InvalidSettingsException("Cannot read directory " + inputDir);
@@ -108,7 +109,7 @@ public class FidReaderNodeModel extends NodeModel {
 
 		logger.info(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
 
-		final FIDMeasurementPortObject portOneOut = new FIDMeasurementPortObject(fidMeasurements);
+		final GenericPortObject portOneOut = new GenericPortObject(KNIMEFIDMeasurement.build(fidMeasurements));
 		return new PortObject[] { portOneOut };
 	}
 

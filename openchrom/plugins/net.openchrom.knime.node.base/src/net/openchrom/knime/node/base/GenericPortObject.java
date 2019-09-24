@@ -1,15 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2019 Lablicate GmbH.
- *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *Alexander Kerner - initial API and implementation
- *******************************************************************************/
-package net.openchrom.knime.node.fid.base.portobject;
+package net.openchrom.knime.node.base;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,7 +12,6 @@ import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
-import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.port.AbstractPortObject;
@@ -33,34 +21,34 @@ import org.knime.core.node.port.PortObjectZipOutputStream;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
-public class FIDMeasurementPortObject extends AbstractPortObject {
+public class GenericPortObject extends AbstractPortObject {
 
-	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(FIDMeasurementPortObject.class);
+	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(GenericPortObject.class);
 
-	public static final class Serializer extends AbstractPortObjectSerializer<FIDMeasurementPortObject> {
+	public static final class Serializer extends AbstractPortObjectSerializer<GenericPortObject> {
 	}
 
-	private final static String summary = "OpenChrom FID Measurement";
+	private final static String summary = "OpenChrom Measurement";
 
-	private final FIDMeasurementPortObjectSpec portObjectSpec;
+	private final GenericPortObjectSpec portObjectSpec;
 
-	private final List<KNIMEFIDMeasurement> measurements;
+	private final List<KNIMEMeasurement> measurements;
 
-	public FIDMeasurementPortObject(final Collection<? extends FIDMeasurement> measurements,
-			final FIDMeasurementPortObjectSpec portObjectSpec) {
-		this.measurements = KNIMEFIDMeasurement.build(measurements);
+	public GenericPortObject(final Collection<? extends KNIMEMeasurement> measurements,
+			final GenericPortObjectSpec portObjectSpec) {
+		this.measurements = new ArrayList<>(measurements);
 		this.portObjectSpec = Objects.requireNonNull(portObjectSpec);
 	}
 
-	public FIDMeasurementPortObject(final Collection<? extends FIDMeasurement> measurements) {
-		this(measurements, new FIDMeasurementPortObjectSpec());
+	public GenericPortObject(final Collection<? extends KNIMEMeasurement> measurements) {
+		this(measurements, new GenericPortObjectSpec());
 	}
 
-	public FIDMeasurementPortObject() {
-		this(new ArrayList<>(0), new FIDMeasurementPortObjectSpec());
+	public GenericPortObject() {
+		this(new ArrayList<>(0), new GenericPortObjectSpec());
 	}
 
-	public List<KNIMEFIDMeasurement> getMeasurements() {
+	public List<KNIMEMeasurement> getMeasurements() {
 		return measurements;
 	}
 
@@ -88,7 +76,7 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 		if (measurements != null) {
 			out.write(measurements.size());
 			final ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-			for (final KNIMEFIDMeasurement m : measurements) {
+			for (final KNIMEMeasurement m : measurements) {
 				objectOutputStream.writeObject(m);
 				objectOutputStream.writeObject(m.getHeaderDataMap());
 			}
@@ -106,7 +94,7 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 			throws IOException, CanceledExecutionException {
 		// specs currently not needed
 		@SuppressWarnings("unused")
-		final FIDMeasurementPortObjectSpec fidSpec = (FIDMeasurementPortObjectSpec) spec;
+		final GenericPortObjectSpec fidSpec = (GenericPortObjectSpec) spec;
 		@SuppressWarnings("unused")
 		final ZipEntry zipEntry = in.getNextEntry();
 		final int numMeasurements = in.read();
@@ -114,7 +102,7 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 		for (int i = 0; i < numMeasurements; i++) {
 			try {
 				Object o = objectInputStream.readObject();
-				final KNIMEFIDMeasurement m = (KNIMEFIDMeasurement) o;
+				final KNIMEMeasurement m = (KNIMEMeasurement) o;
 				Map<String, String> h = (Map<String, String>) objectInputStream.readObject();
 				m.setHeaderDataMap(h);
 				measurements.add(m);
@@ -123,4 +111,5 @@ public class FIDMeasurementPortObject extends AbstractPortObject {
 			}
 		}
 	}
+
 }

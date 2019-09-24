@@ -13,8 +13,10 @@ import org.eclipse.chemclipse.nmr.model.core.DataDimension;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 
+import net.openchrom.knime.node.base.KNIMEMeasurement;
+
 public class KNIMEFIDMeasurement extends AbstractMeasurement
-		implements FIDMeasurement, AcquisitionParameter, Serializable {
+		implements FIDMeasurement, KNIMEMeasurement, AcquisitionParameter, Serializable {
 
 	/**
 	 * 
@@ -39,7 +41,6 @@ public class KNIMEFIDMeasurement extends AbstractMeasurement
 		super(headerData);
 		this.dimension = dimension;
 		this.signals = KNIMEFIDSignal.build(signals);
-		System.err.println("New " + getClass().getSimpleName() + " " + getHeaderDataMap());
 	}
 
 	@Override
@@ -100,6 +101,7 @@ public class KNIMEFIDMeasurement extends AbstractMeasurement
 				+ getHeaderDataMap() + "]";
 	}
 
+	@Override
 	public void setHeaderDataMap(Map<String, String> map) {
 		super.setHeaderDataMap(map);
 	}

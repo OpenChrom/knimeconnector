@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.knime.core.data.DataCell;
@@ -35,6 +34,7 @@ import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.InvalidSettingsException;
+import org.knime.core.node.NodeLogger;
 import org.knime.core.node.NodeModel;
 import org.knime.core.node.NodeSettingsRO;
 import org.knime.core.node.NodeSettingsWO;
@@ -42,10 +42,12 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObject;
-import net.openchrom.knime.node.fid.base.portobject.KNIMEFIDMeasurement;
+import net.openchrom.knime.node.base.GenericPortObject;
+import net.openchrom.knime.node.base.KNIMEMeasurement;
 
 public class FIDTableNodeModel extends NodeModel {
+
+	private static final NodeLogger logger = NodeLogger.getLogger(FIDTableNodeModel.class);
 
 	static DataTableSpec getFIDTableSpec() {
 		return new DataTableSpec(
@@ -69,7 +71,7 @@ public class FIDTableNodeModel extends NodeModel {
 	}
 
 	public FIDTableNodeModel() {
-		super(new PortType[] { FIDMeasurementPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
+		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
 	}
 
 	@Override
@@ -85,10 +87,10 @@ public class FIDTableNodeModel extends NodeModel {
 		long globalRowCnt = 0;
 		long measurementCnt = 0;
 
-		FIDMeasurementPortObject fidObject = (FIDMeasurementPortObject) inObjects[0];
-		Collection<KNIMEFIDMeasurement> measurements = fidObject.getMeasurements();
+		GenericPortObject fidObject = (GenericPortObject) inObjects[0];
+		Collection<KNIMEMeasurement> measurements = fidObject.getMeasurements();
 		exec.getProgressMonitor().setProgress(0);
-		for (final IComplexSignalMeasurement<?> measurement : measurements) {
+		for (final KNIMEMeasurement measurement : measurements) {
 			exec.checkCanceled();
 			if (measurement instanceof FIDMeasurement) {
 				long signalCnt = 0;
@@ -100,6 +102,8 @@ public class FIDTableNodeModel extends NodeModel {
 					globalRowCnt++;
 				}
 				exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
+			} else {
+				logger.error("Unexpected type " + measurement);
 			}
 			measurementCnt++;
 		}

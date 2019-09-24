@@ -13,7 +13,6 @@ package net.openchrom.knime.node.nmr.ft;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -27,9 +26,8 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
+import net.openchrom.knime.node.base.GenericPortObject;
 import net.openchrom.knime.node.base.ProcessorAdapter;
-import net.openchrom.knime.node.fid.base.portobject.FIDMeasurementPortObject;
-import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObject;
 import net.openchrom.knime.node.nmr.ft.portobject.NMRMeasurementPortObjectSpec;
 import net.openchrom.nmr.processing.ft.FourierTransformationProcessor;
 
@@ -38,7 +36,7 @@ public class FTNodeModel extends NodeModel {
 	private static final NodeLogger logger = NodeLogger.getLogger(FTNodeModel.class);
 
 	public FTNodeModel() {
-		super(new PortType[] { FIDMeasurementPortObject.TYPE }, new PortType[] { NMRMeasurementPortObject.TYPE });
+		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { GenericPortObject.TYPE });
 	}
 
 	@Override
@@ -49,12 +47,7 @@ public class FTNodeModel extends NodeModel {
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		logger.info(this.getClass().getSimpleName() + ": InObjects: " + Arrays.asList(inObjects));
-		FIDMeasurementPortObject fidObject = (FIDMeasurementPortObject) inObjects[0];
-		FourierTransformationProcessor filter = new FourierTransformationProcessor();
-		final NMRMeasurementPortObject portOneOut = new NMRMeasurementPortObject(
-				ProcessorAdapter.adapt(filter, fidObject.getMeasurements(), exec));
-		return new PortObject[] { portOneOut };
+		return ProcessorAdapter.adapt(new FourierTransformationProcessor(), inObjects, exec);
 	}
 
 	@Override
