@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.model.core.AbstractMeasurement;
@@ -14,7 +15,7 @@ import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 
 public class KNIMEFIDMeasurement extends AbstractMeasurement
-		implements FIDMeasurement, KNIMEMeasurement, AcquisitionParameter, Serializable {
+		implements FIDMeasurement, AcquisitionParameter, KNIMEMeasurement, Serializable {
 
 	/**
 	 * 
@@ -22,7 +23,7 @@ public class KNIMEFIDMeasurement extends AbstractMeasurement
 	private static final long serialVersionUID = 8772697804527656178L;
 
 	public static List<KNIMEFIDMeasurement> build(Collection<? extends FIDMeasurement> templateMeasurements) {
-		return templateMeasurements.stream().map(e -> build(e)).collect(Collectors.toList());
+		return Objects.requireNonNull(templateMeasurements).stream().map(e -> build(e)).collect(Collectors.toList());
 	}
 
 	public static KNIMEFIDMeasurement build(FIDMeasurement templateMeasurement) {

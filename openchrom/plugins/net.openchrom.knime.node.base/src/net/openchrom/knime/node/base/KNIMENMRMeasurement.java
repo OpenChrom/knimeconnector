@@ -7,10 +7,9 @@ import java.util.Map;
 
 import org.eclipse.chemclipse.model.core.AbstractMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
-import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 
-public class KNIMENMRMeasurement extends AbstractMeasurement implements KNIMEMeasurement, SpectrumMeasurement {
+public class KNIMENMRMeasurement extends AbstractMeasurement implements SpectrumMeasurement, KNIMEMeasurement {
 
 	/**
 	 * 
@@ -19,31 +18,25 @@ public class KNIMENMRMeasurement extends AbstractMeasurement implements KNIMEMea
 
 	public static List<KNIMENMRMeasurement> build(Collection<? extends SpectrumMeasurement> measurements) {
 		List<KNIMENMRMeasurement> result = new ArrayList<>();
-		for (SpectrumMeasurement knimefidMeasurement : measurements) {
-			result.add(new KNIMENMRMeasurement(KNIMEFIDMeasurement.build(knimefidMeasurement.getParent()),
-					KNIMENMRSignal.build(knimefidMeasurement.getSignals()), System.currentTimeMillis()));
+		for (SpectrumMeasurement m : measurements) {
+			result.add(new KNIMENMRMeasurement(KNIMENMRSignal.build(m.getSignals()), m.getAcquisitionParameter()));
 		}
+
 		return result;
 	}
 
-	private final KNIMEFIDMeasurement parent;
-	private final long lastModified;
 	private final List<KNIMENMRSignal> signals;
 
-	public KNIMENMRMeasurement(KNIMEFIDMeasurement parent, List<KNIMENMRSignal> signals, long lastModified) {
-		this.parent = parent;
-		this.signals = signals;
-		this.lastModified = lastModified;
-	}
+	private final AcquisitionParameter aqAcquisitionParameter;
 
-	@Override
-	public FIDMeasurement getParent() {
-		return parent;
+	public KNIMENMRMeasurement(List<KNIMENMRSignal> signals, AcquisitionParameter aqAcquisitionParameter) {
+		this.signals = signals;
+		this.aqAcquisitionParameter = aqAcquisitionParameter;
 	}
 
 	@Override
 	public AcquisitionParameter getAcquisitionParameter() {
-		return parent.getAcquisitionParameter();
+		return aqAcquisitionParameter;
 	}
 
 	@Override
