@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -54,17 +55,17 @@ public class NMRTableNodeModel extends NodeModel {
 		return new DataTableSpec(
 				new DataColumnSpec[] { new DataColumnSpecCreator("Measurement Cnt", LongCell.TYPE).createSpec(),
 						new DataColumnSpecCreator("Cnt", LongCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Frequency", DoubleCell.TYPE).createSpec(),
+						new DataColumnSpecCreator("Chemical shift [ppm]", DoubleCell.TYPE).createSpec(),
 						new DataColumnSpecCreator("Absorptive", DoubleCell.TYPE).createSpec(),
 						new DataColumnSpecCreator("Dispersive", DoubleCell.TYPE).createSpec() });
 	}
 
-	static DataRow buildRow(final RowKey rowKey, final long measurementCnt, final long signalCnt,
-			final SpectrumSignal signal) {
+	static DataRow buildRow(AcquisitionParameter acquisitionParameter, final RowKey rowKey, final long measurementCnt,
+			final long signalCnt, final SpectrumSignal signal) {
 		final List<DataCell> cells = new ArrayList<>();
 		cells.add(new LongCell(measurementCnt));
 		cells.add(new LongCell(signalCnt));
-		cells.add(new DoubleCell(signal.getX()));
+		cells.add(new DoubleCell(acquisitionParameter.toPPM(signal.getFrequency()).doubleValue()));
 		cells.add(new DoubleCell(signal.getAbsorptiveIntensity().doubleValue()));
 		cells.add(new DoubleCell(signal.getDispersiveIntensity().doubleValue()));
 		// cells.add(new DoubleCell(fidSignal.getPhase()));
@@ -100,8 +101,8 @@ public class NMRTableNodeModel extends NodeModel {
 					exec.checkCanceled();
 					// skip a few signals
 					if (signalCnt % 5 == 0) {
-						container.addRowToTable(
-								buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
+						container.addRowToTable(buildRow(((KNIMENMRMeasurement) measurement).getAcquisitionParameter(),
+								RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
 					}
 					signalCnt++;
 					globalRowCnt++;
