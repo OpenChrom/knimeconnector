@@ -3,5 +3,9 @@
    <feature url="features/net.openchrom.knime.node.nmr.feature_3.5.0.qualifier.jar" id="net.openchrom.knime.node.nmr.feature" version="3.5.0.qualifier">
       <category name="net.openchrom.knime.node.nmr"/>
    </feature>
-   <category-def name="net.openchrom.knime.node.nmr.feature" label="OpenChrom NMR KNIME nodes"/>
+   <feature url="features/net.openchrom.platform.feature_1.4.0.qualifier.jar" id="net.openchrom.platform.feature" version="1.4.0.qualifier">
+      <category name="net.openchrom"/>
+   </feature>
+   <category-def name="net.openchrom.knime.node.nmr.feature" label="OpenChrom NMR KNIME Nodes"/>
+   <category-def name="net.openchrom" label="OpenChrom Platform Features"/>
 </site>
