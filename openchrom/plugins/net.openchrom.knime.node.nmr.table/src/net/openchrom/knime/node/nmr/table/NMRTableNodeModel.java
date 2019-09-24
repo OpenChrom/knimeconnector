@@ -54,7 +54,7 @@ public class NMRTableNodeModel extends NodeModel {
 		return new DataTableSpec(
 				new DataColumnSpec[] { new DataColumnSpecCreator("Measurement Cnt", LongCell.TYPE).createSpec(),
 						new DataColumnSpecCreator("Cnt", LongCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Chemical Shift", DoubleCell.TYPE).createSpec(),
+						new DataColumnSpecCreator("Frequency", DoubleCell.TYPE).createSpec(),
 						new DataColumnSpecCreator("Absorptive", DoubleCell.TYPE).createSpec(),
 						new DataColumnSpecCreator("Dispersive", DoubleCell.TYPE).createSpec() });
 	}
@@ -64,7 +64,7 @@ public class NMRTableNodeModel extends NodeModel {
 		final List<DataCell> cells = new ArrayList<>();
 		cells.add(new LongCell(measurementCnt));
 		cells.add(new LongCell(signalCnt));
-		cells.add(new DoubleCell(0.0));
+		cells.add(new DoubleCell(signal.getX()));
 		cells.add(new DoubleCell(signal.getAbsorptiveIntensity().doubleValue()));
 		cells.add(new DoubleCell(signal.getDispersiveIntensity().doubleValue()));
 		// cells.add(new DoubleCell(fidSignal.getPhase()));

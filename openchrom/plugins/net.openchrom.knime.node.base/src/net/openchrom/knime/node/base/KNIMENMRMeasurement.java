@@ -31,7 +31,9 @@ public class KNIMENMRMeasurement extends AbstractMeasurement implements Spectrum
 
 	public KNIMENMRMeasurement(List<KNIMENMRSignal> signals, AcquisitionParameter aqAcquisitionParameter) {
 		this.signals = signals;
-		this.aqAcquisitionParameter = aqAcquisitionParameter;
+		this.aqAcquisitionParameter = new KNIMEAcquisitionParameter(aqAcquisitionParameter.getSpectralWidth(),
+				aqAcquisitionParameter.getNumberOfPoints(), aqAcquisitionParameter.getSpectrometerFrequency(),
+				aqAcquisitionParameter.getCarrierFrequency());
 	}
 
 	@Override

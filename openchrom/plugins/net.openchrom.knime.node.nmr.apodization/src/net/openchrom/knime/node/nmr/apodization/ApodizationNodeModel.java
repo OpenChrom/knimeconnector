@@ -47,7 +47,9 @@ public class ApodizationNodeModel extends NodeModel {
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+
 		return ProcessorAdapter.adaptFID(new ExponentialApodizationFunctionProcessor(), inObjects, exec);
+
 	}
 
 	@Override

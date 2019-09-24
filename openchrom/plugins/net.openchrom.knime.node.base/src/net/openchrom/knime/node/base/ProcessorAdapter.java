@@ -47,10 +47,13 @@ public class ProcessorAdapter {
 
 			@Override
 			public void addMessage(String description, String message, Throwable t, MessageType type) {
-				t.printStackTrace();
-				exec.getProgressMonitor()
-						.setMessage(description + ": " + message + " (" + t.getLocalizedMessage() + ")");
-
+				if (t == null) {
+					exec.getProgressMonitor().setMessage(description + ": " + message);
+				} else {
+					t.printStackTrace();
+					exec.getProgressMonitor()
+							.setMessage(description + ": " + message + " (" + t.getLocalizedMessage() + ")");
+				}
 			}
 		}, new KnimeProgressMonitor(exec));
 
