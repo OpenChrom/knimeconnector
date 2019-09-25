@@ -6,7 +6,7 @@
       provider-name="Lablicate GmbH">
 
    <description url="http://www.lablicate.com">
-      Lablicate GmbH.
+      Headless Bruker FID Reader. Reads in Bruker&apos;s fid, 1r, 1i data.
    </description>
 
    <copyright url="http://www.lablicate.com">
