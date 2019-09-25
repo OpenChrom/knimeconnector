@@ -99,11 +99,10 @@ public class NMRTableNodeModel extends NodeModel {
 				long signalCnt = 0;
 				for (final KNIMENMRSignal signal : ((KNIMENMRMeasurement) measurement).getSignals()) {
 					exec.checkCanceled();
-					// skip a few signals
-					if (signalCnt % 5 == 0) {
-						container.addRowToTable(buildRow(((KNIMENMRMeasurement) measurement).getAcquisitionParameter(),
-								RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
-					}
+
+					container.addRowToTable(buildRow(((KNIMENMRMeasurement) measurement).getAcquisitionParameter(),
+							RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
+
 					signalCnt++;
 					globalRowCnt++;
 				}
