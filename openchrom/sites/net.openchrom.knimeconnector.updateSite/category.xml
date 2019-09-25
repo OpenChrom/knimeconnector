@@ -9,9 +9,9 @@
    <feature url="features/com.lablicate.nmr.converter.bruker.headless_1.0.0.qualifier.jar" id="com.lablicate.nmr.converter.bruker.headless" version="1.0.0.qualifier">
       <category name="com.lablicate.conveter"/>
    </feature>
-   <category-def name="com.lablicate.conveter" label="Lablicate GPL3 licenced Converters">
+   <category-def name="com.lablicate.conveter" label="Proprietary licenced Converters">
       <description>
-         Converter Features provided by Lablicate GmbH. GPL3/ proprietary dual licenced.
+         Converter Features provided by Lablicate GmbH. Proprietary licenced.
       </description>
    </category-def>
    <category-def name="net.openchrom.knime" label="OpenChrom KNIME Nodes">
