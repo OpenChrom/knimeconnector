@@ -26,7 +26,7 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.base.GenericPortObject;
+import net.openchrom.knime.node.base.FIDPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
 import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.digitalfilter.DigitalFilterRemoval;
@@ -36,7 +36,7 @@ public class DigitalFilterNodeModel extends NodeModel {
 	private static final NodeLogger logger = NodeLogger.getLogger(DigitalFilterNodeModel.class);
 
 	protected DigitalFilterNodeModel() {
-		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { GenericPortObject.TYPE });
+		super(new PortType[] { FIDPortObject.TYPE }, new PortType[] { FIDPortObject.TYPE });
 	}
 
 	@Override
@@ -47,44 +47,44 @@ public class DigitalFilterNodeModel extends NodeModel {
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		return ProcessorAdapter.adaptFID(new DigitalFilterRemoval(), inObjects, exec);
+		return ProcessorAdapter.adaptFIDinFIDout(new DigitalFilterRemoval(), inObjects, exec);
 	}
 
 	@Override
 	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		logger.info(this.getClass().getSimpleName() + ": Load internals");
+		logger.debug(this.getClass().getSimpleName() + ": Load internals");
 
 	}
 
 	@Override
 	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		logger.info(this.getClass().getSimpleName() + ": Save internals");
+		logger.debug(this.getClass().getSimpleName() + ": Save internals");
 
 	}
 
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
-		logger.info(this.getClass().getSimpleName() + ": Saving settings");
+		logger.debug(this.getClass().getSimpleName() + ": Saving settings");
 
 	}
 
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.info(this.getClass().getSimpleName() + ": Validate settings");
+		logger.debug(this.getClass().getSimpleName() + ": Validate settings");
 
 	}
 
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.info(this.getClass().getSimpleName() + ": Loading validated settings");
+		logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
 
 	}
 
 	@Override
 	protected void reset() {
-		logger.info(this.getClass().getSimpleName() + ": OnReset");
+		logger.debug(this.getClass().getSimpleName() + ": OnReset");
 
 	}
 

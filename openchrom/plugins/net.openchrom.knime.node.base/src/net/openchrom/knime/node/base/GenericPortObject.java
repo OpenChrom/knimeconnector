@@ -18,29 +18,21 @@ import org.knime.core.node.port.AbstractPortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortObjectZipInputStream;
 import org.knime.core.node.port.PortObjectZipOutputStream;
-import org.knime.core.node.port.PortType;
-import org.knime.core.node.port.PortTypeRegistry;
 
-public class GenericPortObject extends AbstractPortObject {
-
-	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(GenericPortObject.class);
-
-	public static final class Serializer extends AbstractPortObjectSerializer<GenericPortObject> {
-	}
+public abstract class GenericPortObject<T extends KNIMEMeasurement> extends AbstractPortObject {
 
 	private final static String summary = "OpenChrom Measurement";
 
 	private final GenericPortObjectSpec portObjectSpec;
 
-	private final List<KNIMEMeasurement> measurements;
+	private final List<T> measurements;
 
-	public GenericPortObject(final Collection<? extends KNIMEMeasurement> measurements,
-			final GenericPortObjectSpec portObjectSpec) {
+	public GenericPortObject(final Collection<? extends T> measurements, final GenericPortObjectSpec portObjectSpec) {
 		this.measurements = new ArrayList<>(measurements);
 		this.portObjectSpec = Objects.requireNonNull(portObjectSpec);
 	}
 
-	public GenericPortObject(final Collection<? extends KNIMEMeasurement> measurements) {
+	public GenericPortObject(final Collection<? extends T> measurements) {
 		this(measurements, new GenericPortObjectSpec());
 	}
 
@@ -48,7 +40,7 @@ public class GenericPortObject extends AbstractPortObject {
 		this(new ArrayList<>(0), new GenericPortObjectSpec());
 	}
 
-	public List<KNIMEMeasurement> getMeasurements() {
+	public List<T> getMeasurements() {
 		return measurements;
 	}
 
@@ -76,7 +68,7 @@ public class GenericPortObject extends AbstractPortObject {
 		if (measurements != null) {
 			out.write(measurements.size());
 			final ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-			for (final KNIMEMeasurement m : measurements) {
+			for (final T m : measurements) {
 				objectOutputStream.writeObject(m);
 				objectOutputStream.writeObject(m.getHeaderDataMap());
 			}
@@ -89,20 +81,19 @@ public class GenericPortObject extends AbstractPortObject {
 
 	}
 
+	@SuppressWarnings({ "unchecked", "unused" })
 	@Override
 	protected void load(final PortObjectZipInputStream in, final PortObjectSpec spec, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
 		// specs currently not needed
-		@SuppressWarnings("unused")
 		final GenericPortObjectSpec fidSpec = (GenericPortObjectSpec) spec;
-		@SuppressWarnings("unused")
 		final ZipEntry zipEntry = in.getNextEntry();
 		final int numMeasurements = in.read();
 		final ObjectInputStream objectInputStream = new ObjectInputStream(in);
 		for (int i = 0; i < numMeasurements; i++) {
 			try {
 				Object o = objectInputStream.readObject();
-				final KNIMEMeasurement m = (KNIMEMeasurement) o;
+				final T m = (T) o;
 				Map<String, String> h = (Map<String, String>) objectInputStream.readObject();
 				m.setHeaderDataMap(h);
 				measurements.add(m);

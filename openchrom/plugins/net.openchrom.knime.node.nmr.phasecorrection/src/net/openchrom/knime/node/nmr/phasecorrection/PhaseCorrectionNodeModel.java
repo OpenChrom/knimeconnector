@@ -26,8 +26,8 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.base.GenericPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
+import net.openchrom.knime.node.base.NMRPortObject;
 import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.phasecorrection.PhaseCorrectionProcessor;
 
@@ -36,7 +36,7 @@ public class PhaseCorrectionNodeModel extends NodeModel {
 	private static final NodeLogger logger = NodeLogger.getLogger(PhaseCorrectionNodeModel.class);
 
 	public PhaseCorrectionNodeModel() {
-		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { GenericPortObject.TYPE });
+		super(new PortType[] { NMRPortObject.TYPE }, new PortType[] { NMRPortObject.TYPE });
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class PhaseCorrectionNodeModel extends NodeModel {
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		return ProcessorAdapter.adaptNMR(new PhaseCorrectionProcessor(), inObjects, exec);
+		return ProcessorAdapter.adaptNMRinNMRout(new PhaseCorrectionProcessor(), inObjects, exec);
 	}
 
 	@Override

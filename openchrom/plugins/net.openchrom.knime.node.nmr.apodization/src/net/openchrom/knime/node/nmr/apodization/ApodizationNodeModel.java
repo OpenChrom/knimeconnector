@@ -26,7 +26,7 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.base.GenericPortObject;
+import net.openchrom.knime.node.base.FIDPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
 import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.apodization.ExponentialApodizationFunctionProcessor;
@@ -36,7 +36,7 @@ public class ApodizationNodeModel extends NodeModel {
 	private static final NodeLogger logger = NodeLogger.getLogger(ApodizationNodeModel.class);
 
 	public ApodizationNodeModel() {
-		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { GenericPortObject.TYPE });
+		super(new PortType[] { FIDPortObject.TYPE }, new PortType[] { FIDPortObject.TYPE });
 	}
 
 	@Override
@@ -47,8 +47,8 @@ public class ApodizationNodeModel extends NodeModel {
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-
-		return ProcessorAdapter.adaptFID(new ExponentialApodizationFunctionProcessor(), inObjects, exec);
+		// FID in, FID out.
+		return ProcessorAdapter.adaptFIDinFIDout(new ExponentialApodizationFunctionProcessor(), inObjects, exec);
 
 	}
 

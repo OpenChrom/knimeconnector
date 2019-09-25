@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -42,8 +41,8 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.base.GenericPortObject;
-import net.openchrom.knime.node.base.KNIMEMeasurement;
+import net.openchrom.knime.node.base.FIDPortObject;
+import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
 
 public class FIDTableNodeModel extends NodeModel {
 
@@ -71,7 +70,7 @@ public class FIDTableNodeModel extends NodeModel {
 	}
 
 	public FIDTableNodeModel() {
-		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
+		super(new PortType[] { FIDPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
 	}
 
 	@Override
@@ -87,24 +86,20 @@ public class FIDTableNodeModel extends NodeModel {
 		long globalRowCnt = 0;
 		long measurementCnt = 0;
 
-		GenericPortObject fidObject = (GenericPortObject) inObjects[0];
-		Collection<KNIMEMeasurement> measurements = fidObject.getMeasurements();
+		FIDPortObject fidObject = (FIDPortObject) inObjects[0];
+		Collection<KNIMEFIDMeasurement> measurements = fidObject.getMeasurements();
 		exec.getProgressMonitor().setProgress(0);
-		for (final KNIMEMeasurement measurement : measurements) {
+		for (final KNIMEFIDMeasurement measurement : measurements) {
 			exec.checkCanceled();
-			if (measurement instanceof FIDMeasurement) {
-				long signalCnt = 0;
-				for (final FIDSignal fidSignal : ((FIDMeasurement) measurement).getSignals()) {
-					exec.checkCanceled();
-					container.addRowToTable(
-							buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, fidSignal));
-					signalCnt++;
-					globalRowCnt++;
-				}
-				exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
-			} else {
-				logger.error("Unexpected type " + measurement);
+			long signalCnt = 0;
+			for (final FIDSignal fidSignal : measurement.getSignals()) {
+				exec.checkCanceled();
+				container.addRowToTable(
+						buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, fidSignal));
+				signalCnt++;
+				globalRowCnt++;
 			}
+			exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
 			measurementCnt++;
 		}
 		container.close();
@@ -113,40 +108,40 @@ public class FIDTableNodeModel extends NodeModel {
 	}
 
 	@Override
-	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec)
+	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": Load internals");
 
 	}
 
 	@Override
-	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec)
+	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": Save internals");
 
 	}
 
 	@Override
-	protected void saveSettingsTo(NodeSettingsWO settings) {
-		// TODO Auto-generated method stub
+	protected void saveSettingsTo(final NodeSettingsWO settings) {
+		logger.debug(this.getClass().getSimpleName() + ": Saving settings");
 
 	}
 
 	@Override
-	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
-		// TODO Auto-generated method stub
+	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+		logger.debug(this.getClass().getSimpleName() + ": Validate settings");
 
 	}
 
 	@Override
-	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
-		// TODO Auto-generated method stub
+	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
+		logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
 
 	}
 
 	@Override
 	protected void reset() {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": OnReset");
 
 	}
 

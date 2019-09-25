@@ -44,7 +44,7 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 import org.knime.core.util.FileUtil;
 
-import net.openchrom.knime.node.base.GenericPortObject;
+import net.openchrom.knime.node.base.FIDPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
 import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
 import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
@@ -68,7 +68,7 @@ public class FidReaderNodeModel extends NodeModel {
 
 	public FidReaderNodeModel() {
 		// zero input ports, one FID-port-object and one table as output
-		super(new PortType[] {}, new PortType[] { GenericPortObject.TYPE });
+		super(new PortType[] {}, new PortType[] { FIDPortObject.TYPE });
 		valueIn = createSettingsModelValueIn();
 	}
 
@@ -109,7 +109,7 @@ public class FidReaderNodeModel extends NodeModel {
 
 		logger.info(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
 
-		final GenericPortObject portOneOut = new GenericPortObject(KNIMEFIDMeasurement.build(fidMeasurements));
+		final FIDPortObject portOneOut = new FIDPortObject(KNIMEFIDMeasurement.build(fidMeasurements));
 		return new PortObject[] { portOneOut };
 	}
 

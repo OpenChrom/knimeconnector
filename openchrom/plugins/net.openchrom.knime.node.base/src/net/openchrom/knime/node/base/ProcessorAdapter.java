@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.eclipse.chemclipse.model.filter.IMeasurementFilter;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.MessageConsumer;
 import org.eclipse.chemclipse.processing.core.MessageType;
 import org.knime.core.node.ExecutionContext;
@@ -16,34 +17,38 @@ import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
 
 public class ProcessorAdapter {
 
-	public static PortObject[] adaptFID(IMeasurementFilter<?> filter, PortObject[] inObjects, ExecutionContext exec) {
-		GenericPortObject fidObject = (GenericPortObject) inObjects[0];
-		final GenericPortObject portOneOut = new GenericPortObject(adapt(filter, fidObject.getMeasurements(),
-				e -> KNIMEFIDMeasurement.build((Collection<? extends FIDMeasurement>) e), exec));
-		return new PortObject[] { portOneOut };
-	}
-
-	public static PortObject[] adaptNMR(IMeasurementFilter<?> filter, PortObject[] inObjects, ExecutionContext exec) {
-		GenericPortObject fidObject = (GenericPortObject) inObjects[0];
-		final GenericPortObject portOneOut = new GenericPortObject(adapt(filter, fidObject.getMeasurements(),
-				e -> KNIMENMRMeasurement.build((Collection<? extends KNIMENMRMeasurement>) e), exec));
-		return new PortObject[] { portOneOut };
-	}
-
-	public static <M extends KNIMEMeasurement> PortObject[] adapt(IMeasurementFilter<?> filter,
-			Function<? super Collection<? extends IMeasurement>, List<M>> measurementFactory, PortObject[] inObjects,
+	public static PortObject[] adaptFIDinFIDout(IMeasurementFilter<?> filter, PortObject[] inObjects,
 			ExecutionContext exec) {
-		GenericPortObject fidObject = (GenericPortObject) inObjects[0];
-		final GenericPortObject portOneOut = new GenericPortObject(
-				adapt(filter, fidObject.getMeasurements(), measurementFactory, exec));
+		FIDPortObject fidObject = (FIDPortObject) inObjects[0];
+		List<KNIMEFIDMeasurement> measurements = adapt(filter, fidObject.getMeasurements(),
+				e -> KNIMEFIDMeasurement.build((Collection<? extends FIDMeasurement>) e), exec);
+		final FIDPortObject portOneOut = new FIDPortObject(measurements);
 		return new PortObject[] { portOneOut };
 	}
 
-	public static <M extends KNIMEMeasurement> List<M> adapt(IMeasurementFilter<?> filter,
-			Collection<? extends IMeasurement> measurements,
-			Function<? super Collection<? extends IMeasurement>, List<M>> measurementFactory, ExecutionContext exec) {
+	public static PortObject[] adaptFIDinNMRout(IMeasurementFilter<?> filter, PortObject[] inObjects,
+			ExecutionContext exec) {
+		FIDPortObject fidObject = (FIDPortObject) inObjects[0];
+		List<KNIMENMRMeasurement> measurements = adapt(filter, fidObject.getMeasurements(),
+				e -> KNIMENMRMeasurement.build((Collection<? extends SpectrumMeasurement>) e), exec);
+		final NMRPortObject portOneOut = new NMRPortObject(measurements);
+		return new PortObject[] { portOneOut };
+	}
 
-		List<M> result = filter.filterIMeasurements(measurements, null, measurementFactory, new MessageConsumer() {
+	public static PortObject[] adaptNMRinNMRout(IMeasurementFilter<?> filter, PortObject[] inObjects,
+			ExecutionContext exec) {
+		NMRPortObject fidObject = (NMRPortObject) inObjects[0];
+		List<KNIMENMRMeasurement> measurements = adapt(filter, fidObject.getMeasurements(),
+				e -> KNIMENMRMeasurement.build((Collection<? extends SpectrumMeasurement>) e), exec);
+		final NMRPortObject portOneOut = new NMRPortObject(measurements);
+		return new PortObject[] { portOneOut };
+	}
+
+	public static <In extends KNIMEMeasurement, Out extends KNIMEMeasurement> List<Out> adapt(
+			IMeasurementFilter<?> filter, Collection<In> measurements,
+			Function<? super Collection<? extends IMeasurement>, List<Out>> measurementFactory, ExecutionContext exec) {
+
+		List<Out> result = filter.filterIMeasurements(measurements, null, measurementFactory, new MessageConsumer() {
 
 			@Override
 			public void addMessage(String description, String message, Throwable t, MessageType type) {
