@@ -42,10 +42,9 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.base.GenericPortObject;
-import net.openchrom.knime.node.base.KNIMEMeasurement;
 import net.openchrom.knime.node.base.KNIMENMRMeasurement;
 import net.openchrom.knime.node.base.KNIMENMRSignal;
+import net.openchrom.knime.node.base.NMRPortObject;
 
 public class NMRTableNodeModel extends NodeModel {
 
@@ -73,7 +72,7 @@ public class NMRTableNodeModel extends NodeModel {
 	}
 
 	public NMRTableNodeModel() {
-		super(new PortType[] { GenericPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
+		super(new PortType[] { NMRPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
 	}
 
 	@Override
@@ -89,28 +88,24 @@ public class NMRTableNodeModel extends NodeModel {
 		long globalRowCnt = 0;
 		long measurementCnt = 0;
 
-		GenericPortObject fidObject = (GenericPortObject) inObjects[0];
-		Collection<KNIMEMeasurement> measurements = fidObject.getMeasurements();
+		NMRPortObject fidObject = (NMRPortObject) inObjects[0];
+		Collection<KNIMENMRMeasurement> measurements = fidObject.getMeasurements();
 		exec.getProgressMonitor().setProgress(0);
-		for (final KNIMEMeasurement measurement : measurements) {
+		for (final KNIMENMRMeasurement measurement : measurements) {
 			exec.checkCanceled();
-			if (measurement instanceof KNIMENMRMeasurement) {
 
-				long signalCnt = 0;
-				for (final KNIMENMRSignal signal : ((KNIMENMRMeasurement) measurement).getSignals()) {
-					exec.checkCanceled();
+			long signalCnt = 0;
+			for (final KNIMENMRSignal signal : measurement.getSignals()) {
+				exec.checkCanceled();
 
-					container.addRowToTable(buildRow(((KNIMENMRMeasurement) measurement).getAcquisitionParameter(),
-							RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
+				container.addRowToTable(buildRow(measurement.getAcquisitionParameter(),
+						RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
 
-					signalCnt++;
-					globalRowCnt++;
-				}
-				exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
-
-			} else {
-				logger.error("Unexpected type " + measurement);
+				signalCnt++;
+				globalRowCnt++;
 			}
+			exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
+
 			measurementCnt++;
 		}
 		container.close();

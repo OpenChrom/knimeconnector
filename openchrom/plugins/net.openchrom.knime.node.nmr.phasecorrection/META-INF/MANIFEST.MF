@@ -11,9 +11,13 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: net.openchrom.knime.node.nmr.phasecorrection
 Bundle-ActivationPolicy: lazy
 Import-Package: net.openchrom.knime.node.base,
+ net.openchrom.knime.node.base.progress,
  net.openchrom.nmr.processing,
  net.openchrom.nmr.processing.phasecorrection,
  net.openchrom.nmr.processing.supplier.base.core,
+ net.openchrom.nmr.processing.supplier.base.settings,
  org.eclipse.chemclipse.model.core,
  org.eclipse.chemclipse.model.filter;version="[1.0.0,2.0.0)",
- org.eclipse.chemclipse.nmr.model.core
+ org.eclipse.chemclipse.nmr.model.core,
+ org.eclipse.chemclipse.processing.core,
+ org.eclipse.chemclipse.processing.filter;version="1.0.0"
