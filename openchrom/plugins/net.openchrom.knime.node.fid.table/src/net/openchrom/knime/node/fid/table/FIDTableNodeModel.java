@@ -48,7 +48,7 @@ public class FIDTableNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(FIDTableNodeModel.class);
 
-	static DataTableSpec getFIDTableSpec() {
+	private static DataTableSpec getFIDTableSpec() {
 		return new DataTableSpec(
 				new DataColumnSpec[] { new DataColumnSpecCreator("Measurement Cnt", LongCell.TYPE).createSpec(),
 						new DataColumnSpecCreator("Cnt", LongCell.TYPE).createSpec(),
@@ -57,7 +57,7 @@ public class FIDTableNodeModel extends NodeModel {
 						new DataColumnSpecCreator("Imaginary", DoubleCell.TYPE).createSpec() });
 	}
 
-	static DataRow buildRow(final RowKey rowKey, final long measurementCnt, final long signalCnt,
+	private static DataRow buildRow(final RowKey rowKey, final long measurementCnt, final long signalCnt,
 			final FIDSignal fidSignal) {
 		final List<DataCell> cells = new ArrayList<>();
 		cells.add(new LongCell(measurementCnt));
