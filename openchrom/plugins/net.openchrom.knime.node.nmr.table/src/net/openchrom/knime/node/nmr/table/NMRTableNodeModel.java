@@ -115,40 +115,40 @@ public class NMRTableNodeModel extends NodeModel {
 	}
 
 	@Override
-	protected void loadInternals(File nodeInternDir, ExecutionMonitor exec)
+	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": Load internals");
 
 	}
 
 	@Override
-	protected void saveInternals(File nodeInternDir, ExecutionMonitor exec)
+	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": Save internals");
 
 	}
 
 	@Override
-	protected void saveSettingsTo(NodeSettingsWO settings) {
-		// TODO Auto-generated method stub
+	protected void saveSettingsTo(final NodeSettingsWO settings) {
+		logger.debug(this.getClass().getSimpleName() + ": Saving settings");
 
 	}
 
 	@Override
-	protected void validateSettings(NodeSettingsRO settings) throws InvalidSettingsException {
-		// TODO Auto-generated method stub
+	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+		logger.debug(this.getClass().getSimpleName() + ": Validate settings");
 
 	}
 
 	@Override
-	protected void loadValidatedSettingsFrom(NodeSettingsRO settings) throws InvalidSettingsException {
-		// TODO Auto-generated method stub
+	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
+		logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
 
 	}
 
 	@Override
 	protected void reset() {
-		// TODO Auto-generated method stub
+		logger.debug(this.getClass().getSimpleName() + ": OnReset");
 
 	}
 

@@ -17,37 +17,35 @@
  *******************************************************************************/
 package net.openchrom.knime.nmr.io.bruker;
 
- import org.knime.core.node.NodeDialogPane;
- import org.knime.core.node.NodeFactory;
- import org.knime.core.node.NodeView;
+import org.knime.core.node.NodeDialogPane;
+import org.knime.core.node.NodeFactory;
+import org.knime.core.node.NodeView;
 
- public class FidReaderNodeFactory extends NodeFactory<FidReaderNodeModel> {
+public class FidReaderNodeFactory extends NodeFactory<FidReaderNodeModel> {
 
-	 @Override
-	 public FidReaderNodeModel createNodeModel() {
-		 return new FidReaderNodeModel();
-	 }
+	@Override
+	public FidReaderNodeModel createNodeModel() {
+		return new FidReaderNodeModel();
+	}
 
-	 @Override
-	 protected int getNrNodeViews() {
-		 // TODO Auto-generated method stub
-		 return 0;
-	 }
+	@Override
+	protected int getNrNodeViews() {
+		return 0;
+	}
 
-	 @Override
-	 public NodeView<FidReaderNodeModel> createNodeView(final int viewIndex, final FidReaderNodeModel nodeModel) {
-		 // TODO Auto-generated method stub
-		 return null;
-	 }
+	@Override
+	public NodeView<FidReaderNodeModel> createNodeView(final int viewIndex, final FidReaderNodeModel nodeModel) {
+		return null;
+	}
 
-	 @Override
-	 protected boolean hasDialog() {
-		 return true;
-	 }
+	@Override
+	protected boolean hasDialog() {
+		return true;
+	}
 
-	 @Override
-	 protected NodeDialogPane createNodeDialogPane() {
-		 return new FidReaderNodeDialogPane();
-	 }
+	@Override
+	protected NodeDialogPane createNodeDialogPane() {
+		return new FidReaderNodeDialogPane();
+	}
 
- }
+}

@@ -56,7 +56,6 @@ public abstract class GenericPortObject<T extends KNIMEMeasurement> extends Abst
 
 	@Override
 	public JComponent[] getViews() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

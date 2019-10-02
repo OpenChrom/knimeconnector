@@ -11,39 +11,35 @@
  *******************************************************************************/
 package net.openchrom.knime.node.nmr.phasecorrection;
 
- import org.knime.core.node.NodeDialogPane;
- import org.knime.core.node.NodeFactory;
- import org.knime.core.node.NodeView;
+import org.knime.core.node.NodeDialogPane;
+import org.knime.core.node.NodeFactory;
+import org.knime.core.node.NodeView;
 
- public class PhaseCorrectionNodeFactory extends NodeFactory<PhaseCorrectionNodeModel> {
+public class PhaseCorrectionNodeFactory extends NodeFactory<PhaseCorrectionNodeModel> {
 
-	 @Override
-	 public PhaseCorrectionNodeModel createNodeModel() {
-		 return new PhaseCorrectionNodeModel();
-	 }
+	@Override
+	public PhaseCorrectionNodeModel createNodeModel() {
+		return new PhaseCorrectionNodeModel();
+	}
 
-	 @Override
-	 protected int getNrNodeViews() {
-		 // TODO Auto-generated method stub
-		 return 0;
-	 }
+	@Override
+	protected int getNrNodeViews() {
+		return 0;
+	}
 
-	 @Override
-	 public NodeView<PhaseCorrectionNodeModel> createNodeView(int viewIndex, PhaseCorrectionNodeModel nodeModel) {
-		 // TODO Auto-generated method stub
-		 return null;
-	 }
+	@Override
+	public NodeView<PhaseCorrectionNodeModel> createNodeView(int viewIndex, PhaseCorrectionNodeModel nodeModel) {
+		return null;
+	}
 
-	 @Override
-	 protected boolean hasDialog() {
-		 // TODO Auto-generated method stub
-		 return false;
-	 }
+	@Override
+	protected boolean hasDialog() {
+		return false;
+	}
 
-	 @Override
-	 protected NodeDialogPane createNodeDialogPane() {
-		 // TODO Auto-generated method stub
-		 return null;
-	 }
+	@Override
+	protected NodeDialogPane createNodeDialogPane() {
+		return null;
+	}
 
- }
+}
