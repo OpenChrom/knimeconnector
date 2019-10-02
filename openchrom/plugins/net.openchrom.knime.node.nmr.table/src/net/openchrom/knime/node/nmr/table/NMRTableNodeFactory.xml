@@ -19,17 +19,17 @@
 	<name>NMR Table</name>
 
 	<shortDescription>
-		Displays an OpenChrom NMR spectrum as a table.
+		Translates an OpenChrom NMR spectrum into a table.
 	</shortDescription>
 
 	<fullDescription>
-		<intro> Displays an OpenChrom NMR spectrum as a table.</intro>
+		<intro> Translates an OpenChrom NMR spectrum into a table.</intro>
 
 	</fullDescription>
 
 	<ports>
-		<inPort index="0" name="OpenChrom NMR data">OpenChrom FID data</inPort>
-		<outPort index="0" name="NMR spectrum table">FID data Table</outPort>
+		<inPort index="0" name="OpenChrom NMR Data">OpenChrom NMR Data</inPort>
+		<outPort index="0" name="OpenChrom NMR spectrum to Table">OpenChrom NMR spectrum to Table</outPort>
 	</ports>
 
 
