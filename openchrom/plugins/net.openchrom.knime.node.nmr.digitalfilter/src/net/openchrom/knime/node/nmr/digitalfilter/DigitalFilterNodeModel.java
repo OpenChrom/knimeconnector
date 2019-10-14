@@ -31,6 +31,12 @@ import net.openchrom.knime.node.base.GenericPortObjectSpec;
 import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.digitalfilter.DigitalFilterRemoval;
 
+/**
+ * {@link NodeModel} for the Digital Filter Removal node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class DigitalFilterNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(DigitalFilterNodeModel.class);

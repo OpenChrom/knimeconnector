@@ -25,6 +25,12 @@ import org.eclipse.chemclipse.nmr.model.core.DataDimension;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 
+/**
+ * Default implementation for {@link FIDMeasurement}
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class KNIMEFIDMeasurement extends AbstractMeasurement
 		implements FIDMeasurement, AcquisitionParameter, KNIMEMeasurement, Serializable {
 

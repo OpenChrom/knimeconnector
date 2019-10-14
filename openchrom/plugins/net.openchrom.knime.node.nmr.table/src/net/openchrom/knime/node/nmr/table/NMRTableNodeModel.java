@@ -46,6 +46,12 @@ import net.openchrom.knime.node.base.KNIMENMRMeasurement;
 import net.openchrom.knime.node.base.KNIMENMRSignal;
 import net.openchrom.knime.node.base.NMRPortObject;
 
+/**
+ * {@link NodeModel} for the NMR to Table node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class NMRTableNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(NMRTableNodeModel.class);

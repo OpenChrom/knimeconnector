@@ -31,6 +31,12 @@ import net.openchrom.knime.node.base.NMRPortObject;
 import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.phasecorrection.PhaseCorrectionProcessor;
 
+/**
+ * {@link NodeModel} for the Phase Correction node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class PhaseCorrectionNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(PhaseCorrectionNodeModel.class);

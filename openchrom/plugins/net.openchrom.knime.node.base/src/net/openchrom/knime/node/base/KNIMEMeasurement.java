@@ -15,6 +15,12 @@ import java.util.Map;
 
 import org.eclipse.chemclipse.model.core.IMeasurement;
 
+/**
+ * Default implementation for {@link IMeasurement}
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public interface KNIMEMeasurement extends IMeasurement {
 
 	void setHeaderDataMap(Map<String, String> h);

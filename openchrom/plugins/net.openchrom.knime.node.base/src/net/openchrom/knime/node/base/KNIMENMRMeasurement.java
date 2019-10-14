@@ -20,6 +20,12 @@ import org.eclipse.chemclipse.model.core.AbstractMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 
+/**
+ * Default implementation for {@link SpectrumMeasurement}
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class KNIMENMRMeasurement extends AbstractMeasurement implements SpectrumMeasurement, KNIMEMeasurement {
 
 	/**

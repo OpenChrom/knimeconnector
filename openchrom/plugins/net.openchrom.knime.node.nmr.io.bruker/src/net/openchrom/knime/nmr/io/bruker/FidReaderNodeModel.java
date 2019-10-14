@@ -50,6 +50,12 @@ import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
 import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
 import net.openchrom.nmr.converter.supplier.bruker.core.ScanImportConverterFid;
 
+/**
+ * {@link NodeModel} for the Bruker FID reader node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class FidReaderNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(FidReaderNodeModel.class);
@@ -107,7 +113,7 @@ public class FidReaderNodeModel extends NodeModel {
 		final List<FIDMeasurement> fidMeasurements = processingInfo.getProcessingResult().stream()
 				.filter(e -> e instanceof FIDMeasurement).map(e -> (FIDMeasurement) e).collect(Collectors.toList());
 
-		logger.info(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
+		logger.debug(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
 
 		final FIDPortObject portOneOut = new FIDPortObject(KNIMEFIDMeasurement.build(fidMeasurements));
 		return new PortObject[] { portOneOut };
@@ -116,41 +122,41 @@ public class FidReaderNodeModel extends NodeModel {
 	@Override
 	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		logger.info(this.getClass().getSimpleName() + ": Load internals");
+		logger.debug(this.getClass().getSimpleName() + ": Load internals");
 
 	}
 
 	@Override
 	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
-		logger.info(this.getClass().getSimpleName() + ": Save internals");
+		logger.debug(this.getClass().getSimpleName() + ": Save internals");
 
 	}
 
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
-		logger.info(this.getClass().getSimpleName() + ": Saving settings");
+		logger.debug(this.getClass().getSimpleName() + ": Saving settings");
 		valueIn.saveSettingsTo(settings);
 
 	}
 
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.info(this.getClass().getSimpleName() + ": Validate settings");
+		logger.debug(this.getClass().getSimpleName() + ": Validate settings");
 		valueIn.validateSettings(settings);
 
 	}
 
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.info(this.getClass().getSimpleName() + ": Loading validated settings");
+		logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
 		valueIn.loadSettingsFrom(settings);
 
 	}
 
 	@Override
 	protected void reset() {
-		logger.info(this.getClass().getSimpleName() + ": OnReset");
+		logger.debug(this.getClass().getSimpleName() + ": OnReset");
 
 	}
 

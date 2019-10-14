@@ -16,6 +16,12 @@ import java.math.BigDecimal;
 
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
 
+/**
+ * Default implementation for {@code KNIMEAcquisitionParameter}.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class KNIMEAcquisitionParameter implements AcquisitionParameter, Serializable {
 
 	/**

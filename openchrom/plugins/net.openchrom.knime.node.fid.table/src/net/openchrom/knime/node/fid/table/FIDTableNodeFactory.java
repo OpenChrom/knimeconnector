@@ -15,6 +15,12 @@ import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
+/**
+ * {@link NodeFactory} for {@link FIDTableNodeModel}.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class FIDTableNodeFactory extends NodeFactory<FIDTableNodeModel> {
 
 	@Override

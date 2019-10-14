@@ -17,6 +17,13 @@ import org.knime.core.node.ExecutionMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * An {@link IProgressMonitor} that delegates to an instance of
+ * {@link ExecutionMonitor}.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class KnimeProgressMonitor implements IProgressMonitor {
 
 	private final ExecutionMonitor delegate;

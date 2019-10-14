@@ -21,6 +21,12 @@ import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
+/**
+ * {@link NodeFactory} for the Bruker FID reader node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class FidReaderNodeFactory extends NodeFactory<FidReaderNodeModel> {
 
 	@Override

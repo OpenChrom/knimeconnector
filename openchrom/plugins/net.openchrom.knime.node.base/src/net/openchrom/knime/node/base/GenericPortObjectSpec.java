@@ -19,6 +19,12 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortObjectSpecZipInputStream;
 import org.knime.core.node.port.PortObjectSpecZipOutputStream;
 
+/**
+ * No-opt implementation of {@link PortObjectSpec}.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class GenericPortObjectSpec implements PortObjectSpec {
 
 	public static final class Serializer extends PortObjectSpecSerializer<GenericPortObjectSpec> {

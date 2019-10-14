@@ -17,6 +17,13 @@ import java.util.List;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
+/**
+ * A {@link GenericPortObject} holding measurments of type
+ * {@link KNIMENMRMeasurement}.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class NMRPortObject extends GenericPortObject<KNIMENMRMeasurement> {
 
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(NMRPortObject.class);

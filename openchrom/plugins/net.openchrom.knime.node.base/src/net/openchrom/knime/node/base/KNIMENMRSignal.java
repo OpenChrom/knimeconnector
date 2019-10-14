@@ -19,6 +19,12 @@ import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 
+/**
+ * Default implementation for {@link SpectrumSignal}
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class KNIMENMRSignal implements SpectrumSignal, Serializable {
 
 	/**

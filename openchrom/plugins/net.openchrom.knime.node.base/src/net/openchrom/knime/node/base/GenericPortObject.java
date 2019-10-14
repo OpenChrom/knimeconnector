@@ -26,10 +26,20 @@ import javax.swing.JComponent;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.port.AbstractPortObject;
+import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortObjectZipInputStream;
 import org.knime.core.node.port.PortObjectZipOutputStream;
 
+/**
+ * Base class for {@link PortObject}s that hold collections of
+ * {@link KNIMEMeasurement}.
+ * 
+ * @author Alexander Kerner
+ *
+ * @param <T>
+ *            type of {@link KNIMEMeasurement}
+ */
 public abstract class GenericPortObject<T extends KNIMEMeasurement> extends AbstractPortObject {
 
 	private final static String summary = "OpenChrom Measurement";

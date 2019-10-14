@@ -15,6 +15,12 @@ import org.knime.core.node.NodeDialogPane;
 import org.knime.core.node.NodeFactory;
 import org.knime.core.node.NodeView;
 
+/**
+ * {@link NodeFactory} for the Digital Filter Removal node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class DigitalFilterNodeFactory extends NodeFactory<DigitalFilterNodeModel> {
 
 	@Override

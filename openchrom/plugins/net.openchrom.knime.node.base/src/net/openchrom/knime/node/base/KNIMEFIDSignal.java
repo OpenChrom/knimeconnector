@@ -19,6 +19,12 @@ import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 
+/**
+ * Default implementation for {@link FIDSignal}
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class KNIMEFIDSignal implements FIDSignal, Serializable {
 
 	public static List<KNIMEFIDSignal> build(Collection<? extends FIDSignal> templateSignals) {

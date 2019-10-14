@@ -32,6 +32,12 @@ import net.openchrom.knime.node.base.NMRPortObject;
 import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.ft.FourierTransformationProcessor;
 
+/**
+ * {@link NodeModel} for the Fourier transformation node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class FTNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(FTNodeModel.class);

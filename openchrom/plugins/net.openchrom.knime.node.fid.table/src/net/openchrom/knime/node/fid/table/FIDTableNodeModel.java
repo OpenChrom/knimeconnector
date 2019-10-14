@@ -44,6 +44,12 @@ import org.knime.core.node.port.PortType;
 import net.openchrom.knime.node.base.FIDPortObject;
 import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
 
+/**
+ * {@link NodeModel} for the FID to Table node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
 public class FIDTableNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(FIDTableNodeModel.class);
