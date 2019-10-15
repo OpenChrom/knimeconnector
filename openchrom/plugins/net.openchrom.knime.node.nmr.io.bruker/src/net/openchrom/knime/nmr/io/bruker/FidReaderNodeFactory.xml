@@ -25,16 +25,16 @@
 	<name>Bruker FID Reader</name>
 
 	<shortDescription>
-		Reads Bruker FID data.
+		A node to read-in Bruker's FID data.
 	</shortDescription>
 
 	<fullDescription>
-	
-		<intro>Reads one Bruker FID file and transforms it into OpenChrom FID
-			data.</intro>
+
+		<intro>Reads-in one Bruker FID file and transforms it into an OpenChrom FID
+			data set.</intro>
 			
-		<option name="File Chooser">Choose a directory containing Bruker NMR/FID data.
-		</option>
+		<option name="File Chooser">A Directory containing the <pre>fid</pre> file.
+		</option> 
 	</fullDescription>
 
 	<ports>

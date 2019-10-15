@@ -19,11 +19,11 @@
 	<name>Fourier Transformation</name>
 
 	<shortDescription>
-		Performs a FT on FID data and generates NMR data.
+		Performs a Fourier Transformation on FID data and generates NMR data.
 	</shortDescription>
 
 	<fullDescription>
-		<intro>Performs a FT on FID data and generates NMR data.</intro>
+		<intro>Performs a Fourier Transformation on OpenChrom FID data and generates OpenChrom NMR data.</intro>
 	</fullDescription>
 
 	<ports>
