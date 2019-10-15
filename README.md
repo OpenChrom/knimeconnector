@@ -1,6 +1,6 @@
 # OpenChrom - KNIME Connector
 
-The tools provided in this repository will help you to create KNIME nodes from OpenChrom Plug-ins.
+The tools provided in this repository will help you to use and create KNIME nodes from OpenChrom Plug-ins.
 
 Please find our **Code of Conduct** [here](https://github.com/OpenChrom/knimeconnector/blob/master/CODE_OF_CONDUCT.md).
 
