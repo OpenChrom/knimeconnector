@@ -40,7 +40,6 @@
    <features>
       <feature id="net.openchrom.knime.deps"/>
       <feature id="net.openchrom.platform.feature"/>
-      <feature id="com.lablicate.openchrom.community.converter.feature"/>
       <feature id="org.knime.features.base"/>
       <feature id="net.openchrom.knime.deps.svg"/>
    </features>
