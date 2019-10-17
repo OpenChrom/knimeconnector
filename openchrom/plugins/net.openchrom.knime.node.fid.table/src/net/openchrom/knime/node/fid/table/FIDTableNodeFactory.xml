@@ -16,7 +16,7 @@
 	xmlns="http://knime.org/node/v2.8"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
-	<name>FID Table</name>
+	<name>FID to Table</name>
 
 	<shortDescription>
 		Translates OpenChrom FID data into a table layout.
@@ -30,7 +30,7 @@
 
 	<ports>
 		<inPort index="0" name="OpenChrom FID Data">OpenChrom FID Data</inPort>
-		<outPort index="0" name="OpenChrom FID Data to Table">OpenChrom FID Data to Table</outPort>
+		<outPort index="0" name="OpenChrom FID Data to Table">OpenChrom FID Data Table</outPort>
 	</ports>
 
 
