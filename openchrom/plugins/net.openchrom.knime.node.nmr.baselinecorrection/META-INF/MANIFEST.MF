@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: NMR Baseline Correction
+Bundle-SymbolicName: net.openchrom.knime.node.nmr.baselinecorrection;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.openchrom.knime.node.nmr.baselinecorrection.Activator
+Bundle-Vendor: Lablicate GmbH
+Require-Bundle: org.eclipse.core.runtime,
+ org.knime.base;bundle-version="3.5.4"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: net.openchrom.knime.node.nmr.baselinecorrection
+Bundle-ActivationPolicy: lazy
+Import-Package: net.openchrom.knime.node.base,
+ org.eclipse.chemclipse.model.filter;version="[1.0.0,2.0.0)",
+ net.openchrom.nmr.processing.supplier.base.core
