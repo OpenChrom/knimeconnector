@@ -32,7 +32,8 @@ import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.apodization.ExponentialApodizationFunctionProcessor;
 
 /**
- * {@link NodeModel} for the Apodization node.
+ * {@link NodeModel} for the Apodization node. It applies an exponential apodization on fid data.
+ * @see ExponentialApodizationFunctionProcessor
  * 
  * @author Alexander Kerner
  *
