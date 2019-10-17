@@ -59,105 +59,93 @@ import net.openchrom.nmr.converter.supplier.bruker.core.ScanImportConverterFid;
 public class FidReaderNodeModel extends NodeModel {
 
 	private static final NodeLogger logger = NodeLogger.getLogger(FidReaderNodeModel.class);
-
 	public static String SETTINGS_CONFIG_KEY_VALUE_IN = "ValueIn";
-
 	public static String SETTINGS_CONFIG_DEFAULT_VALUE_IN = null;
 
 	public static SettingsModelString createSettingsModelValueIn() {
+
 		return new SettingsModelString(SETTINGS_CONFIG_KEY_VALUE_IN, SETTINGS_CONFIG_DEFAULT_VALUE_IN);
 	}
 
 	private final SettingsModelString valueIn;
-
 	private Path inputDir;
 
 	public FidReaderNodeModel() {
+
 		// zero input ports, one FID-port-object and one table as output
-		super(new PortType[] {}, new PortType[] { FIDPortObject.TYPE });
+		super(new PortType[]{}, new PortType[]{FIDPortObject.TYPE});
 		valueIn = createSettingsModelValueIn();
 	}
 
 	@Override
 	protected PortObjectSpec[] configure(final PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-		if (valueIn.getStringValue() != null) {
+
+		if(valueIn.getStringValue() != null) {
 			try {
 				inputDir = FileUtil.getFileFromURL(FileUtil.toURL(valueIn.getStringValue())).toPath();
-			} catch (final Exception e) {
+			} catch(final Exception e) {
 				throw new InvalidSettingsException("Cannot read directory " + inputDir, e);
 			}
-			if (inputDir != null && Files.isDirectory(inputDir) && Files.isReadable(inputDir)) {
-				// ok
+			if(inputDir != null && Files.isDirectory(inputDir) && Files.isReadable(inputDir)) {
+				logger.info(this.getClass().getSimpleName() + ": Input specs: " + Arrays.asList(inSpecs) + ", input dir: " + inputDir);
+				final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
+				return new PortObjectSpec[]{portOne};
 			}
-			logger.info(this.getClass().getSimpleName() + ": Input specs: " + Arrays.asList(inSpecs) + ", input dir: "
-					+ inputDir);
-			final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
-			return new PortObjectSpec[] { portOne };
 		}
 		throw new InvalidSettingsException("Cannot read directory " + inputDir);
 	}
 
 	@Override
 	protected PortObject[] execute(final PortObject[] inObjects, final ExecutionContext exec) throws Exception {
-		logger.info(this.getClass().getSimpleName() + ": InObjects: " + Arrays.asList(inObjects));
 
+		logger.info(this.getClass().getSimpleName() + ": InObjects: " + Arrays.asList(inObjects));
 		SubMonitor subMonitor = SubMonitor.convert(new KnimeProgressMonitor(exec), "Reading FID", 100);
 		final ScanImportConverterFid importer = new ScanImportConverterFid();
-		final IProcessingInfo<Collection<IComplexSignalMeasurement<?>>> processingInfo = importer
-				.convert(inputDir.toFile(), subMonitor);
-
-		if (processingInfo == null || processingInfo.getProcessingResult() == null
-				|| processingInfo.getProcessingResult().isEmpty())
+		final IProcessingInfo<Collection<IComplexSignalMeasurement<?>>> processingInfo = importer.convert(inputDir.toFile(), subMonitor);
+		if(processingInfo == null || processingInfo.getProcessingResult() == null || processingInfo.getProcessingResult().isEmpty())
 			throw new Exception("Failed to read NMR data");
-
-		final List<FIDMeasurement> fidMeasurements = processingInfo.getProcessingResult().stream()
-				.filter(e -> e instanceof FIDMeasurement).map(e -> (FIDMeasurement) e).collect(Collectors.toList());
-
+		final List<FIDMeasurement> fidMeasurements = processingInfo.getProcessingResult().stream().filter(e -> e instanceof FIDMeasurement).map(e -> (FIDMeasurement)e).collect(Collectors.toList());
 		logger.debug(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
-
 		final FIDPortObject portOneOut = new FIDPortObject(KNIMEFIDMeasurement.build(fidMeasurements));
-		return new PortObject[] { portOneOut };
+		return new PortObject[]{portOneOut};
 	}
 
 	@Override
-	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
+	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+
 		logger.debug(this.getClass().getSimpleName() + ": Load internals");
-
 	}
 
 	@Override
-	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
-		logger.debug(this.getClass().getSimpleName() + ": Save internals");
+	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
 
+		logger.debug(this.getClass().getSimpleName() + ": Save internals");
 	}
 
 	@Override
 	protected void saveSettingsTo(final NodeSettingsWO settings) {
+
 		logger.debug(this.getClass().getSimpleName() + ": Saving settings");
 		valueIn.saveSettingsTo(settings);
-
 	}
 
 	@Override
 	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+
 		logger.debug(this.getClass().getSimpleName() + ": Validate settings");
 		valueIn.validateSettings(settings);
-
 	}
 
 	@Override
 	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
+
 		logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
 		valueIn.loadSettingsFrom(settings);
-
 	}
 
 	@Override
 	protected void reset() {
+
 		logger.debug(this.getClass().getSimpleName() + ": OnReset");
-
 	}
-
 }
