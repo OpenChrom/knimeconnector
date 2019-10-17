@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Zerofilling for FID data
+Bundle-SymbolicName: net.openchrom.knime.node.fid.zerofilling;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.openchrom.knime.node.fid.zerofilling.Activator
+Bundle-Vendor: Lablicate GmbH
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.knime.base;bundle-version="3.5.4"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: net.openchrom.knime.node.fid.zerofilling
+Bundle-ActivationPolicy: lazy
+Import-Package: net.openchrom.knime.node.base,
+ net.openchrom.nmr.processing.supplier.base.core,
+ org.eclipse.chemclipse.model.filter;version="1.0.0"
