@@ -23,9 +23,8 @@
 	</shortDescription>
 
 	<fullDescription>
-		<intro>Removes the Bruker-specific digital filter data from the beginning of a FID signal.</intro>
-		The input is FID data containing Bruker-specific, digital filter signals at the very beginning of the data set.
-		The output is a "cleaned-up" data set, without those specific signals at the beginning of the FID.
+		<intro>Removes the Bruker-specific digital filter data from the beginning of a FID signal.The input is FID data containing Bruker-specific, digital filter signals at the very beginning of the data set.
+		The output is a "cleaned-up" data set, without those specific signals at the beginning of the FID.</intro>
 	</fullDescription>
 
 	<ports>
