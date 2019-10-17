@@ -32,7 +32,9 @@ import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
 
 /**
- * {@link NodeModel} for the FID to Table node.
+ * {@link NodeModel} for the zero filling node. It applies a zero filling on fid data.
+ * 
+ * @see ExponentialApodizationFunctionProcessor
  * 
  * @author Alexander Kerner
  *
