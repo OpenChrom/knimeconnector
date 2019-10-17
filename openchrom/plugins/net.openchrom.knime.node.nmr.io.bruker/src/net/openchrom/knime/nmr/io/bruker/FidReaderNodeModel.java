@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.SubMonitor;
 import org.knime.core.node.CanceledExecutionException;
@@ -47,6 +48,8 @@ import org.knime.core.util.FileUtil;
 import net.openchrom.knime.node.base.FIDPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
 import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
+import net.openchrom.knime.node.base.KNIMENMRMeasurement;
+import net.openchrom.knime.node.base.NMRPortObject;
 import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
 import net.openchrom.nmr.converter.supplier.bruker.core.ScanImportConverterFid;
 
@@ -73,7 +76,7 @@ public class FidReaderNodeModel extends NodeModel {
 	public FidReaderNodeModel() {
 
 		// zero input ports, one FID-port-object and one table as output
-		super(new PortType[]{}, new PortType[]{FIDPortObject.TYPE});
+		super(new PortType[]{}, new PortType[]{FIDPortObject.TYPE, NMRPortObject.TYPE});
 		valueIn = createSettingsModelValueIn();
 	}
 
@@ -105,9 +108,12 @@ public class FidReaderNodeModel extends NodeModel {
 		if(processingInfo == null || processingInfo.getProcessingResult() == null || processingInfo.getProcessingResult().isEmpty())
 			throw new Exception("Failed to read NMR data");
 		final List<FIDMeasurement> fidMeasurements = processingInfo.getProcessingResult().stream().filter(e -> e instanceof FIDMeasurement).map(e -> (FIDMeasurement)e).collect(Collectors.toList());
+		final List<SpectrumMeasurement> nmrMeasurements = processingInfo.getProcessingResult().stream().filter(e -> e instanceof SpectrumMeasurement).map(e -> (SpectrumMeasurement)e).collect(Collectors.toList());
 		logger.debug(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
+		logger.debug(this.getClass().getSimpleName() + ": Read " + nmrMeasurements.size() + " NMR measurements");
 		final FIDPortObject portOneOut = new FIDPortObject(KNIMEFIDMeasurement.build(fidMeasurements));
-		return new PortObject[]{portOneOut};
+		final NMRPortObject portTwoOut = new NMRPortObject(KNIMENMRMeasurement.build(nmrMeasurements));
+		return new PortObject[]{portOneOut, portTwoOut};
 	}
 
 	@Override

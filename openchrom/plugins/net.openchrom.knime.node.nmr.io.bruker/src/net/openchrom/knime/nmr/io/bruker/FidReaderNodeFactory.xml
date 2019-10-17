@@ -31,7 +31,7 @@
 	<fullDescription>
 
 		<intro>Reads-in one Bruker FID file and transforms it into an OpenChrom FID
-			data set.</intro>
+			data set. If available, it also reads-in 1r/1i data and transforms it into an OpenChrom NMR data set.</intro>
 			
 		<option name="File Chooser">A Directory containing the <pre>fid</pre> file.
 		</option> 
@@ -40,6 +40,7 @@
 	<ports>
 
 		<outPort index="0" name="OpenChrom FID data">OpenChrom FID data.</outPort>
+		<outPort index="1" name="OpenChrom NMR data">OpenChrom NMR data.</outPort>
 
 	</ports>
 
