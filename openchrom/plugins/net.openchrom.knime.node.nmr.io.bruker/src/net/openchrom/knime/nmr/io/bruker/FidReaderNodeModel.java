@@ -75,7 +75,8 @@ public class FidReaderNodeModel extends NodeModel {
 
 	public FidReaderNodeModel() {
 
-		// zero input ports, one FID-port-object and one table as output
+		// zero input ports, one FID-port-object and one NMR-port-object as
+		// output
 		super(new PortType[]{}, new PortType[]{FIDPortObject.TYPE, NMRPortObject.TYPE});
 		valueIn = createSettingsModelValueIn();
 	}
@@ -92,7 +93,8 @@ public class FidReaderNodeModel extends NodeModel {
 			if(inputDir != null && Files.isDirectory(inputDir) && Files.isReadable(inputDir)) {
 				logger.info(this.getClass().getSimpleName() + ": Input specs: " + Arrays.asList(inSpecs) + ", input dir: " + inputDir);
 				final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
-				return new PortObjectSpec[]{portOne};
+				final GenericPortObjectSpec portTwo = new GenericPortObjectSpec();
+				return new PortObjectSpec[]{portOne, portTwo};
 			}
 		}
 		throw new InvalidSettingsException("Cannot read directory " + inputDir);
@@ -106,13 +108,27 @@ public class FidReaderNodeModel extends NodeModel {
 		final ScanImportConverterFid importer = new ScanImportConverterFid();
 		final IProcessingInfo<Collection<IComplexSignalMeasurement<?>>> processingInfo = importer.convert(inputDir.toFile(), subMonitor);
 		if(processingInfo == null || processingInfo.getProcessingResult() == null || processingInfo.getProcessingResult().isEmpty())
-			throw new Exception("Failed to read NMR data");
+			throw new Exception("Failed to read data");
 		final List<FIDMeasurement> fidMeasurements = processingInfo.getProcessingResult().stream().filter(e -> e instanceof FIDMeasurement).map(e -> (FIDMeasurement)e).collect(Collectors.toList());
 		final List<SpectrumMeasurement> nmrMeasurements = processingInfo.getProcessingResult().stream().filter(e -> e instanceof SpectrumMeasurement).map(e -> (SpectrumMeasurement)e).collect(Collectors.toList());
 		logger.debug(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
 		logger.debug(this.getClass().getSimpleName() + ": Read " + nmrMeasurements.size() + " NMR measurements");
+		if(!nmrMeasurements.isEmpty()) {
+			fidMeasurements.clear();
+			for(SpectrumMeasurement m : nmrMeasurements) {
+				KNIMEFIDMeasurement m2 = KNIMEFIDMeasurement.build(m.getAdapter(FIDMeasurement.class));
+				m2.setHeaderDataMap(m.getHeaderDataMap());
+				fidMeasurements.add(m2);
+			}
+		}
 		final FIDPortObject portOneOut = new FIDPortObject(KNIMEFIDMeasurement.build(fidMeasurements));
 		final NMRPortObject portTwoOut = new NMRPortObject(KNIMENMRMeasurement.build(nmrMeasurements));
+		if(fidMeasurements.isEmpty()) {
+			logger.warn(this.getClass().getSimpleName() + ": No FID data read!");
+		}
+		if(nmrMeasurements.isEmpty()) {
+			logger.warn(this.getClass().getSimpleName() + ": No NMR data read!");
+		}
 		return new PortObject[]{portOneOut, portTwoOut};
 	}
 

@@ -13,6 +13,10 @@ package net.openchrom.knime.node.nmr.phasecorrection;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Function;
 
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -27,9 +31,12 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
+import net.openchrom.knime.node.base.KNIMENMRMeasurement;
 import net.openchrom.knime.node.base.NMRPortObject;
 import net.openchrom.knime.node.base.ProcessorAdapter;
-import net.openchrom.nmr.processing.phasecorrection.PhaseCorrectionProcessor;
+import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
+import net.openchrom.nmr.processing.phasecorrection.AutoPhaseCorrectionProcessor;
+import net.openchrom.nmr.processing.supplier.base.settings.AutoPhaseCorrectionSettings;
 
 /**
  * {@link NodeModel} for the Phase Correction node.
@@ -53,7 +60,30 @@ public class PhaseCorrectionNodeModel extends NodeModel {
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		return ProcessorAdapter.adaptNMRinNMRout(new PhaseCorrectionProcessor(), inObjects, exec, logger);
+		List<KNIMENMRMeasurement> inData = ProcessorAdapter.getInput(inObjects);
+		if (inData.isEmpty()) {
+			logger.warn(this.getClass().getSimpleName() + ": Empty input data!");
+		}
+		List<KNIMENMRMeasurement> outData = new ArrayList<>();
+		for (int i = 0; i < inData.size(); i++) {
+			AutoPhaseCorrectionSettings settings = new AutoPhaseCorrectionSettings();
+			double finalTweaking = 5; // values in the range from 1.1 to 5 seem
+			// good
+			double penaltyFactor = 1E-9 / finalTweaking; // to balance the
+			// contributions of the
+			// entropy and penalty
+			// parts
+			settings.setPenaltyFactor(penaltyFactor);
+			@SuppressWarnings("unchecked")
+			Collection<KNIMENMRMeasurement> outElement = (Collection<KNIMENMRMeasurement>) new AutoPhaseCorrectionProcessor()
+					.filterIMeasurements(inData, settings, Function.identity(),
+							ProcessorAdapter.buildMessageConsumer(logger), new KnimeProgressMonitor(exec));
+			outData.addAll(outElement);
+		}
+		if (outData.isEmpty()) {
+			logger.warn(this.getClass().getSimpleName() + ": No data processed!");
+		}
+		return ProcessorAdapter.transformToNMRPortObject(outData);
 	}
 
 	@Override
