@@ -32,9 +32,10 @@ import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.supplier.base.core.ZeroFillingProcessor;
 
 /**
- * {@link NodeModel} for the zero filling node. It applies a zero filling on fid data.
+ * {@link NodeModel} for the zero filling node. It applies a zero filling on fid
+ * data.
  * 
- * @see ExponentialApodizationFunctionProcessor
+ * @see ZeroFillingProcessor
  * 
  * @author Alexander Kerner
  *
@@ -45,30 +46,32 @@ public class ZeroFillingNodeModel extends NodeModel {
 
 	public ZeroFillingNodeModel() {
 
-		super(new PortType[]{FIDPortObject.TYPE}, new PortType[]{FIDPortObject.TYPE});
+		super(new PortType[] { FIDPortObject.TYPE }, new PortType[] { FIDPortObject.TYPE });
 	}
 
 	@Override
 	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
 
 		final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
-		return new PortObjectSpec[]{portOne};
+		return new PortObjectSpec[] { portOne };
 	}
 
 	@Override
 	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		return ProcessorAdapter.adaptFIDinFIDout(new ZeroFillingProcessor(), inObjects, exec, logger);
+		return ProcessorAdapter.adaptFIDInFIDOut(new ZeroFillingProcessor(), inObjects, exec, logger);
 	}
 
 	@Override
-	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
+			throws IOException, CanceledExecutionException {
 
 		logger.debug(this.getClass().getSimpleName() + ": Load internals");
 	}
 
 	@Override
-	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec) throws IOException, CanceledExecutionException {
+	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
+			throws IOException, CanceledExecutionException {
 
 		logger.debug(this.getClass().getSimpleName() + ": Save internals");
 	}

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *Alexander Kerner - initial API and implementation
+ * Alexander Kerner - initial API and implementation
  *******************************************************************************/
 package net.openchrom.knime.node.base;
 
@@ -36,55 +36,23 @@ import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
  */
 public class ProcessorAdapter {
 
-	public static PortObject[] adaptFIDinFIDout(IMeasurementFilter<?> filter, PortObject[] inObjects,
-			ExecutionContext exec, NodeLogger logger) {
-		return adapt(filter, getInput(inObjects), e -> transformToFIDPortObject(e), exec, logger);
+	public static PortObject[] transformToNMRPortObject(Collection<? extends SpectrumMeasurement> e) {
+
+		return new PortObject[] { new NMRPortObject(e) };
 	}
 
-	public static PortObject[] adaptFIDinNMRout(IMeasurementFilter<?> filter, PortObject[] inObjects,
-			ExecutionContext exec, NodeLogger logger) {
-		return adapt(filter, getInput(inObjects), e -> transformToNMRPortObject(e), exec, logger);
+	public static PortObject[] transformToFIDPortObject(Collection<? extends FIDMeasurement> e) {
 
-	}
-
-	public static PortObject[] adaptNMRinNMRout(IMeasurementFilter<?> filter, PortObject[] inObjects,
-			ExecutionContext exec, NodeLogger logger) {
-		return adapt(filter, getInput(inObjects), e -> transformToNMRPortObject(e), exec, logger);
-
-	}
-
-	private static PortObject[] transformToNMRPortObject(Collection<? extends IMeasurement> e) {
-		@SuppressWarnings("unchecked")
-		List<KNIMENMRMeasurement> measurements = KNIMENMRMeasurement
-				.build((Collection<? extends SpectrumMeasurement>) e);
-		return new PortObject[] { new NMRPortObject(measurements) };
-	}
-
-	private static PortObject[] transformToFIDPortObject(Collection<? extends IMeasurement> e) {
-		@SuppressWarnings("unchecked")
-		List<KNIMEFIDMeasurement> measurements = KNIMEFIDMeasurement.build((Collection<? extends FIDMeasurement>) e);
-		return new PortObject[] { new FIDPortObject(measurements) };
-	}
-
-	public static PortObject[] adapt(IMeasurementFilter<?> filter, Collection<? extends IMeasurement> measurements,
-			Function<? super Collection<? extends IMeasurement>, PortObject[]> measurementFactory,
-			ExecutionContext exec, NodeLogger logger) {
-		try {
-			PortObject[] result = filter.filterIMeasurements(measurements, null, measurementFactory,
-					buildMessageConsumer(logger), new KnimeProgressMonitor(exec));
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-
+		return new PortObject[] { new FIDPortObject(e) };
 	}
 
 	public static MessageConsumer buildMessageConsumer(NodeLogger logger) {
+
 		return new MessageConsumer() {
 
 			@Override
 			public void addMessage(String description, String message, Throwable t, MessageType type) {
+
 				if (t == null) {
 					logger.error(description + ": " + message);
 				} else {
@@ -95,14 +63,64 @@ public class ProcessorAdapter {
 		};
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <I extends KNIMEMeasurement, T extends GenericPortObject<I>> List<I> getInput(
+    public static <I extends IMeasurement, T extends GenericPortObject<I>> List<I> getInput(
 			PortObject[] inObjects) {
-		return ((T) inObjects[0]).getMeasurements();
+
+		return getInput(inObjects, 0);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <I extends IMeasurement, T extends GenericPortObject<I>> List<I> getInput(PortObject[] inObjects,
+			int index) {
+		return ((T) inObjects[index]).getMeasurements();
 	}
 
 	public ProcessorAdapter() {
 
 	}
 
+    @SuppressWarnings("unchecked")
+    public static <R extends IMeasurement, I extends IMeasurement> Collection<R> filter(IMeasurementFilter<?> filter,
+	    Collection<I> inData, NodeLogger logger, ExecutionContext exec) {
+	return (Collection<R>) filter.filterIMeasurements(inData, null, Function.identity(),
+		ProcessorAdapter.buildMessageConsumer(logger), new KnimeProgressMonitor(exec));
+    }
+
+	public static PortObject[] adaptFIDInFIDOut(IMeasurementFilter<?> filter,PortObject[] inObjects, ExecutionContext exec, NodeLogger logger) {
+		List<FIDMeasurement> inData = ProcessorAdapter.getInput(inObjects);
+		if (inData.isEmpty()) {
+			logger.warn("Empty input data!");
+		}
+		Collection<FIDMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
+		if (outData.isEmpty()) {
+			logger.warn("No data processed!");
+		}
+		return ProcessorAdapter.transformToFIDPortObject(outData);
+	}
+
+	public static PortObject[] adaptFIDInNMROut(IMeasurementFilter<?> filter, PortObject[] inObjects,
+			ExecutionContext exec, NodeLogger logger) {
+		List<FIDMeasurement> inData = ProcessorAdapter.getInput(inObjects);
+		if (inData.isEmpty()) {
+			logger.warn("Empty input data!");
+		}
+		Collection<SpectrumMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
+		if (outData.isEmpty()) {
+			logger.warn("No data processed!");
+		}
+		return ProcessorAdapter.transformToNMRPortObject(outData);
+	}
+
+	public static PortObject[] adaptNMRInNMROut(IMeasurementFilter<?> filter, PortObject[] inObjects,
+			ExecutionContext exec, NodeLogger logger) {
+		List<SpectrumMeasurement> inData = ProcessorAdapter.getInput(inObjects);
+		if (inData.isEmpty()) {
+			logger.warn("Empty input data!");
+		}
+		Collection<SpectrumMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
+		if (outData.isEmpty()) {
+			logger.warn("No data processed!");
+		}
+		return ProcessorAdapter.transformToNMRPortObject(outData);
+	}
 }

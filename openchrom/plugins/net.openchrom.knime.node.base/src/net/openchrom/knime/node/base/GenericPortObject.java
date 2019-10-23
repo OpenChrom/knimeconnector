@@ -14,15 +14,16 @@ package net.openchrom.knime.node.base;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.ObjectStreamClass;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 
 import javax.swing.JComponent;
 
+import org.eclipse.chemclipse.model.core.IMeasurement;
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionMonitor;
 import org.knime.core.node.port.AbstractPortObject;
@@ -33,14 +34,14 @@ import org.knime.core.node.port.PortObjectZipOutputStream;
 
 /**
  * Base class for {@link PortObject}s that hold collections of
- * {@link KNIMEMeasurement}.
+ * {@link IMeasurement}.
  * 
  * @author Alexander Kerner
  *
  * @param <T>
- *            type of {@link KNIMEMeasurement}
+ *            type of {@link IMeasurement}
  */
-public abstract class GenericPortObject<T extends KNIMEMeasurement> extends AbstractPortObject {
+public abstract class GenericPortObject<T extends IMeasurement> extends AbstractPortObject {
 
 	private final static String summary = "OpenChrom Measurement";
 
@@ -90,7 +91,7 @@ public abstract class GenericPortObject<T extends KNIMEMeasurement> extends Abst
 			final ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
 			for (final T m : measurements) {
 				objectOutputStream.writeObject(m);
-				objectOutputStream.writeObject(m.getHeaderDataMap());
+		// objectOutputStream.writeObject(m.getHeaderDataMap());
 			}
 			objectOutputStream.flush();
 		} else {
@@ -105,21 +106,36 @@ public abstract class GenericPortObject<T extends KNIMEMeasurement> extends Abst
 	@Override
 	protected void load(final PortObjectZipInputStream in, final PortObjectSpec spec, final ExecutionMonitor exec)
 			throws IOException, CanceledExecutionException {
+
 		// specs currently not needed
 		final GenericPortObjectSpec fidSpec = (GenericPortObjectSpec) spec;
-		final ZipEntry zipEntry = in.getNextEntry();
-		final int numMeasurements = in.read();
-		final ObjectInputStream objectInputStream = new ObjectInputStream(in);
-		for (int i = 0; i < numMeasurements; i++) {
-			try {
-				Object o = objectInputStream.readObject();
-				final T m = (T) o;
-				Map<String, String> h = (Map<String, String>) objectInputStream.readObject();
-				m.setHeaderDataMap(h);
-				measurements.add(m);
-			} catch (final ClassNotFoundException e) {
-				throw new IOException(e);
+
+		Thread t = Thread.currentThread();
+		ClassLoader ccl = t.getContextClassLoader();
+		try {
+			t.setContextClassLoader(getClass().getClassLoader());
+
+			final ZipEntry zipEntry = in.getNextEntry();
+			final int numMeasurements = in.read();
+			final ObjectInputStream objectInputStream = new ObjectInputStream(in) {
+				@Override
+				protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+					// System.err.println("Resolving class " + desc);
+					return super.resolveClass(desc);
+				}
+			};
+			for (int i = 0; i < numMeasurements; i++) {
+				try {
+					Object o = objectInputStream.readObject();
+					final T m = (T) o;
+					measurements.add(m);
+				} catch (final ClassNotFoundException e) {
+					e.printStackTrace();
+					throw new IOException(e);
+				}
 			}
+		} finally {
+			t.setContextClassLoader(ccl);
 		}
 	}
 

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *Alexander Kerner - initial API and implementation
+ * Alexander Kerner - initial API and implementation
  *******************************************************************************/
 package net.openchrom.knime.node.nmr.apodization;
 
@@ -32,7 +32,9 @@ import net.openchrom.knime.node.base.ProcessorAdapter;
 import net.openchrom.nmr.processing.apodization.ExponentialApodizationFunctionProcessor;
 
 /**
- * {@link NodeModel} for the Apodization node. It applies an exponential apodization on fid data.
+ * {@link NodeModel} for the Apodization node. It applies an exponential
+ * apodization on fid data.
+ * 
  * @see ExponentialApodizationFunctionProcessor
  * 
  * @author Alexander Kerner
@@ -40,62 +42,63 @@ import net.openchrom.nmr.processing.apodization.ExponentialApodizationFunctionPr
  */
 public class ApodizationNodeModel extends NodeModel {
 
-	private static final NodeLogger logger = NodeLogger.getLogger(ApodizationNodeModel.class);
+    private static final NodeLogger logger = NodeLogger.getLogger(ApodizationNodeModel.class);
 
-	public ApodizationNodeModel() {
-		super(new PortType[] { FIDPortObject.TYPE }, new PortType[] { FIDPortObject.TYPE });
-	}
+    public ApodizationNodeModel() {
 
-	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-		final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
-		return new PortObjectSpec[] { portOne };
-	}
+	super(new PortType[] { FIDPortObject.TYPE }, new PortType[] { FIDPortObject.TYPE });
+    }
 
-	@Override
-	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		// FID in, FID out.
-		return ProcessorAdapter.adaptFIDinFIDout(new ExponentialApodizationFunctionProcessor(), inObjects, exec,
-				logger);
+    @Override
+    protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
 
-	}
+	final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
+	return new PortObjectSpec[] { portOne };
+    }
 
-	@Override
-	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
-		logger.debug(this.getClass().getSimpleName() + ": Load internals");
+    @Override
+    protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-	}
+	return ProcessorAdapter.adaptFIDInFIDOut(new ExponentialApodizationFunctionProcessor(), inObjects, exec,
+		logger);
 
-	@Override
-	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
-		logger.debug(this.getClass().getSimpleName() + ": Save internals");
+    }
 
-	}
+    @Override
+    protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
+	    throws IOException, CanceledExecutionException {
 
-	@Override
-	protected void saveSettingsTo(final NodeSettingsWO settings) {
-		logger.debug(this.getClass().getSimpleName() + ": Saving settings");
+	logger.debug(this.getClass().getSimpleName() + ": Load internals");
+    }
 
-	}
+    @Override
+    protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
+	    throws IOException, CanceledExecutionException {
 
-	@Override
-	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.debug(this.getClass().getSimpleName() + ": Validate settings");
+	logger.debug(this.getClass().getSimpleName() + ": Save internals");
+    }
 
-	}
+    @Override
+    protected void saveSettingsTo(final NodeSettingsWO settings) {
 
-	@Override
-	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
+	logger.debug(this.getClass().getSimpleName() + ": Saving settings");
+    }
 
-	}
+    @Override
+    protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
 
-	@Override
-	protected void reset() {
-		logger.debug(this.getClass().getSimpleName() + ": OnReset");
+	logger.debug(this.getClass().getSimpleName() + ": Validate settings");
+    }
 
-	}
+    @Override
+    protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
 
+	logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
+    }
+
+    @Override
+    protected void reset() {
+
+	logger.debug(this.getClass().getSimpleName() + ": OnReset");
+    }
 }
