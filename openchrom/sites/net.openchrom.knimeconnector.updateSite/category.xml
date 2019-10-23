@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/net.openchrom.knime.node.nmr.feature_3.5.0.qualifier.jar" id="net.openchrom.knime.node.nmr.feature" version="3.5.0.qualifier">
+   <feature url="features/net.openchrom.knime.node.nmr.feature_3.5.1.qualifier.jar" id="net.openchrom.knime.node.nmr.feature" version="3.5.1.qualifier">
       <category name="net.openchrom.knime"/>
    </feature>
    <feature url="features/net.openchrom.knime.node.deps_3.5.0.qualifier.jar" id="net.openchrom.knime.node.deps" version="3.5.0.qualifier">
