@@ -13,10 +13,6 @@ package net.openchrom.knime.node.nmr.baselinecorrection;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
 
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -31,12 +27,9 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
-import net.openchrom.knime.node.base.KNIMENMRMeasurement;
 import net.openchrom.knime.node.base.NMRPortObject;
 import net.openchrom.knime.node.base.ProcessorAdapter;
-import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
 import net.openchrom.nmr.processing.supplier.base.core.BaselineCorrectionProcessor;
-import net.openchrom.nmr.processing.supplier.base.settings.BaselineCorrectionSettings;
 
 /**
  * {@link NodeModel} for the baselien correction node. It applies a baseline
@@ -66,24 +59,7 @@ public class BaselineCorrectionNodeModel extends NodeModel {
     @Override
     protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-	// FID in, NMR out.
-	List<KNIMENMRMeasurement> inData = ProcessorAdapter.getInput(inObjects);
-	if (inData.isEmpty()) {
-	    logger.warn(this.getClass().getSimpleName() + ": Empty input data!");
-	}
-	List<KNIMENMRMeasurement> outData = new ArrayList<>();
-	for (int i = 0; i < inData.size(); i++) {
-	    BaselineCorrectionSettings settings = new BaselineCorrectionSettings();
-	    @SuppressWarnings("unchecked")
-	    Collection<KNIMENMRMeasurement> outElement = (Collection<KNIMENMRMeasurement>) new BaselineCorrectionProcessor()
-		    .filterIMeasurements(inData, settings, Function.identity(),
-			    ProcessorAdapter.buildMessageConsumer(logger), new KnimeProgressMonitor(exec));
-	    outData.addAll(outElement);
-	}
-	if (outData.isEmpty()) {
-	    logger.warn(this.getClass().getSimpleName() + ": No data processed!");
-	}
-	return ProcessorAdapter.transformToNMRPortObject(outData);
+		return ProcessorAdapter.adaptNMRInNMROut(new BaselineCorrectionProcessor(), inObjects, exec, logger);
 
     }
 

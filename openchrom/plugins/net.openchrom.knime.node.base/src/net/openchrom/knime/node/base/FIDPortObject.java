@@ -14,17 +14,18 @@ package net.openchrom.knime.node.base;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
 /**
- * {@link PortObject} that holds a collection of {@link KNIMEFIDMeasurement}s.
+ * {@link PortObject} that holds a collection of {@link FIDMeasurement}s.
  * 
  * @author Alexander Kerner
  *
  */
-public class FIDPortObject extends GenericPortObject<KNIMEFIDMeasurement> {
+public class FIDPortObject extends GenericPortObject<FIDMeasurement> {
 
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(FIDPortObject.class);
 
@@ -36,18 +37,18 @@ public class FIDPortObject extends GenericPortObject<KNIMEFIDMeasurement> {
 
 	}
 
-	public FIDPortObject(Collection<? extends KNIMEFIDMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
+	public FIDPortObject(Collection<? extends FIDMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
 		super(measurements, portObjectSpec);
 
 	}
 
-	public FIDPortObject(Collection<? extends KNIMEFIDMeasurement> measurements) {
+	public FIDPortObject(Collection<? extends FIDMeasurement> measurements) {
 		super(measurements);
 
 	}
 
 	@Override
-	public List<KNIMEFIDMeasurement> getMeasurements() {
+	public List<FIDMeasurement> getMeasurements() {
 		return super.getMeasurements();
 	}
 

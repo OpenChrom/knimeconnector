@@ -13,10 +13,6 @@ package net.openchrom.knime.node.nmr.apodization;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
 
 import org.knime.core.node.CanceledExecutionException;
 import org.knime.core.node.ExecutionContext;
@@ -32,11 +28,8 @@ import org.knime.core.node.port.PortType;
 
 import net.openchrom.knime.node.base.FIDPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
-import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
 import net.openchrom.knime.node.base.ProcessorAdapter;
-import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
 import net.openchrom.nmr.processing.apodization.ExponentialApodizationFunctionProcessor;
-import net.openchrom.nmr.processing.apodization.ExponentialApodizationSettings;
 
 /**
  * {@link NodeModel} for the Apodization node. It applies an exponential
@@ -66,26 +59,8 @@ public class ApodizationNodeModel extends NodeModel {
     @Override
     protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-	// FID in, FID out.
-	List<KNIMEFIDMeasurement> inData = ProcessorAdapter.getInput(inObjects);
-	if (inData.isEmpty()) {
-	    logger.warn(this.getClass().getSimpleName() + ": Empty input data!");
-	}
-	List<KNIMEFIDMeasurement> outData = new ArrayList<>();
-	for (int i = 0; i < inData.size(); i++) {
-	    String headerData = inData.get(i).getHeaderData("procs_" + "LB");
-	    ExponentialApodizationSettings settings = ExponentialApodizationSettings.build(headerData);
-	    @SuppressWarnings("unchecked")
-	    Collection<KNIMEFIDMeasurement> outElement = (Collection<KNIMEFIDMeasurement>) new ExponentialApodizationFunctionProcessor()
-		    .filterIMeasurements(inData, settings, Function.identity(),
-			    ProcessorAdapter.buildMessageConsumer(logger), new KnimeProgressMonitor(exec));
-	    if (outElement != null)
-		outData.addAll(outElement);
-	}
-	if (outData.isEmpty()) {
-	    logger.warn(this.getClass().getSimpleName() + ": No data processed!");
-	}
-	return ProcessorAdapter.transformToFIDPortObject(outData);
+	return ProcessorAdapter.adaptFIDInFIDOut(new ExponentialApodizationFunctionProcessor(), inObjects, exec,
+		logger);
 
     }
 

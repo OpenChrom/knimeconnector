@@ -14,17 +14,18 @@ package net.openchrom.knime.node.base;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
 
 /**
  * A {@link GenericPortObject} holding measurments of type
- * {@link KNIMENMRMeasurement}.
+ * {@link SpectrumMeasurement}.
  * 
  * @author Alexander Kerner
  *
  */
-public class NMRPortObject extends GenericPortObject<KNIMENMRMeasurement> {
+public class NMRPortObject extends GenericPortObject<SpectrumMeasurement> {
 
 	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(NMRPortObject.class);
 
@@ -36,18 +37,18 @@ public class NMRPortObject extends GenericPortObject<KNIMENMRMeasurement> {
 
 	}
 
-	public NMRPortObject(Collection<? extends KNIMENMRMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
+	public NMRPortObject(Collection<? extends SpectrumMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
 		super(measurements, portObjectSpec);
 
 	}
 
-	public NMRPortObject(Collection<? extends KNIMENMRMeasurement> measurements) {
+	public NMRPortObject(Collection<? extends SpectrumMeasurement> measurements) {
 		super(measurements);
 
 	}
 
 	@Override
-	public List<KNIMENMRMeasurement> getMeasurements() {
+	public List<SpectrumMeasurement> getMeasurements() {
 		return super.getMeasurements();
 	}
 

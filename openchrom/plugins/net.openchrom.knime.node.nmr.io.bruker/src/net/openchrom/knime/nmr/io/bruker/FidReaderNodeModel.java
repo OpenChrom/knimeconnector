@@ -47,8 +47,6 @@ import org.knime.core.util.FileUtil;
 
 import net.openchrom.knime.node.base.FIDPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
-import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
-import net.openchrom.knime.node.base.KNIMENMRMeasurement;
 import net.openchrom.knime.node.base.NMRPortObject;
 import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
 import net.openchrom.nmr.converter.supplier.bruker.core.ScanImportConverterFid;
@@ -107,22 +105,15 @@ public class FidReaderNodeModel extends NodeModel {
 		SubMonitor subMonitor = SubMonitor.convert(new KnimeProgressMonitor(exec), "Reading FID", 100);
 		final ScanImportConverterFid importer = new ScanImportConverterFid();
 		final IProcessingInfo<Collection<IComplexSignalMeasurement<?>>> processingInfo = importer.convert(inputDir.toFile(), subMonitor);
-		if(processingInfo == null || processingInfo.getProcessingResult() == null || processingInfo.getProcessingResult().isEmpty())
+		if(processingInfo == null || processingInfo.getProcessingResult() == null || processingInfo.getProcessingResult().isEmpty()) {
 			throw new Exception("Failed to read data");
+		}
 		final List<FIDMeasurement> fidMeasurements = processingInfo.getProcessingResult().stream().filter(e -> e instanceof FIDMeasurement).map(e -> (FIDMeasurement)e).collect(Collectors.toList());
 		final List<SpectrumMeasurement> nmrMeasurements = processingInfo.getProcessingResult().stream().filter(e -> e instanceof SpectrumMeasurement).map(e -> (SpectrumMeasurement)e).collect(Collectors.toList());
 		logger.debug(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
 		logger.debug(this.getClass().getSimpleName() + ": Read " + nmrMeasurements.size() + " NMR measurements");
-		if(!nmrMeasurements.isEmpty()) {
-			fidMeasurements.clear();
-			for(SpectrumMeasurement m : nmrMeasurements) {
-				KNIMEFIDMeasurement m2 = KNIMEFIDMeasurement.build(m.getAdapter(FIDMeasurement.class));
-				m2.setHeaderDataMap(m.getHeaderDataMap());
-				fidMeasurements.add(m2);
-			}
-		}
-		final FIDPortObject portOneOut = new FIDPortObject(KNIMEFIDMeasurement.build(fidMeasurements));
-		final NMRPortObject portTwoOut = new NMRPortObject(KNIMENMRMeasurement.build(nmrMeasurements));
+		final FIDPortObject portOneOut = new FIDPortObject(fidMeasurements);
+		final NMRPortObject portTwoOut = new NMRPortObject(nmrMeasurements);
 		if(fidMeasurements.isEmpty()) {
 			logger.warn(this.getClass().getSimpleName() + ": No FID data read!");
 		}

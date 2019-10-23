@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.chemclipse.nmr.model.core.AcquisitionParameter;
+import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.SpectrumSignal;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -42,8 +43,6 @@ import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
-import net.openchrom.knime.node.base.KNIMENMRMeasurement;
-import net.openchrom.knime.node.base.KNIMENMRSignal;
 import net.openchrom.knime.node.base.NMRPortObject;
 
 /**
@@ -95,13 +94,13 @@ public class NMRTableNodeModel extends NodeModel {
 		long measurementCnt = 0;
 
 		NMRPortObject fidObject = (NMRPortObject) inObjects[0];
-		Collection<KNIMENMRMeasurement> measurements = fidObject.getMeasurements();
+		Collection<SpectrumMeasurement> measurements = fidObject.getMeasurements();
 		exec.getProgressMonitor().setProgress(0);
-		for (final KNIMENMRMeasurement measurement : measurements) {
+		for (final SpectrumMeasurement measurement : measurements) {
 			exec.checkCanceled();
 
 			long signalCnt = 0;
-			for (final KNIMENMRSignal signal : measurement.getSignals()) {
+			for (final SpectrumSignal signal : measurement.getSignals()) {
 				exec.checkCanceled();
 
 				container.addRowToTable(buildRow(measurement.getAcquisitionParameter(),

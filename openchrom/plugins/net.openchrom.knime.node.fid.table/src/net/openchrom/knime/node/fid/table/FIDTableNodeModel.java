@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDSignal;
 import org.knime.core.data.DataCell;
 import org.knime.core.data.DataColumnSpec;
@@ -42,7 +43,6 @@ import org.knime.core.node.port.PortObjectSpec;
 import org.knime.core.node.port.PortType;
 
 import net.openchrom.knime.node.base.FIDPortObject;
-import net.openchrom.knime.node.base.KNIMEFIDMeasurement;
 
 /**
  * {@link NodeModel} for the FID to Table node.
@@ -93,9 +93,9 @@ public class FIDTableNodeModel extends NodeModel {
 		long measurementCnt = 0;
 
 		FIDPortObject fidObject = (FIDPortObject) inObjects[0];
-		Collection<KNIMEFIDMeasurement> measurements = fidObject.getMeasurements();
+		Collection<FIDMeasurement> measurements = fidObject.getMeasurements();
 		exec.getProgressMonitor().setProgress(0);
-		for (final KNIMEFIDMeasurement measurement : measurements) {
+		for (final FIDMeasurement measurement : measurements) {
 			exec.checkCanceled();
 			long signalCnt = 0;
 			for (final FIDSignal fidSignal : measurement.getSignals()) {
