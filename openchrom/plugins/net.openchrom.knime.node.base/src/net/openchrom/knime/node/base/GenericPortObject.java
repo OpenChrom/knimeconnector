@@ -43,100 +43,100 @@ import org.knime.core.node.port.PortObjectZipOutputStream;
  */
 public abstract class GenericPortObject<T extends IMeasurement> extends AbstractPortObject {
 
-	private final static String summary = "OpenChrom Measurement";
+    private final static String summary = "OpenChrom Measurement";
 
-	private final GenericPortObjectSpec portObjectSpec;
+    private final GenericPortObjectSpec portObjectSpec;
 
-	private final List<T> measurements;
+    private final List<T> measurements;
 
-	public GenericPortObject(final Collection<? extends T> measurements, final GenericPortObjectSpec portObjectSpec) {
-		this.measurements = new ArrayList<>(measurements);
-		this.portObjectSpec = Objects.requireNonNull(portObjectSpec);
-	}
+    public GenericPortObject(final Collection<? extends T> measurements, final GenericPortObjectSpec portObjectSpec) {
+	this.measurements = new ArrayList<>(measurements);
+	this.portObjectSpec = Objects.requireNonNull(portObjectSpec);
+    }
 
-	public GenericPortObject(final Collection<? extends T> measurements) {
-		this(measurements, new GenericPortObjectSpec());
-	}
+    public GenericPortObject(final Collection<? extends T> measurements) {
+	this(measurements, new GenericPortObjectSpec());
+    }
 
-	public GenericPortObject() {
-		this(new ArrayList<>(0), new GenericPortObjectSpec());
-	}
+    public GenericPortObject() {
+	this(new ArrayList<>(0), new GenericPortObjectSpec());
+    }
 
-	public List<T> getMeasurements() {
-		return measurements;
-	}
+    public List<T> getMeasurements() {
+	return measurements;
+    }
 
-	@Override
-	public String getSummary() {
-		return summary;
-	}
+    @Override
+    public String getSummary() {
+	return summary;
+    }
 
-	@Override
-	public PortObjectSpec getSpec() {
-		return portObjectSpec;
-	}
+    @Override
+    public PortObjectSpec getSpec() {
+	return portObjectSpec;
+    }
 
-	@Override
-	public JComponent[] getViews() {
-		return null;
-	}
+    @Override
+    public JComponent[] getViews() {
+	return null;
+    }
 
-	@Override
-	protected void save(final PortObjectZipOutputStream out, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
-		final ZipEntry zipEntry = new ZipEntry(this.getClass().getSimpleName());
-		out.putNextEntry(zipEntry);
-		if (measurements != null) {
-			out.write(measurements.size());
-			final ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
-			for (final T m : measurements) {
-				objectOutputStream.writeObject(m);
+    @Override
+    protected void save(final PortObjectZipOutputStream out, final ExecutionMonitor exec)
+	    throws IOException, CanceledExecutionException {
+	final ZipEntry zipEntry = new ZipEntry(this.getClass().getSimpleName());
+	out.putNextEntry(zipEntry);
+	if (measurements != null) {
+	    out.write(measurements.size());
+	    final ObjectOutputStream objectOutputStream = new ObjectOutputStream(out);
+	    for (final T m : measurements) {
+		objectOutputStream.writeObject(m);
 		// objectOutputStream.writeObject(m.getHeaderDataMap());
-			}
-			objectOutputStream.flush();
-		} else {
-			out.write(0);
-		}
-
-		out.closeEntry();
-
+	    }
+	    objectOutputStream.flush();
+	} else {
+	    out.write(0);
 	}
 
-	@SuppressWarnings({ "unchecked", "unused" })
-	@Override
-	protected void load(final PortObjectZipInputStream in, final PortObjectSpec spec, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
+	out.closeEntry();
 
-		// specs currently not needed
-		final GenericPortObjectSpec fidSpec = (GenericPortObjectSpec) spec;
+    }
 
-		Thread t = Thread.currentThread();
-		ClassLoader ccl = t.getContextClassLoader();
+    @SuppressWarnings({ "unchecked", "unused" })
+    @Override
+    protected void load(final PortObjectZipInputStream in, final PortObjectSpec spec, final ExecutionMonitor exec)
+	    throws IOException, CanceledExecutionException {
+
+	// specs currently not needed
+	final GenericPortObjectSpec fidSpec = (GenericPortObjectSpec) spec;
+
+	Thread t = Thread.currentThread();
+	ClassLoader ccl = t.getContextClassLoader();
+	try {
+	    t.setContextClassLoader(getClass().getClassLoader());
+
+	    final ZipEntry zipEntry = in.getNextEntry();
+	    final int numMeasurements = in.read();
+	    final ObjectInputStream objectInputStream = new ObjectInputStream(in) {
+		@Override
+		protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+		    // System.err.println("Resolving class " + desc);
+		    return super.resolveClass(desc);
+		}
+	    };
+	    for (int i = 0; i < numMeasurements; i++) {
 		try {
-			t.setContextClassLoader(getClass().getClassLoader());
-
-			final ZipEntry zipEntry = in.getNextEntry();
-			final int numMeasurements = in.read();
-			final ObjectInputStream objectInputStream = new ObjectInputStream(in) {
-				@Override
-				protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
-					// System.err.println("Resolving class " + desc);
-					return super.resolveClass(desc);
-				}
-			};
-			for (int i = 0; i < numMeasurements; i++) {
-				try {
-					Object o = objectInputStream.readObject();
-					final T m = (T) o;
-					measurements.add(m);
-				} catch (final ClassNotFoundException e) {
-					e.printStackTrace();
-					throw new IOException(e);
-				}
-			}
-		} finally {
-			t.setContextClassLoader(ccl);
+		    Object o = objectInputStream.readObject();
+		    final T m = (T) o;
+		    measurements.add(m);
+		} catch (final ClassNotFoundException e) {
+		    e.printStackTrace();
+		    throw new IOException(e);
 		}
+	    }
+	} finally {
+	    t.setContextClassLoader(ccl);
 	}
+    }
 
 }

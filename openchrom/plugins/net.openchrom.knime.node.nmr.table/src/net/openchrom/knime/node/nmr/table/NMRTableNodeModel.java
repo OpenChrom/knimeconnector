@@ -53,108 +53,108 @@ import net.openchrom.knime.node.base.NMRPortObject;
  */
 public class NMRTableNodeModel extends NodeModel {
 
-	private static final NodeLogger logger = NodeLogger.getLogger(NMRTableNodeModel.class);
+    private static final NodeLogger logger = NodeLogger.getLogger(NMRTableNodeModel.class);
 
-	static DataTableSpec getFIDTableSpec() {
-		return new DataTableSpec(
-				new DataColumnSpec[] { new DataColumnSpecCreator("Measurement Cnt", LongCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Cnt", LongCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Chemical shift [ppm]", DoubleCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Absorptive", DoubleCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Dispersive", DoubleCell.TYPE).createSpec() });
+    static DataTableSpec getFIDTableSpec() {
+	return new DataTableSpec(
+		new DataColumnSpec[] { new DataColumnSpecCreator("Measurement Cnt", LongCell.TYPE).createSpec(),
+			new DataColumnSpecCreator("Cnt", LongCell.TYPE).createSpec(),
+			new DataColumnSpecCreator("Chemical shift [ppm]", DoubleCell.TYPE).createSpec(),
+			new DataColumnSpecCreator("Absorptive", DoubleCell.TYPE).createSpec(),
+			new DataColumnSpecCreator("Dispersive", DoubleCell.TYPE).createSpec() });
+    }
+
+    static DataRow buildRow(AcquisitionParameter acquisitionParameter, final RowKey rowKey, final long measurementCnt,
+	    final long signalCnt, final SpectrumSignal signal) {
+	final List<DataCell> cells = new ArrayList<>();
+	cells.add(new LongCell(measurementCnt));
+	cells.add(new LongCell(signalCnt));
+	cells.add(new DoubleCell(acquisitionParameter.toPPM(signal.getFrequency()).doubleValue()));
+	cells.add(new DoubleCell(signal.getAbsorptiveIntensity().doubleValue()));
+	cells.add(new DoubleCell(signal.getDispersiveIntensity().doubleValue()));
+	// cells.add(new DoubleCell(fidSignal.getPhase()));
+	return new DefaultRow(rowKey, cells);
+    }
+
+    public NMRTableNodeModel() {
+	super(new PortType[] { NMRPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
+    }
+
+    @Override
+    protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
+	final DataTableSpec portOne = getFIDTableSpec();
+	return new PortObjectSpec[] { portOne };
+    }
+
+    @Override
+    protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+	final DataTableSpec portTwo = getFIDTableSpec();
+	final BufferedDataContainer container = exec.createDataContainer(portTwo);
+	long globalRowCnt = 0;
+	long measurementCnt = 0;
+
+	NMRPortObject fidObject = (NMRPortObject) inObjects[0];
+	Collection<SpectrumMeasurement> measurements = fidObject.getMeasurements();
+	exec.getProgressMonitor().setProgress(0);
+	for (final SpectrumMeasurement measurement : measurements) {
+	    exec.checkCanceled();
+
+	    long signalCnt = 0;
+	    for (final SpectrumSignal signal : measurement.getSignals()) {
+		exec.checkCanceled();
+
+		container.addRowToTable(buildRow(measurement.getAcquisitionParameter(),
+			RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
+
+		signalCnt++;
+		globalRowCnt++;
+	    }
+	    exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
+
+	    measurementCnt++;
 	}
+	container.close();
 
-	static DataRow buildRow(AcquisitionParameter acquisitionParameter, final RowKey rowKey, final long measurementCnt,
-			final long signalCnt, final SpectrumSignal signal) {
-		final List<DataCell> cells = new ArrayList<>();
-		cells.add(new LongCell(measurementCnt));
-		cells.add(new LongCell(signalCnt));
-		cells.add(new DoubleCell(acquisitionParameter.toPPM(signal.getFrequency()).doubleValue()));
-		cells.add(new DoubleCell(signal.getAbsorptiveIntensity().doubleValue()));
-		cells.add(new DoubleCell(signal.getDispersiveIntensity().doubleValue()));
-		// cells.add(new DoubleCell(fidSignal.getPhase()));
-		return new DefaultRow(rowKey, cells);
-	}
+	final BufferedDataTable portOut = container.getTable();
+	return new PortObject[] { portOut };
+    }
 
-	public NMRTableNodeModel() {
-		super(new PortType[] { NMRPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
-	}
+    @Override
+    protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
+	    throws IOException, CanceledExecutionException {
+	logger.debug(this.getClass().getSimpleName() + ": Load internals");
 
-	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-		final DataTableSpec portOne = getFIDTableSpec();
-		return new PortObjectSpec[] { portOne };
-	}
+    }
 
-	@Override
-	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		final DataTableSpec portTwo = getFIDTableSpec();
-		final BufferedDataContainer container = exec.createDataContainer(portTwo);
-		long globalRowCnt = 0;
-		long measurementCnt = 0;
+    @Override
+    protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
+	    throws IOException, CanceledExecutionException {
+	logger.debug(this.getClass().getSimpleName() + ": Save internals");
 
-		NMRPortObject fidObject = (NMRPortObject) inObjects[0];
-		Collection<SpectrumMeasurement> measurements = fidObject.getMeasurements();
-		exec.getProgressMonitor().setProgress(0);
-		for (final SpectrumMeasurement measurement : measurements) {
-			exec.checkCanceled();
+    }
 
-			long signalCnt = 0;
-			for (final SpectrumSignal signal : measurement.getSignals()) {
-				exec.checkCanceled();
+    @Override
+    protected void saveSettingsTo(final NodeSettingsWO settings) {
+	logger.debug(this.getClass().getSimpleName() + ": Saving settings");
 
-				container.addRowToTable(buildRow(measurement.getAcquisitionParameter(),
-						RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, signal));
+    }
 
-				signalCnt++;
-				globalRowCnt++;
-			}
-			exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
+    @Override
+    protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+	logger.debug(this.getClass().getSimpleName() + ": Validate settings");
 
-			measurementCnt++;
-		}
-		container.close();
+    }
 
-		final BufferedDataTable portOut = container.getTable();
-		return new PortObject[] { portOut };
-	}
+    @Override
+    protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
+	logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
 
-	@Override
-	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
-		logger.debug(this.getClass().getSimpleName() + ": Load internals");
+    }
 
-	}
+    @Override
+    protected void reset() {
+	logger.debug(this.getClass().getSimpleName() + ": OnReset");
 
-	@Override
-	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
-		logger.debug(this.getClass().getSimpleName() + ": Save internals");
-
-	}
-
-	@Override
-	protected void saveSettingsTo(final NodeSettingsWO settings) {
-		logger.debug(this.getClass().getSimpleName() + ": Saving settings");
-
-	}
-
-	@Override
-	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.debug(this.getClass().getSimpleName() + ": Validate settings");
-
-	}
-
-	@Override
-	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
-
-	}
-
-	@Override
-	protected void reset() {
-		logger.debug(this.getClass().getSimpleName() + ": OnReset");
-
-	}
+    }
 
 }

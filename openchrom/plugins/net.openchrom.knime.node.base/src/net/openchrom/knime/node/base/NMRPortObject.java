@@ -27,29 +27,29 @@ import org.knime.core.node.port.PortTypeRegistry;
  */
 public class NMRPortObject extends GenericPortObject<SpectrumMeasurement> {
 
-	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(NMRPortObject.class);
+    public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(NMRPortObject.class);
 
-	public static final class Serializer extends AbstractPortObjectSerializer<NMRPortObject> {
-	}
+    public static final class Serializer extends AbstractPortObjectSerializer<NMRPortObject> {
+    }
 
-	public NMRPortObject() {
-		super();
+    public NMRPortObject() {
+	super();
 
-	}
+    }
 
-	public NMRPortObject(Collection<? extends SpectrumMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
-		super(measurements, portObjectSpec);
+    public NMRPortObject(Collection<? extends SpectrumMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
+	super(measurements, portObjectSpec);
 
-	}
+    }
 
-	public NMRPortObject(Collection<? extends SpectrumMeasurement> measurements) {
-		super(measurements);
+    public NMRPortObject(Collection<? extends SpectrumMeasurement> measurements) {
+	super(measurements);
 
-	}
+    }
 
-	@Override
-	public List<SpectrumMeasurement> getMeasurements() {
-		return super.getMeasurements();
-	}
+    @Override
+    public List<SpectrumMeasurement> getMeasurements() {
+	return super.getMeasurements();
+    }
 
 }

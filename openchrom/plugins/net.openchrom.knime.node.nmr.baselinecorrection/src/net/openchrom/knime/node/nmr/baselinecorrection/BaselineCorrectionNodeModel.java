@@ -59,7 +59,7 @@ public class BaselineCorrectionNodeModel extends NodeModel {
     @Override
     protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
 
-		return ProcessorAdapter.adaptNMRInNMROut(new BaselineCorrectionProcessor(), inObjects, exec, logger);
+	return ProcessorAdapter.adaptNMRInNMROut(new BaselineCorrectionProcessor(), inObjects, exec, logger);
 
     }
 

@@ -23,29 +23,30 @@ import org.knime.core.node.NodeView;
  */
 public class BaselineCorrectionNodeFactory extends NodeFactory<BaselineCorrectionNodeModel> {
 
-	@Override
-	public BaselineCorrectionNodeModel createNodeModel() {
-		return new BaselineCorrectionNodeModel();
-	}
+    @Override
+    public BaselineCorrectionNodeModel createNodeModel() {
+	return new BaselineCorrectionNodeModel();
+    }
 
-	@Override
-	protected int getNrNodeViews() {
-		return 0;
-	}
+    @Override
+    protected int getNrNodeViews() {
+	return 0;
+    }
 
-	@Override
-	public NodeView<BaselineCorrectionNodeModel> createNodeView(final int viewIndex, final BaselineCorrectionNodeModel nodeModel) {
-		return null;
-	}
+    @Override
+    public NodeView<BaselineCorrectionNodeModel> createNodeView(final int viewIndex,
+	    final BaselineCorrectionNodeModel nodeModel) {
+	return null;
+    }
 
-	@Override
-	protected boolean hasDialog() {
-		return false;
-	}
+    @Override
+    protected boolean hasDialog() {
+	return false;
+    }
 
-	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-		return null;
-	}
+    @Override
+    protected NodeDialogPane createNodeDialogPane() {
+	return null;
+    }
 
 }

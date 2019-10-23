@@ -23,29 +23,29 @@ import org.knime.core.node.NodeView;
  */
 public class PhaseCorrectionNodeFactory extends NodeFactory<PhaseCorrectionNodeModel> {
 
-	@Override
-	public PhaseCorrectionNodeModel createNodeModel() {
-		return new PhaseCorrectionNodeModel();
-	}
+    @Override
+    public PhaseCorrectionNodeModel createNodeModel() {
+	return new PhaseCorrectionNodeModel();
+    }
 
-	@Override
-	protected int getNrNodeViews() {
-		return 0;
-	}
+    @Override
+    protected int getNrNodeViews() {
+	return 0;
+    }
 
-	@Override
-	public NodeView<PhaseCorrectionNodeModel> createNodeView(int viewIndex, PhaseCorrectionNodeModel nodeModel) {
-		return null;
-	}
+    @Override
+    public NodeView<PhaseCorrectionNodeModel> createNodeView(int viewIndex, PhaseCorrectionNodeModel nodeModel) {
+	return null;
+    }
 
-	@Override
-	protected boolean hasDialog() {
-		return false;
-	}
+    @Override
+    protected boolean hasDialog() {
+	return false;
+    }
 
-	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-		return null;
-	}
+    @Override
+    protected NodeDialogPane createNodeDialogPane() {
+	return null;
+    }
 
 }

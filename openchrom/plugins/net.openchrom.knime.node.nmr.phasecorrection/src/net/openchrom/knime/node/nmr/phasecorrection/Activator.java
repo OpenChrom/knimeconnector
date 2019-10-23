@@ -11,25 +11,25 @@
  *******************************************************************************/
 package net.openchrom.knime.node.nmr.phasecorrection;
 
- import org.osgi.framework.BundleActivator;
- import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
 
- public class Activator implements BundleActivator {
+public class Activator implements BundleActivator {
 
-	 private static BundleContext context;
+    private static BundleContext context;
 
-	 static BundleContext getContext() {
-		 return context;
-	 }
+    static BundleContext getContext() {
+	return context;
+    }
 
-	 @Override
-	 public void start(BundleContext bundleContext) throws Exception {
-		 Activator.context = bundleContext;
-	 }
+    @Override
+    public void start(BundleContext bundleContext) throws Exception {
+	Activator.context = bundleContext;
+    }
 
-	 @Override
-	 public void stop(BundleContext bundleContext) throws Exception {
-		 Activator.context = null;
-	 }
+    @Override
+    public void stop(BundleContext bundleContext) throws Exception {
+	Activator.context = null;
+    }
 
- }
+}

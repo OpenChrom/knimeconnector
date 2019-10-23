@@ -31,11 +31,11 @@ import org.knime.core.node.defaultnodesettings.SettingsModelString;
  */
 public class FidReaderNodeDialogPane extends DefaultNodeSettingsPane {
 
-	public FidReaderNodeDialogPane() {
+    public FidReaderNodeDialogPane() {
 
-		final SettingsModelString selectionIn = FidReaderNodeModel.createSettingsModelValueIn();
-		addDialogComponent(new DialogComponentFileChooser(selectionIn, FidReaderNodeDialogPane.class.getName(),
-				JFileChooser.OPEN_DIALOG, true));
-	}
+	final SettingsModelString selectionIn = FidReaderNodeModel.createSettingsModelValueIn();
+	addDialogComponent(new DialogComponentFileChooser(selectionIn, FidReaderNodeDialogPane.class.getName(),
+		JFileChooser.OPEN_DIALOG, true));
+    }
 
 }

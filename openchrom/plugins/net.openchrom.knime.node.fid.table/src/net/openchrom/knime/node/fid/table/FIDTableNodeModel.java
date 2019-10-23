@@ -52,103 +52,103 @@ import net.openchrom.knime.node.base.FIDPortObject;
  */
 public class FIDTableNodeModel extends NodeModel {
 
-	private static final NodeLogger logger = NodeLogger.getLogger(FIDTableNodeModel.class);
+    private static final NodeLogger logger = NodeLogger.getLogger(FIDTableNodeModel.class);
 
-	private static DataTableSpec getFIDTableSpec() {
-		return new DataTableSpec(
-				new DataColumnSpec[] { new DataColumnSpecCreator("Measurement Cnt", LongCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Cnt", LongCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Time", DoubleCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Real", DoubleCell.TYPE).createSpec(),
-						new DataColumnSpecCreator("Imaginary", DoubleCell.TYPE).createSpec() });
+    private static DataTableSpec getFIDTableSpec() {
+	return new DataTableSpec(
+		new DataColumnSpec[] { new DataColumnSpecCreator("Measurement Cnt", LongCell.TYPE).createSpec(),
+			new DataColumnSpecCreator("Cnt", LongCell.TYPE).createSpec(),
+			new DataColumnSpecCreator("Time", DoubleCell.TYPE).createSpec(),
+			new DataColumnSpecCreator("Real", DoubleCell.TYPE).createSpec(),
+			new DataColumnSpecCreator("Imaginary", DoubleCell.TYPE).createSpec() });
+    }
+
+    private static DataRow buildRow(final RowKey rowKey, final long measurementCnt, final long signalCnt,
+	    final FIDSignal fidSignal) {
+	final List<DataCell> cells = new ArrayList<>();
+	cells.add(new LongCell(measurementCnt));
+	cells.add(new LongCell(signalCnt));
+	cells.add(new DoubleCell(fidSignal.getSignalTime().doubleValue()));
+	cells.add(new DoubleCell(fidSignal.getRealComponent().doubleValue()));
+	cells.add(new DoubleCell(fidSignal.getImaginaryComponent().doubleValue()));
+	// cells.add(new DoubleCell(fidSignal.getPhase()));
+	return new DefaultRow(rowKey, cells);
+    }
+
+    public FIDTableNodeModel() {
+	super(new PortType[] { FIDPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
+    }
+
+    @Override
+    protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
+	final DataTableSpec portOne = getFIDTableSpec();
+	return new PortObjectSpec[] { portOne };
+    }
+
+    @Override
+    protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
+	final DataTableSpec portTwo = getFIDTableSpec();
+	final BufferedDataContainer container = exec.createDataContainer(portTwo);
+	long globalRowCnt = 0;
+	long measurementCnt = 0;
+
+	FIDPortObject fidObject = (FIDPortObject) inObjects[0];
+	Collection<FIDMeasurement> measurements = fidObject.getMeasurements();
+	exec.getProgressMonitor().setProgress(0);
+	for (final FIDMeasurement measurement : measurements) {
+	    exec.checkCanceled();
+	    long signalCnt = 0;
+	    for (final FIDSignal fidSignal : measurement.getSignals()) {
+		exec.checkCanceled();
+		container.addRowToTable(
+			buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, fidSignal));
+		signalCnt++;
+		globalRowCnt++;
+	    }
+	    exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
+	    measurementCnt++;
 	}
+	container.close();
+	final BufferedDataTable portOut = container.getTable();
+	return new PortObject[] { portOut };
+    }
 
-	private static DataRow buildRow(final RowKey rowKey, final long measurementCnt, final long signalCnt,
-			final FIDSignal fidSignal) {
-		final List<DataCell> cells = new ArrayList<>();
-		cells.add(new LongCell(measurementCnt));
-		cells.add(new LongCell(signalCnt));
-		cells.add(new DoubleCell(fidSignal.getSignalTime().doubleValue()));
-		cells.add(new DoubleCell(fidSignal.getRealComponent().doubleValue()));
-		cells.add(new DoubleCell(fidSignal.getImaginaryComponent().doubleValue()));
-		// cells.add(new DoubleCell(fidSignal.getPhase()));
-		return new DefaultRow(rowKey, cells);
-	}
+    @Override
+    protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
+	    throws IOException, CanceledExecutionException {
+	logger.debug(this.getClass().getSimpleName() + ": Load internals");
 
-	public FIDTableNodeModel() {
-		super(new PortType[] { FIDPortObject.TYPE }, new PortType[] { BufferedDataTable.TYPE });
-	}
+    }
 
-	@Override
-	protected PortObjectSpec[] configure(PortObjectSpec[] inSpecs) throws InvalidSettingsException {
-		final DataTableSpec portOne = getFIDTableSpec();
-		return new PortObjectSpec[] { portOne };
-	}
+    @Override
+    protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
+	    throws IOException, CanceledExecutionException {
+	logger.debug(this.getClass().getSimpleName() + ": Save internals");
 
-	@Override
-	protected PortObject[] execute(PortObject[] inObjects, ExecutionContext exec) throws Exception {
-		final DataTableSpec portTwo = getFIDTableSpec();
-		final BufferedDataContainer container = exec.createDataContainer(portTwo);
-		long globalRowCnt = 0;
-		long measurementCnt = 0;
+    }
 
-		FIDPortObject fidObject = (FIDPortObject) inObjects[0];
-		Collection<FIDMeasurement> measurements = fidObject.getMeasurements();
-		exec.getProgressMonitor().setProgress(0);
-		for (final FIDMeasurement measurement : measurements) {
-			exec.checkCanceled();
-			long signalCnt = 0;
-			for (final FIDSignal fidSignal : measurement.getSignals()) {
-				exec.checkCanceled();
-				container.addRowToTable(
-						buildRow(RowKey.createRowKey(globalRowCnt), measurementCnt, signalCnt, fidSignal));
-				signalCnt++;
-				globalRowCnt++;
-			}
-			exec.getProgressMonitor().setProgress(measurementCnt / measurements.size());
-			measurementCnt++;
-		}
-		container.close();
-		final BufferedDataTable portOut = container.getTable();
-		return new PortObject[] { portOut };
-	}
+    @Override
+    protected void saveSettingsTo(final NodeSettingsWO settings) {
+	logger.debug(this.getClass().getSimpleName() + ": Saving settings");
 
-	@Override
-	protected void loadInternals(final File nodeInternDir, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
-		logger.debug(this.getClass().getSimpleName() + ": Load internals");
+    }
 
-	}
+    @Override
+    protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
+	logger.debug(this.getClass().getSimpleName() + ": Validate settings");
 
-	@Override
-	protected void saveInternals(final File nodeInternDir, final ExecutionMonitor exec)
-			throws IOException, CanceledExecutionException {
-		logger.debug(this.getClass().getSimpleName() + ": Save internals");
+    }
 
-	}
+    @Override
+    protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
+	logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
 
-	@Override
-	protected void saveSettingsTo(final NodeSettingsWO settings) {
-		logger.debug(this.getClass().getSimpleName() + ": Saving settings");
+    }
 
-	}
+    @Override
+    protected void reset() {
+	logger.debug(this.getClass().getSimpleName() + ": OnReset");
 
-	@Override
-	protected void validateSettings(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.debug(this.getClass().getSimpleName() + ": Validate settings");
-
-	}
-
-	@Override
-	protected void loadValidatedSettingsFrom(final NodeSettingsRO settings) throws InvalidSettingsException {
-		logger.debug(this.getClass().getSimpleName() + ": Loading validated settings");
-
-	}
-
-	@Override
-	protected void reset() {
-		logger.debug(this.getClass().getSimpleName() + ": OnReset");
-
-	}
+    }
 
 }

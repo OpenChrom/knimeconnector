@@ -23,29 +23,29 @@ import org.knime.core.node.NodeView;
  */
 public class FIDTableNodeFactory extends NodeFactory<FIDTableNodeModel> {
 
-	@Override
-	public FIDTableNodeModel createNodeModel() {
-		return new FIDTableNodeModel();
-	}
+    @Override
+    public FIDTableNodeModel createNodeModel() {
+	return new FIDTableNodeModel();
+    }
 
-	@Override
-	protected int getNrNodeViews() {
-		return 0;
-	}
+    @Override
+    protected int getNrNodeViews() {
+	return 0;
+    }
 
-	@Override
-	public NodeView<FIDTableNodeModel> createNodeView(int viewIndex, FIDTableNodeModel nodeModel) {
-		return null;
-	}
+    @Override
+    public NodeView<FIDTableNodeModel> createNodeView(int viewIndex, FIDTableNodeModel nodeModel) {
+	return null;
+    }
 
-	@Override
-	protected boolean hasDialog() {
-		return false;
-	}
+    @Override
+    protected boolean hasDialog() {
+	return false;
+    }
 
-	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-		return null;
-	}
+    @Override
+    protected NodeDialogPane createNodeDialogPane() {
+	return null;
+    }
 
 }

@@ -27,29 +27,29 @@ import org.knime.core.node.port.PortTypeRegistry;
  */
 public class FIDPortObject extends GenericPortObject<FIDMeasurement> {
 
-	public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(FIDPortObject.class);
+    public static final PortType TYPE = PortTypeRegistry.getInstance().getPortType(FIDPortObject.class);
 
-	public static final class Serializer extends AbstractPortObjectSerializer<FIDPortObject> {
-	}
+    public static final class Serializer extends AbstractPortObjectSerializer<FIDPortObject> {
+    }
 
-	public FIDPortObject() {
-		super();
+    public FIDPortObject() {
+	super();
 
-	}
+    }
 
-	public FIDPortObject(Collection<? extends FIDMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
-		super(measurements, portObjectSpec);
+    public FIDPortObject(Collection<? extends FIDMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
+	super(measurements, portObjectSpec);
 
-	}
+    }
 
-	public FIDPortObject(Collection<? extends FIDMeasurement> measurements) {
-		super(measurements);
+    public FIDPortObject(Collection<? extends FIDMeasurement> measurements) {
+	super(measurements);
 
-	}
+    }
 
-	@Override
-	public List<FIDMeasurement> getMeasurements() {
-		return super.getMeasurements();
-	}
+    @Override
+    public List<FIDMeasurement> getMeasurements() {
+	return super.getMeasurements();
+    }
 
 }

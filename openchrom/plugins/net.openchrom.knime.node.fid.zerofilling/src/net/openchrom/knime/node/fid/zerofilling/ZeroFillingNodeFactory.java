@@ -23,29 +23,29 @@ import org.knime.core.node.NodeView;
  */
 public class ZeroFillingNodeFactory extends NodeFactory<ZeroFillingNodeModel> {
 
-	@Override
-	public ZeroFillingNodeModel createNodeModel() {
-		return new ZeroFillingNodeModel();
-	}
+    @Override
+    public ZeroFillingNodeModel createNodeModel() {
+	return new ZeroFillingNodeModel();
+    }
 
-	@Override
-	protected int getNrNodeViews() {
-		return 0;
-	}
+    @Override
+    protected int getNrNodeViews() {
+	return 0;
+    }
 
-	@Override
-	public NodeView<ZeroFillingNodeModel> createNodeView(int viewIndex, ZeroFillingNodeModel nodeModel) {
-		return null;
-	}
+    @Override
+    public NodeView<ZeroFillingNodeModel> createNodeView(int viewIndex, ZeroFillingNodeModel nodeModel) {
+	return null;
+    }
 
-	@Override
-	protected boolean hasDialog() {
-		return false;
-	}
+    @Override
+    protected boolean hasDialog() {
+	return false;
+    }
 
-	@Override
-	protected NodeDialogPane createNodeDialogPane() {
-		return null;
-	}
+    @Override
+    protected NodeDialogPane createNodeDialogPane() {
+	return null;
+    }
 
 }

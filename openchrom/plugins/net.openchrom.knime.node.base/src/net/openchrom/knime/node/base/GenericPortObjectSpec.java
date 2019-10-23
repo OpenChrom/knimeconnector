@@ -27,23 +27,23 @@ import org.knime.core.node.port.PortObjectSpecZipOutputStream;
  */
 public class GenericPortObjectSpec implements PortObjectSpec {
 
-	public static final class Serializer extends PortObjectSpecSerializer<GenericPortObjectSpec> {
+    public static final class Serializer extends PortObjectSpecSerializer<GenericPortObjectSpec> {
 
-		@Override
-		public void savePortObjectSpec(final GenericPortObjectSpec portObjectSpec,
-				final PortObjectSpecZipOutputStream out) throws IOException {
+	@Override
+	public void savePortObjectSpec(final GenericPortObjectSpec portObjectSpec,
+		final PortObjectSpecZipOutputStream out) throws IOException {
 
-		}
-
-		@Override
-		public GenericPortObjectSpec loadPortObjectSpec(final PortObjectSpecZipInputStream in) throws IOException {
-			return new GenericPortObjectSpec();
-		}
 	}
 
 	@Override
-	public JComponent[] getViews() {
-		return null;
+	public GenericPortObjectSpec loadPortObjectSpec(final PortObjectSpecZipInputStream in) throws IOException {
+	    return new GenericPortObjectSpec();
 	}
+    }
+
+    @Override
+    public JComponent[] getViews() {
+	return null;
+    }
 
 }

@@ -36,48 +36,47 @@ import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
  */
 public class ProcessorAdapter {
 
-	public static PortObject[] transformToNMRPortObject(Collection<? extends SpectrumMeasurement> e) {
+    public static PortObject[] transformToNMRPortObject(Collection<? extends SpectrumMeasurement> e) {
 
-		return new PortObject[] { new NMRPortObject(e) };
-	}
+	return new PortObject[] { new NMRPortObject(e) };
+    }
 
-	public static PortObject[] transformToFIDPortObject(Collection<? extends FIDMeasurement> e) {
+    public static PortObject[] transformToFIDPortObject(Collection<? extends FIDMeasurement> e) {
 
-		return new PortObject[] { new FIDPortObject(e) };
-	}
+	return new PortObject[] { new FIDPortObject(e) };
+    }
 
-	public static MessageConsumer buildMessageConsumer(NodeLogger logger) {
+    public static MessageConsumer buildMessageConsumer(NodeLogger logger) {
 
-		return new MessageConsumer() {
+	return new MessageConsumer() {
 
-			@Override
-			public void addMessage(String description, String message, Throwable t, MessageType type) {
+	    @Override
+	    public void addMessage(String description, String message, Throwable t, MessageType type) {
 
-				if (t == null) {
-					logger.error(description + ": " + message);
-				} else {
-					t.printStackTrace();
-					logger.error(description + ": " + message + " (" + t.getLocalizedMessage() + ")");
-				}
-			}
-		};
-	}
+		if (t == null) {
+		    logger.error(description + ": " + message);
+		} else {
+		    t.printStackTrace();
+		    logger.error(description + ": " + message + " (" + t.getLocalizedMessage() + ")");
+		}
+	    }
+	};
+    }
 
-    public static <I extends IMeasurement, T extends GenericPortObject<I>> List<I> getInput(
-			PortObject[] inObjects) {
+    public static <I extends IMeasurement, T extends GenericPortObject<I>> List<I> getInput(PortObject[] inObjects) {
 
-		return getInput(inObjects, 0);
-	}
+	return getInput(inObjects, 0);
+    }
 
-	@SuppressWarnings("unchecked")
-	public static <I extends IMeasurement, T extends GenericPortObject<I>> List<I> getInput(PortObject[] inObjects,
-			int index) {
-		return ((T) inObjects[index]).getMeasurements();
-	}
+    @SuppressWarnings("unchecked")
+    public static <I extends IMeasurement, T extends GenericPortObject<I>> List<I> getInput(PortObject[] inObjects,
+	    int index) {
+	return ((T) inObjects[index]).getMeasurements();
+    }
 
-	public ProcessorAdapter() {
+    public ProcessorAdapter() {
 
-	}
+    }
 
     @SuppressWarnings("unchecked")
     public static <R extends IMeasurement, I extends IMeasurement> Collection<R> filter(IMeasurementFilter<?> filter,
@@ -86,41 +85,42 @@ public class ProcessorAdapter {
 		ProcessorAdapter.buildMessageConsumer(logger), new KnimeProgressMonitor(exec));
     }
 
-	public static PortObject[] adaptFIDInFIDOut(IMeasurementFilter<?> filter,PortObject[] inObjects, ExecutionContext exec, NodeLogger logger) {
-		List<FIDMeasurement> inData = ProcessorAdapter.getInput(inObjects);
-		if (inData.isEmpty()) {
-			logger.warn("Empty input data!");
-		}
-		Collection<FIDMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
-		if (outData.isEmpty()) {
-			logger.warn("No data processed!");
-		}
-		return ProcessorAdapter.transformToFIDPortObject(outData);
+    public static PortObject[] adaptFIDInFIDOut(IMeasurementFilter<?> filter, PortObject[] inObjects,
+	    ExecutionContext exec, NodeLogger logger) {
+	List<FIDMeasurement> inData = ProcessorAdapter.getInput(inObjects);
+	if (inData.isEmpty()) {
+	    logger.warn("Empty input data!");
 	}
+	Collection<FIDMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
+	if (outData.isEmpty()) {
+	    logger.warn("No data processed!");
+	}
+	return ProcessorAdapter.transformToFIDPortObject(outData);
+    }
 
-	public static PortObject[] adaptFIDInNMROut(IMeasurementFilter<?> filter, PortObject[] inObjects,
-			ExecutionContext exec, NodeLogger logger) {
-		List<FIDMeasurement> inData = ProcessorAdapter.getInput(inObjects);
-		if (inData.isEmpty()) {
-			logger.warn("Empty input data!");
-		}
-		Collection<SpectrumMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
-		if (outData.isEmpty()) {
-			logger.warn("No data processed!");
-		}
-		return ProcessorAdapter.transformToNMRPortObject(outData);
+    public static PortObject[] adaptFIDInNMROut(IMeasurementFilter<?> filter, PortObject[] inObjects,
+	    ExecutionContext exec, NodeLogger logger) {
+	List<FIDMeasurement> inData = ProcessorAdapter.getInput(inObjects);
+	if (inData.isEmpty()) {
+	    logger.warn("Empty input data!");
 	}
+	Collection<SpectrumMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
+	if (outData.isEmpty()) {
+	    logger.warn("No data processed!");
+	}
+	return ProcessorAdapter.transformToNMRPortObject(outData);
+    }
 
-	public static PortObject[] adaptNMRInNMROut(IMeasurementFilter<?> filter, PortObject[] inObjects,
-			ExecutionContext exec, NodeLogger logger) {
-		List<SpectrumMeasurement> inData = ProcessorAdapter.getInput(inObjects);
-		if (inData.isEmpty()) {
-			logger.warn("Empty input data!");
-		}
-		Collection<SpectrumMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
-		if (outData.isEmpty()) {
-			logger.warn("No data processed!");
-		}
-		return ProcessorAdapter.transformToNMRPortObject(outData);
+    public static PortObject[] adaptNMRInNMROut(IMeasurementFilter<?> filter, PortObject[] inObjects,
+	    ExecutionContext exec, NodeLogger logger) {
+	List<SpectrumMeasurement> inData = ProcessorAdapter.getInput(inObjects);
+	if (inData.isEmpty()) {
+	    logger.warn("Empty input data!");
 	}
+	Collection<SpectrumMeasurement> outData = ProcessorAdapter.filter(filter, inData, logger, exec);
+	if (outData.isEmpty()) {
+	    logger.warn("No data processed!");
+	}
+	return ProcessorAdapter.transformToNMRPortObject(outData);
+    }
 }
