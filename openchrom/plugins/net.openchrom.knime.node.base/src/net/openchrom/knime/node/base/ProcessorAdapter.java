@@ -51,14 +51,39 @@ public class ProcessorAdapter {
 	return new MessageConsumer() {
 
 	    @Override
-	    public void addMessage(String description, String message, Throwable t, MessageType type) {
+	    public void addMessage(final String description, final String message, String details, Throwable t,
+		    final MessageType type) {
 
-		if (t == null) {
-		    logger.error(description + ": " + message);
-		} else {
-		    t.printStackTrace();
-		    logger.error(description + ": " + message + " (" + t.getLocalizedMessage() + ")");
+		switch (type) {
+		case ERROR:
+		    if (t == null) {
+			logger.error(description + ": " + message + "(" + details + ")");
+		    } else {
+			logger.error(
+				description + ": " + message + " (" + details + ", " + t.getLocalizedMessage() + ")");
+		    }
+		    break;
+		case WARN:
+		    if (t == null) {
+			logger.warn(description + ": " + message + "(" + details + ")");
+		    } else {
+			logger.warn(
+				description + ": " + message + " (" + details + ", " + t.getLocalizedMessage() + ")");
+		    }
+		    break;
+		case INFO:
+		    if (t == null) {
+			logger.info(description + ": " + message + "(" + details + ")");
+		    } else {
+			logger.info(
+				description + ": " + message + " (" + details + ", " + t.getLocalizedMessage() + ")");
+		    }
+		    break;
+		default:
+		    throw new IllegalArgumentException("Unknown message tye " + type);
 		}
+
+
 	    }
 	};
     }
