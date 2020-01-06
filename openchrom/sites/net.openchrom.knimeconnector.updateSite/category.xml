@@ -9,7 +9,7 @@
    <feature url="features/com.lablicate.nmr.converter.bruker.headless_1.0.0.qualifier.jar" id="com.lablicate.nmr.converter.bruker.headless" version="1.0.0.qualifier">
       <category name="com.lablicate.conveter"/>
    </feature>
-   <category-def name="com.lablicate.conveter" label="Proprietary licenced Converters">
+   <category-def name="com.lablicate.conveter" label="Proprietary Converters">
       <description>
          Converter Features provided by Lablicate GmbH. Proprietary licenced.
       </description>
