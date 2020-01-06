@@ -22,25 +22,24 @@
 	xmlns="http://knime.org/node/v2.8"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://knime.org/node/v2.10 http://knime.org/node/v2.10.xsd">
-	<name>Bruker FID Reader</name>
+	<name>Bruker 1r/1i Reader</name>
 
 	<shortDescription>
-		A node to read-in Bruker's FID data.
+		A node to read-in Bruker's 1r/1i data.
 	</shortDescription>
 
 	<fullDescription>
 
-		<intro>Reads-in one Bruker FID file and transforms it into an OpenChrom FID
-			data set. If available, it also reads-in 1r/1i data and transforms it into an OpenChrom NMR data set.</intro>
+		<intro>Reads-in one Bruker 1r/1i file-set and transforms it into an OpenChrom NMR
+			data set.</intro>
 			
-		<option name="File Chooser">A Directory containing the <pre>fid</pre> file.
+		<option name="File Chooser">A Directory containing the <pre>1r/1i</pre> files.
 		</option> 
 	</fullDescription>
 
 	<ports>
 
-		<outPort index="0" name="OpenChrom FID data">OpenChrom FID data.</outPort>
-		<outPort index="1" name="OpenChrom NMR data">OpenChrom NMR data.</outPort>
+		<outPort index="0" name="OpenChrom NMR data">OpenChrom NMR data.</outPort>
 
 	</ports>
 

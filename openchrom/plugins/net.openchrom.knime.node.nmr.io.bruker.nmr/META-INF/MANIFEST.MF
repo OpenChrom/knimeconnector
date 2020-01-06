@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: OpenChrom KNIME Bruker Reader
-Bundle-SymbolicName: net.openchrom.knime.node.nmr.io.bruker;singleton:=true
-Automatic-Module-Name: net.openchrom.knime.node.nmr.io.bruker
-Bundle-Version: 3.5.0.qualifier
-Bundle-Activator: net.openchrom.knime.nmr.io.bruker.Activator
+Bundle-Name: Bruker NMR Reader
+Bundle-SymbolicName: net.openchrom.knime.node.nmr.io.bruker.nmr;singleton:=true
+Automatic-Module-Name: net.openchrom.knime.node.nmr.io.bruker.nmr
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.openchrom.knime.node.nmr.io.bruker.nmr.Activator
 Bundle-Vendor: Lablicate GmbH
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.0.0,4.0.0)",
  org.knime.base;bundle-version="[3.0.0,5.0.0)"
@@ -12,10 +12,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Import-Package: net.openchrom.knime.node.base,
  net.openchrom.knime.node.base.progress,
- net.openchrom.knime.node.fid.base.portobject,
  net.openchrom.nmr.converter.supplier.bruker.core,
  org.eclipse.chemclipse.model.core,
  org.eclipse.chemclipse.nmr.converter.core,
  org.eclipse.chemclipse.nmr.model.core,
  org.eclipse.chemclipse.processing.core
-

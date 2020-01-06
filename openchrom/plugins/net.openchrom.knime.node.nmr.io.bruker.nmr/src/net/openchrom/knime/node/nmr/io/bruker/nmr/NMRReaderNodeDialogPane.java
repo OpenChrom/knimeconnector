@@ -15,7 +15,7 @@
  * Contributors:
  * Alexander Kerner - initial API and implementation
  *******************************************************************************/
-package net.openchrom.knime.nmr.io.bruker;
+package net.openchrom.knime.node.nmr.io.bruker.nmr;
 
 import javax.swing.JFileChooser;
 
@@ -24,17 +24,17 @@ import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
 import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
- * {@link NodeSettingsPane} for the Bruker FID reader node.
+ * {@link NodeSettingsPane} for the Bruker 1r/1i reader node.
  * 
  * @author Alexander Kerner
  *
  */
-public class FidReaderNodeDialogPane extends DefaultNodeSettingsPane {
+public class NMRReaderNodeDialogPane extends DefaultNodeSettingsPane {
 
-    public FidReaderNodeDialogPane() {
+    public NMRReaderNodeDialogPane() {
 
-	final SettingsModelString selectionIn = FidReaderNodeModel.createSettingsModelValueIn();
-	addDialogComponent(new DialogComponentFileChooser(selectionIn, FidReaderNodeDialogPane.class.getName(),
+	final SettingsModelString selectionIn = NMRReaderNodeModel.createSettingsModelValueIn();
+	addDialogComponent(new DialogComponentFileChooser(selectionIn, NMRReaderNodeDialogPane.class.getName(),
 		JFileChooser.OPEN_DIALOG, true));
     }
 

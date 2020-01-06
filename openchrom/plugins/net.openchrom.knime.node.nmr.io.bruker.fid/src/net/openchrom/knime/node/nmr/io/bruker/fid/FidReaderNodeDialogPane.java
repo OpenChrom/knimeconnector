@@ -15,43 +15,27 @@
  * Contributors:
  * Alexander Kerner - initial API and implementation
  *******************************************************************************/
-package net.openchrom.knime.nmr.io.bruker;
+package net.openchrom.knime.node.nmr.io.bruker.fid;
 
-import org.knime.core.node.NodeDialogPane;
-import org.knime.core.node.NodeFactory;
-import org.knime.core.node.NodeView;
+import javax.swing.JFileChooser;
+
+import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
 
 /**
- * {@link NodeFactory} for the Bruker FID reader node.
+ * {@link NodeSettingsPane} for the Bruker FID reader node.
  * 
  * @author Alexander Kerner
  *
  */
-public class FidReaderNodeFactory extends NodeFactory<FidReaderNodeModel> {
+public class FidReaderNodeDialogPane extends DefaultNodeSettingsPane {
 
-    @Override
-    public FidReaderNodeModel createNodeModel() {
-	return new FidReaderNodeModel();
-    }
+    public FidReaderNodeDialogPane() {
 
-    @Override
-    protected int getNrNodeViews() {
-	return 0;
-    }
-
-    @Override
-    public NodeView<FidReaderNodeModel> createNodeView(final int viewIndex, final FidReaderNodeModel nodeModel) {
-	return null;
-    }
-
-    @Override
-    protected boolean hasDialog() {
-	return true;
-    }
-
-    @Override
-    protected NodeDialogPane createNodeDialogPane() {
-	return new FidReaderNodeDialogPane();
+	final SettingsModelString selectionIn = FidReaderNodeModel.createSettingsModelValueIn();
+	addDialogComponent(new DialogComponentFileChooser(selectionIn, FidReaderNodeDialogPane.class.getName(),
+		JFileChooser.OPEN_DIALOG, true));
     }
 
 }

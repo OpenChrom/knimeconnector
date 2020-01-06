@@ -5,7 +5,7 @@
          point="org.knime.workbench.repository.nodes">
       <node
             category-path="openchrom/nmr"
-            factory-class="net.openchrom.knime.nmr.io.bruker.FidReaderNodeFactory"
+            factory-class="net.openchrom.knime.node.nmr.io.bruker.nmr.NMRReaderNodeFactory"
             />
    </extension>
 </plugin>

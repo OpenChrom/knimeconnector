@@ -15,7 +15,7 @@
  * Contributors:
  * Alexander Kerner - initial API and implementation
  *******************************************************************************/
-package net.openchrom.knime.nmr.io.bruker;
+package net.openchrom.knime.node.nmr.io.bruker.fid;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 
 import org.eclipse.chemclipse.model.core.IComplexSignalMeasurement;
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
-import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.eclipse.chemclipse.processing.core.IProcessingInfo;
 import org.eclipse.core.runtime.SubMonitor;
 import org.knime.core.node.CanceledExecutionException;
@@ -47,9 +46,9 @@ import org.knime.core.util.FileUtil;
 
 import net.openchrom.knime.node.base.FIDPortObject;
 import net.openchrom.knime.node.base.GenericPortObjectSpec;
-import net.openchrom.knime.node.base.NMRPortObject;
 import net.openchrom.knime.node.base.progress.KnimeProgressMonitor;
 import net.openchrom.nmr.converter.supplier.bruker.core.ScanImportConverterFid;
+
 
 /**
  * {@link NodeModel} for the Bruker FID reader node.
@@ -75,7 +74,7 @@ public class FidReaderNodeModel extends NodeModel {
 
 	// zero input ports, one FID-port-object and one NMR-port-object as
 	// output
-	super(new PortType[] {}, new PortType[] { FIDPortObject.TYPE, NMRPortObject.TYPE });
+		super(new PortType[]{}, new PortType[]{FIDPortObject.TYPE});
 	valueIn = createSettingsModelValueIn();
     }
 
@@ -92,8 +91,7 @@ public class FidReaderNodeModel extends NodeModel {
 		logger.info(this.getClass().getSimpleName() + ": Input specs: " + Arrays.asList(inSpecs)
 			+ ", input dir: " + inputDir);
 		final GenericPortObjectSpec portOne = new GenericPortObjectSpec();
-		final GenericPortObjectSpec portTwo = new GenericPortObjectSpec();
-		return new PortObjectSpec[] { portOne, portTwo };
+				return new PortObjectSpec[]{portOne};
 	    }
 	}
 	throw new InvalidSettingsException("Cannot read directory " + inputDir);
@@ -113,20 +111,12 @@ public class FidReaderNodeModel extends NodeModel {
 	}
 	final List<FIDMeasurement> fidMeasurements = processingInfo.getProcessingResult().stream()
 		.filter(e -> e instanceof FIDMeasurement).map(e -> (FIDMeasurement) e).collect(Collectors.toList());
-	final List<SpectrumMeasurement> nmrMeasurements = processingInfo.getProcessingResult().stream()
-		.filter(e -> e instanceof SpectrumMeasurement).map(e -> (SpectrumMeasurement) e)
-		.collect(Collectors.toList());
 	logger.debug(this.getClass().getSimpleName() + ": Read " + fidMeasurements.size() + " FID measurements");
-	logger.debug(this.getClass().getSimpleName() + ": Read " + nmrMeasurements.size() + " NMR measurements");
 	final FIDPortObject portOneOut = new FIDPortObject(fidMeasurements);
-	final NMRPortObject portTwoOut = new NMRPortObject(nmrMeasurements);
 	if (fidMeasurements.isEmpty()) {
 	    logger.warn(this.getClass().getSimpleName() + ": No FID data read!");
 	}
-	if (nmrMeasurements.isEmpty()) {
-	    logger.warn(this.getClass().getSimpleName() + ": No NMR data read!");
-	}
-	return new PortObject[] { portOneOut, portTwoOut };
+		return new PortObject[]{portOneOut};
     }
 
     @Override
