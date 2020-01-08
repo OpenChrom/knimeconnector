@@ -44,6 +44,7 @@
       <feature id="net.openchrom.knime.deps.svg"/>
       <feature id="net.openchrom.knime.node.nmr.feature" installMode="root"/>
       <feature id="com.lablicate.nmr.converter.bruker.headless" installMode="root"/>
+      <feature id="net.openchrom.knime.node.deps" installMode="root"/>
    </features>
 
 
