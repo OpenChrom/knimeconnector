@@ -78,7 +78,7 @@ public abstract class GenericPortObject<T extends IMeasurement> extends Abstract
 
     @Override
     public JComponent[] getViews() {
-	return null;
+	return new JComponent[0];
     }
 
     @Override
