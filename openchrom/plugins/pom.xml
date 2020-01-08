@@ -19,6 +19,7 @@
 		<module>net.openchrom.knime.node.nmr.io.bruker</module>
 		<module>net.openchrom.knime.node.nmr.io.bruker.fid</module>
 		<module>net.openchrom.knime.node.nmr.io.bruker.nmr</module>
+		<module>net.openchrom.knime.node.nmr.io.jcampdx.fid</module>
 		<module>net.openchrom.knime.node.fid.digitalfilter</module>
 		<module>net.openchrom.knime.node.fid.zerofilling</module>
 		<module>net.openchrom.knime.node.fid.table</module>
