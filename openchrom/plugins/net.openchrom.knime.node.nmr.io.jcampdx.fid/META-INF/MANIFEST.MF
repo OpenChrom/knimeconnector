@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: JCampDX FID Reader
+Bundle-SymbolicName: net.openchrom.knime.node.nmr.io.jcampdx.fid;singleton:=true
+Automatic-Module-Name: net.openchrom.knime.node.nmr.io.jcampdx.fid
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: net.openchrom.knime.node.nmr.io.jcampdx.fid.Activator
+Bundle-Vendor: Lablicate GmbH
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.0.0,4.0.0)",
+ org.knime.base;bundle-version="[3.0.0,5.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Import-Package: net.openchrom.knime.node.base,
+ net.openchrom.knime.node.base.progress,
+ net.openchrom.nmr.converter.supplier.jcampdx,
+ org.eclipse.chemclipse.model.core,
+ org.eclipse.chemclipse.nmr.converter.core,
+ org.eclipse.chemclipse.nmr.model.core,
+ org.eclipse.chemclipse.processing.core

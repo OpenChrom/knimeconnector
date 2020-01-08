@@ -1,0 +1,41 @@
+/*******************************************************************************
+ * Copyright (c) 2020 Lablicate GmbH.
+ *
+ * This library is free
+ * software; you can redistribute it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free Software Foundation;
+ * either version 3 of the License, or (at your option) any later version.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details. You should have received a copy of the GNU General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ * Contributors:
+ * Alexander Kerner - initial API and implementation
+ *******************************************************************************/
+package net.openchrom.knime.node.nmr.io.jcampdx.fid;
+
+import javax.swing.JFileChooser;
+
+import org.knime.core.node.defaultnodesettings.DefaultNodeSettingsPane;
+import org.knime.core.node.defaultnodesettings.DialogComponentFileChooser;
+import org.knime.core.node.defaultnodesettings.SettingsModelString;
+
+/**
+ * {@link NodeSettingsPane} for the JCampDX FID reader node.
+ * 
+ * @author Alexander Kerner
+ *
+ */
+public class FidReaderNodeDialogPane extends DefaultNodeSettingsPane {
+
+    public FidReaderNodeDialogPane() {
+
+	final SettingsModelString selectionIn = FidReaderNodeModel.createSettingsModelValueIn();
+	addDialogComponent(new DialogComponentFileChooser(selectionIn, FidReaderNodeDialogPane.class.getName(),
+				JFileChooser.OPEN_DIALOG, false));
+    }
+
+}
