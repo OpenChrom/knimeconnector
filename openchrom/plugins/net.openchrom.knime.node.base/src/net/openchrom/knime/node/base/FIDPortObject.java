@@ -14,6 +14,8 @@ package net.openchrom.knime.node.base;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.JComponent;
+
 import org.eclipse.chemclipse.nmr.model.core.FIDMeasurement;
 import org.knime.core.node.port.PortObject;
 import org.knime.core.node.port.PortType;
@@ -34,7 +36,6 @@ public class FIDPortObject extends GenericPortObject<FIDMeasurement> {
 
     public FIDPortObject() {
 	super();
-
     }
 
     public FIDPortObject(Collection<? extends FIDMeasurement> measurements, GenericPortObjectSpec portObjectSpec) {
@@ -50,6 +51,11 @@ public class FIDPortObject extends GenericPortObject<FIDMeasurement> {
     @Override
     public List<FIDMeasurement> getMeasurements() {
 	return super.getMeasurements();
+    }
+
+    @Override
+    public JComponent[] getViews() {
+	return super.getViews();
     }
 
 }

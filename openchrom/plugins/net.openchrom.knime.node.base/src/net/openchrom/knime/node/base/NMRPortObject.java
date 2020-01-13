@@ -14,6 +14,8 @@ package net.openchrom.knime.node.base;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.JComponent;
+
 import org.eclipse.chemclipse.nmr.model.core.SpectrumMeasurement;
 import org.knime.core.node.port.PortType;
 import org.knime.core.node.port.PortTypeRegistry;
@@ -50,6 +52,11 @@ public class NMRPortObject extends GenericPortObject<SpectrumMeasurement> {
     @Override
     public List<SpectrumMeasurement> getMeasurements() {
 	return super.getMeasurements();
+    }
+
+    @Override
+    public JComponent[] getViews() {
+	return super.getViews();
     }
 
 }
